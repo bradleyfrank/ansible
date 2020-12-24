@@ -22,6 +22,9 @@ eval "{{ item }}"
 {% for key, value in aliases.items() %}
 alias {{ key }}='{{ value }}'
 {% endfor %}
+{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
+alias bat='batcat'
+{% endif %}
 
 {% for key, value in functions.items() %}
 function {{ key }}() {
