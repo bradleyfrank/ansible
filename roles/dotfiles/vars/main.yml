@@ -1,0 +1,120 @@
+---
+# vars file for dotfiles
+
+ssh_keys:
+  - id_rsa
+  - id_home
+  - id_develop
+  - google_compute_engine
+
+kubectl_url: https://storage.googleapis.com/kubernetes-release/release
+
+vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
+vim_extensions:
+  - name: vim-airline
+    repo: https://github.com/vim-airline/vim-airline.git
+    version: v0.11
+  - name: vim-airline-themes
+    repo: https://github.com/vim-airline/vim-airline-themes.git
+  - name: vim-gitgutter
+    repo: https://github.com/airblade/vim-gitgutter.git
+  - name: nerdtree
+    repo: https://github.com/preservim/nerdtree.git
+
+# -- Shell Configs -- #
+
+shared_evals:
+  - "$(dircolors ~/.dir_colors)"
+
+shared_exports:
+  - PATH
+  - MANPATH
+  - VISUAL=vim
+  - EDITOR=vim
+  - FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi"
+  - GIT_PS1_SHOWDIRTYSTATE=true
+  - GIT_PS1_SHOWSTASHSTATE=true
+  - GIT_PS1_SHOWUNTRACKEDFILES=true
+  - GIT_PS1_SHOWCOLORHINTS=true
+  - GIT_PS1_SHOWUPSTREAM="verbose name"
+  - LESS_TERMCAP_mb=$'\E[01;32m'
+  - LESS_TERMCAP_md=$'\E[01;32m'
+  - LESS_TERMCAP_me=$'\E[0m'
+  - LESS_TERMCAP_se=$'\E[0m'
+  - LESS_TERMCAP_so=$'\E[01;47;34m'
+  - LESS_TERMCAP_ue=$'\E[0m'
+  - LESS_TERMCAP_us=$'\E[01;36m'
+  - LESS=-r
+
+shared_paths:
+  - /usr/bin:/usr/sbin:/bin:/sbin
+  - /usr/local/bin:/usr/local/sbin
+  - "{{ ansible_user_dir }}/.local/bin"
+
+shared_manpaths:
+  - /usr/local/share/man:/usr/share/man
+  - "{{ ansible_user_dir }}/.local/share/man"
+
+shared_aliases:
+  bw: bitwise --no-color
+  condense: grep -Erv "(^#|^$)"
+  cp: cp -i
+  d: docker
+  dc: docker-compose
+  df: df -h
+  dmux: tmux new -s "$(diceware 2)"
+  e: extract
+  free: free -g
+  glances: glances --theme-white
+  glow: glow -s light
+  groot: cd "$(git rev-parse --show-toplevel)"
+  http: curl -s -L -D -
+  isodate: date --iso-8601=seconds
+  l1: ls -1 --color --classify --human-readable
+  la: ls -l --all --color --classify --human-readable
+  lg: ls -g --no-group --color --classify --human-readable
+  ll: ls -l --color --classify --human-readable
+  lsmnt: mount | column -t
+  lt: ls -1S --almost-all --color --classify --human-readable --group-directories-first --size
+  mp: multipass
+  pipi: python3 -m pip install --user
+  pipu: pip_upgrade_outdated -3 --user --verbose
+  pubip: dig myip.opendns.com @resolver1.opendns.com
+  rcp: rsync --info=progress2
+  tf: terraform
+  venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
+  _inline_fzf: fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border
+  _inline_fzf_nh: fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border
+
+shared_functions:
+  blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
+  clint: docker-compose -f "$1" config --quiet
+  crackpdf: qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf
+  diceware: keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
+  dotfiles: |-
+    ansible-pull \
+      --url https://github.com/bradleyfrank/ansible.git \
+      --directory "$HOME"/.dotfiles \
+      --skip-tags {{ ansible_skip_tags | join(',') }} \
+      playbooks/dotfiles.yml
+  decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
+  encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
+  httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
+  mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
+  mux: |-
+    if [[ -z "$TMUX" ]]; then
+      if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
+      else tmux new -s main
+      fi
+    fi
+  pylinter: |-
+    blackdiff "$@"
+    pylint "$@"
+    pycodestyle "$@"
+  tardir: tar -czf "${1%/}".tar.gz "$1"
+  cheat: curl -s "cheat.sh/$1?style=vs"
+  ytdl-video: |-
+    youtube-dl \
+    --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
+    --merge-output-format mp4 \
+    -o "%(title)s.%(ext)s" "$1"

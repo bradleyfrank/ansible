@@ -1,0 +1,28 @@
+---
+# tasks file for dotfiles
+
+- name: Create ~/Development folder structure
+  file:
+    path: "{{ ansible_user_dir }}/Development/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items: ['Projects', 'Build', 'Scratch']
+  tags:
+    - dotfiles
+
+- name: Create ~/.local folder structure
+  file:
+    path: "{{ ansible_user_dir }}/.local/{{ item }}"
+    state: directory
+    mode: 0755
+  loop: ['bin', 'etc', 'include', 'lib', 'opt', 'share', 'var']
+  tags:
+    - dotfiles
+
+- name: Create ~/.config directory
+  file:
+    path: "{{ ansible_user_dir }}/.config"
+    state: directory
+    mode: 0755
+  tags:
+    - dotfiles

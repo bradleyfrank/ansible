@@ -1,0 +1,36 @@
+---
+# tasks file for dotfiles
+
+- name: Check if `kubectl` is installed
+  command:
+    cmd: which kubectl
+  environment: 
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  register: which_kubectl
+
+- name: Install kubectl
+  block:
+    - name: Download kubectl stable version info
+      get_url:
+        url: "{{ kubectl_url }}/stable.txt"
+        dest: "{{ ansible_user_dir }}/stable.txt"
+
+    - name: Register kubectl stable version
+      shell:
+        cmd: "cat {{ ansible_user_dir }}/stable.txt"
+      register: stable_txt
+
+    - name: Install kubectl
+      vars:
+        system: "{{ ansible_system | lower }}"
+        release: "{{ stable_txt.stdout }}"
+      get_url:
+        url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
+        dest: "{{ ansible_user_dir }}/.local/bin/"
+        mode: 0755
+
+    - name: Cleanup kubectl stable.txt
+      file:
+        path: "{{ ansible_user_dir }}/stable.txt"
+        state: absent
+  when: which_kubectl.rc == 1

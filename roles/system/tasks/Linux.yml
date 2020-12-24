@@ -1,0 +1,50 @@
+---
+# tasks file for system
+
+- name: Make zsh default for user
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: "/usr/bin/zsh"
+  become: true
+  tags:
+    - shell
+
+- name: Make bash default for root
+  user:
+    name: root
+    shell: /usr/bin/bash
+  become: true
+  tags:
+    - root
+    - shell
+
+- name: Install root dotfiles
+  copy:
+    src: root/
+    dest: /root/
+    mode: 0644
+  become: true
+  tags:
+    - root
+    - shell
+
+- name: Import dconf settings
+  shell: dconf load / < "{{ item }}"
+  with_fileglob:
+    - "conf/Linux/shared.dconf"
+    - "conf/Linux/{{ ansible_distribution }}.dconf"
+  tags:
+    - gnome_settings
+
+- name: Generate host keys
+  command:
+    cmd: ssh-keygen -A
+    creates: /etc/ssh/ssh_host_*_key
+  become: true
+
+- name: Secure SSH settings
+  import_role:
+    name: devsec.hardening.ssh_hardening
+  become: true
+  tags:
+    - security

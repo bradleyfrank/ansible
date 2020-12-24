@@ -1,0 +1,66 @@
+---
+# tasks file for dotfiles
+
+- name: Install tmux config
+  template:
+    src: tmux.conf.j2
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    mode: 0644
+
+- name: Install dircolors config
+  copy:
+    src: shell/.dir_colors
+    dest: "{{ ansible_user_dir }}/.dir_colors"
+    mode: 0644
+
+- name: Create ~/.local/share directories
+  file:
+    path: "{{ ansible_user_dir }}/.local/share/{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - k8s
+    - gcloud
+
+- name: Install gcloud helpers
+  copy:
+    src: shell/.local/share/gcloud/gcsh
+    dest: "{{ ansible_user_dir }}/.local/share/gcloud/gcsh"
+    mode: 0644
+
+- name: Install kubectl helpers
+  copy:
+    src: shell/.local/share/k8s/fubectl
+    dest: "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
+    mode: 0644
+  tags:
+    - kubectl
+
+# Create dynamically in case of package update.
+- name: Generate kubectl completions
+  shell:
+    cmd: "kubectl completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
+  environment: 
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  tags:
+    - kubectl
+
+# Used to add Python bin to PATH on macOS.
+- name: Register Python3 user base location
+  shell:
+    cmd: python3 -m site --user-base
+  register: python3_user_base
+  when: "'Darwin' in ansible_system"
+
+- name: Build zshrc
+  vars:
+    evals: "{{ shared_evals + distribution_evals | default([]) }}"
+    exports: "{{ shared_exports + distribution_exports | default([]) }}"
+    paths: "{{ shared_paths + distribution_paths | default([]) }}"
+    manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
+    aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
+    functions: "{{ shared_functions | combine(distribution_functions) }}"
+    sources: "{{ shared_sources + distribution_sources | default([]) }}"
+  template:
+    src: zshrc.j2
+    dest: "{{ ansible_user_dir }}/.zshrc"

@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+# 
+# Provides a wrapper around ghostscript to compress PDF files.
+# Author: Brad Frank
+# Date: Nov 2020
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+# Requires: ghostscript
+#
+
+
+# ----- functions ----- #
+
+usage() {
+    echo "Usage: pdf-compress -h | -c [compression] -f [file]"
+    echo "  -c  Compression level using one of the following options:"
+    echo "         screen   (screen-view-only quality, 72 dpi)"
+    echo "         ebook    (low quality, 150 dpi)"
+    echo "         printer  (high quality, 300 dpi)"
+    echo "         prepress (high quality, color preserving, 300 dpi)"
+    echo "         default  (default dpi)"
+    echo "  -f  PDF file to compress."
+}
+
+error() {
+  printf "%s\n" "$1" >&2
+  usage
+  exit 1
+}
+
+main() {
+    local input file dir compression output
+    input="$1" compression="$2"
+
+    #
+    # input: /path/to/file.pdf
+    # file: file.pdf
+    # dir: /path/to
+    # output: /path/to/file.{{ compression level }}.pdf
+    #
+    file="$(basename "$input")"
+    dir="$(dirname "$input")"
+    output="$dir/${file%.*}.$compression.pdf"
+
+    if gs \
+        -sDEVICE=pdfwrite \
+        -dCompatibilityLevel=1.4 \
+        -dPDFSETTINGS=/"$COMPRESS_LEVEL" \
+        -dNOPAUSE \
+        -dQUIET \
+        -dBATCH \
+        -sOutputFile="$output" \
+        "$input" >/dev/null; then
+      echo "Wrote: $output"
+      return 0
+    else
+      return 1
+    fi
+}
+
+
+# ----- begin ----- #
+
+if [[ "$#" -eq 0 ]]; then usage; exit 1; fi
+
+while getopts ':hc:f:' flag; do
+    case "${flag}" in
+      h ) usage ; exit 0 ;;
+      c ) compression="$OPTARG" ;;
+      f ) input="$OPTARG" ;;
+      : ) error "$0: Must supply an argument to -$OPTARG." ;;
+      \?) error "Invalid option: $OPTARG" ;;
+    esac
+done
+
+if [[ ! -f "$input" ]]; then
+    echo "Error: file does not exist, skipping." >&2
+    exit 1
+fi
+
+if [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]]; then
+    echo "Error: invalid compression option." >&2
+    usage
+    exit 1
+fi
+
+if [[ -z "$compression" ]]; then main "$input" "ebook"
+else main "$input" "$compression"
+fi
+
+exit $?

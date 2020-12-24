@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# 
+# Extracts multiple file compression formats.
+# Forked: https://github.com/xvoland/Extract
+# Author: Brad Frank
+# Date: Nov 2020
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+#
+
+
+# ----- functions ----- #
+
+extract_cpio() {
+    local cpio="$1"
+
+    # Sometimes cpio files are compressed with Zstandard, extract that first.
+    if [[ "$cpio" == *.zstd ]]; then
+        local _cpio="${cpio//.zstd}"
+        zstd -d "$cpio" -o "$_cpio"
+        cpio="$_cpio"
+    fi
+
+    # cpio extracts to the cwd, so create a new directory to extract into.
+    local dir="${cpio%%.*}"
+    mkdir "$dir"
+    mv "$cpio" "$dir"/
+    pushd "$dir" &>/dev/null || return 1
+    cpio -id < ./"$cpio"
+    popd &>/dev/null || return 1
+    mv "$dir/$cpio" .
+}
+
+function main() {
+    local file="$1"
+    if [[ ! -f "$file" ]]; then echo "File $file does not exist, skipping." ; return 1; fi
+
+    case "${file%,}" in
+        *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar) 
+                            tar xvf "$file" ;;
+        *.lzma)             unlzma ./"$file" ;;
+        *.bz2)              bunzip2 ./"$file" ;;
+        *.cbr|*.rar)        unrar x -ad ./"$file" ;;
+        *.gz)               gunzip ./"$file" ;;
+        *.cbz|*.epub|*.zip) mkdir "${file%.*}" && unzip "$file" -d "${file%.*}" ;;
+        *.z)                uncompress ./"$file" ;;
+        *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
+                            7z x ./"$file" ;;
+        *.xz)               unxz ./"$file" ;;
+        *.exe)              cabextract ./"$file" ;;
+        *.cpio*)            extract_cpio "$file" ;;
+        *.cba|*.ace)        unace x ./"$file" ;;
+        *)                  echo "Cannot extract $file, skipping." ; return 1 ;;
+    esac
+}
+
+
+# ----- begin ----- #
+
+if [[ "$#" -eq 0 ]]; then echo "Usage: extract <file1> [file2] ... [fileN]"; exit 1; fi
+for compressed_file in "$@"; do main "$compressed_file"; done
+exit 0

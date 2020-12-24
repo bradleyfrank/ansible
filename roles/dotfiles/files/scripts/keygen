@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# 
+# Generates a password-protected SSH key.
+# Author: Brad Frank
+# Date: Nov 2020
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+# Requires: keepassxc-cli
+#
+
+
+# ----- functions ----- #
+
+function main() {
+    local comment password keyfile
+    keyfile="$HOME/.ssh/$1"
+
+    while [[ -e "$keyfile" ]]; do
+        keyfile="$HOME"/.ssh/id_"$(keepassxc-cli diceware --words 1)"
+    done
+
+    comment="$(id -un)@$(uname -n) on $(date --iso-8601=minute)"
+    password="$(keepassxc-cli diceware --words 5 | tr ' ' '-')"
+
+    ssh-keygen -q -t rsa -b 4096 -N "$password" -C "$comment" -f "$keyfile"
+    echo "$keyfile : $password"
+}
+
+
+# ----- begin ----- #
+
+if [[ -n "$1" ]]; then main "$1"
+else main "id_rsa"
+fi
+
+exit $?

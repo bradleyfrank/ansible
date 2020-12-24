@@ -1,0 +1,5 @@
+---
+# tasks file for system
+
+- name: Apply system settings
+  include_tasks: "{{ ansible_system }}.yml"

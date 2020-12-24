@@ -1,0 +1,8 @@
+# Set the theme 
+--theme="ansi-light"
+
+# Add mouse scrolling support in less
+--pager="less -FR"
+
+# Use "gitignore" highlighting for ".ignore" files
+--map-syntax .ignore:.gitignore

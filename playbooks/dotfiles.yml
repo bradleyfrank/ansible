@@ -1,0 +1,6 @@
+---
+
+- name: Dotfiles
+  hosts: localhost
+  roles:
+    - dotfiles

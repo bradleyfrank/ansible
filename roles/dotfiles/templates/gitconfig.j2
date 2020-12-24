@@ -1,0 +1,33 @@
+[alias]
+  co = checkout
+  graph = log --oneline --decorate --graph --all
+  history = log --full-history --
+  last = log -1 HEAD --stat
+  ll = log --oneline
+  s = switch
+  sb = status -sb
+  search = !git rev-list --all | xargs git grep -F
+  unstage = reset HEAD --
+[core]
+  excludesfile = {{ ansible_user_dir }}/.gitignore
+  editor = vim
+[credential "https://git-codecommit.us-east-1.amazonaws.com"]
+  helper =
+  helper = !aws codecommit credential-helper $@
+  UseHttpPath = true
+[help]
+  autocorrect = 20
+[init]
+  defaultBranch = main
+[pager]
+  diff = diff-so-fancy | less --tabs=1,5 -RFX
+  show = diff-so-fancy | less --tabs=1,5 -RFX
+[pull]
+  rebase = true
+[push]
+  default = current
+[rebase]
+  autoStash = true
+[user]
+  name = {{ ansible_user_id }}
+  email = {{ 'bfrank@oreilly.com' if 'remmac06432' in ansible_hostname else 'bradfrank@fastmail.com' }}

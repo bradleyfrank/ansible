@@ -1,0 +1,62 @@
+# ===== Server options
+set -g status-interval 1
+set -g default-terminal "screen-256color"
+
+
+# ===== Session options
+set -g default-command "${SHELL}"
+set -g mouse on
+set -g history-limit 10000
+set -g base-index 1
+set -g renumber-windows on
+set -g message-style fg=colour234
+set -g message-command-style fg=colour234
+
+# ----- Status bar: global
+set -g status-style bg=colour255
+set -g status-position top
+set -g status-justify left
+
+# ----- Status bar: left
+set -g status-left ""
+
+# ----- Status bar: right
+set -g status-right \
+  "#[fg=colour160]G: #(tmux-gcloud)\
+  #[fg=colour33]K: #(tmux-kubectl)\
+  #[fg=colour125]{{ ansible_distribution }} {{ ansible_distribution_version }}\
+  #[fg=colour61]#{session_name}"
+set -g status-right-length 250
+
+
+# ===== Window options
+set -g aggressive-resize on
+set -g mode-style bg=colour24,fg=colour231
+
+# ----- Status bar: windows (i.e. tabs)
+TMUX_TAB_HEADER_INACTIVE="#[fg=colour255,bg=colour240,bold] #I#[nobold]#F"
+TMUX_TAB_TITLE_INACTIVE="#[bg=default]#{?pane_synchronized,#[fg=colour160],#[fg=default]} #P:#W"
+TMUX_TAB_HEADER_ACTIVE="#[fg=colour255,bg=colour33,bold] #I#[nobold]#F"
+TMUX_TAB_TITLE_ACTIVE="#[bg=default]#{?pane_synchronized,#[fg=colour160],#[fg=colour33]} #P:#W"
+set -g window-status-format "$TMUX_TAB_HEADER_INACTIVE $TMUX_TAB_TITLE_INACTIVE"
+set -g window-status-current-format "$TMUX_TAB_HEADER_ACTIVE $TMUX_TAB_TITLE_ACTIVE"
+set -g window-status-current-style fg=colour231,bg=default
+set -g window-status-activity-style fg=colour231,bg=default
+
+
+# ===== Pane options
+set -g allow-rename off
+set -g pane-active-border-style fg=colour33,bg=colour255
+set -g pane-border-style fg=colour245
+
+
+# ===== Key bindings
+bind 'k' clear-history
+bind 'y' set synchronize-panes
+bind 'u' source-file "~/.tmux.conf"
+bind 'h' select-layout even-vertical
+bind 'v' select-layout even-horizontal
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel
+{%- if 'Darwin' in ansible_system %} "pbcopy"
+{% else %} "xsel -i -p && xsel -o -p | xsel -i -b"
+{% endif -%}

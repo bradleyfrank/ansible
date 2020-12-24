@@ -1,0 +1,16 @@
+---
+# tasks file for repositories
+
+- name: Include repo vars
+  include_vars: "{{ ansible_distribution }}.yml"
+
+- name: Install repos
+  include_tasks: "{{ ansible_distribution }}.yml"
+
+- name: Add Flatpak repositories
+  community.general.flatpak_remote:
+    name: "{{ item.name }}"
+    state: present
+    flatpakrepo_url: "{{ item.url }}"
+  loop: "{{ flatpak_remotes }}"
+  become: true

@@ -1,0 +1,25 @@
+---
+# tasks file for packages
+
+- name: Install Fedora repositories
+  import_role:
+    name: repositories
+
+- name: Install Fedora packages
+  dnf:
+    name: "{{ base_packages | default([]) }}"
+    state: present
+    update_cache: true
+    install_weak_deps: true
+    autoremove: true
+    autoclean: true
+  become: true
+  tags:
+    - packages
+
+- name: Install Fedora Flatpaks
+  community.general.flatpak:
+    name: "{{ item.name }}"
+    state: present
+    remote: "{{ item.remote }}"
+  loop: "{{ flatpak_packages }}"

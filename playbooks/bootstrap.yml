@@ -1,0 +1,8 @@
+---
+
+- name: Bootstrap
+  hosts: localhost
+  roles:
+    - packages
+    - dotfiles
+    - system

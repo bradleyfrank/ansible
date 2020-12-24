@@ -1,0 +1,35 @@
+---
+# tasks file for repositories
+
+- name: Install "rpmfusion-free" repo
+  yum:
+    name: "{{ rpmfusion_https }}/free/fedora/{{ rpmfusion_free_release }}.noarch.rpm"
+    disable_gpg_check: true
+    state: present
+  become: true
+
+- name: Install "rpmfusion-nonfree" repo
+  yum:
+    name: "{{ rpmfusion_https }}/nonfree/fedora/{{ rpmfusion_nonfree_release }}.noarch.rpm"
+    disable_gpg_check: true
+    state: present
+  become: true
+
+- name: Install gpg keys
+  rpm_key:
+    key: "{{ item.gpgkey }}"
+  loop: "{{ repos }}"
+  become: true
+
+- name: Install repositories
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl }}"
+    includepkgs: "{{ item.includepkgs | default('') }}"
+    gpgcheck: "{{ item.gpgcheck | default(true) }}"
+    gpgkey: "{{ item.gpgkey }}"
+    repo_gpgcheck: "{{ item.repo_gpgcheck | default(false) }}"
+    skip_if_unavailable: "{{ item.skip_if_unavailable | default(true) }}"
+  loop: "{{ repos }}"
+  become: true
