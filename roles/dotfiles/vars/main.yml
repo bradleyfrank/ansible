@@ -95,7 +95,7 @@ shared_functions:
     ansible-pull \
       --url https://github.com/bradleyfrank/ansible.git \
       --directory "$HOME"/.dotfiles \
-      --skip-tags {{ ansible_skip_tags | join(',') }} \
+      --skip-tags {{ ansible_skip_tags | default(['never'], true) | join(',') }} \
       playbooks/dotfiles.yml
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
