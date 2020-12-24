@@ -33,36 +33,6 @@ function {{ key }}() {
 
 {% endfor -%}
 
-{% if 'MacOSX' in ansible_distribution %}
-source /usr/local/etc/bash_completion.d/git-prompt.sh
-source /usr/local/opt/fzf/shell/completion.zsh
-source /usr/local/opt/fzf/shell/key-bindings.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% elif ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
-source /etc/bash_completion.d/git-prompt
-source /usr/share/doc/fzf/examples/completion.zsh
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% elif 'Fedora' in ansible_distribution %}
-source /etc/bash_completion.d/git-prompt
-source /usr/share/fzf/shell/key-bindings.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% endif %}
-source {{ ansible_user_dir }}/.local/share/k8s/fubectl
-source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
-source {{ ansible_user_dir }}/.local/share/gcloud/gcsh
-
-{% if 'remmac06432' in ansible_hostname -%}
-# ----- begin oreilly config ----- #
-source {{ ansible_user_dir }}/.infractl/secrets
-source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
-# ----- end oreilly config ------- #
-{% endif %}
-
-
 function precmd() {
   local rc=$?
   local reset="%f"
@@ -139,5 +109,34 @@ bindkey '^H' backward-kill-word                    # Delete previous word with c
 bindkey '^[[Z' undo                                # Shift+tab undo last action
 
 autoload -Uz compinit zmv zcalc && compinit
+
+{% if 'MacOSX' in ansible_distribution %}
+source /usr/local/etc/bash_completion.d/git-prompt.sh
+source /usr/local/opt/fzf/shell/completion.zsh
+source /usr/local/opt/fzf/shell/key-bindings.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+{% elif ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
+source /etc/bash_completion.d/git-prompt
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+{% elif 'Fedora' in ansible_distribution %}
+source /etc/bash_completion.d/git-prompt
+source /usr/share/fzf/shell/key-bindings.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+{% endif %}
+source {{ ansible_user_dir }}/.local/share/k8s/fubectl
+source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
+source {{ ansible_user_dir }}/.local/share/gcloud/gcsh
+{% if 'remmac06432' in ansible_hostname -%}
+
+# ----- begin oreilly config ----- #
+source {{ ansible_user_dir }}/.infractl/secrets
+source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
+# ----- end oreilly config ------- #
+{% endif %}
 
 complete -F __start_kubectl k
