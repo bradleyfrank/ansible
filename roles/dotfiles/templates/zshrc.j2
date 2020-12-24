@@ -47,12 +47,6 @@ source /etc/bash_completion.d/git-prompt
 source /usr/share/fzf/shell/key-bindings.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% elif 'Archlinux' in ansible_distribution %}
-source /usr/share/git/git-prompt.sh
-source /usr/share/fzf/completion.zsh
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 {% endif %}
 source {{ ansible_user_dir }}/.local/share/k8s/fubectl
 source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
