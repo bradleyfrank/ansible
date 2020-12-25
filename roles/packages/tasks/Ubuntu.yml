@@ -25,5 +25,6 @@
   community.general.flatpak:
     name: "{{ item.name }}"
     state: present
+    method: user
     remote: "{{ item.remote }}"
   loop: "{{ flatpak_packages }}"
