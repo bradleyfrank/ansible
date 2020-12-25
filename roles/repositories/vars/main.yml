@@ -1,6 +1,0 @@
----
-# vars file for repositories
-
-flatpak_remotes:
-  - name: flathub
-    url: https://dl.flathub.org/repo/flathub.flatpakrepo

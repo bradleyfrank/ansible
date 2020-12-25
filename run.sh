@@ -100,13 +100,13 @@ function bootstrap_linux() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
-      sudo dnf install -y ansible git flatpak
+      sudo dnf install -y ansible git
       ;;
     ubuntu|pop)
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
-      sudo apt-get install -y ansible git flatpak
+      sudo apt-get install -y ansible git
       ;;
     *) not_supported ;;
   esac

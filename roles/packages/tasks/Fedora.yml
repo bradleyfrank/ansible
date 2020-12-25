@@ -16,10 +16,3 @@
   become: true
   tags:
     - packages
-
-- name: Install Fedora Flatpaks
-  community.general.flatpak:
-    name: "{{ item.name }}"
-    state: present
-    remote: "{{ item.remote }}"
-  loop: "{{ flatpak_packages }}"

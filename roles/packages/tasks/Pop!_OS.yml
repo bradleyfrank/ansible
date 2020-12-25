@@ -20,11 +20,3 @@
   become: true
   tags:
     - packages
-
-- name: Install Pop!_OS Flatpaks
-  community.general.flatpak:
-    name: "{{ item.name }}"
-    state: present
-    method: user
-    remote: "{{ item.remote }}"
-  loop: "{{ flatpak_packages }}"

@@ -96,7 +96,3 @@ base_packages:
   - zsh
   - zsh-autosuggestions
   - zsh-syntax-highlighting
-
-flatpak_packages:
-  - name: com.gitlab.newsflash
-    remote: flathub
