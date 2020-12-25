@@ -91,6 +91,9 @@ shared_functions:
   blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
   clint: docker-compose -f "$1" config --quiet
   crackpdf: qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf
+  dhtags: |-
+    wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - \
+        | tr -d '[]" ' | tr '}' '\n' | awk -F: '{print $3}'
   diceware: keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
   dotfiles: |-
     ansible-pull \
