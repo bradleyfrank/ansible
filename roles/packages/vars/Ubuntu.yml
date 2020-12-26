@@ -92,6 +92,7 @@ base_packages:
   - wget
   - xz-utils
   - youtube-dl
+  - xsel
   - zsh
   - zsh-autosuggestions
   - zsh-syntax-highlighting
