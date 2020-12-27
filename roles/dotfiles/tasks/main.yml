@@ -63,7 +63,7 @@
     - dotfiles
     - vim
 
-- name: Configure Bash and Zsh
+- name: Configure Zsh
   import_tasks: tasks/shell.yml
   tags:
     - dotfiles

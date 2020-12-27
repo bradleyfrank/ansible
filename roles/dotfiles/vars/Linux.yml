@@ -4,25 +4,3 @@
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 usr_path: /usr
 vscode_config: "{{ ansible_user_dir }}/.config/Code"
-
-# -- Shell Configs -- #
-
-distribution_evals:
-  - "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
-
-distribution_aliases:
-  ipa: 'ip -c a'
-  lsblk: 'lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
-  proc: 'ps -e --forest -o pid,ppid,user,time,cmd'
-  iowatch: 'watch -n 1 iostat -xy --human 1 1'
-
-distribution_functions:
-  findproc: |-
-    local pid
-    if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"
-    else pid="$(pgrep "$1")"
-    fi
-    ps --forest -o pid,ppid,user,time,cmd -g "$pid"
-  gedit: nohup /usr/bin/gedit "$@" &> /dev/null &
-  ytdl-music: |-
-    youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"

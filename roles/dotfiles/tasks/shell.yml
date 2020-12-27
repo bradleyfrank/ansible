@@ -53,14 +53,6 @@
   when: "'Darwin' in ansible_system"
 
 - name: Build zshrc
-  vars:
-    evals: "{{ shared_evals + distribution_evals | default([]) }}"
-    exports: "{{ shared_exports + distribution_exports | default([]) }}"
-    paths: "{{ shared_paths + distribution_paths | default([]) }}"
-    manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
-    aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
-    functions: "{{ shared_functions | combine(distribution_functions) }}"
-    sources: "{{ shared_sources + distribution_sources | default([]) }}"
   template:
     src: zshrc.j2
     dest: "{{ ansible_user_dir }}/.zshrc"
