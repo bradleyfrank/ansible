@@ -102,6 +102,7 @@ alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
+alias lsports='lsof -i -P -n'
 {% endif %}
 {% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
 alias bat='batcat'
