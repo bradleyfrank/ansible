@@ -9,6 +9,7 @@ gps() {
     local projects
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
     gcloud set project "$projects"
+    [ ! -z $TMUX ] && tmux refresh-client -S
 }
 
 # [gchelp] show this help message
