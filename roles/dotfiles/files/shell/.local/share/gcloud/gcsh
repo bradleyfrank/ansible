@@ -8,7 +8,7 @@ alias gpl="gcloud projects list"
 gps() {
     local projects
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
-    gcloud set project "$projects"
+    gcloud config set project "$projects"
     [ ! -z $TMUX ] && tmux refresh-client -S
 }
 
