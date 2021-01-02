@@ -1,9 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 if type kubectl &> /dev/null; then
-    if ! kubectl config current-context | grep -o '[^_]*$'; then
-        echo "<none>"
-    fi
+    kubectl config current-context 2> /dev/null | grep -o '[^_]*$'
 else
-	echo "<none>"
+    echo "n/a"
 fi

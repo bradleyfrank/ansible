@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 if type gcloud &> /dev/null; then
-	export CLOUDSDK_PYTHON="python3.8"
-	gcloud projects list | grep "$(gcloud config get-value project)" | awk '{print $2}'
+	project_id="$(gcloud config get-value project)"
+	jq -r --arg PID "$project_id" '.[] | select(.projectId==$PID) | .name' \
+		<(gcloud projects list --format json)
 else
-	echo "<none>"
+	echo "n/a"
 fi
