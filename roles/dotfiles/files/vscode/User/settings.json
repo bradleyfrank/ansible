@@ -29,11 +29,12 @@
     "gitlens.codeLens.recentChange.enabled": false,
     "gitlens.currentLine.enabled": false,
     "gitlens.hovers.annotations.over": "annotation",
-    "python.linting.pycodestyleEnabled": true,
-    "python.linting.pycodestyleArgs": ["--ignore=E501"],
-    "python.formatting.provider": "black",
     "python.formatting.blackArgs": ["--line-length", "100"],
-    "python.pythonPath": "/usr/local/bin/python3",
+    "python.formatting.provider": "black",
+    "python.languageServer": "Pylance",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintUseMinimalCheckers": false,
     "shellcheck.customArgs": [
         "-x"
     ],

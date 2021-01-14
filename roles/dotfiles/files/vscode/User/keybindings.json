@@ -15,5 +15,9 @@
     {
         "key": "ctrl+h",
         "command": "actions.find"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "editor.action.joinLines"
     }
 ]
