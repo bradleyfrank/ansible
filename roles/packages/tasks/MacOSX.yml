@@ -35,7 +35,7 @@
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
   loop: "{{ apps }}"
-  when: mas_account.rc == 0
+  when: mas_account.rc == 0  # authenticated to mac app store
   tags:
     - packages
     - mac_app_store
