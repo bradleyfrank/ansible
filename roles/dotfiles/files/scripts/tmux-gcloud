@@ -1,9 +1,12 @@
 #!/usr/bin/env zsh
 
 if type gcloud &> /dev/null; then
-	project_id="$(gcloud config get-value project)"
-	jq -r --arg PID "$project_id" '.[] | select(.projectId==$PID) | .name' \
-		<(gcloud projects list --format json)
+	if project_id="$(gcloud config get-value project 2> /dev/null)"; then
+		jq -r --arg PID "$project_id" '.[] | select(.projectId==$PID) | .name' \
+			<(gcloud projects list --format json)
+	else
+		echo "n/a"
+	fi
 else
 	echo "n/a"
 fi
