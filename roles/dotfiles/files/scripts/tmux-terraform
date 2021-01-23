@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+if type terraform &> /dev/null; then
+	if tf_workspace="$(terraform workspace show 2> /dev/null)"; then
+		echo "$tf_workspace"
+	else
+		echo "n/a"
+	fi
+else
+	echo "n/a"
+fi
