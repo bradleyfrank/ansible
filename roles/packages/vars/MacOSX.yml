@@ -41,6 +41,7 @@ packages:
   - jq
   - keychain
   - kpcli
+  - krew
   - kubectl
   - lame
   - less
@@ -63,6 +64,7 @@ packages:
   - ssh-copy-id
   - stern
   - stow
+  - terraform
   - tmux
   - tree
   - vim
