@@ -1,0 +1,28 @@
+#!/bin/sh
+
+print_darwin_os_info() {
+  printf "%s %s" \
+    "$(sw_vers | grep ProductName | cut -f2)" \
+    "$(sw_vers | grep ProductVersion | cut -f2)"
+}
+
+print_linux_os_info() {
+  if [ -e "/etc/os-release" ]; then
+    . "/etc/os-release"
+    printf "%s %s" "$ID" "$VERSION_ID"
+  elif [ -e "/etc/redhat-release" ]; then
+    printf "rhel %s" "$(sed -rn 's/.+([0-9]+\.[0-9]*).*/\1/p' /etc/redhat-release)"
+  elif [ -e "/etc/centos-release" ]; then
+    printf "centos %s" "$(sed -rn 's/.+([0-9]+\.[0-9]*).*/\1/p' /etc/centos-release)"
+  elif type lsb_release >/dev/null 2>&1; then
+    lsb_release -ds | sed 's/^\"//g;s/\"$//g'
+  else
+    printf "Unknown OS"
+  fi
+}
+
+case "$(uname -s | tr '[:upper:]' '[:lower:]')" in
+  darwin) print_darwin_os_info ;;
+   linux) print_linux_os_info  ;;
+       *) printf "Unknown OS"  ;;
+esac
