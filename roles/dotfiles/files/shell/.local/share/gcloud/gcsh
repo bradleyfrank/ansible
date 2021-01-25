@@ -1,10 +1,10 @@
 # [gc] alias for gcloud
 alias gc="gcloud"
 
-# [gpl] gcloud projects list
+# [gpl] list all GCP projects
 alias gpl="gcloud projects list"
 
-# [gps] gcloud project set
+# [gps] set the active GCP project
 gps() {
     local projects
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
@@ -19,10 +19,5 @@ ghelp() {
     echo "Helper aliases and functions for gcloud SDK"
     echo
     echo "Usage:"
-    if [ -n "$ZSH_VERSION" ]
-    then
-        grep -E '^# \[.+\]' "${(%):-%x}"
-    else
-        grep -E '^# \[.+\]' "${BASH_SOURCE[0]}"
-    fi
+    grep -E '^# \[.+\]' "${(%):-%x}"
 }
