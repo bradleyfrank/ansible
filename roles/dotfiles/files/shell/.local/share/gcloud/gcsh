@@ -9,7 +9,16 @@ gps() {
     local projects
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
     gcloud config set project "$projects"
-    [ ! -z $TMUX ] && tmux refresh-client -S
+    [ ! -z "$TMUX" ] && tmux refresh-client -S
+}
+
+# [gcreds] sets GCP project credentials via environment variables (ORM only)
+gcreds() {
+    local sacct
+    sacct="$(env | grep 'APPLICATION_CREDENTIALS' | _inline_fzf | cut -f1 -d'=' | awk '{print $1}')"
+    [[ -z "${(P)sacct}" ]] && { echo "Missing INFRACTL credential json file." ; return 1 ; }
+    echo "Set GOOGLE_APPLICATION_CREDENTIALS to ${(P)sacct}"
+    export GOOGLE_APPLICATION_CREDENTIALS="${(P)sacct}"
 }
 
 # [gchelp] show this help message
