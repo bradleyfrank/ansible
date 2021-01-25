@@ -310,7 +310,13 @@ source {{ ansible_user_dir }}/.local/share/gcloud/gcsh
 
 # ----- begin oreilly config ----- #
 source {{ ansible_user_dir }}/.infractl/secrets
-source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
+
+helmswitch() {
+    [[ ! -e /usr/local/bin/helm"$1" ]] && { echo "Error: No helm version $1." ; return 1 ; }
+    pushd /usr/local/bin &> /dev/null || return 1
+    rm helm && ln -s helm"$1" helm
+    popd &> /dev/null || return 1
+}
 # ----- end oreilly config ------- #
 {% endif %}
 
