@@ -16,6 +16,7 @@
     },
     "editor.wordWrap": "on",
     "editor.wordWrapColumn": 100,
+    "explorer.autoReveal": false,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
     "explorer.openEditors.visible": 0,
@@ -56,5 +57,5 @@
     "workbench.list.openMode": "doubleClick",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": true,
-    "workbench.tree.renderIndentGuides": "onHover",
+    "workbench.tree.renderIndentGuides": "onHover"
 }
