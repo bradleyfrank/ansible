@@ -56,7 +56,7 @@ bind 'y' set synchronize-panes
 bind 'u' source-file "~/.tmux.conf"
 bind 'h' select-layout even-vertical
 bind 'v' select-layout even-horizontal
-bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-no-clear
 {%- if 'Darwin' in ansible_system %} "pbcopy"
 {% else %} "xsel -i -p && xsel -o -p | xsel -i -b"
 {% endif -%}
