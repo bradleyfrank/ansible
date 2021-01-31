@@ -50,6 +50,7 @@
   shell:
     cmd: python3 -m site --user-base
   register: python3_user_base
+  check_mode: no
   when: "'Darwin' in ansible_system"
 
 - name: Build zshrc

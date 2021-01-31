@@ -21,10 +21,19 @@ set -g status-justify left
 set -g status-left ""
 
 # ----- Status bar: right
-set -g status-right \
-  "#[fg=colour160]gcp: #(tmux-gcloud)\
+set -g status-right "\
+{% if tmux_display['gcloud'] %}
+  #[fg=colour160]gcp: #(tmux-gcloud)\
+{% endif %}
+{% if tmux_display['kubectl'] %}
   #[fg=colour33]k8s: #(tmux-kubectl)\
+{% endif %}
+{% if tmux_display['terraform'] %}
   #[fg=colour61]tf: #(tmux-terraform)\
+{% endif %}
+{% if tmux_display['os'] %}
+  #[fg=colour125]{{ ansible_distribution }} {{ ansible_distribution_version }}\
+{% endif %}
   #[fg=colour37]#{session_name}"
 set -g status-right-length 250
 

@@ -6,6 +6,7 @@
     cmd: which kubectl
   environment: 
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  check_mode: no
   register: which_kubectl
 
 - name: Install kubectl

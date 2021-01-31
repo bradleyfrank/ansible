@@ -10,6 +10,7 @@ ssh_keys:
 kubectl_url: https://storage.googleapis.com/kubernetes-release/release
 
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
+
 vim_extensions:
   - name: vim-airline
     repo: https://github.com/vim-airline/vim-airline.git
@@ -20,3 +21,9 @@ vim_extensions:
     repo: https://github.com/airblade/vim-gitgutter.git
   - name: nerdtree
     repo: https://github.com/preservim/nerdtree.git
+
+tmux_display:
+  gcloud: true
+  kubectl: true
+  terraform: false
+  os: true
