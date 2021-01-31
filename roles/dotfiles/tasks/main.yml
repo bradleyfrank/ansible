@@ -12,6 +12,17 @@
     - dotfiles
     - homedir
 
+- name: Clone reference Git repos
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ git_reference_repos_dest }}/{{ item.name }}"
+    depth: '1'
+    version: "{{ item.version | default(omit) }}"
+  loop: "{{ git_reference_repos }}"
+  tags:
+    - dotfiles
+    - git_repos
+
 - name: Install scripts
   copy:
     src: scripts/
