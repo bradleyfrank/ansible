@@ -4,7 +4,7 @@
 - name: Check if `kubectl` is installed
   command:
     cmd: which kubectl
-  environment: 
+  environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
   check_mode: no
   register: which_kubectl

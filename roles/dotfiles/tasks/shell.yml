@@ -40,7 +40,7 @@
 - name: Generate kubectl completions
   shell:
     cmd: "kubectl completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
-  environment: 
+  environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
   tags:
     - kubectl
