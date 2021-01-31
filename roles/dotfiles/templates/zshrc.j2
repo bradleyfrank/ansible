@@ -98,11 +98,13 @@ alias vs='code .'
 alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
 alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
 {% if 'Darwin' in ansible_system %}
+alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 alias steep='brew update ; brew upgrade ; brew cleanup ; brew doctor'
 {% elif 'Linux' in ansible_system %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
+alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 alias lsports='lsof -i -P -n'
 {% endif %}
