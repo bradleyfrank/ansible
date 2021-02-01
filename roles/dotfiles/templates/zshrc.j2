@@ -109,6 +109,7 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 alias lsports='lsof -i -P -n'
 {% endif %}
 {% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
+alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 alias bat='batcat'
 {% endif %}
 
