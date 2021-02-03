@@ -17,7 +17,7 @@
         dest: "{{ ansible_user_dir }}/stable.txt"
 
     - name: Register kubectl stable version
-      shell:
+      command:
         cmd: "cat {{ ansible_user_dir }}/stable.txt"
       register: stable_txt
 

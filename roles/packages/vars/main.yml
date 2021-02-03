@@ -17,7 +17,7 @@ python_packages:
 
 vscode_extensions:
   - 4ops.terraform
-	- adpyke.codesnap
+  - adpyke.codesnap
   - bitzl.vscode-puppet
   - bungcip.better-toml
   - DavidAnson.vscode-markdownlint

@@ -47,7 +47,7 @@
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location
-  shell:
+  command:
     cmd: python3 -m site --user-base
   register: python3_user_base
   check_mode: no
@@ -57,3 +57,4 @@
   template:
     src: zshrc.j2
     dest: "{{ ansible_user_dir }}/.zshrc"
+    mode: 0644
