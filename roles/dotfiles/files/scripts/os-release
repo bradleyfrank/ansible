@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 print_darwin_os_info() {
   printf "%s %s" \
@@ -8,6 +8,7 @@ print_darwin_os_info() {
 
 print_linux_os_info() {
   if [ -e "/etc/os-release" ]; then
+    # shellcheck disable=SC1091
     . "/etc/os-release"
     printf "%s %s" "$ID" "$VERSION_ID"
   elif [ -e "/etc/redhat-release" ]; then

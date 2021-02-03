@@ -1,7 +1,10 @@
+#!/usr/bin/env bash
+
 # If not running interactively, don't do anything
 [[ -z "$PS1" ]] && return
 
 # Source global definitions
+  # shellcheck disable=SC1091
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -24,7 +27,12 @@ shopt -s checkwinsize
 
 # enable color support of ls and also add handy aliases
 if [[ -x /usr/bin/dircolors ]]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  if [[ -r ~/.dircolors ]]; then
+    eval "$(dircolors -b ~/.dircolors)"
+  else
+    eval "$(dircolors -b)"
+  fi
+
   alias ls='ls --color=auto'
   alias dir='dir --color=auto'
   alias vdir='vdir --color=auto'
@@ -42,12 +50,14 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 # Alias definitions.
+# shellcheck disable=SC1090
 [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if [[ -f /etc/bash_completion ]] && ! shopt -oq posix; then
+  # shellcheck disable=SC1091
   source /etc/bash_completion
 fi
 

@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 
-if type kubectl &> /dev/null; then
+if type kubectl >/dev/null 2>&1; then
     if context="$(kubectl config current-context 2> /dev/null)"; then
         echo "$context" | grep -o '[^_]*$'
     else
