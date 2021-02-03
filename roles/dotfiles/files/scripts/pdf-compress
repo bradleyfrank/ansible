@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# 
+#
 # Provides a wrapper around ghostscript to compress PDF files.
 # Author: Brad Frank
 # Date: Nov 2020

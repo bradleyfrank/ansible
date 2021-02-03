@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# 
+#
 # Extracts multiple file compression formats.
 # Forked: https://github.com/xvoland/Extract
 # Author: Brad Frank
@@ -36,7 +36,7 @@ function main() {
     if [[ ! -f "$file" ]]; then echo "File $file does not exist, skipping." ; return 1; fi
 
     case "${file%,}" in
-        *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar) 
+        *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
                             tar xvf "$file" ;;
         *.lzma)             unlzma ./"$file" ;;
         *.bz2)              bunzip2 ./"$file" ;;
