@@ -23,7 +23,6 @@ set laststatus=2
 set scrolloff=4
 set updatetime=100
 set cursorline
-set paste
 
 set term=screen-256color
 set background=light
