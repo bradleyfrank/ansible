@@ -6,7 +6,7 @@ python_packages:
   - imgur_downloader
   - pip-autoremove
   - pip_upgrade_outdated
-	- pre-commit
+  - pre-commit
   - pycodestyle
   - pydf
   - pyflakes
