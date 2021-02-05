@@ -3,7 +3,8 @@
 if type gcloud >/dev/null 2>&1; then
 	if project_id="$(gcloud config get-value project 2> /dev/null)"; then
 		gcloud_projects_list="$(gcloud projects list --format json)"
-		jq -r --arg PID "$project_id" '.[] | select(.projectId==$PID) | .name' "$gcloud_projects_list"
+		echo "$gcloud_projects_list" \
+			| jq -r --arg PID "$project_id" '.[] | select(.projectId==$PID) | .name'
 	else
 		echo "n/a"
 	fi
