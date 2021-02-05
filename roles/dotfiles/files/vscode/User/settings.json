@@ -54,6 +54,9 @@
         }
     },
     "workbench.colorTheme": "Solarized Light",
+    "workbench.editor.decorations.badges": true,
+    "workbench.editor.decorations.colors": true,
+    "workbench.editor.wrapTabs": true,
     "workbench.list.openMode": "doubleClick",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": true,
