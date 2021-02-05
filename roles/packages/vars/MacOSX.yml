@@ -92,6 +92,7 @@ casks:
   - font-source-code-pro
   - google-chrome
   - google-drive-file-stream
+  - hyper
   - iina
   - istat-menus
   - jumpcut

@@ -1,6 +1,12 @@
 ---
 # tasks file for dotfiles
 
+- name: Install Hyper config
+  copy:
+    src: shell/.hyper.js
+    dest: "{{ ansible_user_dir }}/.hyper.js"
+    mode: 0644
+
 - name: Install tmux config
   template:
     src: tmux.conf.j2
