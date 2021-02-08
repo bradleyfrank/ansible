@@ -4,6 +4,7 @@
 base_packages:
   - 1password
   - abcde
+  - asciinema
   - audacious
   - bat
   - borgbackup

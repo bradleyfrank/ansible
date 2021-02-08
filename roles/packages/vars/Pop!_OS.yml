@@ -6,6 +6,7 @@ base_packages:
   - abcde
   - apt-file
   - apt-transport-https  # kubernetes
+  - asciinema
   - audacious
   - bat
   - borgbackup

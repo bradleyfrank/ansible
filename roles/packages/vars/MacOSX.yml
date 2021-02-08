@@ -10,6 +10,7 @@ taps:
 
 packages:
   - ansible-lint
+  - asciinema
   - awscli
   - bash
   - bash-completion@2
