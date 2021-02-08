@@ -38,6 +38,7 @@ packages:
   - gron
   - gzip
   - helm
+  - httpie
   - iftop
   - jq
   - keychain

@@ -43,6 +43,7 @@ base_packages:
   - google-noto-emoji-color-fonts
   - gpaste*
   - htop
+  - httpie
   - iftop
   - keepassxc
   - keychain

@@ -40,6 +40,7 @@ base_packages:
   - google-chrome-stable
   - gpaste*
   - htop
+  - httpie
   - iftop
   - keepassxc
   - keychain
