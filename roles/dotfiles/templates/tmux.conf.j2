@@ -69,3 +69,5 @@ bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {%- if 'Darwin' in ansible_system %} "pbcopy"
 {% else %} "xsel -i -p && xsel -o -p | xsel -i -b"
 {% endif -%}
+bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up
+bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down
