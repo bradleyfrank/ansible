@@ -8,6 +8,7 @@
   sb = status -sb
   search = !git rev-list --all | xargs git grep -F
   unstage = reset HEAD --
+  wt = worktree
 [core]
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
