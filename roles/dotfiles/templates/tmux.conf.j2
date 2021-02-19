@@ -43,12 +43,10 @@ set -g aggressive-resize off
 set -g mode-style bg=colour24,fg=colour231
 
 # ----- Status bar: windows (i.e. tabs)
-TMUX_TAB_HEADER_INACTIVE="#[fg=colour230,bg=colour241,bold] #I#[nobold]#F"
-TMUX_TAB_TITLE_INACTIVE="#[bg=default]#{?pane_synchronized,#[fg=colour160],#[fg=colour241]} #P:#W"
-TMUX_TAB_HEADER_ACTIVE="#[fg=colour230,bg=colour33,bold] #I#[nobold]#F"
-TMUX_TAB_TITLE_ACTIVE="#[bg=default]#{?pane_synchronized,#[fg=colour160],#[fg=colour33]} #P:#W"
-set -g window-status-format "$TMUX_TAB_HEADER_INACTIVE $TMUX_TAB_TITLE_INACTIVE"
-set -g window-status-current-format "$TMUX_TAB_HEADER_ACTIVE $TMUX_TAB_TITLE_ACTIVE"
+set -g window-status-format \
+  "#[fg=colour245,bg=default]\[#I\] #{?pane_synchronized,#[fg=colour160],#[fg=colour241]}#W "
+set -g window-status-current-format \
+  "#[fg=colour33,bg=default,bold]\[#I\] #{?pane_synchronized,#[fg=colour160],#[fg=colour33]}#W#[nobold] "
 set -g window-status-current-style fg=colour231,bg=default
 set -g window-status-activity-style fg=colour231,bg=default
 
