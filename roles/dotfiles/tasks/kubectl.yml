@@ -1,7 +1,7 @@
 ---
 # tasks file for dotfiles
 
-- name: Check if `kubectl` is installed
+- name: Check if kubectl is installed
   command:
     cmd: which kubectl
   environment:
@@ -11,14 +11,9 @@
 
 - name: Install kubectl
   block:
-    - name: Download kubectl stable version info
-      get_url:
-        url: "{{ kubectl_url }}/stable.txt"
-        dest: "{{ ansible_user_dir }}/stable.txt"
-
-    - name: Register kubectl stable version
-      command:
-        cmd: "cat {{ ansible_user_dir }}/stable.txt"
+    - name: Find latest k0s release
+      ansible.builtin.shell:
+        cmd: "curl -sL {{ kubectl_url }}/stable.txt"
       register: stable_txt
 
     - name: Install kubectl
