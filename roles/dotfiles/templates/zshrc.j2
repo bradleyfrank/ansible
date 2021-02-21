@@ -230,8 +230,8 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  _NL=$'\n' _PROMPT="%#" _PYENV="" _CWD="at ${blue}%(5~|%-1~/.../%3~|%~)${reset}"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="in ${cyan}$(basename "$VIRTUAL_ENV")${reset}"
+  _NL=$'\n' _PROMPT="%#" _PYENV="" _CWD="at ${blue}%-1~${reset}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" in ${cyan}$(basename "$VIRTUAL_ENV")${reset}"
 
   case "$rc" in
     0) _PROMPT="%B${green}${_PROMPT}${reset}%b "   ;;
