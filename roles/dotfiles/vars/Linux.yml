@@ -4,3 +4,4 @@
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 usr_path: /usr
 vscode_config: "{{ ansible_user_dir }}/.config/Code"
+krew_installer: "krew-linux_{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm' }}"

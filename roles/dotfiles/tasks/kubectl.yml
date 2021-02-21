@@ -24,9 +24,37 @@
         url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
         dest: "{{ ansible_user_dir }}/.local/bin/"
         mode: 0755
-
-    - name: Cleanup kubectl stable.txt
-      file:
-        path: "{{ ansible_user_dir }}/stable.txt"
-        state: absent
   when: which_kubectl.rc == 1
+
+- name: Check if krew is installed
+  command:
+    cmd: kubectl krew
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.krew/bin"
+  check_mode: no
+  register: kubectl_krew
+
+- name: Install krew
+  block:
+    - name: Download krew installer
+      get_url:
+        url: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz
+        dest: "{{ ansible_user_dir }}/krew.tar.gz"
+
+    - name: Extract krew installer
+      unarchive:
+        src: "{{ ansible_user_dir }}/krew.tar.gz"
+        dest: "{{ ansible_user_dir }}/"
+        remote_src: true
+        extra_opts:
+        - "{{ krew_installer }}"
+
+    - name: Run krew installer
+      command:
+        cmd: "{{ ansible_user_dir }}/{{ krew_installer }}"
+
+    - name: Cleanup krew installer
+      file:
+        path: "{{ ansible_user_dir }}/krew.tar.gz"
+        state: absent
+  when: kubectl_krew.rc == 1
