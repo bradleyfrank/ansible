@@ -2,7 +2,7 @@
 
 if type kubectl >/dev/null 2>&1; then
     if context="$(kubectl config current-context 2> /dev/null)"; then
-        echo "$context" | grep -o '[^_]*$'
+        echo "⎈ $context" | grep -o '[^_]*$'
     else
         echo "n/a"
     fi
