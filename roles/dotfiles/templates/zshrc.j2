@@ -209,15 +209,6 @@ function gedit() {
 }
 {% endif %}
 
-{% if 'remmac06432' in ansible_hostname %}
-hs() {
-    [[ ! -e /usr/local/bin/helm"$1" ]] && { echo "Error: No helm version $1." ; return 1 ; }
-    pushd /usr/local/bin &> /dev/null || return 1
-    rm helm && ln -s helm"$1" helm
-    popd &> /dev/null || return 1
-}
-{% endif %}
-
 function precmd() {
   local rc=$?
   local reset="%f"
@@ -230,8 +221,8 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  _NL=$'\n' _PROMPT="%#" _PYENV="" _CWD="at ${blue}%1~${reset}"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" in ${cyan}$(basename "$VIRTUAL_ENV")${reset}"
+  _NL=$'\n' _PROMPT="%#" _PYENV="" _CWD="at ${blue}%~${reset}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" in ${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
 
   case "$rc" in
     0) _PROMPT="%B${green}${_PROMPT}${reset}%b "   ;;
@@ -239,7 +230,7 @@ function precmd() {
     *) _PROMPT="%B${magenta}${_PROMPT}${reset}%b " ;;
   esac
 
-  __git_ps1 "${_NL}${_CWD}" "${_PYENV}${_NL}${_PROMPT}" " on %s"
+  __git_ps1 "${_NL}${_CWD}${_PYENV}" "${_NL}${_PROMPT}" " on %s"
 }
 
 
