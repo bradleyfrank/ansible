@@ -2,7 +2,7 @@
 
 if type gcloud >/dev/null 2>&1; then
 	if project_id="$(gcloud config get-value project 2> /dev/null)"; then
-		echo "G $project_id" | sed -r 's|(\-[0-9]+)$||'
+		echo "$project_id" | sed -r 's|(\-[0-9]+)$||'
 	else
 		echo "n/a"
 	fi

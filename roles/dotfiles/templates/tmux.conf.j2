@@ -23,13 +23,13 @@ set -g status-left ""
 # ----- Status bar: right
 set -g status-right "\
 {% if tmux_display['gcloud'] %}
-  #[fg=colour160]#(tmux-gcloud)\
+  #[fg=colour160]G #(tmux-gcloud)\
 {% endif %}
 {% if tmux_display['kubectl'] %}
-  #[fg=colour33]#(tmux-kubectl)\
+  #[fg=colour33]⎈ #(tmux-kubectl)\
 {% endif %}
 {% if tmux_display['terraform'] %}
-  #[fg=colour61]#(tmux-terraform)\
+  #[fg=colour61]⎋ #(tmux-terraform)\
 {% endif %}
 {% if tmux_display['os'] %}
   #[fg=colour125]{{ tmux_symbol }} {{ ansible_distribution }} {{ ansible_distribution_version }}\
