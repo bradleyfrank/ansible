@@ -1,5 +1,5 @@
 # Set the theme
---theme="ansi-light"
+--theme="Solarized (light)"
 
 # Add mouse scrolling support in less
 --pager="less -FR"
