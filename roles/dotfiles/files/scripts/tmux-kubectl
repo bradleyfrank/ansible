@@ -1,11 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-if type kubectl >/dev/null 2>&1; then
-    if context="$(kubectl config current-context 2> /dev/null)"; then
-        echo "$context" | grep -o '[^_]*$'
-    else
-        echo "n/a"
-    fi
-else
-    echo "n/a"
+if ! type kubectl >/dev/null 2>&1 ; then exit ; fi
+
+if context="$(kubectl config current-context 2> /dev/null)"; then echo "$context"
+else echo "k8s: (unset)"
 fi
