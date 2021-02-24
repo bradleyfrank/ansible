@@ -221,7 +221,9 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  _NL=$'\n' _PROMPT="%#" _PYENV="" _CWD="at ${blue}%~${reset}"
+  _NL=$'\n' _PROMPT="%#" _PYENV="" _K8S="" _CWD="at ${blue}%1~${reset}"
+
+  context="$(kubectl config current-context 2> /dev/null)" && _K8S=" context ${violet}${context}${reset}"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" in ${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
 
   case "$rc" in
@@ -230,7 +232,7 @@ function precmd() {
     *) _PROMPT="%B${magenta}${_PROMPT}${reset}%b " ;;
   esac
 
-  __git_ps1 "${_NL}${_CWD}${_PYENV}" "${_NL}${_PROMPT}" " on %s"
+  __git_ps1 "${_NL}${_CWD}${_K8S}${_PYENV}" "${_NL}${_PROMPT}" " on %s"
 }
 
 
