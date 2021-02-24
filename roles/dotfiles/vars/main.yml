@@ -11,7 +11,7 @@ kubectl_url: https://storage.googleapis.com/kubernetes-release/release
 
 tmux_display:
   gcloud: true
-  kubectl: true
+  kubectl: false
   terraform: false
   os: true
 
