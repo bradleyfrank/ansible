@@ -220,21 +220,33 @@ function precmd() {
         red="%F{160}" \
         orange="%F{166}" \
         base03="%F{234}"
+  local eol=$'\n'
 
-  _NL=$'\n' _PROMPT="%#" _PYENV="" _K8S="" _CWD="${blue}→ %(5~|%-1~/.../%3~|%~)${nocolor}"
-  context="$(kubectl config current-context 2> /dev/null)" && _K8S="${violet} ☸ ${context}${nocolor}"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan} Py $(basename "$VIRTUAL_ENV")${nocolor}"
-  if [[ -n $TMUX ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 4 ]] && _CWD="${blue}→ %1~${nocolor}"
+  # -- cwd segment -- #
+  _CWD="${blue}→ %(3~|%-1~/.../%1~|%~)${nocolor}"
+
+  # -- kubectl context segment -- #
+  if context="$(kubectl config current-context 2> /dev/null)"; then
+    _KUBECTL="${violet} ☸ ${context}${nocolor}"
+  else
+    _KUBECTL=""
   fi
 
+  # -- virtualenv segment -- #
+  if [[ -n "$VIRTUAL_ENV" ]]; then
+    _PYENV="${cyan} Py $(basename "$VIRTUAL_ENV")${nocolor}"
+  else
+    _PYENV=""
+  fi
+
+  # -- prompt segment -- #
   case "$rc" in
-    0) _PROMPT="${green}${_PROMPT}${nocolor} "   ;;
-    1) _PROMPT="${red}${_PROMPT}${nocolor} "     ;;
-    *) _PROMPT="${magenta}${_PROMPT}${nocolor} " ;;
+    0) _PROMPT="${green}%#${nocolor} "   ;;
+    1) _PROMPT="${red}%#${nocolor} "     ;;
+    *) _PROMPT="${magenta}%#${nocolor} " ;;
   esac
 
-  __git_ps1 "${_NL}${bold}${_CWD}${_K8S}${_PYENV}" "${_NL}${_PROMPT}${nobold}" " ⇄ %s"
+  __git_ps1 "${eol}${bold}${_CWD}${_KUBECTL}${_PYENV}" "${eol}${_PROMPT}${nobold}" " ⇄ %s"
 }
 
 
