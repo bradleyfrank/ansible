@@ -234,7 +234,7 @@ function precmd() {
 
   # -- virtualenv segment -- #
   if [[ -n "$VIRTUAL_ENV" ]]; then
-    _PYENV="${cyan} Py $(basename "$VIRTUAL_ENV")${nocolor}"
+    _PYENV="${cyan} $(python --version) ($(basename "$VIRTUAL_ENV"))${nocolor}"
   else
     _PYENV=""
   fi
@@ -246,7 +246,7 @@ function precmd() {
     *) _PROMPT="${magenta}%#${nocolor} " ;;
   esac
 
-  __git_ps1 "${eol}${bold}${_CWD}${_KUBECTL}${_PYENV}" "${eol}${_PROMPT}${nobold}" " ⇄ %s"
+  __git_ps1 "${eol}${bold}${_CWD}${_KUBECTL}" "${_PYENV}${eol}${_PROMPT}${nobold}" " ⇄ %s"
 }
 
 
