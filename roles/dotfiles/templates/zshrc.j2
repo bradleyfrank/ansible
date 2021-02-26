@@ -226,7 +226,7 @@ function precmd() {
   _CWD="${blue}→ %(3~|%-1~/.../%1~|%~)${nocolor}"
 
   # -- kubectl context segment -- #
-  if context="$(kubectl config current-context 2> /dev/null)"; then
+  if context="$(kubectl config current-context 2> /dev/null | grep -o '[^_]*$')"; then
     _KUBECTL="${violet} ☸ ${context}${nocolor}"
   else
     _KUBECTL=""
@@ -234,7 +234,7 @@ function precmd() {
 
   # -- virtualenv segment -- #
   if [[ -n "$VIRTUAL_ENV" ]]; then
-    _PYENV="${cyan} $(python --version) ($(basename "$VIRTUAL_ENV"))${nocolor}"
+    _PYENV="${cyan} ೭ $(python --version) ($(basename "$VIRTUAL_ENV"))${nocolor}"
   else
     _PYENV=""
   fi
