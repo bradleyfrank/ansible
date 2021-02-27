@@ -21,7 +21,7 @@ set -g status-justify left
 set -g status-left ""
 
 # ----- Status bar: right
-set -g status-right "\
+set -g status-right "#[bold]\
 {% if tmux_display['gcloud'] %}
   #[fg=colour160]#(tmux-gcloud)\
 {% endif %}
@@ -34,7 +34,9 @@ set -g status-right "\
 {% if tmux_display['os'] %}
   #[fg=colour125]{{ ansible_distribution }} {{ ansible_distribution_version }}\
 {% endif %}
-  #[fg=colour61]#{session_name}"
+  #[fg=colour166]#h\
+  #[fg=colour61]#{session_name}\
+  #[nobold]"
 set -g status-right-length 250
 
 
@@ -44,7 +46,7 @@ set -g mode-style bg=colour24,fg=colour231
 
 # ----- Status bar: windows (i.e. tabs)
 set -g window-status-format \
-  "#[fg=colour245,bg=default]\[#I\] #{?pane_synchronized,#[fg=colour160],#[fg=colour241]}#W "
+  "#[fg=colour245,bg=default,bold]\[#I\] #{?pane_synchronized,#[fg=colour160],#[fg=colour241]}#W#[nobold] "
 set -g window-status-current-format \
   "#[fg=colour33,bg=default,bold]\[#I\] #{?pane_synchronized,#[fg=colour160],#[fg=colour33]}#W#[nobold] "
 set -g window-status-current-style fg=colour231,bg=default
