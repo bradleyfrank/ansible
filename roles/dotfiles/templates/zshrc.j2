@@ -119,6 +119,10 @@ function blackdiff() {
   black --line-length 100 --diff "$@" | diff-so-fancy
 }
 
+function cheat() {
+  curl -s "cheat.sh/$1?style=vs"
+}
+
 function crackpdf() {
   qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf
 }
@@ -161,10 +165,9 @@ function mkpasswd() {
 }
 
 function mux() {
-  if [[ -z "$TMUX" ]]; then
-    if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
-    else tmux new -s main
-    fi
+  [[ -n "$TMUX" ]] && return 1
+  if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
+  else tmux new -s main
   fi
 }
 
