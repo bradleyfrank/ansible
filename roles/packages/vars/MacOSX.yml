@@ -117,6 +117,7 @@ casks:
   - vlc
   - xquartz
   - zoom
+  - apparition47/tap/mailtrackerblocker
 
 apps:
   - 407963104  # Pixelmator
