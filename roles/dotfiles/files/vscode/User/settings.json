@@ -19,7 +19,6 @@
     "explorer.autoReveal": false,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
-    "explorer.openEditors.visible": 0,
     "extensions.ignoreRecommendations": true,
     "git.ignoreMissingGitWarning": true,
     "git.confirmSync": false,
