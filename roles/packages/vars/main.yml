@@ -2,6 +2,7 @@
 # vars file for packages
 
 python_packages:
+  - beets
   - black
   - imgur_downloader
   - pip-autoremove
@@ -11,7 +12,6 @@ python_packages:
   - pydf
   - pyflakes
   - pylint
-  - tmuxp
   - tuir
   - virtualenv
   - wily

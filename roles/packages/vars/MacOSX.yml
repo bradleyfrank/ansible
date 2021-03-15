@@ -92,8 +92,6 @@ casks:
   - firefox
   - font-clear-sans
   - font-source-code-pro
-  - google-chrome
-  - google-drive-file-stream
   - hyper
   - iina
   - istat-menus
@@ -117,7 +115,6 @@ casks:
   - vlc
   - xquartz
   - zoom
-  - apparition47/tap/mailtrackerblocker
 
 apps:
   - 407963104  # Pixelmator
