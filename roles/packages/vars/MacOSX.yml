@@ -43,7 +43,6 @@ packages:
   - jq
   - keychain
   - kpcli
-  - krew
   - kubectl
   - lame
   - less
@@ -58,6 +57,7 @@ packages:
   - prettyping
   - python
   - rename
+  - ripgrep
   - rpm2cpio
   - rsync
   - shellcheck

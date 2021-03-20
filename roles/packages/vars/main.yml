@@ -12,14 +12,11 @@ python_packages:
   - pydf
   - pyflakes
   - pylint
-  - tuir
   - virtualenv
   - wily
 
 vscode_extensions:
-  - 4ops.terraform
   - adpyke.codesnap
-  - bitzl.vscode-puppet
   - bungcip.better-toml
   - DavidAnson.vscode-markdownlint
   - donjayamanne.githistory
@@ -35,6 +32,7 @@ vscode_extensions:
   - ms-vscode-remote.remote-ssh-edit
   - naumovs.color-highlight
   - Remisa.shellman
+  - richie5um2.vscode-sort-json
   - rogalmic.bash-debug
   - samuelcolvin.jinjahtml
   - shd101wyy.markdown-preview-enhanced
