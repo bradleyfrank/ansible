@@ -86,15 +86,12 @@ function bootstrap_os() {
 
 function bootstrap_macos() {
   local homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
-  keep_awake
   softwareupdate --install --all
   [[ ! -x /usr/local/bin/brew ]] && CI=1 /bin/bash -c "$(curl -fsSL "$homebrew_url")"
   brew install ansible git
 }
 
 function bootstrap_linux() {
-  keep_awake
-
   case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
     fedora)
       sudo dnf clean all
@@ -168,6 +165,7 @@ done
 if [[ "${ANSIBLE_REPO[playbook]}" == "bootstrap" ]]; then
   create_tmp_sudoers
   create_vault_file
+  keep_awake
   bootstrap_os
 elif [[ "${ANSIBLE_REPO[playbook]}" == "dotfiles" ]]; then
   create_vault_file
