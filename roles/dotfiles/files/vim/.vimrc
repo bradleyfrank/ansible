@@ -32,7 +32,7 @@ hi Search ctermbg=DarkBlue ctermfg=White
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 set colorcolumn=100
-hi colorcolumn ctermbg=lightgrey guibg=lightgrey
+hi colorcolumn ctermbg=LightMagenta guibg=LightMagenta
 
 " use hybrid line numbering by default with automatic toggling
 set number relativenumber
