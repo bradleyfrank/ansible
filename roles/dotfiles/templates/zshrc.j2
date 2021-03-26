@@ -162,6 +162,13 @@ function httptrace() {
   curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
 }
 
+function import-ssh-config() {
+  pushd ~/Development/Projects/ansible &> /dev/null
+  command cp -f ~/.ssh/config roles/dotfiles/files/ssh/.ssh/
+  ansible-vault encrypt roles/dotfiles/files/ssh/.ssh/config
+  popd &> /dev/null
+}
+
 function mkpasswd() {
   keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
 }
