@@ -103,7 +103,6 @@ alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-l
 alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
 {% if 'Darwin' in ansible_system %}
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
-alias steep='brew update ; brew upgrade ; brew cleanup ; brew doctor'
 {% elif 'Linux' in ansible_system %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
@@ -178,6 +177,11 @@ function pylinter() {
   blackdiff "$@"
   pylint "$@"
   pycodestyle "$@"
+}
+
+function steep() {
+  if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
+  brew update ; brew upgrade ; brew cleanup ; brew doctor
 }
 
 function tardir() {
