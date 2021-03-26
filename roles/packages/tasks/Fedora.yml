@@ -12,7 +12,6 @@
     update_cache: true
     install_weak_deps: true
     autoremove: true
-    autoclean: true
   become: true
   tags:
     - packages
