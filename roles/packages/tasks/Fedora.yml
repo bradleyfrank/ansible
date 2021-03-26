@@ -11,7 +11,6 @@
     state: present
     update_cache: true
     install_weak_deps: true
-    autoremove: true
   become: true
   tags:
     - packages
