@@ -26,11 +26,11 @@ Skip Tags: [-mc]
 To start with `curl` (i.e. **macOS**):
 
 ```shell
-curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh <args>
+curl -O https://bradleyfrank.github.io/ansible/run.sh && bash run.sh <args>
 ```
 
 To start with `wget` (i.e. **Linux**):
 
 ```shell
-wget https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh <args>
+wget https://bradleyfrank.github.io/ansible/run.sh && bash run.sh <args>
 ```
