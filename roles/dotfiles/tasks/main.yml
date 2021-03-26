@@ -2,18 +2,18 @@
 # tasks file for dotfiles
 
 - name: Load per-OS variables
-  include_vars: "{{ ansible_system }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_system }}.yml"
   tags:
     - dotfiles
 
 - name: Create homedir structure
-  import_tasks: tasks/homedir.yml
+  ansible.builtin.import_tasks: tasks/homedir.yml
   tags:
     - dotfiles
     - homedir
 
 - name: Clone reference Git repos
-  git:
+  ansible.builtin.git:
     repo: "{{ item.repo }}"
     dest: "{{ git_reference_repos_dest }}/{{ item.name }}"
     depth: '1'
@@ -24,7 +24,7 @@
     - git_repos
 
 - name: Install scripts
-  copy:
+  ansible.builtin.copy:
     src: scripts/
     dest: "{{ ansible_user_dir }}/.local/bin/"
     mode: 0755
@@ -33,49 +33,49 @@
     - scripts
 
 - name: Install VSCode configs
-  copy:
+  ansible.builtin.copy:
     src: vscode/
     dest: "{{ vscode_config }}"
     mode: 0755
 
 - name: Install kubectl
-  import_tasks: tasks/kubectl.yml
+  ansible.builtin.import_tasks: tasks/kubectl.yml
   tags:
     - dotfiles
     - kubectl
 
 - name: Install fonts
-  import_tasks: tasks/fonts.yml
+  ansible.builtin.import_tasks: tasks/fonts.yml
   tags:
     - dotfiles
     - fonts
 
 - name: Install cli utility configs
-  import_tasks: tasks/cli.yml
+  ansible.builtin.import_tasks: tasks/cli.yml
   tags:
     - dotfiles
     - utilities
 
 - name: Setup git
-  import_tasks: tasks/git.yml
+  ansible.builtin.import_tasks: tasks/git.yml
   tags:
     - dotfiles
     - git
 
 - name: Setup ssh
-  import_tasks: tasks/ssh.yml
+  ansible.builtin.import_tasks: tasks/ssh.yml
   tags:
     - dotfiles
     - ssh
 
 - name: Setup Vim
-  import_tasks: tasks/vim.yml
+  ansible.builtin.import_tasks: tasks/vim.yml
   tags:
     - dotfiles
     - vim
 
 - name: Configure Zsh
-  import_tasks: tasks/shell.yml
+  ansible.builtin.import_tasks: tasks/shell.yml
   tags:
     - dotfiles
     - shell

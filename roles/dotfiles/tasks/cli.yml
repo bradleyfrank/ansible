@@ -2,19 +2,19 @@
 # tasks file for dotfiles
 
 - name: Make bat config directory
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config/bat"
     state: directory
     mode: 0755
 
 - name: Install bat config
-  copy:
+  ansible.builtin.copy:
     src: cli/.config/bat/config
     dest: "{{ ansible_user_dir }}/.config/bat/config"
     mode: 0644
 
 - name: Install dig config
-  copy:
+  ansible.builtin.copy:
     src: cli/.digrc
     dest: "{{ ansible_user_dir }}/.digrc"
     mode: 0644

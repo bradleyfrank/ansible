@@ -2,7 +2,7 @@
 # tasks file for dotfiles
 
 - name: Ensure fonts directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ font_dir }}"
     state: directory
     mode: 0700
@@ -11,7 +11,7 @@
     - fonts
 
 - name: Copy fonts
-  copy:
+  ansible.builtin.copy:
     src: fonts/
     dest: "{{ font_dir }}/"
     mode: 0644

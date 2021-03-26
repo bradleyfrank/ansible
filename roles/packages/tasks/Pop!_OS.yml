@@ -2,18 +2,18 @@
 # tasks file for packages
 
 - name: Install Pop!_OS repositories
-  import_role:
+  ansible.builtin.import_role:
     name: repositories
 
 - name: Clean cache
-  apt:
+  ansible.builtin.apt:
     update_cache: true
   become: true
   tags:
     - packages
 
 - name: Install Pop!_OS packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ base_packages | default([]) }}"
     state: present
     install_recommends: true

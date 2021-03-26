@@ -2,7 +2,7 @@
 # tasks file for repositories
 
 - name: Install gpg keys
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ item.key | default(omit) }}"
     keyring: "{{ item.keyring | default(omit) }}"
     id: "{{ item.id | default(omit) }}"
@@ -11,7 +11,7 @@
   become: true
 
 - name: Install repositories
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item.repo }}"
     filename: "{{ item.name }}"
   loop: "{{ repos }}"

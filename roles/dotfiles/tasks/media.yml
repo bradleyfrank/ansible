@@ -2,13 +2,13 @@
 # tasks file for dotfiles
 
 - name: Install MakeMKV configs
-  copy:
+  ansible.builtin.copy:
     src: media/.MakeMKV
     dest: "{{ ansible_user_dir }}/"
     mode: 0644
 
 - name: Install abcde config
-  copy:
+  ansible.builtin.copy:
     src: media/.abcde.conf
     dest: "{{ ansible_user_dir }}/"
     mode: 0644

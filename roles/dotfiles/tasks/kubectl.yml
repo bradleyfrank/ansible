@@ -2,11 +2,11 @@
 # tasks file for dotfiles
 
 - name: Check if kubectl is installed
-  command:
+  ansible.builtin.command:
     cmd: which kubectl
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
-  check_mode: no
+  check_mode: false
   register: which_kubectl
 
 - name: Install kubectl

@@ -2,7 +2,7 @@
 # tasks file for dotfiles
 
 - name: Create ~/Development folder structure
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/Development/{{ item }}"
     state: directory
     mode: 0755
@@ -11,7 +11,7 @@
     - dotfiles
 
 - name: Create ~/.local folder structure
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/{{ item }}"
     state: directory
     mode: 0755
@@ -20,7 +20,7 @@
     - dotfiles
 
 - name: Create ~/.config directory
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config"
     state: directory
     mode: 0755

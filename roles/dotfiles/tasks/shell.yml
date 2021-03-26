@@ -2,25 +2,25 @@
 # tasks file for dotfiles
 
 - name: Install Hyper config
-  copy:
+  ansible.builtin.copy:
     src: shell/.hyper.js
     dest: "{{ ansible_user_dir }}/.hyper.js"
     mode: 0644
 
 - name: Install tmux config
-  template:
+  ansible.builtin.template:
     src: tmux.conf.j2
     dest: "{{ ansible_user_dir }}/.tmux.conf"
     mode: 0644
 
 - name: Install dircolors config
-  copy:
+  ansible.builtin.copy:
     src: shell/.dir_colors
     dest: "{{ ansible_user_dir }}/.dir_colors"
     mode: 0644
 
 - name: Create ~/.local/share directories
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/share/{{ item }}"
     state: directory
     mode: 0755
@@ -29,13 +29,13 @@
     - gcloud
 
 - name: Install gcloud helpers
-  copy:
+  ansible.builtin.copy:
     src: shell/.local/share/gcloud/gcsh
     dest: "{{ ansible_user_dir }}/.local/share/gcloud/gcsh"
     mode: 0644
 
 - name: Install kubectl helpers
-  copy:
+  ansible.builtin.copy:
     src: shell/.local/share/k8s/fubectl
     dest: "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
     mode: 0644
@@ -44,7 +44,7 @@
 
 # Create dynamically in case of package update.
 - name: Generate kubectl completions
-  shell:
+  ansible.builtin.shell:
     cmd: "kubectl completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
@@ -53,14 +53,14 @@
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location
-  command:
+  ansible.builtin.command:
     cmd: python3 -m site --user-base
   register: python3_user_base
-  check_mode: no
+  check_mode: false
   when: "'Darwin' in ansible_system"
 
 - name: Build zshrc
-  template:
+  ansible.builtin.template:
     src: zshrc.j2
     dest: "{{ ansible_user_dir }}/.zshrc"
     mode: 0644

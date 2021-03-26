@@ -2,7 +2,7 @@
 # tasks file for system
 
 - name: Copy manual import app settings
-  copy:
+  ansible.builtin.copy:
     src: "conf/{{ ansible_system }}/"
     dest: "{{ ansible_user_dir }}"
     mode: 0755
@@ -12,7 +12,7 @@
 #
 
 - name: Make additional shells available
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/shells
     block: |
       /usr/local/bin/bash
@@ -29,7 +29,7 @@
     - shell
 
 - name: Fix permissions for zsh
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     mode: 0755
   loop:
@@ -49,7 +49,7 @@
     - shell
 
 - name: Install root dotfiles
-  copy:
+  ansible.builtin.copy:
     src: root/
     dest: /var/root/
     mode: 0644
@@ -62,35 +62,35 @@
 #
 
 - name: Disable prompting to use new exteral drives as Time Machine volume
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.TimeMachine
     key: DoNotOfferNewDisksForBackup
     type: bool
     value: 'true'
 
 - name: Sort conversations in Mail by most recent on top
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.mail
     key: ConversationViewSortDescending
     type: int
     value: '1'
 
 - name: Open new Terminal tabs in the default directory
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.Terminal
     key: NewTabWorkingDirectoryBehavior
     type: int
     value: '1'
 
 - name: Set TextEdit to use plain text mode as default
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.TextEdit
     key: RichText
     type: int
     value: '0'
 
 - name: Quit printer app after print jobs complete
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.print.PrintingPrefs
     key: "Quit When Finished"
     type: bool
@@ -101,21 +101,21 @@
 #
 
 - name: Show filename extensions by default
-  osx_defaults:
+  community.general.osx_defaults:
     domain: NSGlobalDomain
     key: AppleShowAllExtensions
     type: bool
     value: 'true'
 
 - name: Disable creation of .DS_Store files on network volumes
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.desktopservices
     key: DSDontWriteNetworkStores
     type: bool
     value: 'true'
 
 - name: Hide icons on the desktop
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: "{{ item }}"
     type: bool
@@ -128,7 +128,7 @@
     - CreateDesktop
 
 - name: Enable status bar and breadcrumbs in Finder
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: "{{ item }}"
     type: bool
@@ -138,7 +138,7 @@
     - ShowPathbar
 
 - name: Disable Finder warnings
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: "{{ item }}"
     type: bool
@@ -148,14 +148,14 @@
     - FXEnableExtensionChangeWarning
 
 - name: Set default Finder view to list
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: FXPreferredViewStyle
     type: string
     value: "Nlsv"
 
 - name: Set default Finder location to ~/Downloads
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: "{{ item.key }}"
     type: string
@@ -167,21 +167,21 @@
       value: "file://{{ ansible_user_dir }}/Downloads/"
 
 - name: Auto-hide the Dock
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: autohide
     type: bool
     value: 'true'
 
 - name: Disable icon bouncing in the Dock
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.finder
     key: no-bouncing
     type: bool
     value: 'true'
 
 - name: Set Dock size
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.dock
     key: tilesize
     type: int
@@ -190,20 +190,20 @@
 - name: Reset persistent apps in Dock
   vars:
     persistent_apps: []
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.dock
     key: persistent-apps
     type: array
     value: "{{ persistent_apps }}"
 
 - name: Save screenshots to ~/Downloads
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.screencapture
     key: location
     value: "{{ ansible_user_dir }}/Downloads"
 
 - name: Set expose hot corners
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.dock
     key: "{{ item.key }}"
     type: int
@@ -231,21 +231,21 @@
       value: '0'
 
 - name: Disable automatically rearranging Spaces
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.dock
     key: mru-spaces
     type: bool
     value: 'false'
 
 - name: Enable grouping windows by application
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.dock
     key: expose-group-apps
     type: bool
     value: 'true'
 
 - name: Set screensaver timeouts
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.screensaver
     key: "{{ item.key }}"
     type: int
@@ -263,7 +263,7 @@
 #
 
 - name: Configure bluetooth Apple trackpad
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
     key: "{{ item.key }}"
     type: int
@@ -287,7 +287,7 @@
       value: '2'  # perform look up
 
 - name: Configure builtin Apple trackpad
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.AppleMultitouchtrackpad
     key: "{{ item.key }}"
     type: int
@@ -311,21 +311,21 @@
       value: '2'  # perform look up
 
 - name: Enable tap-to-click on Apple mouse
-  osx_defaults:
+  community.general.osx_defaults:
     domain: NSGlobalDomain
     key: com.apple.mouse.tapBehavior
     type: int
     value: '1'
 
 - name: Set global two finger horizontal swipe between pages
-  osx_defaults:
+  community.general.osx_defaults:
     domain: NSGlobalDomain
     key: AppleEnableSwipeNavigateWithScrolls
     type: bool
     value: 'true'
 
 - name: Set very low key repeat rates
-  osx_defaults:
+  community.general.osx_defaults:
     domain: NSGlobalDomain
     key: "{{ item.key }}"
     type: int
@@ -341,34 +341,34 @@
 #
 
 - name: Check for software updates daily
-  osx_defaults:
+  community.general.osx_defaults:
     domain: com.apple.SoftwareUpdate
     key: ScheduleFrequency
     type: int
     value: '1'
 
 - name: Enable firewall
-  command:
+  ansible.builtin.command:
     cmd: '/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on'
   become: true
 
 - name: Put display to sleep after 15 minutes
-  command:
+  ansible.builtin.command:
     cmd: 'pmset displaysleep 15'
   become: true
 
 - name: Put computer to sleep after 30 minutes
-  command:
+  ansible.builtin.command:
     cmd: 'pmset sleep 30'
   become: true
 
 - name: Disable Gatekeeper
-  command:
+  ansible.builtin.command:
     cmd: 'spctl --master-disable'
   become: true
 
 - name: Use Touch ID for sudo
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/pam.d/sudo
     insertafter: '^# sudo:'
     firstmatch: true
@@ -381,25 +381,25 @@
 #
 
 - name: Enable locate database
-  command:
+  ansible.builtin.command:
     cmd: 'launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist'
   become: true
 
 - name: Unhide ~/Library directory (part 1 of 2)
-  command:
+  ansible.builtin.command:
     cmd: "chflags nohidden {{ ansible_user_dir }}/Library"
 
 - name: Unhide ~/Library directory (part 2 of 2)
-  command:
+  ansible.builtin.command:
     cmd: "xattr -d com.apple.FinderInfo {{ ansible_user_dir }}/Library"
 
 - name: Unhide /Volumes directory
-  command:
+  ansible.builtin.command:
     cmd: 'chflags nohidden /Volumes'
   become: true
 
 - name: Expand save and print panel by default
-  osx_defaults:
+  community.general.osx_defaults:
     domain: NSGlobalDomain
     key: "{{ item }}"
     type: bool
@@ -415,6 +415,6 @@
 #
 
 - name: Restart dock to apply changes
-  command:
+  ansible.builtin.command:
     cmd: 'killall Dock'
   become: true

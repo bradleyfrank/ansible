@@ -2,19 +2,19 @@
 # tasks file for dotfiles
 
 - name: Install vimrc
-  copy:
+  ansible.builtin.copy:
     src: vim/.vimrc
     dest: "{{ ansible_user_dir }}/"
     mode: 0755
 
 - name: Create vim extensions directory path
-  file:
+  ansible.builtin.file:
     path: "{{ vim_extensions_dest }}"
     state: directory
     mode: 0755
 
 - name: Install vim extensions
-  git:
+  ansible.builtin.git:
     repo: "{{ item.repo }}"
     dest: "{{ vim_extensions_dest }}/{{ item.name }}"
     depth: '1'

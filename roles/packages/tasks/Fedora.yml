@@ -2,11 +2,11 @@
 # tasks file for packages
 
 - name: Install Fedora repositories
-  import_role:
+  ansible.builtin.import_role:
     name: repositories
 
 - name: Install Fedora packages
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ base_packages | default([]) }}"
     state: present
     update_cache: true

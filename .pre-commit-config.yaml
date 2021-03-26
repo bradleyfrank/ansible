@@ -1,32 +1,19 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
--   repo: https://github.com/shellcheck-py/shellcheck-py
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+  - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.7.1.1
     hooks:
-    -   id: shellcheck
--   repo: https://github.com/ansible-community/ansible-lint.git
-    rev: v4.3.7
+      - id: shellcheck
+  - repo: https://github.com/ansible-community/ansible-lint.git
+    rev: v5.0.2
     hooks:
-    -   id: ansible-lint
-        name: Ansible-lint
-        description: This hook runs ansible-lint.
-        entry: ansible-lint --force-color
-        language: python
-        # do not pass files to ansible-lint, see:
-        # https://github.com/ansible-community/ansible-lint/issues/611
-        pass_filenames: false
-        always_run: true
-        additional_dependencies:
-            # https://github.com/pre-commit/pre-commit/issues/1526
-            # if you want to use only the base ansible version for linting,
-            # replace 'community' extra with 'core' or just mention the exact
-            # version of Ansible you want to install as a dependency.
-            - .[community,yamllint]
+      - id: ansible-lint
+        files: \.(yaml|yml)$

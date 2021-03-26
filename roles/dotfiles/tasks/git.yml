@@ -2,13 +2,13 @@
 # tasks file for dotfiles
 
 - name: Install global gitignore
-  copy:
+  ansible.builtin.copy:
     src: git/.gitignore
     dest: "{{ ansible_user_dir }}/.gitignore"
     mode: 0644
 
 - name: Install gitconfig
-  template:
+  ansible.builtin.template:
     src: gitconfig.j2
     dest: "{{ ansible_user_dir }}/.gitconfig"
     mode: 0755
