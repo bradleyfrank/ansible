@@ -1,27 +1,16 @@
 ---
 # tasks file for dotfiles
 
-- name: Check if kubectl is installed
-  ansible.builtin.command:
-    cmd: which kubectl
-  environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
-  check_mode: false
-  register: which_kubectl
+- name: Find latest kubectl release
+  get_url:
+    url: https://dl.k8s.io/release/stable.txt
+    dest: "/tmp/stable.txt"
 
 - name: Install kubectl
-  block:
-    - name: Find latest kubectl release
-      get_url:
-        url: https://dl.k8s.io/release/stable.txt
-        dest: "/tmp/stable.txt"
-
-    - name: Install kubectl
-      vars:
-        system: "{{ ansible_system | lower }}"
-        release: "{{ lookup('file', '/tmp/stable.txt') }}"
-      get_url:
-        url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
-        dest: "{{ ansible_user_dir }}/.local/bin/"
-        mode: 0755
-  when: which_kubectl.rc == 1
+  vars:
+    system: "{{ ansible_system | lower }}"
+    release: "{{ lookup('file', '/tmp/stable.txt') }}"
+  get_url:
+    url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
+    dest: "{{ ansible_user_dir }}/.local/bin/"
+    mode: 0755
