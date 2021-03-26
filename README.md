@@ -10,8 +10,8 @@ The `run.sh` script updates the OS and installs Ansible and its dependencies bef
 
 ```none
 Usage: [-b | -d] [-g git_branch] [-h]
-    -b  Run the bootstrap playbook.
-    -d  Run the dotfiles playbook (default).
+    -b  Run the bootstrap playbook. (default)
+    -d  Run the dotfiles playbook.
     -g  Specify the Ansible repo git branch to run (default: 'main').
     -h  Print this help menu and quit.
 

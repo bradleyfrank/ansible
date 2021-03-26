@@ -15,7 +15,7 @@ esac
 
 ANSIBLE_REPO[url]="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO[branch]="main"
-ANSIBLE_REPO[playbook]="dotfiles"
+ANSIBLE_REPO[playbook]="bootstrap"
 ANSIBLE_REPO[localhost_yml]="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
 
 
@@ -30,8 +30,8 @@ function cleanup() {
 
 function usage() {
     echo "Usage: [-b | -d] [-g git_branch] [-h]"
-    echo "  -b  Run the bootstrap playbook."
-    echo "  -d  Run the dotfiles playbook (default)."
+    echo "  -b  Run the bootstrap playbook. (default)"
+    echo "  -d  Run the dotfiles playbook."
     echo "  -g  Specify the Ansible repo git branch to run (default: 'main')."
     echo "  -h  Print this help menu and quit."
     echo
