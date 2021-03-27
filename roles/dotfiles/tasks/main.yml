@@ -40,7 +40,6 @@
 
 - name: Install kubectl
   ansible.builtin.import_tasks: tasks/kubectl.yml
-  when: install_kubectl
   tags:
     - dotfiles
     - kubectl

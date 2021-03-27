@@ -2,8 +2,6 @@
 
 - name: Bootstrap
   hosts: localhost
-  vars:
-    install_kubectl: false
   roles:
     - packages
     - dotfiles
