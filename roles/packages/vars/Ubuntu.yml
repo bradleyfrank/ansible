@@ -75,7 +75,6 @@ base_packages:
   - shellcheck
   - signal-desktop
   - solaar
-  - spotify-client
   - ssh
   - stow
   - strace

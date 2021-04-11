@@ -10,7 +10,6 @@ python_packages:
   - pre-commit
   - pycodestyle
   - pydf
-  - pyflakes
   - pylint
   - virtualenv
   - wily
