@@ -2,7 +2,7 @@
 # tasks file for repositories
 
 - name: Include repo vars
-  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
+  include_vars: "{{ ansible_distribution }}.yml"
 
 - name: Install repos
   include_tasks: "{{ ansible_distribution }}.yml"

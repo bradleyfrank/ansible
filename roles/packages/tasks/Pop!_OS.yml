@@ -2,7 +2,7 @@
 # tasks file for packages
 
 - name: Install Pop!_OS repositories
-  ansible.builtin.import_role:
+  import_role:
     name: repositories
 
 - name: Clean cache

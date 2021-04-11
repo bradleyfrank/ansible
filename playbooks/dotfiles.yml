@@ -1,6 +1,8 @@
 ---
 
-- name: Dotfiles
+- name: Apply dotfiles to localhost
   hosts: localhost
-  roles:
-    - dotfiles
+  tasks:
+    - name: Apply dotfiles
+      import_role:
+        name: dotfiles

@@ -2,7 +2,7 @@
 # tasks file for packages
 
 - name: Install Fedora repositories
-  ansible.builtin.import_role:
+  import_role:
     name: repositories
 
 - name: Install Fedora packages

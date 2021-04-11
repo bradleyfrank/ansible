@@ -2,7 +2,7 @@
 # tasks file for dotfiles
 
 - name: Find latest kubectl release
-  get_url:
+  ansible.builtin.get_url:
     url: https://dl.k8s.io/release/stable.txt
     dest: "/tmp/stable.txt"
 
@@ -10,7 +10,7 @@
   vars:
     system: "{{ ansible_system | lower }}"
     release: "{{ lookup('file', '/tmp/stable.txt') }}"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
     dest: "{{ ansible_user_dir }}/.local/bin/"
     mode: 0755

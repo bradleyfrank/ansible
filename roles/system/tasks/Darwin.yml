@@ -21,7 +21,7 @@
   become: true
 
 - name: Make zsh default for user
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_env.USER }}"
     shell: "/usr/local/bin/zsh"
   become: true
@@ -40,7 +40,7 @@
     - shell
 
 - name: Make bash default for root
-  user:
+  ansible.builtin.user:
     name: root
     shell: "/usr/local/bin/bash"
   become: true

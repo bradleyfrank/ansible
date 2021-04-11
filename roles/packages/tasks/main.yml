@@ -2,7 +2,7 @@
 # tasks file for packages
 
 - name: Load OS packages lists
-  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
+  include_vars: "{{ ansible_distribution }}.yml"
   tags:
     - packages
 
@@ -14,8 +14,7 @@
 - name: Install VSCode extensions
   vars:
     vscode: "'/usr/bin/code' if {{ ansible_system }} == 'Linux' else '/usr/local/bin/code'"
-  ansible.builtin.command:
-    cmd: "{{ vscode }} --install-extension {{ item }}"
+  ansible.builtin.command: "{{ vscode }} --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
   tags:
     - packages

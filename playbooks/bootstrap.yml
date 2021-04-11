@@ -1,8 +1,16 @@
 ---
 
-- name: Bootstrap
+- name: Bootstrap localhost system
   hosts: localhost
-  roles:
-    - packages
-    - dotfiles
-    - system
+  tasks:
+    - name: Install system packages
+      import_role:
+        name: packages
+
+    - name: Apply dotfiles
+      import_role:
+        name: dotfiles
+
+    - name: Configure system settings
+      import_role:
+        name: system

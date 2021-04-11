@@ -2,12 +2,12 @@
 # tasks file for dotfiles
 
 - name: Load per-OS variables
-  ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+  include_vars: "{{ ansible_system }}.yml"
   tags:
     - dotfiles
 
 - name: Create homedir structure
-  ansible.builtin.import_tasks: tasks/homedir.yml
+  import_tasks: tasks/homedir.yml
   tags:
     - dotfiles
     - homedir
@@ -39,43 +39,43 @@
     mode: 0755
 
 - name: Install kubectl
-  ansible.builtin.import_tasks: tasks/kubectl.yml
+  import_tasks: tasks/kubectl.yml
   tags:
     - dotfiles
     - kubectl
 
 - name: Install fonts
-  ansible.builtin.import_tasks: tasks/fonts.yml
+  import_tasks: tasks/fonts.yml
   tags:
     - dotfiles
     - fonts
 
 - name: Install cli utility configs
-  ansible.builtin.import_tasks: tasks/cli.yml
+  import_tasks: tasks/cli.yml
   tags:
     - dotfiles
     - utilities
 
 - name: Setup git
-  ansible.builtin.import_tasks: tasks/git.yml
+  import_tasks: tasks/git.yml
   tags:
     - dotfiles
     - git
 
 - name: Setup ssh
-  ansible.builtin.import_tasks: tasks/ssh.yml
+  import_tasks: tasks/ssh.yml
   tags:
     - dotfiles
     - ssh
 
 - name: Setup Vim
-  ansible.builtin.import_tasks: tasks/vim.yml
+  import_tasks: tasks/vim.yml
   tags:
     - dotfiles
     - vim
 
 - name: Configure Zsh
-  ansible.builtin.import_tasks: tasks/shell.yml
+  import_tasks: tasks/shell.yml
   tags:
     - dotfiles
     - shell

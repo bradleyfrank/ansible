@@ -2,7 +2,7 @@
 # tasks file for packages
 
 - name: Install Ubuntu repositories
-  ansible.builtin.import_role:
+  import_role:
     name: repositories
 
 - name: Clean cache
