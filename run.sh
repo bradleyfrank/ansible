@@ -88,7 +88,7 @@ function bootstrap_macos() {
   local homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
   softwareupdate --install --all
   [[ ! -x /usr/local/bin/brew ]] && CI=1 /bin/bash -c "$(curl -fsSL "$homebrew_url")"
-  brew install ansible git
+  brew install python3 git
 }
 
 function bootstrap_linux() {
@@ -97,24 +97,22 @@ function bootstrap_linux() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
-      sudo dnf install -y ansible git
+      sudo dnf install -y python3 python3-pip git
       ;;
     ubuntu|pop)
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
-      sudo apt-get install -y ansible git
+      sudo apt-get install -y python3 python3-pip git
       ;;
     *) not_supported ;;
   esac
 }
 
 function pre_ansible_run() {
-  if ! type ansible &> /dev/null; then
-    python3 -m pip install --user ansible || return 1
-    PATH="$PATH:$(python3 -m site --user-base)/bin"
-    export PATH
-  fi
+  python3 -m pip install --user ansible || return 1
+  PATH="$PATH:$(python3 -m site --user-base)/bin"
+  export PATH
 
   git clone "${ANSIBLE_REPO[url]}" "$CHECKOUT_DIR" || return 1
   pushd "$CHECKOUT_DIR" &> /dev/null || return 1
