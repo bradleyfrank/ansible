@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+[[ -z $1 ]] && exit 1
+
+repo=$1
+branch=${2:-$(keepassxc-cli diceware --words 2 | tr " " "-")}
+
+[[ ! -d ~/Development/Projects/$repo ]] && exit 1
+
+tmux new-window -n "$branch"
+tmux send-keys -t "$branch" " \
+  cd ~/Development/Projects/$repo && \
+  git pull && \
+  git worktree add --checkout -b $branch .worktree/$branch && \
+  cd ./.worktree/$branch && \
+  clear \
+  " C-m
