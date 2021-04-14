@@ -2,13 +2,15 @@
 
 [[ -z $1 ]] && exit 1
 
+[[ $1 =~ (-*)?h(elp)?$ ]] && { echo "branch <repo> <branch name>" ; exit 0 ; }
+
 repo=$1
 branch=${2:-$(keepassxc-cli diceware --words 2 | tr " " "-")}
 
 [[ ! -d ~/Development/Projects/$repo ]] && exit 1
 
 tmux new-window -n "$branch"
-tmux send-keys -t "$branch" " \
+tmux send-keys -t "$(tmux list-windows | tail -n 1 | cut -d: -f1)" " \
   cd ~/Development/Projects/$repo && \
   git pull && \
   git worktree add --checkout -b $branch .worktree/$branch && \
