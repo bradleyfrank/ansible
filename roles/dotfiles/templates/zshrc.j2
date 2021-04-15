@@ -263,6 +263,13 @@ function precmd() {
     _PYENV=""
   fi
 
+  # -- git segment -- #
+  if toplevel="$(git rev-parse --show-toplevel 2> /dev/null)"; then
+    _GIT="${green} ⇄ ${toplevel##*/}/${nocolor}"
+  else
+    _GIT=""
+  fi
+
   # -- prompt segment -- #
   case "$rc" in
     0) _PROMPT="${green}%#${nocolor} "   ;;
@@ -270,7 +277,7 @@ function precmd() {
     *) _PROMPT="${magenta}%#${nocolor} " ;;
   esac
 
-  __git_ps1 "${eol}${bold}${_CWD}${_KUBECTL}" "${_PYENV}${eol}${_PROMPT}${nobold}" " ⇄ %s"
+  __git_ps1 "${eol}${bold}${_CWD}${_KUBECTL}${_GIT}" "${_PYENV}${eol}${_PROMPT}${nobold}" "%s"
 }
 
 
