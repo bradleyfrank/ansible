@@ -264,8 +264,10 @@ function precmd() {
   fi
 
   # -- git segment -- #
-  if toplevel="$(git rev-parse --show-toplevel 2> /dev/null)"; then
-    _GIT="${green} ⇄ ${toplevel##*/}/${nocolor}"
+  if toplevel="$(git rev-parse --git-common-dir 2> /dev/null)"; then
+    toplevel="$(basename $(dirname $toplevel))"
+    if [[ "$toplevel" == "." ]]; then _GIT="$(basename $PWD)"; else _GIT="$toplevel"; fi
+    _GIT="${green} ⇄ ${_GIT}/${nocolor}"
   else
     _GIT=""
   fi
