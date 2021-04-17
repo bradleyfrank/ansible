@@ -6,6 +6,7 @@ ssh_keys:
   - id_home
   - id_develop
   - google_compute_engine
+  - ansible
 
 kubectl_url: https://storage.googleapis.com/kubernetes-release/release
 
