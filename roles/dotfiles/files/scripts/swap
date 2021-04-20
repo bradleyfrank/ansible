@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+#
+# Swaps symlinks to different versions of Terraform and Helm binaries.
+# Author: Brad Frank
+# Date: Feb 2021
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+# Requires: terraform, helm
+#
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 RESET='\033[0m'

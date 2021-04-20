@@ -68,7 +68,6 @@ eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 eval "$(dircolors ~/.dir_colors)"
 
 
-alias bw='bitwise --no-color'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dc='docker-compose'
@@ -92,7 +91,6 @@ alias mp='multipass'
 alias pipi='python3 -m pip install --user'
 alias pipu='pip_upgrade_outdated -3 --user --verbose'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
-alias pyve='venv && ave'
 alias rcp='rsync -a --info=progress2'
 alias readme='macdown README*'
 alias show='whence -f'
@@ -119,10 +117,6 @@ alias bat='batcat'
 alias infrasetup='./install.sh env && ./install.sh && source ./ve/bin/activate && ./install.sh deploy-local'
 {% endif %}
 
-
-function ave() {
-  source "$(dirname $(find . -maxdepth 2 -type f -name pyvenv.cfg))"/bin/activate
-}
 
 function blackdiff() {
   black --line-length 100 --diff "$@" | diff-so-fancy
@@ -187,10 +181,37 @@ function mux() {
   fi
 }
 
+function pyenv() {
+  local pyname pyver=3.8 pyfunc
+
+  while getopts ':acdhn:v:' flag; do
+      case "${flag}" in
+          a) pyfunc=activate ;;
+          c) pyfunc=create ;;
+          d) deactivate ; return $? ;
+          h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
+          n) pyname=$OPTARG ;;
+          v) pyver=$OPTARG ;;
+          *) echo "Invalid argument." >&2 ; return 1 ;;
+      esac
+  done
+
+  if [[ $pyfunc == "" ]]; then
+    [[ -z $pyname ]] && pyname=ve
+    virtualenv -p "$pyver" "$pyname"
+    source "${pyname-ve}"/bin/activate
+  elif [[ $pyfunc == "create" ]]; then
+    [[ -z $pyname ]] && pyname=ve
+    virtualenv -p "$pyver" "$pyname"
+  elif [[ $pyfunc == "activate" ]]; then
+    [[ -z $pyname ]] && pyname=$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")
+    source "$pyname"/bin/activate
+  fi
+}
+
 function pylinter() {
   blackdiff "$@"
   pylint "$@"
-  pycodestyle "$@"
 }
 
 function steep() {
@@ -200,10 +221,6 @@ function steep() {
 
 function tardir() {
   tar -czf "${1%/}".tar.gz "$1"
-}
-
-function venv() {
-  virtualenv -p ${1-3.8} ve
 }
 
 function worktree() {
@@ -269,7 +286,7 @@ function precmd() {
 
   # -- virtualenv segment -- #
   if [[ -n "$VIRTUAL_ENV" ]]; then
-    _PYENV="${cyan} ೭ $(python --version) ($(basename "$VIRTUAL_ENV"))${nocolor}"
+    _PYENV="${cyan} ೭ $(python --version | grep -Eo '([0-9]+.?)+') ($(basename "$VIRTUAL_ENV"))${nocolor}"
   else
     _PYENV=""
   fi
