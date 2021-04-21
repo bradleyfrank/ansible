@@ -1,16 +1,32 @@
 #!/usr/bin/env bash
 
-[[ -z $1 ]] && exit 1
+repo=infractl
+branch="$(id -un).$(date +%F_%T | tr -d ':-' | tr '_' '-')"
+open=window
 
-[[ $1 =~ (-*)?h(elp)?$ ]] && { echo "branch <repo> <branch name>" ; exit 0 ; }
-
-repo=$1
-branch=${2:-$(keepassxc-cli diceware --words 2 | tr " " "-")}
+while getopts ':hr:n:wp' flag; do
+    case "${flag}" in
+        h) echo "Usage: branch [-r <repo>] [-n <branch_name>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
+        p) open=pane ; split=${OPTARG-h} ;;
+        r) repo=$OPTARG ;;
+        n) branch=$OPTARG ;;
+        w) open=window ;;
+        *) echo "Invalid argument." >&2 ; exit 1 ;;
+    esac
+done
 
 [[ ! -d ~/Development/Projects/$repo ]] && exit 1
 
-tmux new-window -n "$branch"
-tmux send-keys -t "$(tmux list-windows | tail -n 1 | cut -d: -f1)" " \
+case $open in
+  window) target="$(tmux new-window -n "$branch" -P)" ;;
+  pane)   case $split in
+            v) target="$(tmux split-window -v -P)" ;;
+            h) target="$(tmux split-window -h -P)" ;;
+          esac
+          ;;
+esac
+
+tmux send-keys -t "$target" " \
   cd ~/Development/Projects/$repo && \
   git pull && \
   git worktree add --checkout -b $branch .worktree/$branch && \
