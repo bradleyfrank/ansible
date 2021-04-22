@@ -260,6 +260,16 @@ function gedit() {
   nohup /usr/bin/gedit "$@" &> /dev/null &
 }
 {% endif %}
+{% if 'remmac06432' in ansible_hostname %}
+function infrabootstrap() {
+  pyenv -n ve -v 3.8
+  printf "KUBECONFIG=%s/.kube/config\nINFRACTL_HOME=%s\n" \
+          "$HOME" "$(git rev-parse --show-toplevel)" > .env
+  sed -e 's|export ||g' -e 's| |\n|g' < "$HOME"/.infractl/secrets >> .env
+  python3 -m pip install -r requirements.txt
+  python3 setup.py install
+}
+{% endif %}
 
 function precmd() {
   local rc=$?
