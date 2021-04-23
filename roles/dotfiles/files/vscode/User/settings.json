@@ -57,6 +57,7 @@
     "workbench.editor.decorations.colors": true,
     "workbench.editor.wrapTabs": true,
     "workbench.list.openMode": "doubleClick",
+    "workbench.panel.defaultLocation": "right",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": true,
     "workbench.tree.renderIndentGuides": "onHover"
