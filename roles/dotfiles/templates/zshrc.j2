@@ -74,7 +74,6 @@ alias dc='docker-compose'
 alias df='df -h'
 alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
-alias free='free -g'
 alias glances='glances --theme-white'
 alias glow='glow -s light'
 alias grep='grep -I'
@@ -102,6 +101,7 @@ alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inlin
 {% if 'Darwin' in ansible_system %}
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 {% elif 'Linux' in ansible_system %}
+alias free='free -g'
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
