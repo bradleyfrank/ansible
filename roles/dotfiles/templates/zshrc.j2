@@ -234,6 +234,10 @@ function pylinter() {
   pylint "$@"
 }
 
+function sshf() {
+  ssh $(grep -Er '^Host' ~/.ssh/config | cut -d' ' -f2 | grep -v '*' | sort -u | _inline_fzf_nh)
+}
+
 function steep() {
   if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
   brew update ; brew upgrade ; brew cleanup ; brew doctor
