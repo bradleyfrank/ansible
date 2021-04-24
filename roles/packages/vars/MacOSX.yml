@@ -9,7 +9,6 @@ taps:
   - homebrew/core
 
 packages:
-  - ansible-lint
   - asciinema
   - awscli
   - bash
@@ -48,10 +47,13 @@ packages:
   - less
   - markdown
   - mas
+  - microsoft-auto-update
+  - microsoft-office
   - mtr
   - ncdu
   - neofetch
   - nmap
+  - parallels
   - p7zip
   - par
   - prettyping
@@ -122,12 +124,7 @@ apps:
   - 409201541  # Pages
   - 409203825  # Numbers
   - 425424353  # The Unarchiver
-  - 462054704  # Microsoft Word
-  - 462058435  # Microsoft Excel
-  - 568494494  # Pocket
-  - 784801555  # Microsoft OneNote
   - 924726344  # Deliveries
-  - 985367838  # Microsoft Outlook
   - 1179623856  # Pastebot
   - 1289378661  # Twitterific
   - 1320666476  # Wipr
