@@ -68,6 +68,8 @@ eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 eval "$(dircolors ~/.dir_colors)"
 
 
+alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
+alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dc='docker-compose'
@@ -81,27 +83,30 @@ alias gcommon='cd $(git rev-parse --git-common-dir)'
 alias gtop='cd "$(git rev-parse --show-toplevel)"'
 alias gbd='git-branch-delete'
 alias gwt='git-worktree'
+alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias http='curl -s -L -D -'
 alias isodate='date --iso-8601=seconds'
 alias l1='ls -1 --color --classify --human-readable'
 alias la='ls -l --all --color --classify --human-readable'
 alias lg='ls -g --no-group --color --classify --human-readable'
 alias ll='ls -l --color --classify --human-readable'
-alias lsmnt='mount | column -t'
 alias lt='ls -1S --almost-all --color --classify --human-readable --group-directories-first --size'
+alias lolo='echo {{ docker_images | join(' ') }} | xargs -P10 -n1 docker pull'
+alias lsmnt='mount | column -t'
 alias mp='multipass'
-alias pipi='python3 -m pip install --user'
-alias pipu='pip_upgrade_outdated -3 --user --verbose'
+alias pipi='pip3.9 install --user'
+alias pipr='pip3.9 uninstall'
+alias pipu='pip3.9 list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs pip3.9 install --user --upgrade'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias rcp='rsync -a --info=progress2'
 alias readme='macdown README*'
+alias scp='rsync -va'
 alias show='whence -f'
 alias tf='terraform'
 alias vs='code .'
-alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
-alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
 {% if 'Darwin' in ansible_system %}
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
+alias osupdate='sudo softwareupdate -ia'
 {% elif 'Linux' in ansible_system %}
 alias free='free -g'
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
@@ -112,8 +117,10 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 alias lsports='lsof -i -P -n'
 {% endif %}
 {% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
-alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 alias bat='batcat'
+{% elif 'Fedora' in ansible_distribution %}
+alias osupdate='sudo dnf makecache && sudo dnf upgrade -y'
 {% endif %}
 {% if 'remmac06432' in ansible_hostname %}
 alias infrasetup='./install.sh env && ./install.sh && source ./ve/bin/activate && ./install.sh deploy-local'
