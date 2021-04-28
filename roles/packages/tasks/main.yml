@@ -27,3 +27,12 @@
   tags:
     - packages
     - python
+
+- name: Pull Docker images
+  community.docker.docker_image:
+    name: "{{ item }}"
+    source: pull
+  loop: "{{ docker_images }}"
+  tags:
+    - packages
+    - docker
