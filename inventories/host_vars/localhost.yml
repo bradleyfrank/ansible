@@ -76,4 +76,5 @@ vscode_extensions:
   - zaaack.markdown-editor
 
 docker_images:
+  - archivebox/archivebox
   - ghcr.io/hadolint/hadolint
