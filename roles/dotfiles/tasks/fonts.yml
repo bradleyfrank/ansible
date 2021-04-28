@@ -3,7 +3,7 @@
 
 - name: Ensure fonts directory exists
   ansible.builtin.file:
-    path: "{{ font_dir }}"
+    path: "{{ font_dir[ansible_system] }}"
     state: directory
     mode: 0700
   tags:
@@ -13,7 +13,7 @@
 - name: Copy fonts
   ansible.builtin.copy:
     src: fonts/
-    dest: "{{ font_dir }}/"
+    dest: "{{ font_dir[ansible_system] }}/"
     mode: 0644
   tags:
     - dotfiles

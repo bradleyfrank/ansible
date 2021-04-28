@@ -1,0 +1,79 @@
+---
+
+font_dir:
+  Linux: "{{ ansible_user_dir }}/.local/share/fonts"
+  Darwin: "{{ ansible_user_dir }}/Library/Fonts"
+
+vscode_config:
+  Linux: "{{ ansible_user_dir }}/.config/Code"
+  Darwin: "{{ ansible_user_dir }}/Library/Application Support/Code"
+
+ssh_keys:
+  - id_rsa
+  - id_home
+  - id_develop
+  - google_compute_engine
+  - ansible
+
+vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
+
+vim_extensions:
+  - name: vim-airline
+    repo: https://github.com/vim-airline/vim-airline.git
+    version: v0.11
+  - name: vim-airline-themes
+    repo: https://github.com/vim-airline/vim-airline-themes.git
+  - name: vim-gitgutter
+    repo: https://github.com/airblade/vim-gitgutter.git
+  - name: nerdtree
+    repo: https://github.com/preservim/nerdtree.git
+
+git_reference_repos_dest: "{{ ansible_user_dir }}/Development/Reference"
+
+git_reference_repos:
+  - name: gcp-posters
+    repo: https://github.com/gregsramblings/google-cloud-4-words.git
+  - name: pure-bash-bible
+    repo: https://github.com/dylanaraps/pure-bash-bible.git
+
+python_packages:
+  - ansible-lint
+  - beets
+  - black
+  - docker
+  - imgur_downloader
+  - pip-autoremove
+  - pre-commit
+  - pycodestyle
+  - pydf
+  - pylint
+  - virtualenv
+
+vscode_extensions:
+  - adpyke.codesnap
+  - bungcip.better-toml
+  - DavidAnson.vscode-markdownlint
+  - donjayamanne.githistory
+  - eamodio.gitlens
+  - haaaad.ansible
+  - mhutchie.git-graph
+  - mikestead.dotenv
+  - ms-azuretools.vscode-docker
+  - ms-kubernetes-tools.vscode-kubernetes-tools
+  - ms-python.python
+  - ms-vscode-remote.remote-containers
+  - ms-vscode-remote.remote-ssh
+  - ms-vscode-remote.remote-ssh-edit
+  - naumovs.color-highlight
+  - Remisa.shellman
+  - richie5um2.vscode-sort-json
+  - rogalmic.bash-debug
+  - samuelcolvin.jinjahtml
+  - shd101wyy.markdown-preview-enhanced
+  - timonwong.shellcheck
+  - Tyriar.sort-lines
+  - vortizhe.simple-ruby-erb
+  - zaaack.markdown-editor
+
+docker_images:
+  - ghcr.io/hadolint/hadolint

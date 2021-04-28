@@ -1,11 +1,6 @@
 ---
 # tasks file for dotfiles
 
-- name: Load per-OS variables
-  include_vars: "{{ ansible_system }}.yml"
-  tags:
-    - dotfiles
-
 - name: Create homedir structure
   import_tasks: tasks/homedir.yml
   tags:
@@ -35,7 +30,7 @@
 - name: Install VSCode configs
   ansible.builtin.copy:
     src: vscode/
-    dest: "{{ vscode_config }}"
+    dest: "{{ vscode_config[ansible_system] }}"
     mode: 0755
 
 - name: Install kubectl

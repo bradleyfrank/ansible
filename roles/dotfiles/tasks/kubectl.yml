@@ -8,9 +8,10 @@
 
 - name: Install kubectl
   vars:
+    url: https://storage.googleapis.com/kubernetes-release/release
     system: "{{ ansible_system | lower }}"
     release: "{{ lookup('file', '/tmp/stable.txt') }}"
   ansible.builtin.get_url:
-    url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
+    url: "{{ url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
     dest: "{{ ansible_user_dir }}/.local/bin/"
     mode: 0755
