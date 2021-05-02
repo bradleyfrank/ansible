@@ -22,6 +22,7 @@
   community.docker.docker_image:
     name: "{{ item }}"
     source: pull
+  become: true
   loop: "{{ docker_images }}"
   tags:
     - packages
