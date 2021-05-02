@@ -3,11 +3,14 @@
 - name: Bootstrap localhost system
   hosts: localhost
   tasks:
+    - name: Include common variables
+      ansible.builtin.include_vars: common.yml
+
     - name: Include system variables
-      ansible.builtin.include_vars: "system_{{ ansible_system }}"
+      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
 
     - name: Include Linux distribution variables
-      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}"
+      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
       when: ansible_system == 'Linux'
 
     - name: Configure Linux repositories
