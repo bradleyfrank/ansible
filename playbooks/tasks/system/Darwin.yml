@@ -1,0 +1,66 @@
+---
+
+- name: Make additional shells available
+  ansible.builtin.blockinfile:
+    path: /etc/shells
+    block: |
+      /usr/local/bin/bash
+      /usr/local/bin/zsh
+  become: true
+
+- name: Make zsh default for user
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: "/usr/local/bin/zsh"
+  become: true
+
+- name: Set macOS default settings
+  community.general.osx_defaults:
+    domain: "{{ item.domain }}"
+    key: "{{ item.key }}"
+    type: "{{ item.type }}"
+    value: "{{ item.value }}"
+  loop: "{{ defaults }}"
+
+- name: Enable firewall
+  ansible.builtin.command: /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+  become: true
+
+- name: Put display to sleep after 15 minutes
+  ansible.builtin.command: pmset displaysleep 15
+  become: true
+
+- name: Put computer to sleep after 30 minutes
+  ansible.builtin.command: pmset sleep 30
+  become: true
+
+- name: Disable Gatekeeper
+  ansible.builtin.command: spctl --master-disable
+  become: true
+
+- name: Use Touch ID for sudo
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/sudo
+    insertafter: '^# sudo:'
+    firstmatch: true
+    line: auth       sufficient     pam_tid.so
+    state: present
+  become: true
+
+- name: Enable locate database
+  ansible.builtin.command: launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
+  become: true
+
+- name: Unhide ~/Library directory (part 1 of 2)
+  ansible.builtin.command: "chflags nohidden {{ ansible_user_dir }}/Library"
+
+- name: Unhide ~/Library directory (part 2 of 2)
+  ansible.builtin.command: "xattr -d com.apple.FinderInfo {{ ansible_user_dir }}/Library"
+
+- name: Unhide /Volumes directory
+  ansible.builtin.command: chflags nohidden /Volumes
+  become: true
+
+- name: Restart dock to apply changes
+  ansible.builtin.command: killall Dock
+  become: true

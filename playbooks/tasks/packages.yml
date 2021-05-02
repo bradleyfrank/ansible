@@ -1,0 +1,28 @@
+---
+
+- name: Include OS-specific packages
+  ansible.builtin.include_tasks: "packages/{{ ansible_system }}.yml"
+
+- name: Install VSCode extensions
+  ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
+  loop: "{{ vscode_extensions }}"
+  tags:
+    - packages
+    - vscode
+
+- name: Install Python packages
+  ansible.builtin.pip:
+    name: "{{ python_packages }}"
+    extra_args: --user
+  tags:
+    - packages
+    - python
+
+- name: Pull Docker images
+  community.docker.docker_image:
+    name: "{{ item }}"
+    source: pull
+  loop: "{{ docker_images }}"
+  tags:
+    - packages
+    - docker

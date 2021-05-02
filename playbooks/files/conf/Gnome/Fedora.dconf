@@ -1,0 +1,6 @@
+[org/gnome/desktop/interface]
+gtk-theme='Yaru-light'
+icon-theme='Yaru'
+
+[org/gnome/shell]
+enabled-extensions=['system-monitor@paradoxxx.zero.gmail.com', 'GPaste@gnome-shell-extensions.gnome.org', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com']

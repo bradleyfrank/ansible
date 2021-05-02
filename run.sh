@@ -97,13 +97,13 @@ function bootstrap_linux() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
-      sudo dnf install -y python3 python3-pip git
+      sudo dnf install -y python3 python3-pip git redhat-lsb-core
       ;;
     ubuntu|pop)
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
-      sudo apt-get install -y python3 python3-pip git
+      sudo apt-get install -y python3 python3-pip git lsb-release
       ;;
     *) not_supported ;;
   esac

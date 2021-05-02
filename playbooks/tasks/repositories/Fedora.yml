@@ -1,0 +1,37 @@
+---
+
+- name: Install gpg keys
+  ansible.builtin.rpm_key:
+    key: "{{ item.gpgkey }}"
+  loop: "{{ repos }}"
+  become: true
+
+- name: Install repositories via RPMs
+  ansible.builtin.yum:
+    name: "{{ url }}/{{ rpm }}"
+    disable_gpg_check: true
+    state: present
+  loop: "{{ rpms }}"
+  become: true
+
+- name: Install repositories
+  ansible.builtin.yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl }}"
+    includepkgs: "{{ item.includepkgs | default('') }}"
+    gpgcheck: "{{ item.gpgcheck | default(true) }}"
+    gpgkey: "{{ item.gpgkey }}"
+    repo_gpgcheck: "{{ item.repo_gpgcheck | default(false) }}"
+    skip_if_unavailable: "{{ item.skip_if_unavailable | default(true) }}"
+  loop: "{{ repos }}"
+  become: true
+
+- name: Add flatpak repositories
+  community.general.flatpak_remote:
+    name: "{{ item.name }}"
+    state: present
+    flatpakrepo_url: "{{ item.url }}"
+    method: user
+  loop: "{{ flatpak_remotes }}"
+  when: ansible_distribution == 'Fedora'
