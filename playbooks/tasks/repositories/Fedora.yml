@@ -8,7 +8,7 @@
 
 - name: Install repositories via RPMs
   ansible.builtin.yum:
-    name: "{{ url }}/{{ rpm }}"
+    name: "{{ item.url }}/{{ item.rpm }}"
     disable_gpg_check: true
     state: present
   loop: "{{ rpms }}"
