@@ -38,6 +38,7 @@ repos:
     repo: >
       deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
       https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }}
+    key: https://download.docker.com/linux/ubuntu/gpg
 
 dist_packages:
   - apt-file
