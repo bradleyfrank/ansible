@@ -14,7 +14,7 @@
       when: ansible_system == 'Linux'
 
     - name: Configure Linux repositories
-      ansible.builtin.include_tasks: "repositories/{{ distro_vars[ansible_distribution] }}.yml"
+      ansible.builtin.include_tasks: "tasks/repositories/{{ distro_vars[ansible_distribution] }}.yml"
       when: ansible_system == 'Linux'
 
     - name: Install packages
