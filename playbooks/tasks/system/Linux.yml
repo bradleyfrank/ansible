@@ -1,9 +1,10 @@
 ---
 
-- name: Make zsh default for user
+- name: Set user shell to zsh and add to 'docker' group
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    shell: "/usr/bin/zsh"
+    groups: docker
+    shell: /usr/bin/zsh
   become: true
 
 - name: Import dconf settings

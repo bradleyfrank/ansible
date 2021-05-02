@@ -18,11 +18,18 @@
     - packages
     - python
 
+- name: Ensure Docker is running
+  ansible.builtin.systemd:
+    name: docker
+    daemon_reload: true
+    enabled: true
+    state: started
+  when: ansible_system == 'Linux'
+
 - name: Pull Docker images
   community.docker.docker_image:
     name: "{{ item }}"
     source: pull
-  become: true
   loop: "{{ docker_images }}"
   tags:
     - packages

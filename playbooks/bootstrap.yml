@@ -23,5 +23,5 @@
     - name: Configure system
       ansible.builtin.import_tasks: tasks/system.yml
 
-- name: Apply dotfiles
-  ansible.builtin.import_playbook: dotfiles.yml
+    - name: Install user dotfiles and configure home directory
+      ansible.builtin.import_tasks: tasks/dotfiles.yml
