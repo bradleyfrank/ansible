@@ -15,6 +15,7 @@
     state: present
     remote: "{{ item.remote | default(omit) }}"
   loop: "{{ flatpak_packages }}"
+  when: ansible_distribution == 'Fedora'
 
 - name: Install Ubuntu/Pop!_OS packages
   ansible.builtin.apt:
