@@ -26,15 +26,3 @@
     state: started
   become: true
   when: ansible_system == 'Linux'
-
-- name: Pull Docker images
-  environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
-  community.docker.docker_image:
-    name: "{{ item }}"
-    source: pull
-  become: true
-  loop: "{{ docker_images }}"
-  tags:
-    - packages
-    - docker

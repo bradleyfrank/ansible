@@ -9,7 +9,6 @@ python_packages:
   - ansible-lint
   - beets
   - black
-  - docker
   - pip-autoremove
   - pre-commit
   - pycodestyle
