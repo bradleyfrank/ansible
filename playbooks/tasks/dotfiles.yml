@@ -129,7 +129,4 @@
   ansible.builtin.file:
     path: "{{ item }}"
     mode: 0755
-  loop:
-    - /usr/local/share
-    - /usr/local/share/zsh
-    - /usr/local/share/zsh/site-functions
+  loop: "{{ zsh_directories }}"

@@ -136,6 +136,11 @@ bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 root_home: /var/root
 
+zsh_directories:
+  - /usr/local/share
+  - /usr/local/share/zsh
+  - /usr/local/share/zsh/site-functions
+
 defaults:
   - name: Disable prompting to use new exteral drives as Time Machine volume
     domain: com.apple.TimeMachine
