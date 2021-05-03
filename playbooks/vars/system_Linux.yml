@@ -5,6 +5,7 @@ system_packages:
   - abcde
   - asciinema
   - audacious
+  - bash-completion
   - bat
   - borgbackup
   - calibre
