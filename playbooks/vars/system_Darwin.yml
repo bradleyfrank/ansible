@@ -91,7 +91,6 @@ system_packages:
     - fantastical
     - firefox
     - font-clear-sans
-    - font-source-code-pro
     - hyper
     - iina
     - istat-menus

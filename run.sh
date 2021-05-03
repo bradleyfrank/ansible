@@ -47,7 +47,7 @@ create_tmp_sudoers() {
 
 create_vault_file() {
   vaultfile="$HOME/.ansible/vault"
-  [ -e "$vaultfile" ] && return 0
+  [ -s "$vaultfile" ] && return 0
   [ ! -d "$HOME/.ansible" ] && mkdir "$HOME/.ansible"
 
   vaultpw=$(
