@@ -46,8 +46,6 @@ system_packages:
     - less
     - markdown
     - mas
-    - microsoft-auto-update
-    - microsoft-office
     - mtr
     - ncdu
     - neofetch
@@ -100,6 +98,8 @@ system_packages:
     - logitech-options
     - macdown
     - menumeters
+    - microsoft-auto-update
+    - microsoft-office
     - multipass
     - musicbrainz-picard
     - plexamp
