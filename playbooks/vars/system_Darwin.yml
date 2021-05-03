@@ -50,7 +50,6 @@ system_packages:
     - ncdu
     - neofetch
     - nmap
-    - parallels
     - p7zip
     - par
     - prettyping
@@ -88,7 +87,6 @@ system_packages:
     - dozer
     - fantastical
     - firefox
-    - font-clear-sans
     - hyper
     - iina
     - istat-menus
@@ -102,6 +100,7 @@ system_packages:
     - microsoft-office
     - multipass
     - musicbrainz-picard
+    - parallels
     - plexamp
     - rectangle
     - signal
