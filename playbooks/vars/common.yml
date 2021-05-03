@@ -10,7 +10,6 @@ python_packages:
   - beets
   - black
   - docker
-  - imgur_downloader
   - pip-autoremove
   - pre-commit
   - pycodestyle
