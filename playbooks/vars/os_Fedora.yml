@@ -7,9 +7,9 @@ rpms:
   - name: rpmfusion-free
     url: "{{ rpmfusion_url }}/free/fedora"
     rpm: "rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-  - name: rpmfusion-non-free
-    url: "{{ rpmfusion_url }}/non-free/fedora"
-    rpm: "rpmfusion-non-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+  - name: rpmfusion-nonfree
+    url: "{{ rpmfusion_url }}/nonfree/fedora"
+    rpm: "rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
 
 flatpak_remotes:
   - name: flathub
