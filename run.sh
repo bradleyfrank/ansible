@@ -50,47 +50,20 @@ create_vault_file() {
   [ -e "$vaultfile" ] && return 0
   [ ! -d "$HOME/.ansible" ] && mkdir "$HOME/.ansible"
 
-  exec < /dev/tty
-  tty_settings=$(stty -g) # save current tty settings
-  trap 'stty "$tty_settings"' EXIT INT TERM
-  stty -echo || exit # disable terminal local echo
-  printf "Enter vault password: " > /dev/tty
-  IFS= read -r vaultpw; ret=$?
-  echo > /dev/tty # insert newlines for readability
+  vaultpw=$(
+    exec < /dev/tty
+    tty_settings=$(stty -g) # save current tty settings
+    trap 'stty "$tty_settings"' EXIT INT TERM
+    stty -echo || exit # disable terminal local echo
+    printf "Enter vault password: " > /dev/tty
+    IFS= read -r password; ret=$?
+    echo > /dev/tty # insert newlines for readability
+    printf "%s\n" "$password"
+    exit "$ret"
+  )
 
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
-  return "$ret"
-}
-
-read_password() {
-  REPLY="$(
-    # always read from the tty even when redirected:
-    exec < /dev/tty || exit # || exit only needed for bash
-
-    # save current tty settings:
-    tty_settings=$(stty -g) || exit
-
-    # schedule restore of the settings on exit of that subshell
-    # or on receiving SIGINT or SIGTERM:
-    trap 'stty "$tty_settings"' EXIT INT TERM
-
-    # disable terminal local echo
-    stty -echo || exit
-
-    # prompt on tty
-    printf "Password: " > /dev/tty
-
-    # read password as one line, record exit status
-    IFS= read -r password; ret=$?
-
-    # display a newline to visually acknowledge the entered password
-    echo > /dev/tty
-
-    # return the password for $REPLY
-    printf '%s\n' "$password"
-    exit "$ret"
-  )"
 }
 
 keep_awake() {
@@ -120,9 +93,11 @@ bootstrap_os() {
 }
 
 bootstrap_macos() {
-  softwareupdate --install --all
-  [ ! -x /usr/local/bin/brew ] && \
+  if [ ! -x /usr/local/bin/brew ]; then
     CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  else
+    softwareupdate --install --all
+  fi
   brew install python3 git
 }
 
