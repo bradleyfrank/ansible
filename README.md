@@ -12,25 +12,25 @@ The `run.sh` script updates the OS and installs Ansible and its dependencies bef
 Usage: [-b | -d] [-g git_branch] [-h]
     -b  Run the bootstrap playbook. (default)
     -d  Run the dotfiles playbook.
-    -g  Specify the Ansible repo git branch to run (default: 'main').
+    -g  Specify the git branch to run (default: 'main').
     -h  Print this help menu and quit.
 
 Skip Tags: [-mc]
-    -m  Do not install Mac App Store apps [on macOS systems]. (tag: mac_app_store)
+    -m  Do not install Mac App Store apps. (tag: mac_app_store)
     -c  Do not manage ssh config file. (tag: ssh_config)
 ```
 
-* For macOS ensure iCloud and the Mac App Store are authenticated to the appropriate account (allows `mas` to install apps; skip with `-m`)
+* For macOS: ensure iCloud and the Mac App Store are authenticated to the appropriate account (allows `mas` to install apps; skip with `-m`)
 * The script will prompt for the vault password and create `~/.ansible/vault` (decrypts `.ssh/config`; skip with `-c`)
 
 To start with `curl` (i.e. **macOS**):
 
 ```shell
-curl -O https://bradleyfrank.github.io/ansible/run.sh && bash run.sh <args>
+curl -O https://bradleyfrank.github.io/ansible/run.sh && sh run.sh <args>
 ```
 
 To start with `wget` (i.e. **Linux**):
 
 ```shell
-wget https://bradleyfrank.github.io/ansible/run.sh && bash run.sh <args>
+wget https://bradleyfrank.github.io/ansible/run.sh && sh run.sh <args>
 ```

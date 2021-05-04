@@ -3,14 +3,25 @@
 - name: Bootstrap localhost system
   hosts: localhost
   tasks:
-    - name: Install system packages
-      import_role:
-        name: packages
+    - name: Include common variables
+      ansible.builtin.include_vars: common.yml
 
-    - name: Apply dotfiles
-      import_role:
-        name: dotfiles
+    - name: Include system variables
+      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
 
-    - name: Configure system settings
-      import_role:
-        name: system
+    - name: Include Linux distribution variables
+      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
+      when: ansible_system == 'Linux'
+
+    - name: Configure Linux repositories
+      ansible.builtin.include_tasks: "tasks/repositories/{{ distro_vars[ansible_distribution] }}.yml"
+      when: ansible_system == 'Linux'
+
+    - name: Install packages
+      ansible.builtin.import_tasks: tasks/packages.yml
+
+    - name: Configure system
+      ansible.builtin.import_tasks: tasks/system.yml
+
+    - name: Install user dotfiles and configure home directory
+      ansible.builtin.import_tasks: tasks/dotfiles.yml

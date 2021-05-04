@@ -1,0 +1,34 @@
+---
+
+- name: Install Fedora packages
+  ansible.builtin.dnf:
+    name: "{{ system_packages + dist_packages }}"
+    state: present
+    update_cache: true
+    install_weak_deps: true
+  become: true
+  when: ansible_distribution == 'Fedora'
+
+- name: Install flatpaks
+  community.general.flatpak:
+    name: "{{ item.name }}"
+    state: present
+    remote: "{{ item.remote | default(omit) }}"
+    method: user
+  loop: "{{ flatpak_packages }}"
+  when: ansible_distribution == 'Fedora'
+
+- name: Install Ubuntu/Pop!_OS packages
+  ansible.builtin.apt:
+    name: "{{ system_packages + dist_packages }}"
+    state: present
+    install_recommends: true
+    update_cache: true
+  become: true
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Pop!_OS'
+
+- name: Install snaps
+  community.general.snap:
+    name: "{{ snap_packages }}"
+  become: true
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Pop!_OS'

@@ -1,0 +1,74 @@
+---
+
+repos:
+  - name: vscode
+    repo: >
+      deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg]
+      https://packages.microsoft.com/repos/vscode stable main
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+  - name: 1Password
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
+      https://onepassword.s3.amazonaws.com/linux/debian edge main
+    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+    keyring: /usr/share/keyrings/1password.gpg
+  - name: google-chrome
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    key: https://dl.google.com/linux/linux_signing_key.pub
+  - name: foliate
+    repo: ppa:apandada1/foliate
+    keyserver: keyserver.ubuntu.com
+    id: 95ACDEBD8BFF99ABE0F26A49A507B2BBA7803E3B
+  - name: nextcloud
+    repo: ppa:nextcloud-devs/client
+    keyserver: keyserver.ubuntu.com
+    id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
+  - name: makemkv
+    repo: ppa:heyarje/makemkv-beta
+    keyserver: keyserver.ubuntu.com
+    id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+  - name: gh-cli
+    repo: deb https://cli.github.com/packages groovy main
+    key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+  - name: kubernetes
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  - name: docker
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+      https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
+    key: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+
+dist_packages:
+  - apt-file
+  - apt-transport-https  # docker
+  - ca-certificates  # docker
+  - fonts-noto-color-emoji
+  - gedit-plugin-code-comment
+  - gedit-plugin-color-picker
+  - gedit-plugin-join-lines
+  - gedit-plugin-multi-edit
+  - gnome-shell-extension-system-monitor
+  - gnome-shell-extensions-gpaste
+  - gnupg  # docker
+  - gnupg2  # kubernetes
+  - libmp4-info-perl
+  - libvirt-clients
+  - makemkv-bin
+  - makemkv-oss
+  - p7zip-*
+  - perf-tools-unstable
+  - python3-dev
+  - python3-pip
+  - shellcheck
+  - snapd
+  - ssh
+  - xsel
+  - xz-utils
+
+snap_packages:
+  - newsflash
+  - signal-desktop
+  - spotify

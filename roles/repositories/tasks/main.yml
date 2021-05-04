@@ -1,8 +1,0 @@
----
-# tasks file for repositories
-
-- name: Include repo vars
-  include_vars: "{{ ansible_distribution }}.yml"
-
-- name: Install repos
-  include_tasks: "{{ ansible_distribution }}.yml"

@@ -1,0 +1,39 @@
+---
+
+- name: Include OS-specific packages
+  ansible.builtin.include_tasks: "packages/{{ ansible_system }}.yml"
+
+- name: Get list of installed vscode extensions
+  command: code --list-extensions
+  changed_when: false
+  failed_when: installed_extensions.rc not in [0,1]
+  register: installed_extensions
+  tags:
+    - packages
+    - vscode
+
+- name: Install VSCode extensions
+  vars:
+    extensions_to_install: "{{ vscode_extensions | difference(installed_extensions.stdout_lines) }}"
+  ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
+  loop: "{{ extensions_to_install }}"
+  tags:
+    - packages
+    - vscode
+
+- name: Install Python packages
+  ansible.builtin.pip:
+    name: "{{ python_packages }}"
+    extra_args: --user
+  tags:
+    - packages
+    - python
+
+- name: Ensure Docker is running
+  ansible.builtin.systemd:
+    name: docker
+    daemon_reload: true
+    enabled: true
+    state: started
+  become: true
+  when: ansible_system == 'Linux'
