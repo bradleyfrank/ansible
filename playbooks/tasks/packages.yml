@@ -3,9 +3,20 @@
 - name: Include OS-specific packages
   ansible.builtin.include_tasks: "packages/{{ ansible_system }}.yml"
 
+- name: Get list of installed vscode extensions
+  command: code --list-extensions
+  changed_when: false
+  failed_when: installed_extensions.rc not in [0,1]
+  register: installed_extensions
+  tags:
+    - packages
+    - vscode
+
 - name: Install VSCode extensions
+  vars:
+    extensions_to_install: "{{ vscode_extensions | difference(installed_extensions.stdout_lines) }}"
   ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
-  loop: "{{ vscode_extensions }}"
+  loop: "{{ extensions_to_install }}"
   tags:
     - packages
     - vscode
