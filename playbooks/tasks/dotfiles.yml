@@ -60,17 +60,30 @@
     mode: 0644
 
 
-- name: Set proper permissions on ~/.ssh/config
+- name: Ensure ~/.ssh directory exists
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.ssh/config"
-    state: touch
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: 0755
+  tags:
+    - ssh
+
+- name: Copy ssh config
+  ansible.builtin.copy:
+    src: conf/ssh/config
+    dest: "{{ ansible_user_dir }}/.ssh/config"
     mode: 0644
+  tags:
+    - ssh
+    - ssh_config
 
 - name: Set proper permissions on ~/.ssh/authorized_keys
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
     state: touch
     mode: 0600
+  tags:
+    - ssh
 
 
 - name: Create vim extensions directory path
