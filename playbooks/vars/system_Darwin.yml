@@ -87,6 +87,7 @@ system_packages:
     - dozer
     - fantastical
     - firefox
+    - google-cloud-sdk
     - hyper
     - iina
     - istat-menus

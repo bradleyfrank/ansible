@@ -33,6 +33,13 @@
   when: item.state == 'file'
 
 
+- name: Install gitconfig
+  ansible.builtin.template:
+    src: gitconfig.j2
+    dest: "{{ ansible_user_dir }}/.gitconfig"
+    mode: 0755
+
+
 - name: Install VSCode configs
   ansible.builtin.copy:
     src: conf/vscode/
@@ -117,6 +124,13 @@
   register: python3_user_base  # to add Python bin to macOS PATH
   check_mode: false
   when: ansible_system == 'Darwin'
+
+
+- name: Install tmux config
+  ansible.builtin.template:
+    src: tmux.conf.j2
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    mode: 0644
 
 
 - name: Build zshrc

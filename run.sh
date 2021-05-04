@@ -42,7 +42,7 @@ create_tmp_sudoers() {
   SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
   sudo --validate --prompt "Enter sudo password: " # reset sudo timer for following command
   printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
-  printf "\n" # insert newlines for readability
+  printf "\n" # insert newline for readability
 }
 
 create_vault_file() {
@@ -57,7 +57,7 @@ create_vault_file() {
     stty -echo || exit # disable terminal local echo
     printf "Enter vault password: " > /dev/tty
     IFS= read -r password; ret=$?
-    echo > /dev/tty # insert newlines for readability
+    echo > /dev/tty # insert newline for readability
     printf "%s\n" "$password"
     exit "$ret"
   )
