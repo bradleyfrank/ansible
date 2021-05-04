@@ -99,6 +99,7 @@ system_packages:
     - menumeters
     - microsoft-auto-update
     - microsoft-office
+    - multipass
     - musicbrainz-picard
     - parallels
     - plexamp
