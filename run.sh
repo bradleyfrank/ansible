@@ -10,10 +10,11 @@ case "$SYSTEM_TYPE" in
   linux)  SUDOERS_D="/etc/sudoers.d"         ;;
 esac
 
-SKIP_TAGS=""
+HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_PLAYBOOK="bootstrap"
+SKIP_TAGS="never"
 
 
 # ----- functions ----- #
@@ -93,10 +94,8 @@ bootstrap_os() {
 }
 
 bootstrap_macos() {
-  if [ ! -x /usr/local/bin/brew ]; then
-    CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  else
-    softwareupdate --install --all
+  if [ ! -x /usr/local/bin/brew ]; then CI=1 /bin/bash -c "$(curl -fsSL "$HOMEBREW_URL")"
+  else softwareupdate --install --all
   fi
   brew install python3 git
 }
@@ -160,25 +159,25 @@ while getopts ':bdg:mch' opt; do
     b) ANSIBLE_REPO_PLAYBOOK="bootstrap"    ;;
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"     ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"        ;;
-    m) SKIP_TAGS="$SKIP_TAGS mac_app_store" ;;
-    c) SKIP_TAGS="$SKIP_TAGS ssh_config"    ;;
+    m) SKIP_TAGS="$SKIP_TAGS,mac_app_store" ;;
+    c) SKIP_TAGS="$SKIP_TAGS,ssh_config"    ;;
     h) usage ; exit 0 ;;
     *) usage ; exit 1 ;;
   esac
 done
 
-  case "$ANSIBLE_REPO_PLAYBOOK" in
-    bootstrap)
-      create_tmp_sudoers
-      create_vault_file
-      keep_awake
-      bootstrap_os
-      ;;
-    dotfiles)
-      create_vault_file ;;
-    *)
-      exit 1 ;;
-  esac
+case "$ANSIBLE_REPO_PLAYBOOK" in
+  bootstrap)
+    create_tmp_sudoers
+    create_vault_file
+    keep_awake
+    bootstrap_os
+    ;;
+  dotfiles)
+    create_vault_file ;;
+  *)
+    exit 1 ;;
+esac
 
 if ! pre_ansible_run; then cleanup; exit 1; fi
 if ! ansible_run; then cleanup; exit 1; else exit 0; fi
