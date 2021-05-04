@@ -30,7 +30,7 @@ usage() {
     echo "Usage: [-b | -d] [-g git_branch] [-h]"
     echo "  -b  Run the bootstrap playbook. (default)"
     echo "  -d  Run the dotfiles playbook."
-    echo "  -g  Specify the Ansible repo git branch to run (default: 'main')."
+    echo "  -g  Specify the Ansible repo git branch to run. (default: main)"
     echo "  -h  Print this help menu and quit."
     echo
     echo "Skip Tags: [-mc]"
