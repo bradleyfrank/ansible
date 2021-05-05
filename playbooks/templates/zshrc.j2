@@ -215,28 +215,29 @@ function pyenv() {
   local pyname pyver=3.8 pyfunc
 
   while getopts ':acdhn:v:' flag; do
-      case "${flag}" in
-          a) pyfunc=activate ;;
-          c) pyfunc=create ;;
-          d) deactivate ; return $? ;;
-          h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
-          n) pyname=$OPTARG ;;
-          v) pyver=$OPTARG ;;
-          *) echo "Invalid argument." >&2 ; return 1 ;;
-      esac
+    case "$flag" in
+      a) pyfunc=activate ;;
+      c) pyfunc=create ;;
+      d) deactivate ; return $? ;;
+      h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
+      n) pyname=$OPTARG ;;
+      v) pyver=$OPTARG ;;
+      *) echo "Invalid argument." >&2 ; return 1 ;;
+    esac
   done
 
-  if [[ $pyfunc == "" ]]; then
-    [[ -z $pyname ]] && pyname=ve
-    virtualenv -p "$pyver" "$pyname"
-    source "${pyname-ve}"/bin/activate
-  elif [[ $pyfunc == "create" ]]; then
-    [[ -z $pyname ]] && pyname=ve
-    virtualenv -p "$pyver" "$pyname"
-  elif [[ $pyfunc == "activate" ]]; then
-    [[ -z $pyname ]] && pyname=$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")
-    source "$pyname"/bin/activate
-  fi
+  case "$pyfunc" in
+    create)   [[ -z $pyname ]] && pyname=ve
+              virtualenv -p "$pyver" "$pyname"
+              ;;
+    activate) [[ -z $pyname ]] && pyname=$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")
+              source "$pyname"/bin/activate
+              ;;
+    *)        [[ -z $pyname ]] && pyname=ve
+              virtualenv -p "$pyver" "$pyname"
+              source "${pyname-ve}"/bin/activate
+              ;;
+  esac
 }
 
 function pylinter() {
