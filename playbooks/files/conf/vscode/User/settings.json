@@ -40,6 +40,7 @@
     ],
     "terminal.integrated.fontSize": 13,
     "terminal.integrated.fontFamily": "Source Code Pro",
+    "terminal.integrated.inheritEnv": false,
     "update.mode": "none",
     "window.openFilesInNewWindow": "on",
     "window.restoreWindows": "all",
