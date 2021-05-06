@@ -59,6 +59,7 @@ dist_packages:
   - gedit-plugin-colorpicker
   - gedit-plugin-joinlines
   - gedit-plugin-multiedit
+  - git-delta
   - gnome-extensions-app
   - gnome-shell-extension-auto-move-windows
   - gnome-shell-extension-dash-to-dock

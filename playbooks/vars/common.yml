@@ -4,6 +4,7 @@ distro_vars:
   Fedora: Fedora
   Pop!_OS: Ubuntu
   Ubuntu: Ubuntu
+  MacOSX: MacOSX
 
 python_packages:
   - ansible-lint
@@ -45,6 +46,12 @@ vscode_extensions:
 docker_images:
   - archivebox/archivebox
   - ghcr.io/hadolint/hadolint
+
+github_packages:
+  - name: git-delta
+    user: dandavison
+    repo: delta
+    type: deb
 
 ssh_keys:
   - id_rsa

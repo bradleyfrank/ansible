@@ -12,17 +12,17 @@
 [core]
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
-[credential "https://git-codecommit.us-east-1.amazonaws.com"]
-  helper =
-  helper = !aws codecommit credential-helper $@
-  UseHttpPath = true
+  pager = delta
+[delta]
+  syntax-theme = Solarized (light)
+  navigate = true
+  line-numbers = true
 [help]
   autocorrect = 20
 [init]
   defaultBranch = main
-[pager]
-  diff = diff-so-fancy | less --tabs=1,5 -RFX
-  show = diff-so-fancy | less --tabs=1,5 -RFX
+[interactive]
+  diffFilter = delta --color-only
 [pull]
   rebase = true
 [push]

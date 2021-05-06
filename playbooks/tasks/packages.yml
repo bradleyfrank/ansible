@@ -1,7 +1,15 @@
 ---
 
+- name: Lookup GitHub package latest releases
+  community.general.github_release:
+    user: "{{ item.user }}"
+    repo: "{{ item.repo }}"
+    action: latest_release
+  register: github_latest_releases
+  loop: "{{ github_packages }}"
+
 - name: Include OS-specific packages
-  ansible.builtin.include_tasks: "packages/{{ ansible_system }}.yml"
+  ansible.builtin.include_tasks: "packages/{{ distro_vars[ansible_distribution] }}.yml"
 
 - name: Get list of installed vscode extensions
   command: code --list-extensions
@@ -29,11 +37,16 @@
     - packages
     - python
 
-- name: Ensure Docker is running
-  ansible.builtin.systemd:
-    name: docker
-    daemon_reload: true
-    enabled: true
-    state: started
-  become: true
-  when: ansible_system == 'Linux'
+- name: Install packages from GitHub
+  block:
+
+      when: item.type == 'deb'
+    - name: Install package
+      vars:
+        base_url: "https://github.com/{{ item.user }}/{{ item.repo }}/releases/download"
+        version: "{{ package.latest_release }}"
+      ansible.builtin.apt:
+        deb: "{{ base_url }}/{{ version }}/{{ item.name }}_{{ version }}_{{ item.arch }}.deb"
+      become: true
+      when: item.type == 'deb'
+  loop: "{{ github_packages | default(['']) }}"
