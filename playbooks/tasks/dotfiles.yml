@@ -32,6 +32,13 @@
   with_filetree: dotfiles/
   when: item.state == 'file'
 
+- name: Make scripts executable
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local.bin"
+    state: directory
+    mode: 0755
+    recurse: true
+
 
 - name: Install gitconfig
   ansible.builtin.template:
