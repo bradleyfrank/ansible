@@ -34,7 +34,7 @@
 
 - name: Make scripts executable
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.local.bin"
+    path: "{{ ansible_user_dir }}/.local/bin"
     state: directory
     mode: 0755
     recurse: true
