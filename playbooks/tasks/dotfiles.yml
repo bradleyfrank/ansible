@@ -107,21 +107,25 @@
   failed_when: kubectl_installed.rc not in [0,1]
   register: kubectl_installed
 
-- name: Find latest kubectl release
-  ansible.builtin.get_url:
-    url: https://dl.k8s.io/release/stable.txt
-    dest: /tmp/kubectl.txt
-  when: kubectl_installed.rc == 1
-
-- name: Install kubectl
-  vars:
-    url: https://storage.googleapis.com/kubernetes-release/release
-    release: "{{ lookup('file', '/tmp/kubectl.txt') }}"
-    system: "{{ ansible_system | lower }}"
-  ansible.builtin.get_url:
-    url: "{{ url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
-    dest: "{{ ansible_user_dir }}/.local/bin/"
-    mode: 0755
+- name: Install local version of kubectl
+  block:
+    - name: Find latest kubectl release
+      ansible.builtin.get_url:
+        url: https://dl.k8s.io/release/stable.txt
+        dest: /tmp/kubectl.txt
+    - name: Install kubectl
+      vars:
+        url: https://storage.googleapis.com/kubernetes-release/release
+        release: "{{ lookup('file', '/tmp/kubectl.txt') }}"
+        system: "{{ ansible_system | lower }}"
+      ansible.builtin.get_url:
+        url: "{{ url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
+        dest: "{{ ansible_user_dir }}/.local/bin/"
+        mode: 0755
+    - name: Remove temp file
+      ansible.builtin.file:
+        path: /tmp/kubectl.txt
+        state: absent
   when: kubectl_installed.rc == 1
 
 - name: Generate kubectl completions

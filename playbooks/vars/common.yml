@@ -47,11 +47,10 @@ docker_images:
   - archivebox/archivebox
   - ghcr.io/hadolint/hadolint
 
-github_packages:
-  - name: git-delta
-    user: dandavison
-    repo: delta
-    type: deb
+krew:
+  url: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz
+  installer: "krew-{{ ansible_system | lower }}_\
+    {{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
 
 ssh_keys:
   - id_rsa

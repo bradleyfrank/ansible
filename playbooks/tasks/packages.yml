@@ -5,8 +5,12 @@
     user: "{{ item.user }}"
     repo: "{{ item.repo }}"
     action: latest_release
-  register: github_latest_releases
-  loop: "{{ github_packages }}"
+    token: "{{ github_token }}"
+  register: github_packages_metadata
+  loop: "{{ github_packages | default({}) }}"
+  tags:
+    - packages
+    - github
 
 - name: Include OS-specific packages
   ansible.builtin.include_tasks: "packages/{{ distro_vars[ansible_distribution] }}.yml"
@@ -37,16 +41,29 @@
     - packages
     - python
 
-- name: Install packages from GitHub
+- name: Install Krew
   block:
-
-      when: item.type == 'deb'
-    - name: Install package
-      vars:
-        base_url: "https://github.com/{{ item.user }}/{{ item.repo }}/releases/download"
-        version: "{{ package.latest_release }}"
-      ansible.builtin.apt:
-        deb: "{{ base_url }}/{{ version }}/{{ item.name }}_{{ version }}_{{ item.arch }}.deb"
-      become: true
-      when: item.type == 'deb'
-  loop: "{{ github_packages | default(['']) }}"
+    - name: Download Krew installer
+      ansible.builtin.get_url:
+        url: "{{ krew['url'] }}"
+        dest: /tmp/krew.tar.gz
+    - name: Make directory for extracting Krew installer
+      ansible.builtin.file:
+        path: /tmp/krew
+        state: directory
+    - name: Extract Krew installer
+      ansible.builtin.unarchive:
+        src: /tmp/krew.tar.gz
+        dest: /tmp/krew
+    - name: Install Krew
+      ansible.builtin.command:
+        cmd: "/tmp/krew/{{ krew['installer'] }} install krew"
+        creates: "{{ ansible_user_dir }}/.krew"
+    - name: Cleanup Krew temp files
+      ansible.builtin.file:
+        path: "/tmp/{{ item }}"
+        state: absent
+      loop: ['krew.tar.gz', 'krew']
+  tags:
+    - packages
+    - krew

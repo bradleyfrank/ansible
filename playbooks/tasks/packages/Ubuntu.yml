@@ -7,8 +7,26 @@
     install_recommends: true
     update_cache: true
   become: true
+  tags:
+    - packages
+    - apt
 
 - name: Install snaps
   community.general.snap:
     name: "{{ snap_packages }}"
   become: true
+  tags:
+    - packages
+    - snap
+
+- name: Install GitHub packages
+  vars:
+    base_url: "github.com/{{ item['module_args']['user'] }}/{{ item['module_args']['repo'] }}"
+    filename: "{{ file_prefix }}{{ item['tag'] }}{{ file_suffix }}"
+  ansible.builtin.apt:
+    deb: "https://{{ base_url }}/releases/download/{{ item['tag'] }}/{{ filename }}.deb"
+  become: true
+  loop: "{{ github_packages_metadata['results'] | default({}) }}"
+  tags:
+    - packages
+    - github
