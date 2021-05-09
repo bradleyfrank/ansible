@@ -21,10 +21,13 @@
 
 - name: Install GitHub packages
   vars:
-    base_url: "github.com/{{ item['module_args']['user'] }}/{{ item['module_args']['repo'] }}"
-    filename: "{{ file_prefix }}{{ item['tag'] }}{{ file_suffix }}"
+    user: "{{ item['invocation']['module_args']['user'] }}"
+    repo: "{{ item['invocation']['module_args']['repo'] }}"
+    version: "{{ item['tag'] }}"
+    github_url: "https://github.com/{{ user }}/{{ repo }}/releases/download"
+    filename: "{{ file_prefix }}{{ version }}{{ file_suffix }}"
   ansible.builtin.apt:
-    deb: "https://{{ base_url }}/releases/download/{{ item['tag'] }}/{{ filename }}.deb"
+    deb: "{{ github_url }}/{{ version }}/{{ filename }}"
   become: true
   loop: "{{ github_packages_metadata['results'] | default({}) }}"
   tags:
