@@ -25,7 +25,7 @@
     user: "{{ item['invocation']['module_args']['user'] }}"
     prefix: "{{ github_packages[repo]['file_prefix'] }}"
     suffix: "{{ github_packages[repo]['file_suffix'] }}"
-    package_download_url: |
+    package_download_url: >
       https://github.com/{{ user }}/{{ repo }}/releases/download/
       {{ item['tag'] }}/{{ prefix }}{{ item['tag'] }}{{ suffix }}
   ansible.builtin.apt:
