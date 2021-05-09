@@ -23,8 +23,8 @@
   vars:
     repo: "{{ item['invocation']['module_args']['repo'] }}"
     user: "{{ item['invocation']['module_args']['user'] }}"
-    prefix: "{{ github_packages[repo]['user']['file_prefix'] }}"
-    suffix: "{{ github_packages[repo]['user']['file_suffix'] }}"
+    prefix: "{{ github_packages[repo]['file_prefix'] }}"
+    suffix: "{{ github_packages[repo]['file_suffix'] }}"
     package_download_url: |
       https://github.com/{{ user }}/{{ repo }}/releases/download/
       {{ item['tag'] }}/{{ prefix }}{{ item['tag'] }}{{ suffix }}
