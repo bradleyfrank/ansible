@@ -19,17 +19,19 @@
     - packages
     - snap
 
-- name: Install GitHub packages
+- name: Install GitHub package
   vars:
-    user: "{{ item['invocation']['module_args']['user'] }}"
-    repo: "{{ item['invocation']['module_args']['repo'] }}"
-    version: "{{ item['tag'] }}"
-    github_url: "https://github.com/{{ user }}/{{ repo }}/releases/download"
-    filename: "{{ file_prefix }}{{ version }}{{ file_suffix }}"
+    package_download_url: |
+      https://github.com/{{ github_packages[repo]['user'] }}/
+      {{ item['invocation']['module_args']['repo'] }}/
+      releases/download/{{ item['tag'] }}/
+      {{ github_packages[repo]['user']['file_prefix'] }}
+      {{ item['tag'] }}
+      {{ github_packages[repo]['user']['file_suffix'] }}
   ansible.builtin.apt:
-    deb: "{{ github_url }}/{{ version }}/{{ filename }}"
+    deb: "{{ package_download_url }}"
   become: true
-  loop: "{{ github_packages_metadata['results'] | default({}) }}"
+  loop: "{{ github_package_metadata | default({}) }}"
   tags:
     - packages
     - github

@@ -1,0 +1,36 @@
+---
+
+- name: Apply dotfiles to localhost
+  hosts: localhost
+  tasks:
+    - name: Include common variables
+      ansible.builtin.include_vars: common.yml
+      tags: always
+
+    - name: Include system variables
+      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
+      tags: always
+
+    - name: Include Linux distribution variables
+      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
+      when: ansible_system == 'Linux'
+      tags: always
+
+    - name: Lookup GitHub package latest release
+      community.general.github_release:
+        user: "{{ item['value']['user'] }}"
+        repo: "{{ item['key'] }}"
+        action: latest_release
+        token: "{{ github_token }}"
+      register: github_package_metadata
+      loop: "{{ github_packages | default({}) | dict2items }}"
+      tags:
+        - packages
+        - github
+
+    - name: Print metadata
+      vars:
+        repo: "{{ item['invocation']['module_args']['repo'] }}"
+      ansible.builtin.debug:
+        msg: "version: {{ item['tag'] }} matching dict: {{ github_packages[repo] }}"
+      loop: "{{ github_package_metadata.results }}"

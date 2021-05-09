@@ -74,8 +74,7 @@ snap_packages:
   - spotify
 
 github_packages:
-  - name: git-delta
+  delta:
     user: dandavison
-    repo: delta
     file_prefix: "git-delta_"
     file_suffix: "_{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}.deb"

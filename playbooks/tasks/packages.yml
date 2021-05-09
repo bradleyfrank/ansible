@@ -1,37 +1,19 @@
 ---
 
-- name: Lookup GitHub package latest releases
+- name: Lookup GitHub package latest release
   community.general.github_release:
-    user: "{{ item.user }}"
-    repo: "{{ item.repo }}"
+    user: "{{ item['value']['user'] }}"
+    repo: "{{ item['key'] }}"
     action: latest_release
     token: "{{ github_token }}"
-  register: github_packages_metadata
-  loop: "{{ github_packages | default({}) }}"
+  register: github_package_metadata
+  loop: "{{ github_packages | default({}) | dict2items }}"
   tags:
     - packages
     - github
 
 - name: Include OS-specific packages
   ansible.builtin.include_tasks: "packages/{{ distro_vars[ansible_distribution] }}.yml"
-
-- name: Get list of installed vscode extensions
-  command: code --list-extensions
-  changed_when: false
-  failed_when: installed_extensions.rc not in [0,1]
-  register: installed_extensions
-  tags:
-    - packages
-    - vscode
-
-- name: Install VSCode extensions
-  vars:
-    extensions_to_install: "{{ vscode_extensions | difference(installed_extensions.stdout_lines) }}"
-  ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
-  loop: "{{ extensions_to_install }}"
-  tags:
-    - packages
-    - vscode
 
 - name: Install Python packages
   ansible.builtin.pip:
@@ -40,6 +22,22 @@
   tags:
     - packages
     - python
+
+- name: Install VSCode extensions
+  block:
+    - name: Get list of installed vscode extensions
+      command: code --list-extensions
+      changed_when: false
+      failed_when: installed_extensions['rc'] not in [0,1]
+      register: installed_extensions
+    - name: Install extensions not already installed
+      vars:
+        extensions_to_install: "{{ vscode_extensions | difference(installed_extensions.stdout_lines) }}"
+      ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
+      loop: "{{ extensions_to_install }}"
+  tags:
+    - packages
+    - vscode
 
 - name: Install Krew
   block:
