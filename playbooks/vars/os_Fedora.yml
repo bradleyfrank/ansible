@@ -86,3 +86,4 @@ flatpak_packages:
   - name: com.spotify.Client
   - name: com.gitlab.newsflash
   - name: org.signal.Signal
+  - name: com.plexamp.Plexamp

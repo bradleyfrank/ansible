@@ -64,6 +64,8 @@
         state: absent
       loop: ['krew.tar.gz', 'krew']
     - name: Install Krew plugins
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.krew/bin"
       ansible.builtin.command: "kubectl krew install {{ item }}"
       loop: "{{ krew['plugins'] }}"
   tags:
