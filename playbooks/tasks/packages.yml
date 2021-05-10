@@ -29,7 +29,7 @@
     - name: Get list of installed vscode extensions
       command: code --list-extensions
       changed_when: false
-      failed_when: installed_extensions['rc'] not in [0,1]
+      failed_when: code_list_extensions['rc'] not in [0,1]
       register: code_list_extensions
     - name: Install extensions not already installed
       vars:
