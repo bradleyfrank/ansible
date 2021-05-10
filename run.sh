@@ -119,6 +119,7 @@ bootstrap_linux() {
 }
 
 pre_ansible_run() {
+  python3 -m pip install --user --upgrade pip || return 1
   python3 -m pip install --user ansible github3.py || return 1
   PATH="$PATH:$(python3 -m site --user-base)/bin"
   export PATH
