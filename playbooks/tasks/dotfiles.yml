@@ -43,7 +43,7 @@
 - name: Install VSCode configs
   ansible.builtin.copy:
     src: conf/vscode/
-    dest: "{{ vscode['config'] }}"
+    dest: "{{ vscode['config'] }}/"
     mode: 0755
 
 

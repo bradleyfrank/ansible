@@ -1,4 +1,5 @@
 PATH="{{ ansible_user_dir }}/.local/bin"
+PATH="$PATH:{{ ansible_user_dir }}/.krew/bin"
 {% if 'Darwin' in ansible_system %}
 PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/gnu-tar/libexec/gnubin"

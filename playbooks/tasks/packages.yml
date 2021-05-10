@@ -30,10 +30,11 @@
       command: code --list-extensions
       changed_when: false
       failed_when: installed_extensions['rc'] not in [0,1]
-      register: installed_extensions
+      register: code-list-extensions
     - name: Install extensions not already installed
       vars:
-        extensions_to_install: "{{ vscode_extensions | difference(installed_extensions['stdout_lines']) }}"
+        installed_extensions: "{{ code-list-extensions['stdout_lines'] }}"
+        extensions_to_install: "{{ vscode_extensions | difference(installed_extensions) }}"
       ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
       loop: "{{ extensions_to_install }}"
   tags:
@@ -71,3 +72,10 @@
   tags:
     - packages
     - krew
+
+- name: Pull Docker images
+  community.docker.docker_image:
+    name: "{{ item }}"
+    source: pull
+  become: true
+  loop: "{{ docker_images }}"
