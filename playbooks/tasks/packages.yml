@@ -14,6 +14,7 @@
 
 - name: Include OS-specific packages
   ansible.builtin.include_tasks: "packages/{{ distro_vars[ansible_distribution] }}.yml"
+  tags: always
 
 - name: Install Python packages
   ansible.builtin.pip:
@@ -39,7 +40,7 @@
     - packages
     - vscode
 
-- name: Install Krew
+- name: Configure Krew
   block:
     - name: Download Krew installer
       ansible.builtin.get_url:
@@ -62,6 +63,9 @@
         path: "/tmp/{{ item }}"
         state: absent
       loop: ['krew.tar.gz', 'krew']
+    - name: Install Krew plugins
+      ansible.builtin.command: "kubectl krew install {{ item }}"
+      loop: "{{ krew['plugins'] }}"
   tags:
     - packages
     - krew
