@@ -30,10 +30,10 @@
       command: code --list-extensions
       changed_when: false
       failed_when: installed_extensions['rc'] not in [0,1]
-      register: code-list-extensions
+      register: code_list_extensions
     - name: Install extensions not already installed
       vars:
-        installed_extensions: "{{ code-list-extensions['stdout_lines'] }}"
+        installed_extensions: "{{ code_list_extensions['stdout_lines'] }}"
         extensions_to_install: "{{ vscode_extensions | difference(installed_extensions) }}"
       ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
       loop: "{{ extensions_to_install }}"
