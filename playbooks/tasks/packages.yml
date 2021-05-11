@@ -16,7 +16,7 @@
 
 - name: Pull Docker images
   environment:
-    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] }}:{{ user_site }}"
+    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ user_site }}"
   community.docker.docker_image:
     name: "{{ item }}"
     source: pull
