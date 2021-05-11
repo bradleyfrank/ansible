@@ -14,7 +14,7 @@ HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install.
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_PLAYBOOK="bootstrap"
-SKIP_TAGS="never"
+ANSIBLE_REPO_SKIP_TAGS="never"
 
 
 # ----- functions ----- #
@@ -119,23 +119,25 @@ bootstrap_linux() {
 }
 
 pre_ansible_run() {
-  python3 -m pip install --user --upgrade pip || return 1
-  python3 -m pip install --user ansible docker github3.py || return 1
+  python3 -m pip install --user --upgrade pip
+  python3 -m pip install --user ansible docker github3.py
   PATH="$PATH:$(python3 -m site --user-base)/bin"
   export PATH
 
-  git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR" || return 1
+  git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR"
   cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
-  git checkout "$ANSIBLE_REPO_BRANCH" || return 1
+  git checkout "$ANSIBLE_REPO_BRANCH"
   cd - >/dev/null 2>&1 || return 1
 
-  ansible-galaxy collection install -r "$CHECKOUT_DIR"/requirements.yml || return 1
+  ansible-galaxy collection install -r "$CHECKOUT_DIR"/requirements.yml
 }
 
 ansible_playbook() {
   case "$ANSIBLE_REPO_PLAYBOOK" in
-    bootstrap) ansible-playbook --ask-become-pass --skip-tags "$SKIP_TAGS" playbooks/bootstrap.yml ;;
-    dotfiles)  ansible-playbook --skip-tags "$SKIP_TAGS" playbooks/dotfiles.yml                    ;;
+    bootstrap)
+      ansible-playbook --ask-become-pass --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/bootstrap.yml ;;
+    dotfiles)
+      ansible-playbook --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/dotfiles.yml ;;
   esac
 }
 
@@ -157,28 +159,21 @@ ansible_run() {
 
 while getopts ':bdg:mch' opt; do
   case "$opt" in
-    b) ANSIBLE_REPO_PLAYBOOK="bootstrap"    ;;
-    d) ANSIBLE_REPO_PLAYBOOK="dotfiles"     ;;
-    g) ANSIBLE_REPO_BRANCH="$OPTARG"        ;;
-    m) SKIP_TAGS="$SKIP_TAGS,mac_app_store" ;;
-    c) SKIP_TAGS="$SKIP_TAGS,ssh_config"    ;;
+    b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
+    d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
+    g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
+    m) ANSIBLE_REPO_SKIP_TAGS="${ANSIBLE_REPO_SKIP_TAGS},mac_app_store" ;;
+    c) ANSIBLE_REPO_SKIP_TAGS="${ANSIBLE_REPO_SKIP_TAGS},ssh_config"    ;;
     h) usage ; exit 0 ;;
     *) usage ; exit 1 ;;
   esac
 done
 
 case "$ANSIBLE_REPO_PLAYBOOK" in
-  bootstrap)
-    create_tmp_sudoers
-    create_vault_file
-    keep_awake
-    bootstrap_os
-    ;;
-  dotfiles)
-    create_vault_file ;;
-  *)
-    exit 1 ;;
+  bootstrap) create_tmp_sudoers ; create_vault_file ; keep_awake ; bootstrap_os ;;
+  dotfiles)  create_vault_file ;;
+  *)         exit 1 ;;
 esac
 
-if ! pre_ansible_run; then cleanup; exit 1; fi
-if ! ansible_run; then cleanup; exit 1; else exit 0; fi
+pre_ansible_run ; rc=$? ; [ $rc = 1 ] && { cleanup ; exit 1 ; }
+ansible_run ; rc=$? ; cleanup ; exit $rc
