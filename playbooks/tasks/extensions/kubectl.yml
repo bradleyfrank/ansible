@@ -1,0 +1,65 @@
+---
+
+- name: Check if kubectl is installed
+  command: which kubectl
+  changed_when: false
+  failed_when: which_kubectl['rc'] not in [0,1]
+  register: which_kubectl
+
+- name: Install local version of kubectl
+  block:
+    - name: Find latest kubectl release
+      ansible.builtin.get_url:
+        url: https://dl.k8s.io/release/stable.txt
+        dest: /tmp/kubectl.txt
+    - name: Install kubectl
+      vars:
+        url: https://storage.googleapis.com/kubernetes-release/release
+        release: "{{ lookup('file', '/tmp/kubectl.txt') }}"
+        system: "{{ ansible_system | lower }}"
+      ansible.builtin.get_url:
+        url: "{{ url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
+        dest: "{{ ansible_user_dir }}/.local/bin/"
+        mode: 0755
+    - name: Remove temp file
+      ansible.builtin.file:
+        path: /tmp/kubectl.txt
+        state: absent
+  when: which_kubectl.rc == 1
+
+- name: Generate kubectl completions
+  vars:
+    kubectl_completion: "{{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.shell: "kubectl completion zsh > {{ kubectl_completion }}"
+
+- name: Configure Krew
+  block:
+    - name: Download Krew installer
+      ansible.builtin.get_url:
+        url: "{{ krew['url'] }}"
+        dest: /tmp/krew.tar.gz
+    - name: Make directory for extracting Krew installer
+      ansible.builtin.file:
+        path: /tmp/krew
+        state: directory
+    - name: Extract Krew installer
+      ansible.builtin.unarchive:
+        src: /tmp/krew.tar.gz
+        dest: /tmp/krew
+    - name: Install Krew
+      ansible.builtin.command:
+        cmd: "/tmp/krew/{{ krew['installer'] }} install krew"
+        creates: "{{ ansible_user_dir }}/.krew"
+    - name: Cleanup Krew temp files
+      ansible.builtin.file:
+        path: "/tmp/{{ item }}"
+        state: absent
+      loop: ['krew.tar.gz', 'krew']
+    - name: Install Krew plugins
+      environment:
+        PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.krew/bin"
+      ansible.builtin.command: "kubectl krew install {{ item }}"
+      loop: "{{ krew['plugins'] }}"
+  tags: krew

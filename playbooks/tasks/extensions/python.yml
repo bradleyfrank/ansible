@@ -1,0 +1,6 @@
+---
+
+- name: Install Python packages
+  ansible.builtin.pip:
+    name: "{{ python_packages }}"
+    extra_args: --user

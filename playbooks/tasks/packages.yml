@@ -8,70 +8,11 @@
     token: "{{ github_token }}"
   register: github_package_metadata
   loop: "{{ github_packages | default({}) | dict2items }}"
-  tags:
-    - packages
-    - github
+  tags: [packages, github]
 
 - name: Include OS-specific packages
   ansible.builtin.include_tasks: "packages/{{ distro_vars[ansible_distribution] }}.yml"
   tags: always
-
-- name: Install Python packages
-  ansible.builtin.pip:
-    name: "{{ python_packages }}"
-    extra_args: --user
-  tags:
-    - packages
-    - python
-
-- name: Install VSCode extensions
-  block:
-    - name: Get list of installed vscode extensions
-      command: code --list-extensions
-      changed_when: false
-      failed_when: code_list_extensions['rc'] not in [0,1]
-      register: code_list_extensions
-    - name: Install extensions not already installed
-      vars:
-        installed_extensions: "{{ code_list_extensions['stdout_lines'] }}"
-        extensions_to_install: "{{ vscode_extensions | difference(installed_extensions) }}"
-      ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
-      loop: "{{ extensions_to_install }}"
-  tags:
-    - packages
-    - vscode
-
-- name: Configure Krew
-  block:
-    - name: Download Krew installer
-      ansible.builtin.get_url:
-        url: "{{ krew['url'] }}"
-        dest: /tmp/krew.tar.gz
-    - name: Make directory for extracting Krew installer
-      ansible.builtin.file:
-        path: /tmp/krew
-        state: directory
-    - name: Extract Krew installer
-      ansible.builtin.unarchive:
-        src: /tmp/krew.tar.gz
-        dest: /tmp/krew
-    - name: Install Krew
-      ansible.builtin.command:
-        cmd: "/tmp/krew/{{ krew['installer'] }} install krew"
-        creates: "{{ ansible_user_dir }}/.krew"
-    - name: Cleanup Krew temp files
-      ansible.builtin.file:
-        path: "/tmp/{{ item }}"
-        state: absent
-      loop: ['krew.tar.gz', 'krew']
-    - name: Install Krew plugins
-      environment:
-        PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.krew/bin"
-      ansible.builtin.command: "kubectl krew install {{ item }}"
-      loop: "{{ krew['plugins'] }}"
-  tags:
-    - packages
-    - krew
 
 - name: Pull Docker images
   community.docker.docker_image:
@@ -79,3 +20,4 @@
     source: pull
   become: true
   loop: "{{ docker_images }}"
+  tags: docker

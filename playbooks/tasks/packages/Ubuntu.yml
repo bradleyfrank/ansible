@@ -7,17 +7,13 @@
     install_recommends: true
     update_cache: true
   become: true
-  tags:
-    - packages
-    - apt
+  tags: [packages, apt]
 
 - name: Install snaps
   community.general.snap:
     name: "{{ snap_packages }}"
   become: true
-  tags:
-    - packages
-    - snap
+  tags: [packages, snap]
 
 - name: Install GitHub package
   vars:
@@ -30,6 +26,4 @@
           /{{ prefix }}{{ item['tag'] }}{{ suffix }}"
   become: true
   loop: "{{ github_package_metadata['results'] | default({}) }}"
-  tags:
-    - packages
-    - github
+  tags: [packages, github]

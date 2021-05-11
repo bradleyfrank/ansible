@@ -7,6 +7,7 @@
     update_cache: true
     install_weak_deps: true
   become: true
+  tags: [packages, dnf]
 
 - name: Install flatpaks
   community.general.flatpak:
@@ -15,3 +16,4 @@
     remote: "{{ item.remote | default(omit) }}"
     method: user
   loop: "{{ flatpak_packages }}"
+  tags: [packages, flatpaks]

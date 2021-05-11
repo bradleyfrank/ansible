@@ -2,36 +2,39 @@
 
 - name: Install gpg keys
   ansible.builtin.rpm_key:
-    key: "{{ item.gpgkey }}"
+    key: "{{ item['gpgkey'] }}"
   loop: "{{ repos }}"
   become: true
+  tags: [repos, gpgkeys]
 
 - name: Install repositories via RPMs
   ansible.builtin.yum:
-    name: "{{ item.url }}/{{ item.rpm }}"
+    name: "{{ item['url'] }}/{{ item['rpm'] }}"
     disable_gpg_check: true
     state: present
   loop: "{{ rpms }}"
   become: true
+  tags: repos
 
 - name: Install repositories
   ansible.builtin.yum_repository:
-    name: "{{ item.name }}"
-    description: "{{ item.description }}"
-    baseurl: "{{ item.baseurl }}"
-    includepkgs: "{{ item.includepkgs | default('') }}"
-    gpgcheck: "{{ item.gpgcheck | default(true) }}"
-    gpgkey: "{{ item.gpgkey }}"
-    repo_gpgcheck: "{{ item.repo_gpgcheck | default(false) }}"
-    skip_if_unavailable: "{{ item.skip_if_unavailable | default(true) }}"
+    name: "{{ item['name'] }}"
+    description: "{{ item['description'] }}"
+    baseurl: "{{ item['baseurl'] }}"
+    includepkgs: "{{ item['includepkgs'] | default('') }}"
+    gpgcheck: "{{ item['gpgcheck'] | default(true) }}"
+    gpgkey: "{{ item['gpgkey'] }}"
+    repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
+    skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
   loop: "{{ repos }}"
   become: true
+  tags: repos
 
 - name: Add flatpak repositories
   community.general.flatpak_remote:
-    name: "{{ item.name }}"
+    name: "{{ item['name'] }}"
     state: present
-    flatpakrepo_url: "{{ item.url }}"
+    flatpakrepo_url: "{{ item['url'] }}"
     method: user
   loop: "{{ flatpak_remotes }}"
-  when: ansible_distribution == 'Fedora'
+  tags: [repos, flatpak]

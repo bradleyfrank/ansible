@@ -119,7 +119,6 @@ bootstrap_linux() {
 }
 
 pre_ansible_run() {
-  python3 -m pip install --user --upgrade pip
   python3 -m pip install --user ansible docker github3.py
 
   PATH="$PATH:$(python3 -m site --user-base)/bin"
