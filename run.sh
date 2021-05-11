@@ -121,8 +121,10 @@ bootstrap_linux() {
 pre_ansible_run() {
   python3 -m pip install --user --upgrade pip
   python3 -m pip install --user ansible docker github3.py
+
   PATH="$PATH:$(python3 -m site --user-base)/bin"
-  export PATH
+  PYTHONPATH="$PYTHONPATH:$(python3 -m site --user-site)"
+  export PATH PYTHONPATH
 
   git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR"
   cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
