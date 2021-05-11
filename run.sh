@@ -120,10 +120,8 @@ bootstrap_linux() {
 
 pre_ansible_run() {
   python3 -m pip install --user ansible docker github3.py
-
   PATH="$PATH:$(python3 -m site --user-base)/bin"
-  PYTHONPATH="$PYTHONPATH:$(python3 -m site --user-site)"
-  export PATH PYTHONPATH
+  export PATH
 
   git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR"
   cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
@@ -136,7 +134,12 @@ pre_ansible_run() {
 ansible_playbook() {
   case "$ANSIBLE_REPO_PLAYBOOK" in
     bootstrap)
-      ansible-playbook --ask-become-pass --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/bootstrap.yml ;;
+      ansible-playbook \
+        --ask-become-pass \
+        --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" \
+        --extra-vars user_site="$(python3 -m site --user-site)"
+        playbooks/bootstrap.yml
+      ;;
     dotfiles)
       ansible-playbook --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/dotfiles.yml ;;
   esac

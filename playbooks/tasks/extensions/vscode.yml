@@ -16,7 +16,6 @@
     - name: Install extensions not already installed
       vars:
         installed_extensions: "{{ code_list_extensions['stdout_lines'] }}"
-        extensions_to_install: "{{ vscode_extensions | difference(installed_extensions) }}"
       ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
-      loop: "{{ extensions_to_install }}"
+      loop: "{{ vscode_extensions | difference(installed_extensions) }}"
   when: which_code.rc == 0
