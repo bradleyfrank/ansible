@@ -134,12 +134,7 @@ pre_ansible_run() {
 ansible_playbook() {
   case "$ANSIBLE_REPO_PLAYBOOK" in
     bootstrap)
-      ansible-playbook \
-        --ask-become-pass \
-        --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" \
-        --extra-vars user_site="$(python3 -m site --user-site)"
-        playbooks/bootstrap.yml
-      ;;
+      ansible-playbook --ask-become-pass --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/bootstrap.yml ;;
     dotfiles)
       ansible-playbook --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/dotfiles.yml ;;
   esac

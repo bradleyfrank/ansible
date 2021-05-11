@@ -133,6 +133,7 @@ vscode:
 
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
+python_user_site: "{{ ansible_user_dir }}/Library/Python/{{ python_version }}/lib/python/site-packages"
 root_home: /var/root
 
 zsh_directories:

@@ -1,6 +1,8 @@
 ---
 
 - name: Lookup GitHub package latest release
+  environment:
+    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
   community.general.github_release:
     user: "{{ item['value']['user'] }}"
     repo: "{{ item['key'] }}"
@@ -16,7 +18,7 @@
 
 - name: Pull Docker images
   environment:
-    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ user_site }}"
+    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
   community.docker.docker_image:
     name: "{{ item }}"
     source: pull

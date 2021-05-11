@@ -87,6 +87,8 @@ git_reference_repos:
 dotfiles_collection: https://github.com/bradleyfrank/dotfiles-collection.git
 root_dotfiles: minimal
 
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
+
 github_token: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   32373635643431656134626338643831386332653063653165376364383531313061343831363331
