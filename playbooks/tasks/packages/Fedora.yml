@@ -11,9 +11,9 @@
 
 - name: Install flatpaks
   community.general.flatpak:
-    name: "{{ item.name }}"
+    name: "{{ item['name'] }}"
     state: present
-    remote: "{{ item.remote | default(omit) }}"
+    remote: "{{ item['remote'] | default(omit) }}"
     method: user
   loop: "{{ flatpak_packages }}"
   tags: [packages, flatpaks]

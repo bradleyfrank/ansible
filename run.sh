@@ -174,5 +174,5 @@ case "$ANSIBLE_REPO_PLAYBOOK" in
   *)         exit 1 ;;
 esac
 
-pre_ansible_run ; rc=$? ; [ $rc = 1 ] && { cleanup ; exit 1 ; }
+pre_ansible_run ; [ $? = 1 ] && { cleanup ; exit 1 ; }
 ansible_run ; rc=$? ; cleanup ; exit $rc

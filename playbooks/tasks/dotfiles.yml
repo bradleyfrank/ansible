@@ -11,40 +11,30 @@
 
 - name: Clone reference Git repos
   ansible.builtin.git:
-    repo: "{{ item.repo }}"
-    dest: "{{ git_reference_repos_dest }}/{{ item.name }}"
+    repo: "{{ item['repo'] }}"
+    dest: "{{ git_reference_repos_dest }}/{{ item['name'] }}"
     depth: '1'
-    version: "{{ item.version | default(omit) }}"
+    version: "{{ item['version'] | default(omit) }}"
   loop: "{{ git_reference_repos }}"
   tags: git_repos
-
-
-- name: Pull latest Docker images
-  environment:
-    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
-  community.docker.docker_image:
-    name: "{{ item }}"
-    source: pull
-  loop: "{{ docker_images }}"
-  tags: docker
 
 
 - name: Install individual dotfiles
   block:
     - name: Create dotfile directory structure
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/{{ item.path }}"
+        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
         state: directory
         mode: 0755
       with_filetree: dotfiles/
-      when: item.state == 'directory'
+      when: item['state'] == 'directory'
     - name: Install dotfiles
       ansible.builtin.copy:
-        src: "{{ item.src }}"
-        dest: "{{ ansible_user_dir }}/{{ item.path }}"
+        src: "{{ item['src'] }}"
+        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
         mode: 0644
       with_filetree: dotfiles/
-      when: item.state == 'file'
+      when: item['state'] == 'file'
   tags: dotfiles
 
 
@@ -124,7 +114,7 @@
   tags: [kubectl, extensions]
 
 
-- name: Import vscode tasks
+- name: Import VSCode tasks
   ansible.builtin.import_tasks: "extensions/vscode.yml"
   tags: [vscode, extensions]
 

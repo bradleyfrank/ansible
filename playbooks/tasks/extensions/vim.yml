@@ -8,8 +8,8 @@
 
 - name: Install vim extensions
   ansible.builtin.git:
-    repo: "{{ item.repo }}"
-    dest: "{{ vim_extensions_dest }}/{{ item.name }}"
+    repo: "{{ item['repo'] }}"
+    dest: "{{ vim_extensions_dest }}/{{ item['name'] }}"
     depth: '1'
-    version: "{{ item.version | default(omit) }}"
+    version: "{{ item['version'] | default(omit) }}"
   loop: "{{ vim_extensions }}"

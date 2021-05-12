@@ -15,15 +15,6 @@
     - "conf/Gnome/{{ ansible_distribution }}.dconf"
   tags: system_settings
 
-- name: Ensure Docker is running
-  ansible.builtin.systemd:
-    name: docker
-    daemon_reload: true
-    enabled: true
-    state: started
-  become: true
-  tags: docker
-
 - name: Generate host keys
   ansible.builtin.command:
     cmd: ssh-keygen -A
