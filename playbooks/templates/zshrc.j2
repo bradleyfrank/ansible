@@ -133,7 +133,7 @@ alias infrasetup='./install.sh env && ./install.sh && source ./ve/bin/activate &
 
 
 function blackdiff() {
-  black --line-length 100 --diff "$@" | diff-so-fancy
+  black --line-length 100 --diff "$@"
 }
 
 function cheat() {
