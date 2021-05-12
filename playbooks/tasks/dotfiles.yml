@@ -121,11 +121,6 @@
 
 - name: Build zshrc
   block:
-    - name: Register Python3 user base directory
-      ansible.builtin.command: python3 -m site --user-base
-      register: python3_user_base  # to add Python bin to macOS PATH
-      check_mode: false
-      when: ansible_system == 'Darwin'
     - name: Apply zshrc template
       ansible.builtin.template:
         src: zshrc.j2
