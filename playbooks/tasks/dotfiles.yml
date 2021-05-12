@@ -19,6 +19,16 @@
   tags: git_repos
 
 
+- name: Pull latest Docker images
+  environment:
+    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
+  community.docker.docker_image:
+    name: "{{ item }}"
+    source: pull
+  loop: "{{ docker_images }}"
+  tags: docker
+
+
 - name: Install individual dotfiles
   block:
     - name: Create dotfile directory structure

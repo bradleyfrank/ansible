@@ -15,13 +15,3 @@
 - name: Include OS-specific packages
   ansible.builtin.include_tasks: "packages/{{ distro_vars[ansible_distribution] }}.yml"
   tags: always
-
-- name: Pull Docker images
-  environment:
-    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
-  community.docker.docker_image:
-    name: "{{ item }}"
-    source: pull
-  become: true
-  loop: "{{ docker_images }}"
-  tags: docker
