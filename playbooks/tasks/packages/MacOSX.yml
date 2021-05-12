@@ -13,7 +13,7 @@
 
 - name: Install common Homebrew casks
   community.general.homebrew_cask:
-    name: "{{ system_packages['casks'] }}"
+    name: "{{ system_packages['casks_common'] }}"
     accept_external_apps: true
   tags: [packages, homebrew_casks]
 
@@ -21,7 +21,7 @@
   community.general.homebrew_cask:
     name: "{{ system_packages['casks_hardware_only'] }}"
     accept_external_apps: true
-  when: ansible_model is match('Parallels')
+  when: ansible_model is match('Mac')
   tags: [packages, homebrew_casks]
 
 - name: Install apps from the Mac App Store
