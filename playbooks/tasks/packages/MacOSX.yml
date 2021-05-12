@@ -1,5 +1,4 @@
 ---
-# tasks file for packages
 
 - name: Install Homebrew taps
   community.general.homebrew_tap:
@@ -21,7 +20,7 @@
   community.general.homebrew_cask:
     name: "{{ system_packages['casks_hardware_only'] }}"
     accept_external_apps: true
-  when: ansible_model is match('Mac')
+  when: ansible_model is match('Mac')  # skips installing casks in a virtual machine
   tags: [packages, homebrew_casks]
 
 - name: Install apps from the Mac App Store

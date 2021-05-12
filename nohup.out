@@ -1,0 +1,39 @@
+CrashReport: stderr redirected to /Users/bfrank/Library/Group Containers/group.com.docker/DockerAppStderr.txt
+DockerApplication: Docker.app starting for bfrank
+GoBackend: Launching Process /Applications/Docker.app/Contents/MacOS/com.docker.backend -watchdog
+GoBackend: com.docker.backend launched with PID 96763
+GoBackend: status Pinging
+applicationDidFinishLaunching: options.restart = false
+SettingsMigrator: All migrations passed
+AppDelegate: changed currentDirectoryPath to: /Users/bfrank/Library/Containers/com.docker.docker/Data
+GoBackend: ⇨ http server started on vpnkit.port.sock
+
+GoBackend: ⇨ http server started on docker-cli.sock
+
+GoBackend: ⇨ http server started on backend-for-guest.sock
+
+GoBackend: ⇨ http server started on docker-api.sock
+
+GoBackend: status Pinged
+AppDelegate: Bundle path: /Applications/Docker.app
+AppDelegate: Application version: 3.3.3 (64133)
+AppDelegate: Channel: stable
+AppDelegate: Administrator user: true
+Environment: macOS Version: NSOperatingSystemVersion(majorVersion: 11, minorVersion: 3, patchVersion: 1))
+Cmd: sysctl: unknown oid 'sysctl.proc_translated'
+
+Environment: Virtualization enabled
+Analytics: Sent identify event.
+Analytics: Sent actionSettingsChanged event.
+INFO : BSG_KSCrash.m (280): -[BSG_KSCrash sendAllReports]: Sending 0 crash reports
+NotificationService: watching notifications
+APIRouter: GUI API HTTP server starting
+KituraLogger: Starting Kitura framework...
+KituraLogger: Starting an HTTP Server on path gui-api.sock...
+KituraLogger: Listening on path gui-api.sock
+KituraLogger: Options for path gui-api.sock: maxPendingConnections: 100, allowPortReuse: false
+Vmnetd: Install daemon
+Vmnetd: getVmnetdState: missing
+Vmnetd: Component is missing and will be installed
+Vmnetd: Non root daemon install
+Vmnetd: com.docker.vmnetd: install: cannot install Vmnetd daemon without admin rights Docker.BootstrapStopped

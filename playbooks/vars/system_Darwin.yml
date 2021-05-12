@@ -82,7 +82,6 @@ system_packages:
     - bbedit
     - calibre
     - chromium
-    - docker
     - dozer
     - fantastical
     - firefox
@@ -112,6 +111,7 @@ system_packages:
     - xquartz
     - zoom
   casks_hardware_only:
+    - docker
     - multipass
     - parallels
   apps:
