@@ -53,7 +53,6 @@ system_packages:
     - p7zip
     - par
     - prettyping
-    - python
     - rename
     - ripgrep
     - rpm2cpio
@@ -76,7 +75,7 @@ system_packages:
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
-  casks:
+  casks_common:
     - 1password
     - appcleaner
     - balenaetcher
@@ -99,9 +98,7 @@ system_packages:
     - menumeters
     - microsoft-auto-update
     - microsoft-office
-    - multipass
     - musicbrainz-picard
-    - parallels
     - plexamp
     - rectangle
     - signal
@@ -114,6 +111,9 @@ system_packages:
     - vlc
     - xquartz
     - zoom
+  casks_hardware_only:
+    - multipass
+    - parallels
   apps:
     - 407963104  # Pixelmator
     - 409183694  # Keynote
@@ -124,7 +124,6 @@ system_packages:
     - 1179623856  # Pastebot
     - 1289378661  # Twitterific
     - 1320666476  # Wipr
-    - 1516894961  # Codye
     - 1529448980  # Reeder 5
 
 vscode:
