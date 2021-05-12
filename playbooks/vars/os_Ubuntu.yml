@@ -72,3 +72,9 @@ snap_packages:
   - newsflash
   - signal-desktop
   - spotify
+
+github_packages:
+  delta:
+    user: dandavison
+    file_prefix: "git-delta_"
+    file_suffix: "_{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}.deb"

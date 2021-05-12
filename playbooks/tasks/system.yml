@@ -5,9 +5,7 @@
     name: root
     shell: "{{ bash_shell }}"
   become: true
-  tags:
-    - root
-    - shell
+  tags: [root, shell]
 
 - name: Clone dotfiles repo
   ansible.builtin.git:
@@ -16,9 +14,7 @@
     dest: "{{ root_home }}/.dotfiles"
     repo: "{{ dotfiles_collection }}"
   become: true
-  tags:
-    - root
-    - dotfiles
+  tags: [root, dotfiles]
 
 - name: Install root dotfiles
   ansible.builtin.copy:
@@ -27,9 +23,8 @@
     dest: "{{ root_home }}/"
     mode: 0644
   become: true
-  tags:
-    - root
-    - dotfiles
+  tags: [root, dotfiles]
 
 - name: Configure system settings
   ansible.builtin.include_tasks: "system/{{ ansible_system }}.yml"
+  tags: always

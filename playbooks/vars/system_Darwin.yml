@@ -26,7 +26,7 @@ system_packages:
     - gawk
     - gh
     - ghostscript
-    - git
+    - git-delta
     - glances
     - glow
     - gnu-sed
@@ -53,7 +53,6 @@ system_packages:
     - p7zip
     - par
     - prettyping
-    - python
     - rename
     - ripgrep
     - rpm2cpio
@@ -76,14 +75,13 @@ system_packages:
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
-  casks:
+  casks_common:
     - 1password
     - appcleaner
     - balenaetcher
     - bbedit
     - calibre
     - chromium
-    - docker
     - dozer
     - fantastical
     - firefox
@@ -99,9 +97,7 @@ system_packages:
     - menumeters
     - microsoft-auto-update
     - microsoft-office
-    - multipass
     - musicbrainz-picard
-    - parallels
     - plexamp
     - rectangle
     - signal
@@ -114,6 +110,10 @@ system_packages:
     - vlc
     - xquartz
     - zoom
+  casks_hardware_only:
+    - docker
+    - multipass
+    - parallels
   apps:
     - 407963104  # Pixelmator
     - 409183694  # Keynote
@@ -124,7 +124,6 @@ system_packages:
     - 1179623856  # Pastebot
     - 1289378661  # Twitterific
     - 1320666476  # Wipr
-    - 1516894961  # Codye
     - 1529448980  # Reeder 5
 
 vscode:
@@ -134,6 +133,10 @@ vscode:
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 root_home: /var/root
+
+python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python_version }}"
+python_user_site: "{{ python_user_base }}/lib/python/site-packages"
+python_user_path: "{{ python_user_base }}/bin"
 
 zsh_directories:
   - /usr/local/share

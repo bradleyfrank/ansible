@@ -6,31 +6,44 @@
     state: directory
     mode: 0755
   loop: ['Projects', 'Build', 'Scratch', 'Reference']
+  tags: dev_dirs
+
 
 - name: Clone reference Git repos
   ansible.builtin.git:
-    repo: "{{ item.repo }}"
-    dest: "{{ git_reference_repos_dest }}/{{ item.name }}"
+    repo: "{{ item['repo'] }}"
+    dest: "{{ git_reference_repos_dest }}/{{ item['name'] }}"
     depth: '1'
-    version: "{{ item.version | default(omit) }}"
+    version: "{{ item['version'] | default(omit) }}"
   loop: "{{ git_reference_repos }}"
+  tags: git_repos
 
 
-- name: Create dotfile directory structure
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ item.path }}"
-    state: directory
-    mode: 0755
-  with_filetree: dotfiles/
-  when: item.state == 'directory'
+- name: Install individual dotfiles
+  block:
+    - name: Create dotfile directory structure
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        state: directory
+        mode: 0755
+      with_filetree: dotfiles/
+      when: item['state'] == 'directory'
+    - name: Install dotfiles
+      ansible.builtin.copy:
+        src: "{{ item['src'] }}"
+        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        mode: 0644
+      with_filetree: dotfiles/
+      when: item['state'] == 'file'
+  tags: dotfiles
 
-- name: Install dotfiles
-  ansible.builtin.copy:
-    src: "{{ item.src }}"
-    dest: "{{ ansible_user_dir }}/{{ item.path }}"
+
+- name: Install tmux config
+  ansible.builtin.template:
+    src: tmux.conf.j2
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
     mode: 0644
-  with_filetree: dotfiles/
-  when: item.state == 'file'
+  tags: tmux
 
 - name: Make scripts executable
   ansible.builtin.file:
@@ -45,122 +58,84 @@
     src: gitconfig.j2
     dest: "{{ ansible_user_dir }}/.gitconfig"
     mode: 0755
+  tags: git
 
 
 - name: Install VSCode configs
   ansible.builtin.copy:
     src: conf/vscode/
-    dest: "{{ vscode['config'] }}"
+    dest: "{{ vscode['config'] }}/"
     mode: 0755
+  tags: vscode
 
 
-- name: Ensure fonts directory exists
-  ansible.builtin.file:
-    path: "{{ font_dir }}"
-    state: directory
-    mode: 0700
+- name: Install fonts
+  block:
+    - name: Ensure fonts directory exists
+      ansible.builtin.file:
+        path: "{{ font_dir }}"
+        state: directory
+        mode: 0700
+    - name: Copy fonts
+      ansible.builtin.copy:
+        src: fonts/
+        dest: "{{ font_dir }}/"
+        mode: 0644
+  tags: fonts
 
-- name: Copy fonts
-  ansible.builtin.copy:
-    src: fonts/
-    dest: "{{ font_dir }}/"
-    mode: 0644
 
+- name: Configure SSH directory
+  block:
+    - name: Ensure ~/.ssh directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.ssh"
+        state: directory
+        mode: 0755
+    - name: Set proper permissions on ~/.ssh/authorized_keys
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+        state: touch
+        mode: 0600
+  tags: ssh
 
-- name: Ensure ~/.ssh directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.ssh"
-    state: directory
-    mode: 0755
-  tags:
-    - ssh
-
-- name: Copy ssh config
+- name: Install SSH config
   ansible.builtin.copy:
     src: conf/ssh/config
     dest: "{{ ansible_user_dir }}/.ssh/config"
     mode: 0644
-  tags:
-    - ssh
-    - ssh_config
-
-- name: Set proper permissions on ~/.ssh/authorized_keys
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
-    state: touch
-    mode: 0600
-  tags:
-    - ssh
+  tags: [ssh, ssh_config]
 
 
-- name: Create vim extensions directory path
-  ansible.builtin.file:
-    path: "{{ vim_extensions_dest }}"
-    state: directory
-    mode: 0755
-
-- name: Install vim extensions
-  ansible.builtin.git:
-    repo: "{{ item.repo }}"
-    dest: "{{ vim_extensions_dest }}/{{ item.name }}"
-    depth: '1'
-    version: "{{ item.version | default(omit) }}"
-  loop: "{{ vim_extensions }}"
+- name: Import Vim tasks
+  ansible.builtin.import_tasks: "extensions/vim.yml"
+  tags: [vim, extensions]
 
 
-- name: Check if kubectl is installed
-  command: which kubectl
-  changed_when: false
-  failed_when: kubectl_installed.rc not in [0,1]
-  register: kubectl_installed
-
-- name: Find latest kubectl release
-  ansible.builtin.get_url:
-    url: https://dl.k8s.io/release/stable.txt
-    dest: /tmp/kubectl.txt
-  when: kubectl_installed.rc == 1
-
-- name: Install kubectl
-  vars:
-    url: https://storage.googleapis.com/kubernetes-release/release
-    release: "{{ lookup('file', '/tmp/kubectl.txt') }}"
-    system: "{{ ansible_system | lower }}"
-  ansible.builtin.get_url:
-    url: "{{ url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
-    dest: "{{ ansible_user_dir }}/.local/bin/"
-    mode: 0755
-  when: kubectl_installed.rc == 1
-
-- name: Generate kubectl completions
-  vars:
-    kubectl_completion: "{{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
-  environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
-  ansible.builtin.shell: "kubectl completion zsh > {{ kubectl_completion }}"
+- name: Import Python tasks
+  ansible.builtin.import_tasks: "extensions/python.yml"
+  tags: [python, extensions]
 
 
-- name: Register Python3 user base location
-  ansible.builtin.command: python3 -m site --user-base
-  register: python3_user_base  # to add Python bin to macOS PATH
-  check_mode: false
-  when: ansible_system == 'Darwin'
+- name: Import kubectl tasks
+  ansible.builtin.import_tasks: "extensions/kubectl.yml"
+  tags: [kubectl, extensions]
 
 
-- name: Install tmux config
-  ansible.builtin.template:
-    src: tmux.conf.j2
-    dest: "{{ ansible_user_dir }}/.tmux.conf"
-    mode: 0644
+- name: Import VSCode tasks
+  ansible.builtin.import_tasks: "extensions/vscode.yml"
+  tags: [vscode, extensions]
 
 
 - name: Build zshrc
-  ansible.builtin.template:
-    src: zshrc.j2
-    dest: "{{ ansible_user_dir }}/.zshrc"
-    mode: 0644
-
-- name: Fix permissions for zsh
-  ansible.builtin.file:
-    path: "{{ item }}"
-    mode: 0755
-  loop: "{{ zsh_directories }}"
+  block:
+    - name: Apply zshrc template
+      ansible.builtin.template:
+        src: zshrc.j2
+        dest: "{{ ansible_user_dir }}/.zshrc"
+        mode: 0644
+    - name: Fix permissions for zsh
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: 0755
+      loop: "{{ zsh_directories }}"
+  tags: zsh

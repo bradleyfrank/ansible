@@ -1,0 +1,35 @@
+---
+
+- name: Install Homebrew taps
+  community.general.homebrew_tap:
+    name: "{{ system_packages['taps'] }}"
+  tags: [packages, homebrew_taps]
+
+- name: Install Homebrew formulas
+  community.general.homebrew:
+    name: "{{ system_packages['formulas'] }}"
+  tags: [packages, homebrew_formulas]
+
+- name: Install common Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ system_packages['casks_common'] }}"
+    accept_external_apps: true
+  tags: [packages, homebrew_casks]
+
+- name: Install other Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ system_packages['casks_hardware_only'] }}"
+    accept_external_apps: true
+  when: ansible_model is match('Mac')  # skips installing casks in a virtual machine
+  tags: [packages, homebrew_casks]
+
+- name: Install apps from the Mac App Store
+  block:
+    - name: Check Mac App Store authentication status
+      ansible.builtin.shell: mas account >&1 | grep -vq 'Not signed in'
+      register: mas_account  # success when 'Not signed in' not found
+    - name: Install apps
+      ansible.builtin.command: "/usr/local/bin/mas install {{ item }}"
+      loop: "{{ system_packages['apps'] }}"
+      when: mas_account['rc'] == 0  # authenticated to mac app store
+  tags: [packages, mac_app_store]

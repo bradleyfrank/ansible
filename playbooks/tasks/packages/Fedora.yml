@@ -1,0 +1,19 @@
+---
+
+- name: Install Fedora packages
+  ansible.builtin.dnf:
+    name: "{{ system_packages + dist_packages }}"
+    state: present
+    update_cache: true
+    install_weak_deps: true
+  become: true
+  tags: [packages, dnf]
+
+- name: Install flatpaks
+  community.general.flatpak:
+    name: "{{ item['name'] }}"
+    state: present
+    remote: "{{ item['remote'] | default(omit) }}"
+    method: user
+  loop: "{{ flatpak_packages }}"
+  tags: [packages, flatpaks]

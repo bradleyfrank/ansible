@@ -6,20 +6,24 @@
     groups: docker
     shell: /usr/bin/zsh
   become: true
+  tags: shell
 
 - name: Import dconf settings
   ansible.builtin.shell: "dconf load / < {{ item }}"
   with_fileglob:
     - "conf/Gnome/common.dconf"
     - "conf/Gnome/{{ ansible_distribution }}.dconf"
+  tags: system_settings
 
 - name: Generate host keys
   ansible.builtin.command:
     cmd: ssh-keygen -A
     creates: /etc/ssh/ssh_host_*_key
   become: true
+  tags: ssh
 
 - name: Secure SSH settings
   import_role:
     name: devsec.hardening.ssh_hardening
   become: true
+  tags: [ssh, security]
