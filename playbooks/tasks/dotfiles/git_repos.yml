@@ -12,6 +12,7 @@
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
     state: directory
+    mode: 0755
   loop: "{{ github_repos['json']['items'] }}"
   loop_control:
     label: "{{ item['name'] }}"
@@ -29,6 +30,7 @@
     repo: "{{ item['ssh_url'] }}"
     dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
     accept_hostkey: true
+    key_file: "{{ ansible_user_dir }}/.ssh/github"
     ssh_opts: "-i {{ ansible_user_dir }}/.ssh/github"
     update: false
   loop: "{{ github_repos['json']['items'] }}"
@@ -36,7 +38,7 @@
     label: "{{ item['name'] }}"
   tags: git_projects
 
-- name: Clone reference Git repos
+- name: Clone reference Git repositories
   ansible.builtin.git:
     repo: "{{ item['https_url'] }}"
     dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
