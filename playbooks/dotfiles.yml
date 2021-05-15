@@ -24,6 +24,36 @@
       loop: "{{ dev_directories }}"
       tags: homedirs
 
+    - name: Create dotfile directory structure
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        state: directory
+        mode: 0755
+      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      when: item['state'] == 'directory'
+      tags: misc
+
+    - name: Copy dotfiles into home directory
+      ansible.builtin.copy:
+        src: "{{ item['src'] }}"
+        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        mode: 0644
+      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      when: item['state'] == 'file'
+      tags: misc
+
+    - name: Make scripts executable
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.local/bin"
+        state: directory
+        mode: 0755
+        recurse: true
+      tags: misc
+
     - name: Ensure fonts directory exists
       ansible.builtin.file:
         path: "{{ font_dir }}"
@@ -61,43 +91,6 @@
       loop_control:
         label: "{{ item['name'] }}"
       tags: vim
-
-    - name: Create dotfile directory structure
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        state: directory
-        mode: 0755
-      with_community.general.filetree: "{{ dotfiles/ }}"
-      when: item['state'] == 'directory'
-      loop_control:
-        label: "{{ item['path'] }}"
-      tags: misc
-
-    - name: Copy dotfiles into home directory
-      ansible.builtin.copy:
-        src: "{{ item['src'] }}"
-        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        mode: 0644
-      with_community.general.filetree: "{{ dotfiles/ }}"
-      when: item['state'] == 'file'
-      loop_control:
-        label: "{{ item['path'] }}"
-      tags: misc
-
-    - name: Make scripts executable
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin"
-        state: directory
-        mode: 0755
-        recurse: true
-      tags: misc
-
-    - name: Generate kubectl completions
-      vars:
-        kubectl_completion: "{{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
-      environment:
-        PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
-      ansible.builtin.shell: "kubectl completion zsh > {{ kubectl_completion }}"
 
     - name: Apply zshrc template
       ansible.builtin.template:

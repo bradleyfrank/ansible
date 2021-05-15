@@ -27,6 +27,13 @@
         state: absent
   when: which_kubectl.rc == 1
 
+- name: Generate kubectl completions
+  vars:
+    kubectl_completion: "{{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.shell: "kubectl completion zsh > {{ kubectl_completion }}"
+
 - name: Check if Krew is installed
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
