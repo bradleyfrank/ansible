@@ -16,5 +16,5 @@
       when: ansible_system == 'Linux'
       tags: always
 
-    - name: Install user dotfiles and configure home directory
+    - name: Import dotfile tasks
       ansible.builtin.import_tasks: tasks/dotfiles.yml

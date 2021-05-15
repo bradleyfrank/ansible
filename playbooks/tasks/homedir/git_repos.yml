@@ -1,0 +1,53 @@
+---
+
+- name: Query GitHub API for my repositories
+  ansible.builtin.uri:
+    url: "https://api.github.com/search/repositories?q=user:{{ github['username'] }}+archived:false"
+    headers:
+      Authorization: "token {{ github['token'] }}"
+  register: github_repos
+  tags: git_projects
+
+- name: Create Git project directories
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+    state: directory
+  loop: "{{ github_repos['json']['items'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: git_projects
+
+- name: Copy GitHub SSH key
+  ansible.builtin.copy:
+    src: conf/ssh/github_sshkey
+    dest: "{{ ansible_user_dir }}/.ssh/github"
+    mode: 0600
+  tags: git_projects
+
+- name: Clone my GitHub repositories
+  ansible.builtin.git:
+    repo: "{{ item['ssh_url'] }}"
+    dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+    accept_hostkey: true
+    ssh_opts: "-i {{ ansible_user_dir }}/.ssh/github"
+    update: false
+  loop: "{{ github_repos['json']['items'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: git_projects
+
+- name: Clone reference Git repos
+  ansible.builtin.git:
+    repo: "{{ item['https_url'] }}"
+    dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
+    depth: '1'
+  loop: "{{ git_reference_repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: git_reference
+
+- name: Remove GitHub SSH key
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh/github"
+    state: absent
+  tags: git_projects

@@ -9,7 +9,7 @@
 - name: Install VSCode extensions
   block:
     - name: Get list of installed vscode extensions
-      command: code --list-extensions
+      ansible.builtin.command: code --list-extensions
       changed_when: false
       failed_when: code_list_extensions['rc'] not in [0,1]
       register: code_list_extensions

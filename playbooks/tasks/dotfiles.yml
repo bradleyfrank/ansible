@@ -1,87 +1,62 @@
 ---
 
-- name: Create ~/Development folder structure
+- name: Create dotfile directory structure
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/Development/{{ item }}"
+    path: "{{ ansible_user_dir }}/{{ item['path'] }}"
     state: directory
     mode: 0755
-  loop: ['Projects', 'Build', 'Scratch', 'Reference']
-  tags: dev_dirs
+  with_community.general.filetree: "{{ dotfiles/ }}"
+  when: item['state'] == 'directory'
+  loop_control:
+    label: "{{ item['path'] }}"
+  tags: misc
 
-- name: Clone reference Git repos
-  ansible.builtin.git:
-    repo: "{{ item['repo'] }}"
-    dest: "{{ git_reference_repos_dest }}/{{ item['name'] }}"
-    depth: '1'
-    version: "{{ item['version'] | default(omit) }}"
-  loop: "{{ git_reference_repos }}"
-  tags: git_repos
+- name: Copy dotfiles into home directory
+  ansible.builtin.copy:
+    src: "{{ item['src'] }}"
+    dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
+    mode: 0644
+  with_community.general.filetree: "{{ dotfiles/ }}"
+  when: item['state'] == 'file'
+  loop_control:
+    label: "{{ item['path'] }}"
+  tags: misc
 
-- name: Install individual dotfiles
-  block:
-    - name: Create dotfile directory structure
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        state: directory
-        mode: 0755
-      with_filetree: dotfiles/
-      when: item['state'] == 'directory'
-    - name: Install dotfiles
-      ansible.builtin.copy:
-        src: "{{ item['src'] }}"
-        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        mode: 0644
-      with_filetree: dotfiles/
-      when: item['state'] == 'file'
-    - name: Make scripts executable
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin"
-        state: directory
-        mode: 0755
-        recurse: true
-  tags: dotfiles
+- name: Make scripts executable
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+    mode: 0755
+    recurse: true
+  tags: misc
 
-- name: Install fonts
-  block:
-    - name: Ensure fonts directory exists
-      ansible.builtin.file:
-        path: "{{ font_dir }}"
-        state: directory
-        mode: 0700
-    - name: Copy fonts
-      ansible.builtin.copy:
-        src: fonts/
-        dest: "{{ font_dir }}/"
-        mode: 0644
-  tags: fonts
+- name: Generate kubectl completions
+  vars:
+    kubectl_completion: "{{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.shell: "kubectl completion zsh > {{ kubectl_completion }}"
 
-- name: Configure SSH directory
-  block:
-    - name: Ensure ~/.ssh directory exists
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.ssh"
-        state: directory
-        mode: 0755
-    - name: Set proper permissions on ~/.ssh/authorized_keys
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
-        state: touch
-        mode: 0600
+- name: Apply zshrc template
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    mode: 0644
+  tags: zsh
+
+- name: Ensure ~/.ssh directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: 0755
   tags: ssh
 
-- name: Build zshrc
-  block:
-    - name: Apply zshrc template
-      ansible.builtin.template:
-        src: zshrc.j2
-        dest: "{{ ansible_user_dir }}/.zshrc"
-        mode: 0644
-    - name: Fix permissions for zsh
-      ansible.builtin.file:
-        path: "{{ item }}"
-        mode: 0755
-      loop: "{{ zsh_directories }}"
-  tags: zsh
+- name: Set proper permissions on ~/.ssh/authorized_keys
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+    state: touch
+    mode: 0600
+  tags: ssh
 
 - name: Install SSH config
   ansible.builtin.copy:
@@ -110,19 +85,3 @@
     dest: "{{ vscode['config'] }}/"
     mode: 0755
   tags: vscode
-
-- name: Import Vim tasks
-  ansible.builtin.import_tasks: "extensions/vim.yml"
-  tags: [vim, extensions]
-
-- name: Import Python tasks
-  ansible.builtin.import_tasks: "extensions/python.yml"
-  tags: [python, extensions]
-
-- name: Import kubectl tasks
-  ansible.builtin.import_tasks: "extensions/kubectl.yml"
-  tags: [kubectl, extensions]
-
-- name: Import VSCode tasks
-  ansible.builtin.import_tasks: "extensions/vscode.yml"
-  tags: [vscode, extensions]

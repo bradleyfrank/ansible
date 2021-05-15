@@ -1,0 +1,78 @@
+---
+
+- name: Configure home directory on localhost
+  hosts: localhost
+  tasks:
+    - name: Include common variables
+      ansible.builtin.include_vars: common.yml
+      tags: always
+
+    - name: Include system variables
+      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
+      tags: always
+
+    - name: Include Linux distribution variables
+      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
+      when: ansible_system == 'Linux'
+      tags: always
+
+    - name: Create ~/Development folder structure
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Development/{{ item }}"
+        state: directory
+        mode: 0755
+      loop: "{{ dev_directories }}"
+      tags: homedirs
+
+    - name: Ensure fonts directory exists
+      ansible.builtin.file:
+        path: "{{ font_dir }}"
+        state: directory
+        mode: 0700
+      tags: fonts
+
+    - name: Copy fonts
+      ansible.builtin.copy:
+        src: fonts/
+        dest: "{{ font_dir }}/"
+        mode: 0644
+      tags: fonts
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name: "{{ python_packages }}"
+        extra_args: --user
+      tags: python
+
+    - name: Import Git tasks
+      ansible.builtin.import_tasks: tasks/homedir/git_repos.yml
+      tags: git_repos
+
+    - name: Create vim extensions directory path
+      ansible.builtin.file:
+        path: "{{ vim_extensions_dest }}"
+        state: directory
+        mode: 0755
+      tags: vim
+
+    - name: Install vim extensions
+      ansible.builtin.git:
+        repo: "{{ item['repo'] }}"
+        dest: "{{ vim_extensions_dest }}/{{ item['name'] }}"
+        depth: '1'
+        version: "{{ item['version'] | default(omit) }}"
+      loop: "{{ vim_extensions }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+      tags: vim
+
+    - name: Import kubectl tasks
+      ansible.builtin.import_tasks: "tasks/homedir/kubectl.yml"
+      tags: kubectl
+
+    - name: Import VSCode tasks
+      ansible.builtin.import_tasks: "tasks/homedir/vscode.yml"
+      tags: vscode
+
+- name: Import dotfile playbook
+  ansible.builtin.import_playbook: dotfiles.yml

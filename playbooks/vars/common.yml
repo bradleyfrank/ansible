@@ -6,6 +6,25 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
+
+dev_directories:
+  - Projects
+  - Build
+  - Scratch
+  - Reference
+
+github:
+  username: bradleyfrank
+  token: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    65366337313362326366653735306131373939333030363031353862303537653033316462333663
+    3935383939346437393666643233306563343133343035390a613639653333363930383631636561
+    63353331323437376336653566323661393434376661643338326665326238613965313363623037
+    3032636331303939370a333733383664666234373763336437333965643665393432626563343165
+    32623330326138346138393332666437373364393965343735343838613732653938353239326461
+    6663633938656562383166386637346361316533386232376466
+
 python_packages:
   - ansible-lint
   - beets
@@ -58,13 +77,6 @@ krew:
     - doctor
     - get-all
 
-ssh_keys:
-  - id_rsa
-  - id_home
-  - id_develop
-  - google_compute_engine
-  - ansible
-
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:
   - name: vim-airline
@@ -77,23 +89,18 @@ vim_extensions:
   - name: nerdtree
     repo: https://github.com/preservim/nerdtree.git
 
-git_reference_repos_dest: "{{ ansible_user_dir }}/Development/Reference"
+ssh_keys:
+  - id_rsa
+  - id_home
+  - id_develop
+  - google_compute_engine
+  - ansible
+
 git_reference_repos:
   - name: gcp-posters
-    repo: https://github.com/gregsramblings/google-cloud-4-words.git
+    https_url: https://github.com/gregsramblings/google-cloud-4-words.git
   - name: pure-bash-bible
-    repo: https://github.com/dylanaraps/pure-bash-bible.git
+    https_url: https://github.com/dylanaraps/pure-bash-bible.git
 
 dotfiles_collection: https://github.com/bradleyfrank/dotfiles-collection.git
 root_dotfiles: minimal
-
-python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
-
-github_token: !vault |
-  $ANSIBLE_VAULT;1.1;AES256
-  65366337313362326366653735306131373939333030363031353862303537653033316462333663
-  3935383939346437393666643233306563343133343035390a613639653333363930383631636561
-  63353331323437376336653566323661393434376661643338326665326238613965313363623037
-  3032636331303939370a333733383664666234373763336437333965643665393432626563343165
-  32623330326138346138393332666437373364393965343735343838613732653938353239326461
-  6663633938656562383166386637346361316533386232376466
