@@ -62,18 +62,6 @@
         label: "{{ item['name'] }}"
       tags: vim
 
-    - name: Import kubectl tasks
-      ansible.builtin.import_tasks: "tasks/dotfiles/kubectl.yml"
-      tags: kubectl
-
-    - name: Import VSCode tasks
-      ansible.builtin.import_tasks: "tasks/dotfiles/vscode.yml"
-      tags: vscode
-
-    - name: Import Git tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/git_repos.yml
-      tags: git_repos
-
     - name: Create dotfile directory structure
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/{{ item['path'] }}"
@@ -159,3 +147,15 @@
         dest: "{{ vscode['config'] }}/"
         mode: 0755
       tags: vscode
+
+    - name: Import kubectl tasks
+      ansible.builtin.import_tasks: "tasks/dotfiles/kubectl.yml"
+      tags: kubectl
+
+    - name: Import VSCode tasks
+      ansible.builtin.import_tasks: "tasks/dotfiles/vscode.yml"
+      tags: vscode
+
+    - name: Import Git tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/git_repos.yml
+      tags: git_repos
