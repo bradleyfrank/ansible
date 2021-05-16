@@ -30,6 +30,8 @@
         token: "{{ github['token'] }}"
       register: github_package_metadata
       loop: "{{ github_packages | default({}) | dict2items }}"
+      loop_control:
+        label: "{{ item['key'] }}"
       tags: [packages, github]
 
     - name: Include OS-specific packages

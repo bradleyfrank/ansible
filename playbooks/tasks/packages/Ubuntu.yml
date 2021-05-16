@@ -27,5 +27,5 @@
   become: true
   loop: "{{ github_package_metadata['results'] | default({}) }}"
   loop_control:
-    label: "{{ item['key'] }}"
+    label: "{{ item['invocation']['module_args']['repo'] }}"
   tags: [packages, github]
