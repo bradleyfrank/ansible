@@ -1,10 +1,9 @@
 ---
 
 - name: Check if vscode is installed
-  command: which code
-  changed_when: false
-  failed_when: which_code['rc'] not in [0,1]
-  register: which_code
+  ansible.builtin.stat:
+    path: "{{ vscode['bin'] }}"
+  register: vscode_bin
 
 - name: Install VSCode extensions
   block:
@@ -18,4 +17,4 @@
         installed_extensions: "{{ code_list_extensions['stdout_lines'] }}"
       ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
       loop: "{{ vscode_extensions | difference(installed_extensions) }}"
-  when: which_code.rc == 0
+  when: vscode_bin['stat']['exists']
