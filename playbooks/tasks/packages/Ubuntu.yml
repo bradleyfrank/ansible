@@ -26,4 +26,6 @@
           /{{ prefix }}{{ item['tag'] }}{{ suffix }}"
   become: true
   loop: "{{ github_package_metadata['results'] | default({}) }}"
+  loop_control:
+    label: "{{ item['key'] }}"
   tags: [packages, github]

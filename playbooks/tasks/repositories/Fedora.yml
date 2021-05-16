@@ -4,6 +4,8 @@
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
   loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   become: true
   tags: [repos, gpgkeys]
 
@@ -27,6 +29,8 @@
     repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
     skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
   loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   become: true
   tags: repos
 
@@ -37,4 +41,6 @@
     flatpakrepo_url: "{{ item['url'] }}"
     method: user
   loop: "{{ flatpak_remotes }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   tags: [repos, flatpak]
