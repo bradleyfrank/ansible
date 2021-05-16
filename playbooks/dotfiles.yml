@@ -1,6 +1,6 @@
 ---
 
-- name: Configure home directory on localhost
+- name: Install and configure dotfiles on localhost
   hosts: localhost
   tasks:
     - name: Include common variables
