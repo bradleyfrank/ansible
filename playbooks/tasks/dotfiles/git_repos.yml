@@ -20,8 +20,8 @@
 
 - name: Copy GitHub SSH key
   ansible.builtin.copy:
-    src: conf/ssh/github_sshkey
-    dest: "{{ ansible_user_dir }}/.ssh/github"
+    src: conf/ssh/github.pem
+    dest: "{{ github['key_file'] }}"
     mode: 0600
   tags: git_projects
 
@@ -30,8 +30,7 @@
     repo: "{{ item['ssh_url'] }}"
     dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
     accept_hostkey: true
-    key_file: "{{ ansible_user_dir }}/.ssh/github"
-    ssh_opts: "-i {{ ansible_user_dir }}/.ssh/github"
+    ssh_opts: "-i {{ github['key_file'] }}"
     update: false
   loop: "{{ github_repos['json']['items'] }}"
   loop_control:

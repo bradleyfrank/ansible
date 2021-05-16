@@ -16,6 +16,7 @@ dev_directories:
 
 github:
   username: bradleyfrank
+  key_file: "{{ ansible_user_dir }}/.ssh/github"
   token: !vault |
     $ANSIBLE_VAULT;1.1;AES256
     65366337313362326366653735306131373939333030363031353862303537653033316462333663
