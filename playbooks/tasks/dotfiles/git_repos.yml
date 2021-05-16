@@ -18,23 +18,28 @@
     label: "{{ item['name'] }}"
   tags: git_projects
 
-- name: Copy GitHub SSH key
-  ansible.builtin.copy:
-    src: conf/ssh/github.pem
-    dest: "{{ github['key_file'] }}"
-    mode: 0600
-  tags: git_projects
-
-- name: Clone my GitHub repositories
-  ansible.builtin.git:
-    repo: "{{ item['ssh_url'] }}"
-    dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
-    accept_hostkey: true
-    ssh_opts: "-i {{ github['key_file'] }}"
-    update: false
-  loop: "{{ github_repos['json']['items'] }}"
-  loop_control:
-    label: "{{ item['name'] }}"
+- name: Clone repositories
+  block:
+    - name: Copy GitHub SSH key
+      ansible.builtin.copy:
+        src: conf/ssh/github.pem
+        dest: "{{ github['key_file'] }}"
+        mode: 0600
+    - name: Clone my GitHub repositories
+      ansible.builtin.git:
+        repo: "{{ item['ssh_url'] }}"
+        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+        accept_hostkey: true
+        ssh_opts: "-i {{ github['key_file'] }}"
+        update: false
+      loop: "{{ github_repos['json']['items'] }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+  always:
+    - name: Remove GitHub SSH key
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.ssh/github"
+        state: absent
   tags: git_projects
 
 - name: Clone reference Git repositories
@@ -46,9 +51,3 @@
   loop_control:
     label: "{{ item['name'] }}"
   tags: git_reference
-
-- name: Remove GitHub SSH key
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.ssh/github"
-    state: absent
-  tags: git_projects
