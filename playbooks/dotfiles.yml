@@ -2,8 +2,6 @@
 
 - name: Install and configure dotfiles on localhost
   hosts: localhost
-  vars:
-    distro: distro_vars[ansible_distribution]
   tasks:
     - name: Include common variables
       ansible.builtin.include_vars: common.yml
@@ -14,7 +12,7 @@
       tags: always
 
     - name: Include Linux distribution variables
-      ansible.builtin.include_vars: "os_{{ distro }}.yml"
+      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
       when: ansible_system == 'Linux'
       tags: always
 

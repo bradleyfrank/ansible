@@ -2,8 +2,6 @@
 
 - name: Bootstrap localhost system
   hosts: localhost
-  vars:
-    distro: distro_vars[ansible_distribution]
   tasks:
     - name: Include common variables
       ansible.builtin.include_vars: common.yml
@@ -14,12 +12,12 @@
       tags: always
 
     - name: Include Linux distribution variables
-      ansible.builtin.include_vars: "os_{{ distro }}.yml"
+      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
       when: ansible_system == 'Linux'
       tags: always
 
     - name: Configure Linux repositories
-      ansible.builtin.include_tasks: "tasks/repositories/{{ distro }}.yml"
+      ansible.builtin.include_tasks: "tasks/repositories/{{ distro_vars[ansible_distribution] }}.yml"
       when: ansible_system == 'Linux'
 
     - name: Lookup GitHub package latest release
@@ -35,7 +33,7 @@
       tags: [packages, github]
 
     - name: Include OS-specific packages
-      ansible.builtin.include_tasks: "tasks/packages/{{ distro }}.yml"
+      ansible.builtin.include_tasks: "tasks/packages/{{ distro_vars[ansible_distribution] }}.yml"
       tags: always
 
     - name: Make bash default for root
