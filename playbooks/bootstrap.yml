@@ -20,11 +20,59 @@
       ansible.builtin.include_tasks: "tasks/repositories/{{ distro_vars[ansible_distribution] }}.yml"
       when: ansible_system == 'Linux'
 
-    - name: Install packages
-      ansible.builtin.import_tasks: tasks/packages.yml
+    - name: Lookup GitHub package latest release
+      environment:
+        PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
+      community.general.github_release:
+        user: "{{ item['value']['user'] }}"
+        repo: "{{ item['key'] }}"
+        action: latest_release
+        token: "{{ github['token'] }}"
+      register: github_package_metadata
+      loop: "{{ github_packages | default({}) | dict2items }}"
+      loop_control:
+        label: "{{ item['key'] }}"
+      tags: [packages, github]
 
-    - name: Configure system
-      ansible.builtin.import_tasks: tasks/system.yml
+    - name: Include OS-specific packages
+      ansible.builtin.include_tasks: "tasks/packages/{{ distro_vars[ansible_distribution] }}.yml"
+      tags: always
+
+    - name: Make bash default for root
+      ansible.builtin.user:
+        name: root
+        shell: "{{ bash_shell }}"
+      become: true
+      tags: [root, shell]
+
+    - name: Fix permissions for zsh
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: 0755
+      loop: "{{ zsh_directories }}"
+      tags: shell
+
+    - name: Clone dotfiles repo
+      ansible.builtin.git:
+        accept_hostkey: true
+        depth: 1
+        dest: "{{ root_home }}/.dotfiles"
+        repo: "{{ dotfiles_collection }}"
+      become: true
+      tags: [root, dotfiles]
+
+    - name: Install root dotfiles
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ root_home }}/.dotfiles/{{ root_dotfiles }}/"
+        dest: "{{ root_home }}/"
+        mode: 0644
+      become: true
+      tags: [root, dotfiles]
+
+    - name: Configure system settings
+      ansible.builtin.include_tasks: "tasks/system/{{ ansible_system }}.yml"
+      tags: always
 
 - name: Import dotfile playbook
   ansible.builtin.import_playbook: dotfiles.yml

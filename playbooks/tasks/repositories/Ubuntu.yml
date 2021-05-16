@@ -7,6 +7,8 @@
     id: "{{ item['id'] | default(omit) }}"
     keyserver: "{{ item['keyserver'] | default(omit) }}"
   loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   become: true
   tags: [repos, gpgkeys]
 
@@ -15,5 +17,7 @@
     repo: "{{ item['repo'] }}"
     filename: "{{ item['name'] }}"
   loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   become: true
   tags: repos

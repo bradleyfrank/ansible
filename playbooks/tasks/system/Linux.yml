@@ -8,12 +8,31 @@
   become: true
   tags: shell
 
+- name: Ensure Docker is running
+  ansible.builtin.systemd:
+    name: docker
+    daemon_reload: true
+    enabled: true
+    state: started
+  become: true
+  tags: docker
+
+- name: Pull latest Docker images
+  environment:
+    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
+  community.docker.docker_image:
+    name: "{{ item }}"
+    source: pull
+  loop: "{{ docker_images }}"
+  become: true
+  tags: docker
+
 - name: Import dconf settings
   ansible.builtin.shell: "dconf load / < {{ item }}"
   with_fileglob:
     - "conf/Gnome/common.dconf"
     - "conf/Gnome/{{ ansible_distribution }}.dconf"
-  tags: system_settings
+  tags: dconf
 
 - name: Generate host keys
   ansible.builtin.command:
