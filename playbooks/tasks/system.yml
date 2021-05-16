@@ -7,6 +7,12 @@
   become: true
   tags: [root, shell]
 
+- name: Fix permissions for zsh
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: 0755
+  loop: "{{ zsh_directories }}"
+
 - name: Clone dotfiles repo
   ansible.builtin.git:
     accept_hostkey: true

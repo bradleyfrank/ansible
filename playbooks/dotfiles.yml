@@ -1,6 +1,6 @@
 ---
 
-- name: Apply dotfiles to localhost
+- name: Install and configure dotfiles on localhost
   hosts: localhost
   tasks:
     - name: Include common variables
@@ -16,5 +16,139 @@
       when: ansible_system == 'Linux'
       tags: always
 
-    - name: Install user dotfiles and configure home directory
-      ansible.builtin.import_tasks: tasks/dotfiles.yml
+    - name: Create ~/Development folder structure
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Development/{{ item }}"
+        state: directory
+        mode: 0755
+      loop: "{{ dev_directories }}"
+      tags: homedirs
+
+    - name: Create dotfile directory structure
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        state: directory
+        mode: 0755
+      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      when: item['state'] == 'directory'
+      tags: misc
+
+    - name: Copy dotfiles into home directory
+      ansible.builtin.copy:
+        src: "{{ item['src'] }}"
+        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        mode: 0644
+      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      when: item['state'] == 'file'
+      tags: misc
+
+    - name: Make scripts executable
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.local/bin"
+        state: directory
+        mode: 0755
+        recurse: true
+      tags: misc
+
+    - name: Ensure fonts directory exists
+      ansible.builtin.file:
+        path: "{{ font_dir }}"
+        state: directory
+        mode: 0700
+      tags: fonts
+
+    - name: Copy fonts
+      ansible.builtin.copy:
+        src: fonts/
+        dest: "{{ font_dir }}/"
+        mode: 0644
+      tags: fonts
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name: "{{ python_packages }}"
+        extra_args: --user
+      tags: python
+
+    - name: Create vim extensions directory path
+      ansible.builtin.file:
+        path: "{{ vim_extensions_dest }}"
+        state: directory
+        mode: 0755
+      tags: vim
+
+    - name: Install vim extensions
+      ansible.builtin.git:
+        repo: "{{ item['repo'] }}"
+        dest: "{{ vim_extensions_dest }}/{{ item['name'] }}"
+        depth: '1'
+        version: "{{ item['version'] | default(omit) }}"
+      loop: "{{ vim_extensions }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+      tags: vim
+
+    - name: Apply zshrc template
+      ansible.builtin.template:
+        src: zshrc.j2
+        dest: "{{ ansible_user_dir }}/.zshrc"
+        mode: 0644
+      tags: zsh
+
+    - name: Ensure ~/.ssh directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.ssh"
+        state: directory
+        mode: 0755
+      tags: ssh
+
+    - name: Set proper permissions on ~/.ssh/authorized_keys
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+        state: touch
+        mode: 0600
+      tags: ssh
+
+    - name: Install SSH config
+      ansible.builtin.copy:
+        src: conf/ssh/config
+        dest: "{{ ansible_user_dir }}/.ssh/config"
+        mode: 0644
+      tags: [ssh, ssh_config]
+
+    - name: Install tmux config
+      ansible.builtin.template:
+        src: tmux.conf.j2
+        dest: "{{ ansible_user_dir }}/.tmux.conf"
+        mode: 0644
+      tags: tmux
+
+    - name: Install gitconfig
+      ansible.builtin.template:
+        src: gitconfig.j2
+        dest: "{{ ansible_user_dir }}/.gitconfig"
+        mode: 0755
+      tags: git
+
+    - name: Install VSCode configs
+      ansible.builtin.copy:
+        src: conf/vscode/
+        dest: "{{ vscode['config'] }}/"
+        mode: 0755
+      tags: vscode
+
+    - name: Import kubectl tasks
+      ansible.builtin.import_tasks: "tasks/dotfiles/kubectl.yml"
+      tags: kubectl
+
+    - name: Import VSCode tasks
+      ansible.builtin.import_tasks: "tasks/dotfiles/vscode.yml"
+      tags: vscode
+
+    - name: Import Git tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/git_repos.yml
+      tags: git_repos

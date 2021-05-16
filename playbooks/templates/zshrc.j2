@@ -149,8 +149,7 @@ function dclint() {
 }
 
 function dtags() {
-  wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - \
-      | tr -d '[]" ' | tr '}' '\n' | awk -F: '{print $3}'
+  wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'
 }
 
 function diceware() {
