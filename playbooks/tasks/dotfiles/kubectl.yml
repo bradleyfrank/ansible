@@ -25,7 +25,7 @@
       ansible.builtin.file:
         path: /tmp/kubectl.txt
         state: absent
-  when: which_kubectl.rc == 1
+  when: which_kubectl['rc'] == 1
 
 - name: Generate kubectl completions
   vars:
