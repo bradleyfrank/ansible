@@ -184,9 +184,9 @@ function git-worktree() {
   case "$1" in
     add|create) git worktree add ./.worktree/"$2" ;;
     remove)     git worktree remove "$2" ;;
-    delete)     git worktree remove "$(git worktree list | _inline_fzf_nh | awk '{print $1}')" ;;
+    delete)     git worktree remove "$(git-worktree list | _inline_fzf_nh | awk '{print $1}')" ;;
     list)       git worktree list | awk '(NR>1)' | sed -r "s|$PWD/.worktree/||" ;;
-    *)          echo "worktree [add|remove <branch>] | list | delete" ;;
+    *)          echo "git-worktree [add|remove <branch>] | list | delete" ;;
   esac
 }
 

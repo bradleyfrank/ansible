@@ -159,7 +159,6 @@ while getopts ':bdg:mch' opt; do
     b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
-    m) ANSIBLE_REPO_SKIP_TAGS="${ANSIBLE_REPO_SKIP_TAGS},mac_app_store" ;;
     c) ANSIBLE_REPO_SKIP_TAGS="${ANSIBLE_REPO_SKIP_TAGS},ssh_config"    ;;
     h) usage ; exit 0 ;;
     *) usage ; exit 1 ;;
