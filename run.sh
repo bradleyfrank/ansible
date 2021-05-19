@@ -27,15 +27,12 @@ cleanup() {
 }
 
 usage() {
-    echo "Usage: [-b | -d] [-g git_branch] [-h]"
-    echo "  -b  Run the bootstrap playbook. (default)"
-    echo "  -d  Run the dotfiles playbook."
-    echo "  -g  Specify the Ansible repo git branch to run. (default: main)"
-    echo "  -h  Print this help menu and quit."
-    echo
-    echo "Skip Tags: [-mc]"
-    echo "  -m  Do not install Mac App Store apps [on macOS systems]. (tag: mac_app_store)"
-    echo "  -c  Do not manage ssh config file. (tag: ssh_config)"
+    echo "sh run.sh [-b | -d] [-c] [-g git_branch] | -h"
+    echo "  -b  Run the bootstrap playbook (default)"
+    echo "  -d  Run the dotfiles playbook"
+    echo "  -g  Specify the git branch to run (default: 'main')"
+    echo "  -c  Do not manage ssh config file (--skip-tags ssh_config)"
+    echo "  -h  Print this help menu and quit"
 }
 
 create_tmp_sudoers() {
@@ -149,6 +146,7 @@ ansible_run() {
     return 0
   else
     cd - >/dev/null 2>&1 || return 1
+    mv "$CHECKOUT_DIR" "$HOME"/.ansible_"$(date +%F%T | tr -d ':-')"
     return 1
   fi
 }
