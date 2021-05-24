@@ -6,7 +6,6 @@
     headers:
       Authorization: "token {{ github['token'] }}"
   register: github_repos
-  tags: git_projects
 
 - name: Create Git project directories
   ansible.builtin.file:
@@ -16,7 +15,6 @@
   loop: "{{ github_repos['json']['items'] }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: git_projects
 
 - name: Clone repositories
   block:
@@ -40,14 +38,3 @@
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/.ssh/github"
         state: absent
-  tags: git_projects
-
-- name: Clone reference Git repositories
-  ansible.builtin.git:
-    repo: "{{ item['https_url'] }}"
-    dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
-    depth: '1'
-  loop: "{{ git_reference_repos }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  tags: git_reference

@@ -2,6 +2,7 @@
 
 - name: Install and configure dotfiles on localhost
   hosts: localhost
+
   tasks:
     - name: Include common variables
       ansible.builtin.include_vars: common.yml
@@ -21,8 +22,18 @@
         path: "{{ ansible_user_dir }}/Development/{{ item }}"
         state: directory
         mode: 0755
-      loop: "{{ dev_directories }}"
-      tags: homedirs
+      loop: ['Projects', 'Build', 'Scratch', 'Reference']
+      tags: devdirs
+
+    - name: Clone reference Git repositories
+      ansible.builtin.git:
+        repo: "{{ item['https_url'] }}"
+        dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
+        depth: '1'
+      loop: "{{ git_reference_repos }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+      tags: git_reference
 
     - name: Create dotfile directory structure
       ansible.builtin.file:
@@ -97,6 +108,8 @@
         src: zshrc.j2
         dest: "{{ ansible_user_dir }}/.zshrc"
         mode: 0644
+        backup: true
+      register: _backup_zshrc
       tags: zsh
 
     - name: Ensure ~/.ssh directory exists
@@ -119,8 +132,7 @@
         dest: "{{ ansible_user_dir }}/.ssh/config"
         mode: 0644
         backup: true
-      register: archive_backup
-      notify: backup_handler
+      register: _backup_ssh_config
       when: ansible_hostname is match('Brad')
       tags: [ssh, ssh_config]
 
@@ -129,6 +141,8 @@
         src: tmux.conf.j2
         dest: "{{ ansible_user_dir }}/.tmux.conf"
         mode: 0644
+        backup: true
+      register: _backup_tmux_conf
       tags: tmux
 
     - name: Install gitconfig
@@ -136,6 +150,8 @@
         src: gitconfig.j2
         dest: "{{ ansible_user_dir }}/.gitconfig"
         mode: 0755
+        backup: true
+      register: _backup_gitconfig
       tags: git
 
     - name: Install VSCode configs
@@ -143,35 +159,36 @@
         src: conf/vscode/
         dest: "{{ vscode['config'] }}/"
         mode: 0755
+        backup: true
+      register: _backup_vscode_settings_json
       tags: vscode
 
     - name: Import kubectl tasks
-      ansible.builtin.import_tasks: "tasks/dotfiles/kubectl.yml"
+      ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
       tags: kubectl
 
     - name: Import VSCode tasks
-      ansible.builtin.import_tasks: "tasks/dotfiles/vscode.yml"
+      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
       tags: vscode
 
-    - name: Import Git tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/git_repos.yml
-      tags: git_repos
+    - name: Clone public and private GitHub repositories
+      ansible.builtin.import_tasks: tasks/dotfiles/github.yml
+      when: ansible_hostname is match('Brad')
+      tags: github_projects
 
-  handlers:
-    - name: backup_handler
-      block:
-        - name: Ensure backup directory exists
-          ansible.builtin.file:
-            path: "{{ ansible_user_dir }}/.ansible/backups"
-            state: directory
-            mode: 0755
-        - name: Copy file to new directory
-          ansible.builtin.copy:
-            src: "{{ archive_backup['backup_file'] }}"
-            dest: "{{ ansible_user_dir }}/.ansible/backups/"
-            mode: 0755
-        - name: Remove original backup file
-          ansible.builtin.file:
-            path: "{{ archive_backup['backup_file'] }}"
-            state: absent
-      when: archive_backup['backup_file'] is defined
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_backups['dest'] }}"
+        state: directory
+        mode: 0755
+
+    - name: Process backups
+      vars:
+        backup_var: "{{ lookup('vars', item) }}"
+        backup_file: "{{ backup_var['dest'] | basename | replace('.', '') }}"
+      ansible.builtin.include_tasks: tasks/backups.yml
+      when: backup_var['backup_file'] is defined
+      loop: "{{ query('varnames', '^_backup_.+$') }}"
+      loop_control:
+        label: "{{ backup_file }}"
+      tags: ['always', 'backups']

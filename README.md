@@ -21,11 +21,10 @@ wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
 ## Running
 
 ```text
-sh run.sh [-b | -d] [-c] [-g git_branch] | -h
+sh run.sh [-b | -d] [-g git_branch] | -h
     -b  Run the bootstrap playbook (default)
     -d  Run the dotfiles playbook
     -g  Specify the git branch to run (default: 'main')
-    -c  Do not manage ssh config file (--skip-tags ssh_config)
     -h  Print this help menu and quit
 ```
 

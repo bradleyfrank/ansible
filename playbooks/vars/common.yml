@@ -6,13 +6,9 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
-python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
+backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 
-dev_directories:
-  - Projects
-  - Build
-  - Scratch
-  - Reference
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 
 github:
   username: bradleyfrank
@@ -43,7 +39,6 @@ vscode_extensions:
   - DavidAnson.vscode-markdownlint
   - donjayamanne.githistory
   - eamodio.gitlens
-  - haaaad.ansible
   - mhutchie.git-graph
   - mikestead.dotenv
   - ms-azuretools.vscode-docker
@@ -53,7 +48,6 @@ vscode_extensions:
   - ms-vscode-remote.remote-ssh
   - ms-vscode-remote.remote-ssh-edit
   - naumovs.color-highlight
-  - Remisa.shellman
   - richie5um2.vscode-sort-json
   - rogalmic.bash-debug
   - samuelcolvin.jinjahtml
@@ -62,6 +56,7 @@ vscode_extensions:
   - Tyriar.sort-lines
   - vortizhe.simple-ruby-erb
   - zaaack.markdown-editor
+  - zbr.vscode-ansible
 
 docker_images:
   - archivebox/archivebox
