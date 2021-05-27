@@ -150,7 +150,7 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bdg:mh' opt; do
+while getopts ':bdg:h' opt; do
   case "$opt" in
     b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
