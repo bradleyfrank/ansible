@@ -162,7 +162,6 @@ function dotfiles() {
   ansible-pull \
     --url https://github.com/bradleyfrank/ansible.git \
     --directory {{ ansible_user_dir }}/.dotfiles \
-    --skip-tags {{ ansible_skip_tags | default(['never'], true) | join(',') }} \
     playbooks/dotfiles.yml
 }
 
