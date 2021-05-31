@@ -178,7 +178,7 @@
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
-        path: "{{ ansible_backups['dest'] }}"
+        path: "{{ backups_dir }}"
         state: directory
         mode: 0755
 
