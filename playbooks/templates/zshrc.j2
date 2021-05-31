@@ -81,19 +81,21 @@ alias e='extract'
 alias glances='glances --theme-white'
 alias glow='glow -s light'
 alias grep='grep -I'
-alias gcommon='cd $(git rev-parse --git-common-dir)'
+alias gcommon='cd $(dirname $(git rev-parse --git-common-dir))'
 alias gtop='cd "$(git rev-parse --show-toplevel)"'
 alias gbd='git-branch-delete'
 alias gwt='git-worktree'
 alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
-alias http='curl -s -L -D -'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
-alias l1='ls -1 --color --classify --human-readable'
-alias la='ls -l --all --color --classify --human-readable'
-alias lg='ls -g --no-group --color --classify --human-readable'
-alias ll='ls -l --color --classify --human-readable'
-alias lt='ls -1S --almost-all --color --classify --human-readable --group-directories-first --size'
+alias lb='ls --color --classify --human-readable'  # ls base alias
+alias l1='lb -1'
+alias la='lb -l --all'
+alias lg='lb -g --no-group'
+alias ll='lb -l'
+alias lS='lb -1S --almost-all --group-directories-first --size'
+alias lt='lb -lt --reverse --almost-all'
+alias lu='lb -ltu --reverse --almost-all'
 alias lolo='echo {{ docker_images | join(' ') }} | xargs -P10 -n1 docker pull'
 alias lsmnt='mount | column -t'
 alias mp='multipass'
@@ -160,7 +162,6 @@ function dotfiles() {
   ansible-pull \
     --url https://github.com/bradleyfrank/ansible.git \
     --directory {{ ansible_user_dir }}/.dotfiles \
-    --skip-tags {{ ansible_skip_tags | default(['never'], true) | join(',') }} \
     playbooks/dotfiles.yml
 }
 
@@ -184,9 +185,9 @@ function git-worktree() {
   case "$1" in
     add|create) git worktree add ./.worktree/"$2" ;;
     remove)     git worktree remove "$2" ;;
-    delete)     git worktree remove "$(worktree list | _inline_fzf_nh | awk '{print $1}')" ;;
+    delete)     git worktree remove "$(git-worktree list | _inline_fzf_nh | awk '{print $1}')" ;;
     list)       git worktree list | awk '(NR>1)' | sed -r "s|$PWD/.worktree/||" ;;
-    *)          echo "worktree [add|remove <branch>] | list | delete" ;;
+    *)          echo "git-worktree [add|remove <branch>] | list | delete" ;;
   esac
 }
 
@@ -284,16 +285,6 @@ function findproc() {
 
 function gedit() {
   nohup /usr/bin/gedit "$@" &> /dev/null &
-}
-{% endif %}
-{% if 'remmac06432' in ansible_hostname %}
-function infrabootstrap() {
-  pyenv -n ve -v 3.8
-  printf "KUBECONFIG=%s/.kube/config\nINFRACTL_HOME=%s\n" \
-          "$HOME" "$(git rev-parse --show-toplevel)" > .env
-  sed -e 's|export ||g' -e 's| |\n|g' < "$HOME"/.infractl/secrets >> .env
-  python3 -m pip install -r requirements.txt
-  python3 setup.py install
 }
 {% endif %}
 

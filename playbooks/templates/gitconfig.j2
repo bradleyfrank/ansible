@@ -30,5 +30,5 @@
 [rebase]
   autoStash = true
 [user]
-  name = {{ ansible_user_id }}
+  name = {{ ansible_user_gecos }}
   email = {{ 'bfrank@oreilly.com' if 'remmac06432' in ansible_hostname else 'bradfrank@fastmail.com' }}

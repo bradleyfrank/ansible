@@ -1,0 +1,41 @@
+---
+
+- name: Find backups older than 4 weeks
+  ansible.builtin.find:
+    paths: "{{ backups_dir }}"
+    patterns: "{{ backup_file }}.*"
+    age: 4w
+  register: backups_expired
+  tags: ['always', 'backups']
+
+- name: Get list of all backups
+  ansible.builtin.find:
+    paths: "{{ backups_dir }}"
+    patterns: "{{ backup_file }}.*"
+  register: backups_all
+  tags: ['always', 'backups']
+
+- name: Delete expired backups
+  vars:
+    backups_all_sorted: "{{ backups_all['files'] | sort(attribute='ctime') }}"
+  ansible.builtin.file:
+    path: "{{ object['path'] }}"
+    state: absent
+  loop: "{{ backups_expired['files'] + backups_all_sorted[9:] }}"
+  loop_control:
+    label: "{{ object['path'] }}"
+    loop_var: object
+  tags: ['always', 'backups']
+
+- name: Make custom backup
+  ansible.builtin.copy:
+    src: "{{ backup_var['backup_file'] }}"
+    dest: "{{ backups_dir }}/{{ backup_file }}.{{ ansible_date_time['iso8601_basic_short'] }}"
+    mode: 0755
+  tags: ['always', 'backups']
+
+- name: Remove original backup
+  ansible.builtin.file:
+    path: "{{ backup_var['backup_file'] }}"
+    state: absent
+  tags: ['always', 'backups']

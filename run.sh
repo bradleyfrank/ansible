@@ -14,7 +14,6 @@ HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install.
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_PLAYBOOK="bootstrap"
-ANSIBLE_REPO_SKIP_TAGS="never"
 
 
 # ----- functions ----- #
@@ -27,15 +26,11 @@ cleanup() {
 }
 
 usage() {
-    echo "Usage: [-b | -d] [-g git_branch] [-h]"
-    echo "  -b  Run the bootstrap playbook. (default)"
-    echo "  -d  Run the dotfiles playbook."
-    echo "  -g  Specify the Ansible repo git branch to run. (default: main)"
-    echo "  -h  Print this help menu and quit."
-    echo
-    echo "Skip Tags: [-mc]"
-    echo "  -m  Do not install Mac App Store apps [on macOS systems]. (tag: mac_app_store)"
-    echo "  -c  Do not manage ssh config file. (tag: ssh_config)"
+    echo "sh run.sh [-b | -d] [-g git_branch] | -h"
+    echo "  -b  Run the bootstrap playbook (default)"
+    echo "  -d  Run the dotfiles playbook"
+    echo "  -g  Specify the git branch to run (default: 'main')"
+    echo "  -h  Print this help menu and quit"
 }
 
 create_tmp_sudoers() {
@@ -133,10 +128,8 @@ pre_ansible_run() {
 
 ansible_playbook() {
   case "$ANSIBLE_REPO_PLAYBOOK" in
-    bootstrap)
-      ansible-playbook --ask-become-pass --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/bootstrap.yml ;;
-    dotfiles)
-      ansible-playbook --skip-tags "$ANSIBLE_REPO_SKIP_TAGS" playbooks/dotfiles.yml ;;
+    bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
+    dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
   esac
 }
 
@@ -149,6 +142,7 @@ ansible_run() {
     return 0
   else
     cd - >/dev/null 2>&1 || return 1
+    mv "$CHECKOUT_DIR" "$HOME"/.ansible_"$(date +%F%T | tr -d ':-')"
     return 1
   fi
 }
@@ -156,13 +150,11 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bdg:mch' opt; do
+while getopts ':bdg:h' opt; do
   case "$opt" in
     b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
-    m) ANSIBLE_REPO_SKIP_TAGS="${ANSIBLE_REPO_SKIP_TAGS},mac_app_store" ;;
-    c) ANSIBLE_REPO_SKIP_TAGS="${ANSIBLE_REPO_SKIP_TAGS},ssh_config"    ;;
     h) usage ; exit 0 ;;
     *) usage ; exit 1 ;;
   esac

@@ -2,33 +2,33 @@
 
 Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfiles.
 
-* **Supported OS:** *macOS, Fedora, Ubuntu, Pop!_OS*
+**Supported systems:** *macOS, Fedora, Ubuntu, Pop!_OS*
 
-The `run.sh` script updates the OS and installs Ansible and its dependencies before running the playbook.
+## Installing
 
-```none
-Usage: [-b | -d] [-mc] [-g git_branch] | -h
-    -b  Run the bootstrap playbook (default)
-    -d  Run the dotfiles playbook
-    -g  Specify the git branch to run (default: 'main')
-    -m  Do not install Mac App Store apps (tag: mac_app_store)
-    -c  Do not manage ssh config file (tag: ssh_config)
-    -h  Print this help menu and quit
-```
-
-* For macOS: ensure iCloud and the Mac App Store are authenticated to the appropriate account (allows `mas` to install apps; skip with `-m`)
-* The script will prompt for the vault password and create `~/.ansible/vault` (decrypts `.ssh/config`; skip with `-c`)
-
-To start with `curl` (i.e. **macOS**):
+To install with `curl` (i.e. **macOS**):
 
 ```shell
 curl -O https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
-sh run.sh <args>
 ```
 
-To start with `wget` (i.e. **Linux**):
+To install with `wget` (i.e. **Linux**):
 
 ```shell
 wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
-sh run.sh <args>
 ```
+
+## Running
+
+```text
+sh run.sh [-b | -d] [-g git_branch] | -h
+    -b  Run the bootstrap playbook (default)
+    -d  Run the dotfiles playbook
+    -g  Specify the git branch to run (default: 'main')
+    -h  Print this help menu and quit
+```
+
+* Prompts for the Ansible vault password (saved to `~/.ansible/vault`)
+* Ansible is installed via `pip` on all systems
+* The `bootstrap` playbook requires `sudo` privileges for any system
+* Log into the Mac App Store to install apps via `mas` (skips if not authenticated)

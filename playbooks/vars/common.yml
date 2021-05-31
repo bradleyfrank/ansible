@@ -6,14 +6,6 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
-python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
-
-dev_directories:
-  - Projects
-  - Build
-  - Scratch
-  - Reference
-
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"
@@ -25,6 +17,8 @@ github:
     3032636331303939370a333733383664666234373763336437333965643665393432626563343165
     32623330326138346138393332666437373364393965343735343838613732653938353239326461
     6663633938656562383166386637346361316533386232376466
+
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 
 python_packages:
   - ansible-lint
@@ -43,7 +37,6 @@ vscode_extensions:
   - DavidAnson.vscode-markdownlint
   - donjayamanne.githistory
   - eamodio.gitlens
-  - haaaad.ansible
   - mhutchie.git-graph
   - mikestead.dotenv
   - ms-azuretools.vscode-docker
@@ -53,7 +46,6 @@ vscode_extensions:
   - ms-vscode-remote.remote-ssh
   - ms-vscode-remote.remote-ssh-edit
   - naumovs.color-highlight
-  - Remisa.shellman
   - richie5um2.vscode-sort-json
   - rogalmic.bash-debug
   - samuelcolvin.jinjahtml
@@ -62,6 +54,7 @@ vscode_extensions:
   - Tyriar.sort-lines
   - vortizhe.simple-ruby-erb
   - zaaack.markdown-editor
+  - zbr.vscode-ansible
 
 docker_images:
   - archivebox/archivebox
@@ -77,6 +70,8 @@ krew:
     - deprecations
     - doctor
     - get-all
+
+backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:
