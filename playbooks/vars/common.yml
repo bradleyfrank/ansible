@@ -6,10 +6,6 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
-backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
-
-python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
-
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"
@@ -21,6 +17,8 @@ github:
     3032636331303939370a333733383664666234373763336437333965643665393432626563343165
     32623330326138346138393332666437373364393965343735343838613732653938353239326461
     6663633938656562383166386637346361316533386232376466
+
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 
 python_packages:
   - ansible-lint
@@ -72,6 +70,8 @@ krew:
     - deprecations
     - doctor
     - get-all
+
+backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:
