@@ -3,6 +3,7 @@
 system_packages:
   - 1password
   - abcde
+  - alacritty
   - asciinema
   - audacious
   - bash-completion

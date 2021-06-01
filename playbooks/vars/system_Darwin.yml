@@ -20,6 +20,7 @@ system_packages:
     - eye-d3
     - fdupes
     - ffmpeg
+    - fileicon
     - findutils
     - flac
     - fzf
@@ -77,6 +78,7 @@ system_packages:
     - zsh-syntax-highlighting
   casks_common:
     - 1password
+    - alacritty
     - appcleaner
     - balenaetcher
     - bbedit
