@@ -175,14 +175,6 @@ kcs() {
 # [kcu] kubectl context unset
 alias kcu='kubectl config unset current-context'
 
-# [k-] kubectl --context <cluster>
-alias k-bh-dev='kubectl --context binderhub-dev-cluster'
-alias k-bh-prod='kubectl --context binderhub-prod-cluster'
-alias k-common-build='kubectl --context common-build-cluster'
-alias k-platform-dev='kubectl --context platform-dev-cluster'
-alias k-platform-prod='kubectl --context platform-prod-cluster'
-alias k-playground='kubectl --context playground-cluster'
-
 # [kcns] context set default namespace
 kcns() {
     local ns="$1"
