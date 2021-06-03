@@ -213,7 +213,7 @@ function mux() {
   fi
 }
 
-function pyenv() {
+function py() {
   local pyname pyver=3.8 pyfunc
 
   while getopts ':acdhn:v:' flag; do
@@ -221,7 +221,7 @@ function pyenv() {
       a) pyfunc=activate ;;
       c) pyfunc=create ;;
       d) deactivate ; return $? ;;
-      h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
+      h) echo "Usage: py [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
       n) pyname=$OPTARG ;;
       v) pyver=$OPTARG ;;
       *) echo "Invalid argument." >&2 ; return 1 ;;
@@ -268,6 +268,10 @@ function ytdl-video() {
 }
 
 {% if 'Darwin' in ansible_system %}
+function uptime-p() {
+  uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"
+}
+
 function ytdl-music() {
     youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
       --postprocessor-args "-strict experimental" "$1"
@@ -301,30 +305,31 @@ function precmd() {
         base03="%F{234}"
   local eol=$'\n'
 
+  _CWD="" _KUBECTL="" _GCP="" _PYENV="" _GIT="" _PROMPT=""
+
   # -- cwd segment -- #
-  _CWD="${blue}→ %(3~|%-1~/.../%1~|%~)${nocolor}"
+  if [[ -z $TMUX ]]; then
+    _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}"
+  fi
+
+  # -- gcloud project segment -- #
+  if _res=$(gcloud config configurations describe default --format="value(properties.core.project)" 2> /dev/null); then
+    [[ $_res != "" ]] && _GCP="${orange}● ${_res} ${nocolor}"
+  fi
 
   # -- kubectl context segment -- #
-  if context="$(kubectl config current-context 2> /dev/null | grep -o '[^_]*$')"; then
-    _KUBECTL="${violet} ☸ ${context}${nocolor}"
-  else
-    _KUBECTL=""
+  if _res="$(kubectl config current-context 2> /dev/null | grep -o '[^_]*$')"; then
+    _KUBECTL="${violet}○ ${_res} ${nocolor}"
   fi
 
   # -- virtualenv segment -- #
   if [[ -n "$VIRTUAL_ENV" ]]; then
-    _PYENV="${cyan} ೭ $(python --version | grep -Eo '([0-9]+.?)+') ($(basename "$VIRTUAL_ENV"))${nocolor}"
-  else
-    _PYENV=""
+    _PYENV="${cyan}೭ $(python --version | grep -Eo '([0-9]+.?)+') ($(basename "$VIRTUAL_ENV")) ${nocolor}"
   fi
 
   # -- git segment -- #
-  if toplevel="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    toplevel="$(basename $(dirname $toplevel))"
-    if [[ "$toplevel" == "." ]]; then _GIT="$(basename $PWD)"; else _GIT="$toplevel"; fi
-    _GIT="${green} ⇄ ${_GIT}/${nocolor}"
-  else
-    _GIT=""
+  if _res="$(git rev-parse --git-common-dir 2> /dev/null)"; then
+    _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_res)))/${nocolor}"
   fi
 
   # -- prompt segment -- #
@@ -334,7 +339,7 @@ function precmd() {
     *) _PROMPT="${magenta}%#${nocolor} " ;;
   esac
 
-  __git_ps1 "${eol}${bold}${_CWD}${_KUBECTL}${_GIT}" "${_PYENV}${eol}${_PROMPT}${nobold}" "%s"
+  __git_ps1 "${eol}${bold}${_CWD}${_GCP}${_KUBECTL}${_PYENV}${_GIT}" "${eol}${_PROMPT}${nobold}" "%s"
 }
 
 

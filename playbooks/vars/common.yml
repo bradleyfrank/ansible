@@ -6,6 +6,8 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
+hostname_prefix: "{{ ansible_user_gecos.split(' ') | first }}"
+
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"

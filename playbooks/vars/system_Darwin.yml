@@ -88,7 +88,6 @@ system_packages:
     - fantastical
     - firefox
     - google-cloud-sdk
-    - hyper
     - iina
     - istat-menus
     - jumpcut
