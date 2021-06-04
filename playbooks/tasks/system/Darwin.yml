@@ -29,7 +29,7 @@
         src: conf/MacOSX/alacritty.icns
         dest: "{{ alacritty_dir }}/"
         mode: 0755
-    - name: Set new icon for app
+    - name: Set new icon
       ansible.builtin.shell: "fileicon set /Applications/Alacritty.app {{ alacritty_dir }}/alacritty.icns"
   tags: alacritty
 
