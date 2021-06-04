@@ -97,8 +97,10 @@ ssh_keys:
 git_reference_repos:
   - name: gcp-posters
     https_url: https://github.com/gregsramblings/google-cloud-4-words.git
+    version: master
   - name: pure-bash-bible
     https_url: https://github.com/dylanaraps/pure-bash-bible.git
+    version: master
 
 dotfiles_collection: https://github.com/bradleyfrank/dotfiles-collection.git
 root_dotfiles: minimal

@@ -213,7 +213,7 @@ function mux() {
   fi
 }
 
-function py() {
+function pyenv() {
   local pyname pyver=3.8 pyfunc
 
   while getopts ':acdhn:v:' flag; do
@@ -251,11 +251,6 @@ function sshf() {
   ssh $(grep -Er '^Host' ~/.ssh/config | cut -d' ' -f2 | grep -v '*' | sort -u | _inline_fzf_nh)
 }
 
-function steep() {
-  if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
-  brew update ; brew upgrade ; brew cleanup ; brew doctor
-}
-
 function tardir() {
   tar -czf "${1%/}".tar.gz "$1"
 }
@@ -268,6 +263,22 @@ function ytdl-video() {
 }
 
 {% if 'Darwin' in ansible_system %}
+function fix_alacritty_icon() {
+  local icon app
+  icon="$HOME"/.local/share/alacritty/alacritty.icns
+  app=$(osascript -e 'POSIX path of (path to application "Alacritty")')
+  if [[ -e $icon ]]; then fileicon set "${app%/*}" "$icon"; else return 1; fi
+}
+
+function steep() {
+  local av1 av2
+  av1=$(brew info alacritty --cask --json=v2 | jq -r '.casks[].version')
+  if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
+  for step in update upgrade cleanup doctor; do toilet --font future --width 100 "$step"; brew "$step"; done
+  av2=$(brew info alacritty --cask --json=v2 | jq -r '.casks[].version')
+  if [[ $av1 != $av2 ]]; then fix_alacritty_icon; fi
+}
+
 function uptime-p() {
   uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"
 }
