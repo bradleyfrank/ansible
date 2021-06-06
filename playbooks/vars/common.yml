@@ -8,6 +8,8 @@ distro_vars:
 
 hostname_prefix: "{{ ansible_user_gecos.split(' ') | first }}"
 
+is_personal_system: ansible_hostname is match(hostname_prefix)
+
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"

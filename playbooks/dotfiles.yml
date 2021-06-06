@@ -134,7 +134,7 @@
         mode: 0644
         backup: true
       register: _backup_ssh_config
-      when: ansible_hostname is match(hostname_prefix)
+      when: is_personal_system
       tags: [ssh, ssh_config]
 
     - name: Install tmux config
@@ -174,7 +174,7 @@
 
     - name: Clone public and private GitHub repositories
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: ansible_hostname is match(hostname_prefix)
+      when: is_personal_system
       tags: github_projects
 
     - name: Ensure backup directory exists
