@@ -326,7 +326,7 @@ function precmd() {
   fi
 
   # -- gcloud project segment -- #
-  if _res=$(gpc | sed -rn 's/^(.*)-[0-9]+$/\1/p' 2> /dev/null); then
+  if _res=$(gpc | sed -rn 's/^(.*)(-[0-9]+)*$/\1/p' 2> /dev/null); then
     [[ $_res != "" ]] && _GCP="${orange}● ${_res} ${nocolor}"
   fi
 
