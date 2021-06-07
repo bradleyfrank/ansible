@@ -74,7 +74,7 @@ alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inlin
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
-alias dc='docker compose'
+alias dc='docker-compose'
 alias df='df -h'
 alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
@@ -319,12 +319,14 @@ function precmd() {
   _CWD="" _KUBECTL="" _GCP="" _PYENV="" _GIT="" _PROMPT=""
 
   # -- cwd segment -- #
-  if [[ -z $TMUX ]]; then
+  if [[ -n $TMUX ]]; then
+    _CWD="${blue}→ %1~ ${nocolor}"
+  else
     _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}"
   fi
 
   # -- gcloud project segment -- #
-  if _res=$(gcloud config configurations describe default --format="value(properties.core.project)" 2> /dev/null); then
+  if _res=$(gpc | sed -rn 's/^(.*)-[0-9]+$/\1/p' 2> /dev/null); then
     [[ $_res != "" ]] && _GCP="${orange}● ${_res} ${nocolor}"
   fi
 
@@ -426,9 +428,9 @@ source /usr/share/fzf/shell/key-bindings.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 {% endif %}
-source {{ ansible_user_dir }}/.local/share/k8s/fubectl
-source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
-source {{ ansible_user_dir }}/.local/share/gcloud/gcsh
+source {{ shell_conf }}/fubectl
+source {{ shell_conf }}/kubectl
+source {{ shell_conf }}/gcsh
 {% if 'remmac06432' in ansible_hostname %}
 source {{ ansible_user_dir }}/.infractl/secrets
 {% endif %}

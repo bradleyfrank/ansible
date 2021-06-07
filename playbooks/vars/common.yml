@@ -77,6 +77,8 @@ krew:
 
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 
+shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
+
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:
   - name: vim-airline
