@@ -58,6 +58,7 @@ export HOMEBREW_CELLAR=/usr/local/Cellar
 export HOMEBREW_REPOSITORY=/usr/local/Homebrew
 export INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
 export CLOUDSDK_PYTHON=/usr/bin/python3
+export CLOUDSDK_ACTIVE_CONFIG_PATH=$(gcloud info --format='value(config.paths.active_config_path)' 2> /dev/null)
 {% endif %}
 
 
@@ -326,8 +327,8 @@ function precmd() {
   fi
 
   # -- gcloud project segment -- #
-  if _res=$(gpc | sed -rn 's/^(.*)(-[0-9]+)*$/\1/p' 2> /dev/null); then
-    [[ $_res != "" ]] && _GCP="${orange}● ${_res} ${nocolor}"
+  if _res=$(sed -rn 's/^project\s=\s(.+)$/\1/p' < $CLOUDSDK_ACTIVE_CONFIG_PATH 2> /dev/null); then
+    [[ $_res != "" ]] && _GCP="${orange}● ${_res/$(grep -Eo '\-[0-9]+$' <<< $_res)/} ${nocolor}"
   fi
 
   # -- kubectl context segment -- #
