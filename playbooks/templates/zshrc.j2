@@ -160,9 +160,26 @@ function diceware() {
 }
 
 function dotfiles() {
+  local tags="core" task_tags
+
+  pushd {{ ansible_user_dir }}/.dotfiles > /dev/null
+  task_tags="$(ansible-playbook playbooks/dotfiles.yml --list-tags \
+    | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' \
+    | yq eval --tojson \
+    | jq -r '.[]')"
+  popd > /dev/null
+
+  case "$1" in
+    full)   tags="all" ;;
+    core)   tags="core" ;;
+    select) tags="$(_inline_fzf_nh <<< $task_tags | xargs | tr ' ' ',')" ;;
+    *)      echo "usage: dotfiles [full* | core | select]" ; exit 0 ;;
+  esac
+
   ansible-pull \
     --url https://github.com/bradleyfrank/ansible.git \
     --directory {{ ansible_user_dir }}/.dotfiles \
+    --tags "$tags" \
     playbooks/dotfiles.yml
 }
 

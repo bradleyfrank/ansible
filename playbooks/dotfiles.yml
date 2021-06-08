@@ -45,7 +45,7 @@
       loop_control:
         label: "{{ item['path'] }}"
       when: item['state'] == 'directory'
-      tags: misc
+      tags: ['apps', 'core']
 
     - name: Copy dotfiles into home directory
       ansible.builtin.copy:
@@ -56,7 +56,7 @@
       loop_control:
         label: "{{ item['path'] }}"
       when: item['state'] == 'file'
-      tags: misc
+      tags: ['apps', 'core']
 
     - name: Make scripts executable
       ansible.builtin.file:
@@ -64,7 +64,7 @@
         state: directory
         mode: 0755
         recurse: true
-      tags: misc
+      tags: ['dotfiles', 'core']
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
@@ -91,6 +91,7 @@
         PATH: "{{ ansible_env.PATH }}:{{ python_user_path }}"
       ansible.builtin.shell: "pipenv --completion > {{ shell_conf }}/pipenv"
       changed_when: false
+      tags: python
 
     - name: Create vim extensions directory path
       ansible.builtin.file:
@@ -117,7 +118,7 @@
         mode: 0644
         backup: true
       register: _backup_zshrc
-      tags: zsh
+      tags: ['zsh', 'core']
 
     - name: Ensure ~/.ssh directory exists
       ansible.builtin.file:
@@ -141,7 +142,7 @@
         backup: true
       register: _backup_ssh_config
       when: is_personal_system
-      tags: [ssh, ssh_config]
+      tags: ['ssh', 'ssh_config']
 
     - name: Install tmux config
       ansible.builtin.template:
@@ -150,7 +151,7 @@
         mode: 0644
         backup: true
       register: _backup_tmux_conf
-      tags: tmux
+      tags: ['tmux', 'core']
 
     - name: Install gitconfig
       ansible.builtin.template:
@@ -159,7 +160,7 @@
         mode: 0755
         backup: true
       register: _backup_gitconfig
-      tags: git
+      tags: ['git', 'core']
 
     - name: Install VSCode configs
       ansible.builtin.copy:
@@ -168,7 +169,7 @@
         mode: 0755
         backup: true
       register: _backup_vscode_settings_json
-      tags: vscode
+      tags: ['vscode', 'core']
 
     - name: Import kubectl tasks
       ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
