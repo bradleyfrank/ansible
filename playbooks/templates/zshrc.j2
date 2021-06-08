@@ -222,7 +222,7 @@ function pyenv() {
       a) pyfunc=activate ;;
       c) pyfunc=create ;;
       d) deactivate ; return $? ;;
-      h) echo "Usage: py [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
+      h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
       n) pyname=$OPTARG ;;
       v) pyver=$OPTARG ;;
       *) echo "Invalid argument." >&2 ; return 1 ;;
