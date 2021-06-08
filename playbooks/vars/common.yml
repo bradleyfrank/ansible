@@ -28,7 +28,7 @@ python_packages:
   - ansible-lint
   - beets
   - black
-  - pip-autoremove
+  - pipenv
   - pre-commit
   - pycodestyle
   - pydf
