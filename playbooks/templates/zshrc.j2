@@ -1,5 +1,5 @@
-PATH="{{ ansible_user_dir }}/.local/bin"
-PATH="$PATH:{{ ansible_user_dir }}/.krew/bin"
+PATH="~/.local/bin"
+PATH="$PATH:~/.krew/bin"
 {% if 'Darwin' in ansible_system %}
 PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/gnu-tar/libexec/gnubin"
@@ -16,7 +16,7 @@ PATH="$PATH:/usr/local/bin:/usr/local/sbin"
 PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin"
 
 
-MANPATH="{{ ansible_user_dir }}/.local/share/man"
+MANPATH="~/.local/share/man"
 {% if 'Darwin' in ansible_system %}
 MANPATH="$MANPATH:/usr/local/opt/coreutils/libexec/gnuman"
 MANPATH="$MANPATH:/usr/local/opt/gnu-tar/libexec/gnuman"
@@ -162,25 +162,23 @@ function diceware() {
 function dotfiles() {
   local tags="core" task_tags
 
-  pushd {{ ansible_user_dir }}/.dotfiles > /dev/null
+  pushd ~/.dotfiles > /dev/null
+  git pull &> /dev/null
+
   task_tags="$(ansible-playbook playbooks/dotfiles.yml --list-tags \
     | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' \
     | yq eval --tojson \
     | jq -r '.[]')"
-  popd > /dev/null
 
   case "$1" in
     full)   tags="all" ;;
     core)   tags="core" ;;
     select) tags="$(_inline_fzf_nh <<< $task_tags | xargs | tr ' ' ',')" ;;
-    *)      echo "usage: dotfiles [full* | core | select]" ; exit 0 ;;
+    *)      echo "usage: dotfiles [ full | core* | select ]" ; exit 0 ;;
   esac
 
-  ansible-pull \
-    --url https://github.com/bradleyfrank/ansible.git \
-    --directory {{ ansible_user_dir }}/.dotfiles \
-    --tags "$tags" \
-    playbooks/dotfiles.yml
+  ansible-playbook --tags "$tags" playbooks/dotfiles.yml
+  popd > /dev/null
 }
 
 function decrypt() {
@@ -283,7 +281,7 @@ function ytdl-video() {
 {% if 'Darwin' in ansible_system %}
 function fix_alacritty_icon() {
   local icon app
-  icon="$HOME"/.local/share/alacritty/alacritty.icns
+  icon=~/.local/share/alacritty/alacritty.icns
   app=$(osascript -e 'POSIX path of (path to application "Alacritty")')
   if [[ -e $icon ]]; then fileicon set "${app%/*}" "$icon"; else return 1; fi
 }
@@ -451,7 +449,7 @@ source {{ shell_conf }}/kubectl
 source {{ shell_conf }}/gcsh
 source {{ shell_conf }}/pipenv
 {% if 'remmac06432' in ansible_hostname %}
-source {{ ansible_user_dir }}/.infractl/secrets
+source ~/.infractl/secrets
 {% endif %}
 
 

@@ -38,6 +38,7 @@ system_packages:
     - gzip
     - helm
     - httpie
+    - iconsur
     - iftop
     - jq
     - keychain

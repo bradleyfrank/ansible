@@ -86,13 +86,6 @@
         extra_args: --user
       tags: python
 
-    - name: Generate pipenv completions
-      environment:
-        PATH: "{{ ansible_env.PATH }}:{{ python_user_path }}"
-      ansible.builtin.shell: "pipenv --completion > {{ shell_conf }}/pipenv"
-      changed_when: false
-      tags: python
-
     - name: Create vim extensions directory path
       ansible.builtin.file:
         path: "{{ vim_extensions_dest }}"
