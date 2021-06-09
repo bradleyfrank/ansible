@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+#
+# Wrapper for the Ansible 'dotfiles' playbook.
+# Author: Brad Frank
+# Date: June 2021
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+# Requires: ansible, yq, jq, git, fzf
+#
+
+
+# ----- functions ----- #
+
+function select_tags() {
+    ansible-playbook playbooks/dotfiles.yml --list-tags \
+        | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' | yq eval --tojson | jq -r '.[]' \
+        | _inline_fzf_nh | xargs | tr ' ' ','
+}
+
+
+# ----- begin ----- #
+
+pushd ~/.dotfiles > /dev/null || exit 1
+git pull > /dev/null
+
+while getopts ':haqst:' flag; do
+  case "$flag" in
+    h) echo "Usage: dotfiles [ -a(ll) | -q(uick)* | -s(elect) | -t <tag1,tag2,tagN> ]" ; return 0 ;;
+    a) tags=all ;;
+    q) tags=core ;;
+    s) tags=$(select_tags) ;;
+    t) tags=$OPTARG ;;
+    *) echo "Invalid argument." >&2 ; return 1 ;;
+  esac
+done
+
+ansible-playbook --tags "${tags:-core}" playbooks/dotfiles.yml
+popd > /dev/null || exit 1
