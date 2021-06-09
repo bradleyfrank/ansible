@@ -15,24 +15,6 @@
   become: true
   tags: shell
 
-- name: Fix Alacritty icon
-  vars:
-    alacritty_dir: "{{ ansible_user_dir }}/.local/share/alacritty"
-  block:
-    - name: Make folder for icon
-      ansible.builtin.file:
-        path: "{{ alacritty_dir }}"
-        state: directory
-        mode: 0755
-    - name: Copy icon to system
-      ansible.builtin.copy:
-        src: conf/MacOSX/alacritty.icns
-        dest: "{{ alacritty_dir }}/"
-        mode: 0755
-    - name: Set new icon
-      ansible.builtin.command: "fileicon set /Applications/Alacritty.app {{ alacritty_dir }}/alacritty.icns"
-  tags: alacritty
-
 - name: Set macOS default settings
   community.general.osx_defaults:
     domain: "{{ item['domain'] }}"

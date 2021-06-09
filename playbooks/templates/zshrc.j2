@@ -110,7 +110,6 @@ alias show='whence -f'
 alias sync='rsync -a --info=progress2'
 alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
-alias upgrade='osupdate ; pipu ; lolo'
 alias vs='code .'
 {% if 'Darwin' in ansible_system %}
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
@@ -168,7 +167,8 @@ function dotfiles() {
   task_tags="$(ansible-playbook playbooks/dotfiles.yml --list-tags \
     | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' \
     | yq eval --tojson \
-    | jq -r '.[]')"
+    | jq -r '.[]'
+  )"
 
   case "$1" in
     full)   tags="all" ;;
@@ -279,20 +279,17 @@ function ytdl-video() {
 }
 
 {% if 'Darwin' in ansible_system %}
-function fix_alacritty_icon() {
-  local icon app
-  icon=~/.local/share/alacritty/alacritty.icns
-  app=$(osascript -e 'POSIX path of (path to application "Alacritty")')
-  if [[ -e $icon ]]; then fileicon set "${app%/*}" "$icon"; else return 1; fi
+function iconify() {
+  ansible-pull \
+    --url https://github.com/bradleyfrank/ansible.git \
+    --directory {{ ansible_user_dir }}/.dotfiles \
+    --tags icons \
+    playbooks/dotfiles.yml
 }
 
 function steep() {
-  local av1 av2
-  av1=$(brew info alacritty --cask --json=v2 | jq -r '.casks[].version')
   if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
   for step in update upgrade cleanup doctor; do toilet --font future --width 100 "$step"; brew "$step"; done
-  av2=$(brew info alacritty --cask --json=v2 | jq -r '.casks[].version')
-  if [[ $av1 != $av2 ]]; then fix_alacritty_icon; fi
 }
 
 function uptime-p() {

@@ -2,16 +2,21 @@
 
 - name: Cleanup old settings and files
   hosts: localhost
+
   vars:
     files:
       - .ansible_vault_password
       - .config/p10k.zsh
       - .local/share/fubectl
       - .local/share/kubectl
+      - .local/share/alacritty
+      - .local/share/icons
       - .hyper.js
       - .hyper_plugins
+
     brew_packages:
       - ffsend
+
     brew_casks:
       - anylist
       - firefox-nightly
@@ -21,6 +26,7 @@
       - raindropio
       - stay
       - typora
+
   tasks:
     - name: Remove files
       ansible.builtin.file:

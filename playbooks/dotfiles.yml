@@ -177,6 +177,16 @@
       when: is_personal_system
       tags: github_projects
 
+    - name: Set squircle icons
+      vars:
+        app: "{{ item['path'] | splitext | first }}"
+      ansible.builtin.command: "fileicon set /Applications/{{ app }}.app {{ item['src'] }}"
+      changed_when: false
+      loop: "{{ lookup('community.general.filetree', 'conf/MacOSX/icons/') }}"
+      loop_control:
+        label: "{{ app }}"
+      tags: icons
+
     - name: Ensure backup directory exists
       ansible.builtin.file:
         path: "{{ backups_dir }}"
