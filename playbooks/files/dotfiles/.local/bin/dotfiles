@@ -14,7 +14,7 @@
 function select_tags() {
     ansible-playbook playbooks/dotfiles.yml --list-tags \
         | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' | yq eval --tojson | jq -r '.[]' \
-        | _inline_fzf_nh | xargs | tr ' ' ','
+        | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border | xargs | tr ' ' ','
 }
 
 
@@ -25,7 +25,7 @@ git pull > /dev/null
 
 while getopts ':haqst:' flag; do
   case "$flag" in
-    h) echo "Usage: dotfiles [ -a(ll) | -q(uick)* | -s(elect) | -t <tag1,tag2,tagN> ]" ; return 0 ;;
+    h) echo "Usage: dotfiles [ -a(ll) | -q(uick)* | -s(elect) | -t <tag1,tag2,tagN> ]" ; exit 0 ;;
     a) tags=all ;;
     q) tags=core ;;
     s) tags=$(select_tags) ;;
