@@ -66,24 +66,13 @@
   when: not kubectl_krew['stat']['exists']
   tags: krew
 
-- name: Get list of installed Krew plugins
-  ansible.builtin.shell:
-    executable: "{{ bash_shell }}"
-    cmd: |
-      set -o pipefail
-      kubectl krew list | xargs printf "%s\n"
-  changed_when: false
-  failed_when: kubectl_krew_list['rc'] not in [0,1]
-  register: kubectl_krew_list
-  tags: krew
-
 - name: Install Krew plugins
-  vars:
-    installed_plugins: "{{ kubectl_krew_list['stdout_lines'] }}"
   environment:
     PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.krew/bin"
   ansible.builtin.command: "kubectl krew install {{ item }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in {{ kubectl_krew_install }}"
-  loop: "{{ krew['plugins'] | difference(installed_plugins) }}"
+  loop: "{{ krew['plugins'] }}"
+  loop_control:
+    label: "{{ item }}"
   tags: krew
