@@ -181,6 +181,7 @@
       vars:
         app: "{{ item['path'] | splitext | first }}"
       ansible.builtin.command: "fileicon set /Applications/{{ app }}.app {{ item['src'] }}"
+      when: ansible_system == 'Darwin'
       changed_when: false
       loop: "{{ lookup('community.general.filetree', 'conf/MacOSX/icons/') }}"
       loop_control:
