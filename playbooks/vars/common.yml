@@ -6,6 +6,10 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
+hostname_prefix: "{{ ansible_user_gecos.split(' ') | first }}"
+
+is_personal_system: ansible_hostname is match(hostname_prefix)
+
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"
@@ -24,7 +28,7 @@ python_packages:
   - ansible-lint
   - beets
   - black
-  - pip-autoremove
+  - pipenv
   - pre-commit
   - pycodestyle
   - pydf
@@ -73,6 +77,8 @@ krew:
 
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 
+shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
+
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:
   - name: vim-airline
@@ -95,8 +101,10 @@ ssh_keys:
 git_reference_repos:
   - name: gcp-posters
     https_url: https://github.com/gregsramblings/google-cloud-4-words.git
+    version: master
   - name: pure-bash-bible
     https_url: https://github.com/dylanaraps/pure-bash-bible.git
+    version: master
 
 dotfiles_collection: https://github.com/bradleyfrank/dotfiles-collection.git
 root_dotfiles: minimal

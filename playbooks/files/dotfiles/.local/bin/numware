@@ -11,7 +11,7 @@
 
 # ----- functions ----- #
 
-function make_numware() {
+function generate() {
     local length dice word capital diceware=""
     length="$1"
 
@@ -29,13 +29,15 @@ function make_numware() {
 
 # ----- begin ----- #
 
-if [[ -n "$1" ]]; then
-  if [[ ! "$1" =~ ^[0-9]+$ || "$1" -lt 2 ]]; then
-      echo "Length must be a value greater than 1."
-      exit 1
-  else
-      make_numware "$1"
-  fi
-else
-  make_numware 5
-fi
+length=5
+
+while getopts ':hn:' flag; do
+  case "$flag" in
+    h) echo "Usage: numware [ -n <length> ]" ; return 0 ;;
+    n) length=$OPTARG ;;
+    *) echo "Invalid argument." >&2 ; return 1 ;;
+  esac
+done
+
+[[ "$length" -lt 2 ]] && { echo "Length must be a value greater than 1."; exit 1; }
+generate "$length"

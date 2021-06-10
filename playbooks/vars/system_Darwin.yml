@@ -20,6 +20,7 @@ system_packages:
     - eye-d3
     - fdupes
     - ffmpeg
+    - fileicon
     - findutils
     - flac
     - fzf
@@ -37,6 +38,7 @@ system_packages:
     - gzip
     - helm
     - httpie
+    - iconsur
     - iftop
     - jq
     - keychain
@@ -77,6 +79,7 @@ system_packages:
     - zsh-syntax-highlighting
   casks_common:
     - 1password
+    - alacritty
     - appcleaner
     - balenaetcher
     - bbedit
@@ -86,7 +89,6 @@ system_packages:
     - fantastical
     - firefox
     - google-cloud-sdk
-    - hyper
     - iina
     - istat-menus
     - jumpcut

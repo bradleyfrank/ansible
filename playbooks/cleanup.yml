@@ -1,0 +1,47 @@
+---
+
+- name: Cleanup old settings and files
+  hosts: localhost
+
+  vars:
+    files:
+      - .ansible_vault_password
+      - .config/p10k.zsh
+      - .local/share/fubectl
+      - .local/share/kubectl
+      - .local/share/alacritty
+      - .local/share/icons
+      - .hyper.js
+      - .hyper_plugins
+
+    brew_packages:
+      - ffsend
+
+    brew_casks:
+      - anylist
+      - firefox-nightly
+      - hyper
+      - qownnotes
+      - openshot-video-editor
+      - raindropio
+      - stay
+      - typora
+
+  tasks:
+    - name: Remove files
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/{{ item }}"
+        state: absent
+      loop: "{{ files }}"
+
+    - name: Uninstall Homebrew packages
+      community.general.homebrew:
+        name: "{{ brew_packages }}"
+        state: absent
+      when: ansible_system == 'Darwin'
+
+    - name: Uninstall Homebrew casks
+      community.general.homebrew_cask:
+        name: "{{ brew_casks }}"
+        state: absent
+      when: ansible_system == 'Darwin'

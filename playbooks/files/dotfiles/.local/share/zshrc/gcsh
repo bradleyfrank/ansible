@@ -1,8 +1,5 @@
 # [gc] alias for gcloud
-alias gc="gcloud"
-
-# [gpl] list all GCP projects
-alias gpl="gcloud projects list"
+alias gc='gcloud'
 
 # [gc-] gcloud --project <project>
 alias gc-bh-dev='gcloud --project binderhub-dev'
@@ -16,6 +13,12 @@ alias gc-platform-data-dev='gcloud --project platform-data-dev-301120'
 alias gc-platform-dev='gcloud --project platform-dev-788014'
 alias gc-platform-prod='gcloud --project platform-prod-399563'
 alias gc-playground='gcloud --project strong-keyword-184513'
+
+# [gpc] show current GCP project
+alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
+
+# [gpl] list all GCP projects
+alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 
 # [gps] set the active GCP project
 gps() {

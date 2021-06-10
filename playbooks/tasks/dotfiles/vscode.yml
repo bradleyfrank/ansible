@@ -17,4 +17,6 @@
         installed_extensions: "{{ code_list_extensions['stdout_lines'] }}"
       ansible.builtin.command: "{{ vscode['bin'] }} --install-extension {{ item }}"
       loop: "{{ vscode_extensions | difference(installed_extensions) }}"
+      loop_control:
+        label: "{{ item }}"
   when: vscode_bin['stat']['exists']

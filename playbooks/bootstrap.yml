@@ -58,6 +58,7 @@
         depth: 1
         dest: "{{ root_home }}/.dotfiles"
         repo: "{{ dotfiles_collection }}"
+        version: main
       become: true
       tags: [root, dotfiles]
 

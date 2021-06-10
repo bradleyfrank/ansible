@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 
+#
+# Branches a Git repo in a new tmux window.
+# Author: Brad Frank
+# Date: May 2021
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+# Requires: tmux, git
+#
+
 repo=infractl
 branch="$(id -un).$(date +%F_%T | tr -d ':-' | tr '_' '-')"
 open=window
 
-while getopts ':hr:n:wp' flag; do
+while getopts ':hr:b:wp' flag; do
     case "${flag}" in
-        h) echo "Usage: branch [-r <repo>] [-n <branch_name>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
-        p) open=pane ; split=${OPTARG-h} ;;
+        h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
+        p) open=pane ; split=${OPTARG:-h} ;;
         r) repo=$OPTARG ;;
-        n) branch=$OPTARG ;;
+        b) branch=$OPTARG ;;
         w) open=window ;;
         *) echo "Invalid argument." >&2 ; exit 1 ;;
     esac

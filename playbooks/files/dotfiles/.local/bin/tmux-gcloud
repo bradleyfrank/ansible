@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if ! type gcloud >/dev/null 2>&1 ; then exit ; fi
-
-if project_id="$(gcloud config get-value project 2>&1)"; then
-	if [[ "$project_id" != "(unset)" ]]; then
-		echo "gcp: $project_id" | sed -r 's|(\-[0-9]+)$||'
-	fi
-fi

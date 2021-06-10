@@ -30,6 +30,7 @@
         repo: "{{ item['https_url'] }}"
         dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
         depth: '1'
+        version: "{{ item['version'] }}"
       loop: "{{ git_reference_repos }}"
       loop_control:
         label: "{{ item['name'] }}"
@@ -44,7 +45,7 @@
       loop_control:
         label: "{{ item['path'] }}"
       when: item['state'] == 'directory'
-      tags: misc
+      tags: ['apps', 'core']
 
     - name: Copy dotfiles into home directory
       ansible.builtin.copy:
@@ -55,7 +56,7 @@
       loop_control:
         label: "{{ item['path'] }}"
       when: item['state'] == 'file'
-      tags: misc
+      tags: ['apps', 'core']
 
     - name: Make scripts executable
       ansible.builtin.file:
@@ -63,7 +64,7 @@
         state: directory
         mode: 0755
         recurse: true
-      tags: misc
+      tags: ['dotfiles', 'core']
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
@@ -110,7 +111,7 @@
         mode: 0644
         backup: true
       register: _backup_zshrc
-      tags: zsh
+      tags: ['zsh', 'core']
 
     - name: Ensure ~/.ssh directory exists
       ansible.builtin.file:
@@ -133,8 +134,8 @@
         mode: 0644
         backup: true
       register: _backup_ssh_config
-      when: ansible_hostname is match('Brad')
-      tags: [ssh, ssh_config]
+      when: is_personal_system
+      tags: ['ssh', 'ssh_config']
 
     - name: Install tmux config
       ansible.builtin.template:
@@ -143,7 +144,7 @@
         mode: 0644
         backup: true
       register: _backup_tmux_conf
-      tags: tmux
+      tags: ['tmux', 'core']
 
     - name: Install gitconfig
       ansible.builtin.template:
@@ -152,7 +153,7 @@
         mode: 0755
         backup: true
       register: _backup_gitconfig
-      tags: git
+      tags: ['git', 'core']
 
     - name: Install VSCode configs
       ansible.builtin.copy:
@@ -161,7 +162,7 @@
         mode: 0755
         backup: true
       register: _backup_vscode_settings_json
-      tags: vscode
+      tags: ['vscode', 'core']
 
     - name: Import kubectl tasks
       ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
@@ -173,8 +174,19 @@
 
     - name: Clone public and private GitHub repositories
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: ansible_hostname is match('Brad')
+      when: is_personal_system
       tags: github_projects
+
+    - name: Set squircle icons
+      vars:
+        app: "{{ item['path'] | splitext | first }}"
+      ansible.builtin.command: "fileicon set /Applications/{{ app }}.app {{ item['src'] }}"
+      when: "'Darwin' in ansible_system"
+      changed_when: false
+      loop: "{{ lookup('community.general.filetree', 'conf/MacOSX/icons/') }}"
+      loop_control:
+        label: "{{ app }}"
+      tags: icons
 
     - name: Ensure backup directory exists
       ansible.builtin.file:

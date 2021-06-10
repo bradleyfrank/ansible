@@ -28,11 +28,10 @@
   when: which_kubectl['rc'] == 1
 
 - name: Generate kubectl completions
-  vars:
-    kubectl_completion: "{{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
-  ansible.builtin.shell: "kubectl completion zsh > {{ kubectl_completion }}"
+  ansible.builtin.shell: "kubectl completion zsh > {{ shell_conf }}/kubectl"
+  changed_when: false
 
 - name: Check if Krew is installed
   ansible.builtin.stat:
@@ -50,6 +49,7 @@
       ansible.builtin.file:
         path: /tmp/krew
         state: directory
+        mode: 0755
     - name: Extract Krew installer
       ansible.builtin.unarchive:
         src: /tmp/krew.tar.gz
@@ -66,18 +66,10 @@
   when: not kubectl_krew['stat']['exists']
   tags: krew
 
-- name: Get list of installed Krew plugins
-  ansible.builtin.shell: kubectl krew list | xargs printf "%s\n"
-  changed_when: false
-  failed_when: kubectl_krew_list['rc'] not in [0,1]
-  register: kubectl_krew_list
-  tags: krew
-
 - name: Install Krew plugins
-  vars:
-    installed_plugins: "{{ kubectl_krew_list['stdout_lines'] }}"
   environment:
     PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.krew/bin"
-  ansible.builtin.command: "kubectl krew install {{ item }}"
-  loop: "{{ krew['plugins'] | difference(installed_plugins) }}"
+  ansible.builtin.command: "kubectl krew install {{ krew['plugins'] | join(' ') }}"
+  register: kubectl_krew_install
+  changed_when: "'Installed plugin' in kubectl_krew_install.stdout"
   tags: krew

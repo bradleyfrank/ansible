@@ -30,6 +30,7 @@
         accept_hostkey: true
         ssh_opts: "-i {{ github['key_file'] }}"
         update: false
+        version: "{{ item['default_branch'] }}"
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
