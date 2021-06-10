@@ -67,9 +67,11 @@
   tags: krew
 
 - name: Get list of installed Krew plugins
-  ansible.builtin.shell: |
-    set -o pipefail
-    kubectl krew list | xargs printf "%s\n"
+  ansible.builtin.shell:
+    executable: "{{ bash_shell }}"
+    cmd: |
+      set -o pipefail
+      kubectl krew list | xargs printf "%s\n"
   changed_when: false
   failed_when: kubectl_krew_list['rc'] not in [0,1]
   register: kubectl_krew_list
