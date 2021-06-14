@@ -298,23 +298,13 @@ function precmd() {
         base03="%F{234}"
   local eol=$'\n'
 
-  _CWD="" _KUBECTL="" _GCP="" _PYENV="" _GIT="" _PROMPT=""
+  _CWD="" _PYENV="" _GIT="" _PROMPT=""
 
   # -- cwd segment -- #
   if [[ -n $TMUX ]]; then
     _CWD="${blue}→ %1~ ${nocolor}"
   else
     _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}"
-  fi
-
-  # -- gcloud project segment -- #
-  if _res=$(sed -rn 's/^project\s=\s(.+)$/\1/p' < $ZSH_GCLOUD_CONFIG_PATH 2> /dev/null); then
-    [[ $_res != "" ]] && _GCP="${orange}● ${_res/$(grep -Eo '\-[0-9]+$' <<< $_res)/} ${nocolor}"
-  fi
-
-  # -- kubectl context segment -- #
-  if _res="$(kubectl config current-context 2> /dev/null | grep -o '[^_]*$')"; then
-    _KUBECTL="${violet}○ ${_res} ${nocolor}"
   fi
 
   # -- virtualenv segment -- #
@@ -334,7 +324,7 @@ function precmd() {
     *) _PROMPT="${magenta}%#${nocolor} " ;;
   esac
 
-  __git_ps1 "${eol}${bold}${_CWD}${_GCP}${_KUBECTL}${_PYENV}${_GIT}" "${eol}${_PROMPT}${nobold}" "%s"
+  __git_ps1 "${eol}${bold}${_CWD}${_GIT}" "${_PYENV}${eol}${_PROMPT}${nobold}" "%s "
 }
 
 
@@ -355,7 +345,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=2000
 SAVEHIST=5000
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
+zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
 zstyle ':completion:*' menu select                 # Use menu selection for completion
 zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
 zstyle ':completion:*' rehash true                 # Auto find new executables in path
@@ -365,7 +356,6 @@ zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 WORDCHARS=${WORDCHARS//\/[&.;]}                    # Don't consider these part of the word
 
 bindkey -e                                         # Emacs style shortcuts
-
 bindkey '^[[7~' beginning-of-line                  # Home key
 bindkey '^[[H' beginning-of-line                   # Home key
 if [[ "${terminfo[khome]}" != "" ]]; then
@@ -381,12 +371,6 @@ bindkey '^[[C'  forward-char                       # Right key
 bindkey '^[[D'  backward-char                      # Left key
 bindkey '^[[5~' history-beginning-search-backward  # Page up key
 bindkey '^[[6~' history-beginning-search-forward   # Page down key
-bindkey '^[Oc' forward-word                        # Navigate words with ctrl+arrow keys
-bindkey '^[Od' backward-word                       # "
-bindkey '^[[1;5D' backward-word                    # "
-bindkey '^[[1;5C' forward-word                     # "
-bindkey '^H' backward-kill-word                    # Delete previous word with ctrl+backspace
-bindkey '^[[Z' undo                                # Shift+tab undo last action
 
 autoload -Uz compinit zmv zcalc && compinit
 

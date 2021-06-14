@@ -21,7 +21,7 @@ wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
 ## Running
 
 ```text
-sh run.sh [-b | -d] [-g git_branch] | -h
+sh run.sh [-b | -d] [-g git_branch] | [-h]
     -b  Run the bootstrap playbook (default)
     -d  Run the dotfiles playbook
     -g  Specify the git branch to run (default: 'main')
@@ -31,4 +31,4 @@ sh run.sh [-b | -d] [-g git_branch] | -h
 * Prompts for the Ansible vault password (saved to `~/.ansible/vault`)
 * Ansible is installed via `pip` on all systems
 * The `bootstrap` playbook requires `sudo` privileges for any system
-* Log into the Mac App Store to install apps via `mas` (skips if not authenticated)
+* Log in to the Mac App Store to install apps via `mas` (skips if not authenticated)

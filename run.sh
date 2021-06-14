@@ -26,7 +26,7 @@ cleanup() {
 }
 
 usage() {
-    echo "sh run.sh [-b | -d] [-g git_branch] | -h"
+    echo "sh run.sh [-b | -d] [-g git_branch] | [-h]"
     echo "  -b  Run the bootstrap playbook (default)"
     echo "  -d  Run the dotfiles playbook"
     echo "  -g  Specify the git branch to run (default: 'main')"

@@ -1,19 +1,6 @@
 # [gc] alias for gcloud
 alias gc='gcloud'
 
-# [gc-] gcloud --project <project>
-alias gc-bh-dev='gcloud --project binderhub-dev'
-alias gc-bh-prod='gcloud --project binderhub-prod'
-alias gc-common-build='gcloud --project common-build'
-alias gc-dataeng-dev='gcloud --project dataeng-dev-273349'
-alias gc-dataeng-prod='gcloud --project dataeng-prod-308999'
-alias gc-kc-core-dev='gcloud --project kc-core-dev'
-alias gc-kc-core-prod='gcloud --project kc-core-prod'
-alias gc-platform-data-dev='gcloud --project platform-data-dev-301120'
-alias gc-platform-dev='gcloud --project platform-dev-788014'
-alias gc-platform-prod='gcloud --project platform-prod-399563'
-alias gc-playground='gcloud --project strong-keyword-184513'
-
 # [gpc] show current GCP project
 alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
 
@@ -31,11 +18,11 @@ gps() {
 # [gpu] gcloud project unset
 alias gpu='gcloud config unset project'
 
-# [gcreds] sets GCP project credentials via environment variables (ORM only)
+# [gcreds] sets GCP project credentials via environment variables
 gcreds() {
     local sacct
     sacct="$(env | grep 'APPLICATION_CREDENTIALS' | _inline_fzf_nh | cut -f1 -d'=' | awk '{print $1}')"
-    [[ -z "${(P)sacct}" ]] && { echo "Missing INFRACTL credential json file." ; return 1 ; }
+    [[ -z "${(P)sacct}" ]] && { echo "Missing credential json file." ; return 1 ; }
     echo "Set GOOGLE_APPLICATION_CREDENTIALS to ${(P)sacct}"
     export GOOGLE_APPLICATION_CREDENTIALS="${(P)sacct}"
 }

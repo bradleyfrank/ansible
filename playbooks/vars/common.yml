@@ -7,8 +7,8 @@ distro_vars:
   MacOSX: MacOSX
 
 hostname_prefix: "{{ ansible_user_gecos.split(' ') | first }}"
-
 is_personal_system: ansible_hostname is match(hostname_prefix)
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 
 github:
   username: bradleyfrank
@@ -21,8 +21,6 @@ github:
     3032636331303939370a333733383664666234373763336437333965643665393432626563343165
     32623330326138346138393332666437373364393965343735343838613732653938353239326461
     6663633938656562383166386637346361316533386232376466
-
-python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 
 python_packages:
   - ansible-lint
@@ -75,10 +73,6 @@ krew:
     - doctor
     - get-all
 
-backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
-
-shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
-
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:
   - name: vim-airline
@@ -91,6 +85,9 @@ vim_extensions:
   - name: nerdtree
     repo: https://github.com/preservim/nerdtree.git
 
+backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
+shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
+
 ssh_keys:
   - id_rsa
   - id_home
@@ -101,10 +98,10 @@ ssh_keys:
 git_reference_repos:
   - name: gcp-posters
     https_url: https://github.com/gregsramblings/google-cloud-4-words.git
-    version: master
   - name: pure-bash-bible
     https_url: https://github.com/dylanaraps/pure-bash-bible.git
-    version: master
+  - name: the-art-of-command-line
+    https_url: https://github.com/jlevy/the-art-of-command-line.git
 
 dotfiles_collection: https://github.com/bradleyfrank/dotfiles-collection.git
 root_dotfiles: minimal

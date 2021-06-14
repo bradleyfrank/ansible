@@ -30,7 +30,7 @@
         repo: "{{ item['https_url'] }}"
         dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
         depth: '1'
-        version: "{{ item['version'] }}"
+        version: "{{ item['version'] | default('master') }}"
       loop: "{{ git_reference_repos }}"
       loop_control:
         label: "{{ item['name'] }}"
