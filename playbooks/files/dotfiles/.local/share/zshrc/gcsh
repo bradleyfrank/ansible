@@ -4,15 +4,17 @@ alias gc='gcloud'
 # [gpc] show current GCP project
 alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
 
-# [gpl] list all GCP projects
-alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
+# [gpl] list a subset of projects ; gpl <tag1,tag2,tagN>
+gpl() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})" ; }
+
+# [gpla] list all GCP projects
+alias gpla='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 
 # [gps] set the active GCP project
 gps() {
     local projects
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
     gcloud config set project "$projects"
-    [ ! -z "$TMUX" ] && tmux refresh-client -S
 }
 
 # [gpu] gcloud project unset
@@ -27,12 +29,12 @@ gcreds() {
     export GOOGLE_APPLICATION_CREDENTIALS="${(P)sacct}"
 }
 
+# [gtags] show tags for docker image in GCR ; gtags <image>
+gtags() { gcloud container images list-tags gcr.io/common-build/"$1" ; }
+
 # [ghelp] show this help message
 ghelp() {
-    echo "Usage of gcsh"
+    echo "helper aliases and functions for gcloud SDK"
     echo
-    echo "Helper aliases and functions for gcloud SDK"
-    echo
-    echo "Usage:"
     grep -E '^# \[.+\]' "${(%):-%x}"
 }

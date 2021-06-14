@@ -7,6 +7,16 @@ _isClusterSpaceObject() {
         | awk '(apiidx){print substr($0, 0, apiidx),substr($0, kindidx) } (!apiidx){ apiidx=index($0, " APIGROUP");kindidx=index($0, " KIND")}' \
     | grep -iq "\<${obj}\>"
 }
+
+# [krename] rename all contexts with shorter names
+krename() {
+    local context
+    kubectl config unset current-context
+    for context in $(kubectl config get-contexts | grep -v '\*' | awk '(NR>1) {print $1}'); do
+        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")"
+    done
+}
+
 # [k] alias for kubectl
 alias k="kubectl"
 

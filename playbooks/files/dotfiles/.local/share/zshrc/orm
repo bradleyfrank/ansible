@@ -1,20 +1,70 @@
-# [gc-] gcloud --project <project>
-alias gc-bh-dev='gcloud --project binderhub-dev'
-alias gc-bh-prod='gcloud --project binderhub-prod'
-alias gc-common-build='gcloud --project common-build'
-alias gc-dataeng-dev='gcloud --project dataeng-dev-273349'
+export ORM_GCP_PROJECTS="binderhub-dev,binderhub-prod,common-build,dataeng-dev-273349,dataeng-prod-308999,kc-core-dev,kc-core-prod,platform-dev-788014,platform-prod-399563,strong-keyword-184513"
+
+# [okconfigs] generate kubectl config from GCP projects
+okconfigs() { gcpkconfigs "$ORM_GCP_PROJECTS" ; }
+
+# [ogpl] list a subset of ORM GCP projects
+ogpl() { gpl "$ORM_GCP_PROJECTS" ; }
+
+alias gc-bhdev='gcloud --project binderhub-dev'
+alias gc-bhprod='gcloud --project binderhub-prod'
+alias gc-common='gcloud --project common-build'
+alias gc-dataengdev='gcloud --project dataeng-dev-273349'
 alias gc-dataeng-prod='gcloud --project dataeng-prod-308999'
-alias gc-kc-dev='gcloud --project kc-core-dev'
-alias gc-kc-prod='gcloud --project kc-core-prod'
-alias gc-platform-data-dev='gcloud --project platform-data-dev-301120'
-alias gc-platform-dev='gcloud --project platform-dev-788014'
-alias gc-platform-prod='gcloud --project platform-prod-399563'
+alias gc-kcdev='gcloud --project kc-core-dev'
+alias gc-kcprod='gcloud --project kc-core-prod'
+alias gc-platdatadev='gcloud --project platform-data-dev-301120'
+alias gc-platformdev='gcloud --project platform-dev-788014'
+alias gc-platformprod='gcloud --project platform-prod-399563'
 alias gc-playground='gcloud --project strong-keyword-184513'
 
+alias -g gbhdev='--project binderhub-dev'
+alias -g gbhprod='--project binderhub-prod'
+alias -g gcommon='--project common-build'
+alias -g gdataengdev='--project dataeng-dev-273349'
+alias -g gdataengprod='--project dataeng-prod-308999'
+alias -g gkcdev='--project kc-core-dev'
+alias -g gkcprod='--project kc-core-prod'
+alias -g gplatdatadev='--project platform-data-dev-301120'
+alias -g gplatformdev='--project platform-dev-788014'
+alias -g gplatformprod='--project platform-prod-399563'
+alias -g gplayground='--project strong-keyword-184513'
+
+alias k-bhdev='kubectl --context binderhub-dev-cluster'
+alias k-bhprod='kubectl --context binderhub-prod-cluster'
+alias k-common='kubectl --context common-build-cluster'
+alias k-kcdev='kubectl --context kc-dev'
+alias k-kcprod='kubectl --context kc-prod'
+alias k-kfdev='kubectl --context kubeflow-dev'
+alias k-kfprod='kubectl --context kubeflow-prod'
+alias k-platformdev='kubectl --context platform-dev-cluster'
+alias k-platformprod='kubectl --context platform-prod-cluster'
 alias k-playground='kubectl --context playground-cluster'
 
-# [orm-aliases] show this help message
-orm-aliases() {
-    #grep -E '^# \[.+\]' "${(%):-%x}"
-    grep -E '^alias\sgc-.+$' "${(%):-%x}"
+alias -g kbhdev='--context binderhub-dev-cluster'
+alias -g kbhprod='--context binderhub-prod-cluster'
+alias -g kcommon='--context common-build-cluster'
+alias -g kkcdev='--context kc-dev'
+alias -g kkcprod='--context kc-prod'
+alias -g kkfdev='--context kubeflow-dev'
+alias -g kkfprod='--context kubeflow-prod'
+alias -g kplatformdev='--context platform-dev-cluster'
+alias -g kplatformprod='--context platform-prod-cluster'
+alias -g kplayground='--context playground-cluster'
+
+# [ogalias] list all GCP aliases
+ogalias() {
+    grep -E '^alias\s(-g\s)*g' "${(%):-%x}"
+}
+
+# [okalias] list all kubectl aliases
+okalias() {
+    grep -E '^alias\s(-g\s)*k' "${(%):-%x}"
+}
+
+# [ohelp] show this help message
+ohelp() {
+    echo "helper aliases and functions for ORM"
+    echo
+    grep -E '^# \[.+\]' "${(%):-%x}"
 }
