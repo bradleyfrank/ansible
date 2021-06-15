@@ -38,7 +38,6 @@ system_packages:
     - gzip
     - helm
     - httpie
-    - iconsur
     - iftop
     - jq
     - keychain
@@ -65,7 +64,6 @@ system_packages:
     - ssh-copy-id
     - stern
     - stow
-    - terraform
     - tmux
     - tree
     - vim
@@ -94,6 +92,7 @@ system_packages:
     - jumpcut
     - keepassxc
     - keepingyouawake
+    - kindle
     - logitech-options
     - macdown
     - menumeters

@@ -370,6 +370,7 @@ bindkey '^[[D'  backward-char                      # Left key
 bindkey '^[[5~' history-beginning-search-backward  # Page up key
 bindkey '^[[6~' history-beginning-search-forward   # Page down key
 
+autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc && compinit
 
 
@@ -401,5 +402,7 @@ source {{ shell_conf }}/orm
 source ~/.infractl/secrets
 {% endif %}
 
-
+{% if 'remmac06432' in ansible_hostname %}
+complete -o nospace -C /usr/local/bin/terraform terraform
+{% endif %}
 complete -F __start_kubectl k
