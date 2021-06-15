@@ -4,7 +4,7 @@ alias gc='gcloud'
 # [gpc] show current GCP project
 alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
 
-# [gpl] list a subset of projects ; gpl <tag1,tag2,tagN>
+# [gpl] list a subset of projects ; gpl <project1,project2,projectN>
 gpl() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})" ; }
 
 # [gpla] list all GCP projects

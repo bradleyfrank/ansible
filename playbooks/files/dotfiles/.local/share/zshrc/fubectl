@@ -179,7 +179,6 @@ alias kcl='kubectl config get-contexts'
 kcs() {
     local context="$(kubectl config get-contexts | _inline_fzf | cut -b4- | awk '{print $1}')"
     kubectl config set current-context "${context}"
-    [ ! -z $TMUX ] && tmux refresh-client -S
 }
 
 # [kcu] kubectl context unset
@@ -250,16 +249,7 @@ konsole() {
 
 # [khelp] show this help message
 khelp() {
-    echo "Usage of fubectl"
+    echo "helper aliases and functions for kubectl"
     echo
-    echo "Reduces repetitive interactions with kubectl"
-    echo "Find more information at https://github.com/kubermatic/fubectl"
-    echo
-    echo "Usage:"
-    if [ -n "$ZSH_VERSION" ]
-    then
-        grep -E '^# \[.+\]' "${(%):-%x}"
-    else
-        grep -E '^# \[.+\]' "${BASH_SOURCE[0]}"
-    fi
+    grep -E '^# \[.+\]' "${(%):-%x}"
 }
