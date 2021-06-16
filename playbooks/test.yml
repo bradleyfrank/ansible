@@ -1,0 +1,17 @@
+---
+
+- name: Test
+  hosts: localhost
+
+  tasks:
+    - name: Include common variables
+      ansible.builtin.include_vars: common.yml
+      tags: always
+
+    - name: Include system variables
+      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
+      tags: always
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "personal system: {{ is_personal_system }} ; email: {{ email }}"

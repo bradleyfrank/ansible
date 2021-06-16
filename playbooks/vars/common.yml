@@ -7,7 +7,8 @@ distro_vars:
   MacOSX: MacOSX
 
 hostname_prefix: "{{ ansible_user_gecos.split(' ') | first }}"
-is_personal_system: ansible_hostname is match(hostname_prefix)
+is_personal_system: "{{ ansible_hostname is match(hostname_prefix) }}"
+email: "{{ 'bfrank@oreilly.com' if is_personal_system else 'bradfrank@fastmail.com' }}"
 python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 
 github:
