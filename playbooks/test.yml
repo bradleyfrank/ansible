@@ -1,9 +1,0 @@
----
-
-- name: Install and configure dotfiles on localhost
-  hosts: localhost
-
-  tasks:
-    - name: debug
-      ansible.builtin.debug:
-        msg: "{{ email }}"

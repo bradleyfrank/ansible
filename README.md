@@ -27,7 +27,7 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h
   -g  Specify the git branch to run (default: 'main')
   -b  Run the bootstrap playbook (default)
   -d  Run the dotfiles playbook
-  -e  Set the email address for this system
+  -e  Set the email address to use
   -s  Manage ssh config for this system (default: false)
   -h  Print this help menu and quit
 ```
@@ -37,3 +37,11 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h
 * Ansible is installed via `pip` on all systems
 * The `bootstrap` playbook requires `sudo` privileges for any system
 * Log in to the Mac App Store to install apps via `mas` (skips if not authenticated)
+
+## Inventory
+
+The `inventory` file should look like this:
+
+```text
+localhost ansible_connection=local email={{ email_address }} ssh_config={{ true|false }}
+```

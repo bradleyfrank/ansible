@@ -4,6 +4,7 @@
 
 CHECKOUT_DIR="$(mktemp -d)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
+EMAIL_ADDRESS="$(id -un)@$(uname -n)"
 
 case "$SYSTEM_TYPE" in
   darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
@@ -31,7 +32,7 @@ usage() {
     echo "  -g  Specify the git branch to run (default: 'main')"
     echo "  -b  Run the bootstrap playbook (default)"
     echo "  -d  Run the dotfiles playbook"
-    echo "  -e  Set the email address for this system"
+    echo "  -e  Set the email address to use"
     echo "  -s  Manage ssh config (default: false)"
     echo "  -h  Print this help menu and quit"
 }
@@ -62,24 +63,6 @@ create_vault_file() {
 
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
-}
-
-build_inventory() {
-  inventory="$CHECKOUT_DIR/inventory"
-
-  if [ -z "$EMAIL_ADDRESS" ]; then
-    EMAIL_ADDRESS=$(
-      exec < /dev/tty
-      printf "Enter email address: " > /dev/tty
-      IFS= read -r email; ret=$?
-      echo > /dev/tty # insert newline for readability
-      printf "%s" "$email"
-      exit "$ret"
-    )
-  fi
-
-  echo "localhost ansible_connection=local email=${EMAIL_ADDRESS} ssh_config=${SSH_CONFIG:-false}" > "$inventory"
-  chmod 0755 "$inventory"
 }
 
 keep_awake() {
@@ -141,9 +124,15 @@ pre_ansible_run() {
   git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR"
   cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
   git checkout "$ANSIBLE_REPO_BRANCH"
-  cd - >/dev/null 2>&1 || return 1
 
-  ansible-galaxy collection install -r "$CHECKOUT_DIR"/requirements.yml
+  ansible-galaxy collection install -r requirements.yml
+  ansible localhost \
+    --module-name ansible.builtin.template \
+    --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
+    --extra-vars "email_address=$EMAIL_ADDRESS" \
+    --extra-vars "ssh_config=${SSH_CONFIG:-false}"
+
+  cd - >/dev/null 2>&1 || return 1
 }
 
 ansible_playbook() {
@@ -185,8 +174,8 @@ done
 [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
 
 case "$ANSIBLE_REPO_PLAYBOOK" in
-  bootstrap) create_tmp_sudoers ; create_vault_file ; build_inventory ; keep_awake ; bootstrap_os ;;
-  dotfiles)  create_vault_file ; build_inventory ;;
+  bootstrap) create_tmp_sudoers ; create_vault_file ; keep_awake ; bootstrap_os ;;
+  dotfiles)  create_vault_file ;;
   *)         exit 1 ;;
 esac
 

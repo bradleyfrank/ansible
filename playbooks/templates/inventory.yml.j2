@@ -1,0 +1,6 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      email: {{ email_address }}
+      ssh_config: {{ ssh_config }}
