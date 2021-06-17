@@ -11,6 +11,7 @@ case "$SYSTEM_TYPE" in
 esac
 
 HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
+ANSIBLE_HOME="$HOME/.ansible"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_PLAYBOOK="bootstrap"
@@ -26,10 +27,12 @@ cleanup() {
 }
 
 usage() {
-    echo "sh run.sh [-b | -d] [-g git_branch] | [-h]"
+    echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h"
+    echo "  -g  Specify the git branch to run (default: 'main')"
     echo "  -b  Run the bootstrap playbook (default)"
     echo "  -d  Run the dotfiles playbook"
-    echo "  -g  Specify the git branch to run (default: 'main')"
+    echo "  -e  Set the email address for this system"
+    echo "  -s  Manage ssh config (default: false)"
     echo "  -h  Print this help menu and quit"
 }
 
@@ -42,9 +45,8 @@ create_tmp_sudoers() {
 }
 
 create_vault_file() {
-  vaultfile="$HOME/.ansible/vault"
+  vaultfile="$ANSIBLE_HOME/vault"
   [ -s "$vaultfile" ] && return 0
-  [ ! -d "$HOME/.ansible" ] && mkdir "$HOME/.ansible"
 
   vaultpw=$(
     exec < /dev/tty
@@ -60,6 +62,24 @@ create_vault_file() {
 
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
+}
+
+build_inventory() {
+  inventory="$CHECKOUT_DIR/inventory"
+
+  if [ -z "$EMAIL_ADDRESS" ]; then
+    EMAIL_ADDRESS=$(
+      exec < /dev/tty
+      printf "Enter email address: " > /dev/tty
+      IFS= read -r email; ret=$?
+      echo > /dev/tty # insert newline for readability
+      printf "%s" "$email"
+      exit "$ret"
+    )
+  fi
+
+  echo "localhost ansible_connection=local email=${EMAIL_ADDRESS} ssh_config=${SSH_CONFIG:-false}" > "$inventory"
+  chmod 0755 "$inventory"
 }
 
 keep_awake() {
@@ -150,19 +170,23 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bdg:h' opt; do
+while getopts ':bde:g:sh' opt; do
   case "$opt" in
     b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
+    e) EMAIL_ADDRESS="$OPTARG"           ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
-    h) usage ; exit 0 ;;
-    *) usage ; exit 1 ;;
+    s) SSH_CONFIG=true ;;
+    h) usage ; exit 0  ;;
+    *) usage ; exit 1  ;;
   esac
 done
 
+[ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
+
 case "$ANSIBLE_REPO_PLAYBOOK" in
-  bootstrap) create_tmp_sudoers ; create_vault_file ; keep_awake ; bootstrap_os ;;
-  dotfiles)  create_vault_file ;;
+  bootstrap) create_tmp_sudoers ; create_vault_file ; build_inventory ; keep_awake ; bootstrap_os ;;
+  dotfiles)  create_vault_file ; build_inventory ;;
   *)         exit 1 ;;
 esac
 

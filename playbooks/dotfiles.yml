@@ -134,8 +134,7 @@
         mode: 0644
         backup: true
       register: _backup_ssh_config
-      when: is_personal_system
-      tags: ['ssh', 'ssh_config']
+      tags: ['never', 'ssh_config']
 
     - name: Install tmux config
       ansible.builtin.template:

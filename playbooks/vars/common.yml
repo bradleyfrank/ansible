@@ -6,11 +6,6 @@ distro_vars:
   Ubuntu: Ubuntu
   MacOSX: MacOSX
 
-hostname_prefix: "{{ ansible_user_gecos.split(' ') | first }}"
-is_personal_system: "{{ ansible_hostname is match(hostname_prefix) }}"
-email: "{{ 'bfrank@oreilly.com' if is_personal_system else 'bradfrank@fastmail.com' }}"
-python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
-
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"
@@ -86,6 +81,7 @@ vim_extensions:
   - name: nerdtree
     repo: https://github.com/preservim/nerdtree.git
 
+python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
 

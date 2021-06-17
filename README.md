@@ -20,14 +20,19 @@ wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
 
 ## Running
 
+This repo runs entirely local, no remote connections.
+
 ```text
-sh run.sh [-b | -d] [-g git_branch] | [-h]
-    -b  Run the bootstrap playbook (default)
-    -d  Run the dotfiles playbook
-    -g  Specify the git branch to run (default: 'main')
-    -h  Print this help menu and quit
+sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h
+  -g  Specify the git branch to run (default: 'main')
+  -b  Run the bootstrap playbook (default)
+  -d  Run the dotfiles playbook
+  -e  Set the email address for this system
+  -s  Manage ssh config for this system (default: false)
+  -h  Print this help menu and quit
 ```
 
+* Creates an `inventory` file with host-specific variables
 * Prompts for the Ansible vault password (saved to `~/.ansible/vault`)
 * Ansible is installed via `pip` on all systems
 * The `bootstrap` playbook requires `sudo` privileges for any system
