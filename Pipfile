@@ -7,10 +7,11 @@ name = "pypi"
 ansible = "*"
 docker = "*"
 "github3.py" = "*"
-ansible-lint = "*"
-pre-commit = "*"
 
 [dev-packages]
+pre-commit = "*"
+pylint = "*"
+black = "==21.5b2"
 
 [requires]
-python_version = "3.9"
+python_version = "3.8"
