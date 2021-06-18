@@ -128,6 +128,7 @@
         mode: 0644
         backup: true
       register: _backup_ssh_config
+      when: not opt_out
       tags: ['never', 'ssh_config']
 
     - name: Install tmux config
@@ -148,26 +149,23 @@
       register: _backup_gitconfig
       tags: ['git', 'core']
 
-    - name: Install VSCode configs
-      ansible.builtin.copy:
-        src: conf/vscode/
-        dest: "{{ vscode['config'] }}/"
-        mode: 0755
-        backup: true
-      register: _backup_vscode_settings_json
+    - name: Check if vscode is installed
+      ansible.builtin.stat:
+        path: "{{ vscode['bin'] }}"
+      register: vscode_bin
+
+    - name: Import VSCode tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
+      when: vscode_bin['stat']['exists']
       tags: ['vscode', 'core']
 
     - name: Import kubectl tasks
       ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
       tags: kubectl
 
-    - name: Import VSCode tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
-      tags: vscode
-
     - name: Clone public and private GitHub repositories
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: is_personal_system
+      when: not opt_out
       tags: github_projects
 
     - name: Set squircle icons

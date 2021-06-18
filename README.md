@@ -23,12 +23,12 @@ wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
 This repo runs entirely local, no remote connections.
 
 ```text
-sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h
+sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
   -g  Specify the git branch to run (default: main)
   -b  Run the bootstrap playbook (default)
   -d  Run the dotfiles playbook
   -e  Email address for config files (default: username@hostname)
-  -s  Manage ssh config (default: false)
+  -o  Opt-out of private settings (default: false)
   -h  Print this help menu and quit
 ```
 
@@ -45,3 +45,10 @@ The `inventory` file should look like this:
 ```text
 localhost ansible_connection=local email={{ email_address }} ssh_config={{ true|false }}
 ```
+
+## Opt-Out
+
+Passing the `-o` opt-out flag skips the following tasks:
+
+* Managing `~/.ssh/config`
+* Cloning all private and public GitHub repositories

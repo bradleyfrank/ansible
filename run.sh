@@ -28,12 +28,12 @@ cleanup() {
 }
 
 usage() {
-    echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h"
+    echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h"
     echo "  -g  Specify the git branch to run (default: main)"
     echo "  -b  Run the bootstrap playbook (default)"
     echo "  -d  Run the dotfiles playbook"
     echo "  -e  Email address for config files (default: username@hostname)"
-    echo "  -s  Manage ssh config (default: false)"
+    echo "  -o  Opt out of private settings (default: false)"
     echo "  -h  Print this help menu and quit"
 }
 
@@ -137,8 +137,8 @@ ansible_run() {
   pipenv run -- ansible localhost \
     --module-name ansible.builtin.template \
     --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
-    --extra-vars "email_address=$EMAIL_ADDRESS" \
-    --extra-vars "ssh_config=${SSH_CONFIG:-false}"
+    --extra-vars "email=$EMAIL_ADDRESS" \
+    --extra-vars "opt_out=${OPT_OUT:-false}"
 
   pipenv run -- ansible-galaxy collection install -r requirements.yml
 
@@ -159,13 +159,13 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bde:g:sh' opt; do
+while getopts ':bde:g:oh' opt; do
   case "$opt" in
     b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
     e) EMAIL_ADDRESS="$OPTARG"           ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
-    s) SSH_CONFIG=true ;;
+    o) OPT_OUT=true ;;
     h) usage ; exit 0  ;;
     *) usage ; exit 1  ;;
   esac
