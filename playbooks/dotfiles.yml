@@ -80,12 +80,6 @@
         mode: 0644
       tags: fonts
 
-    - name: Install Python packages
-      ansible.builtin.pip:
-        name: "{{ python_packages }}"
-        extra_args: --user
-      tags: python
-
     - name: Create vim extensions directory path
       ansible.builtin.file:
         path: "{{ vim_extensions_dest }}"

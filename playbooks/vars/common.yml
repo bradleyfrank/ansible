@@ -18,17 +18,6 @@ github:
     32623330326138346138393332666437373364393965343735343838613732653938353239326461
     6663633938656562383166386637346361316533386232376466
 
-python_packages:
-  - ansible-lint
-  - beets
-  - black
-  - pipenv
-  - pre-commit
-  - pycodestyle
-  - pydf
-  - pylint
-  - virtualenv
-
 vscode_extensions:
   - adpyke.codesnap
   - bungcip.better-toml

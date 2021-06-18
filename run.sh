@@ -29,10 +29,10 @@ cleanup() {
 
 usage() {
     echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h"
-    echo "  -g  Specify the git branch to run (default: 'main')"
+    echo "  -g  Specify the git branch to run (default: main)"
     echo "  -b  Run the bootstrap playbook (default)"
     echo "  -d  Run the dotfiles playbook"
-    echo "  -e  Set the email address to use"
+    echo "  -e  Email address for config files (default: username@hostname)"
     echo "  -s  Manage ssh config (default: false)"
     echo "  -h  Print this help menu and quit"
 }
@@ -89,6 +89,10 @@ bootstrap_os() {
     linux)  bootstrap_linux ;;
     *)      not_supported   ;;
   esac
+
+  python3 -m pip install --user pipenv
+  PATH="$PATH:$(python3 -m site --user-base)/bin"
+  export PATH
 }
 
 bootstrap_macos() {
@@ -116,44 +120,40 @@ bootstrap_linux() {
   esac
 }
 
-pre_ansible_run() {
-  python3 -m pip install --user ansible docker github3.py
-  PATH="$PATH:$(python3 -m site --user-base)/bin"
-  export PATH
+ansible_playbook() {
+  case "$ANSIBLE_REPO_PLAYBOOK" in
+    bootstrap) pipenv run -- ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
+    dotfiles)  pipenv run -- ansible-playbook playbooks/dotfiles.yml ;;
+  esac
+}
 
+ansible_run() {
   git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR"
   cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
-  git checkout "$ANSIBLE_REPO_BRANCH"
 
-  ansible-galaxy collection install -r requirements.yml
-  ansible localhost \
+  git checkout "$ANSIBLE_REPO_BRANCH"
+  pipenv install
+
+  pipenv run -- ansible localhost \
     --module-name ansible.builtin.template \
     --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
     --extra-vars "email_address=$EMAIL_ADDRESS" \
     --extra-vars "ssh_config=${SSH_CONFIG:-false}"
 
-  cd - >/dev/null 2>&1 || return 1
-}
+  pipenv run -- ansible-galaxy collection install -r requirements.yml
 
-ansible_playbook() {
-  case "$ANSIBLE_REPO_PLAYBOOK" in
-    bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
-    dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
-  esac
-}
-
-ansible_run() {
-  cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
   if ansible_playbook; then
-    cd - >/dev/null 2>&1 || return 1
-    [ -e "$HOME"/.dotfiles ] && rm -rf "$HOME"/.dotfiles
-    mv "$CHECKOUT_DIR" "$HOME"/.dotfiles
-    return 0
+    dotfiles_dir="$HOME"/.dotfiles
+    rc=0
   else
-    cd - >/dev/null 2>&1 || return 1
-    mv "$CHECKOUT_DIR" "$HOME"/.ansible_"$(date +%F%T | tr -d ':-')"
-    return 1
+    dotfiles_dir="$HOME"/.dotfiles_"$(date +%F%T | tr -d ':-')"
+    rc=1
   fi
+
+  cd - >/dev/null 2>&1 || return 1
+  [ -e "$dotfiles_dir" ] && rm -rf "$dotfiles_dir"
+  mv "$CHECKOUT_DIR" "$dotfiles_dir"
+  return $rc
 }
 
 
@@ -179,5 +179,4 @@ case "$ANSIBLE_REPO_PLAYBOOK" in
   *)         exit 1 ;;
 esac
 
-pre_ansible_run ; [ $? = 1 ] && { cleanup ; exit 1 ; }
 ansible_run ; rc=$? ; cleanup ; exit $rc

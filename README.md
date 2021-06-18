@@ -24,11 +24,11 @@ This repo runs entirely local, no remote connections.
 
 ```text
 sh run.sh [-g git_branch] [-b | -d] [-e email] [-s] | -h
-  -g  Specify the git branch to run (default: 'main')
+  -g  Specify the git branch to run (default: main)
   -b  Run the bootstrap playbook (default)
   -d  Run the dotfiles playbook
-  -e  Set the email address to use
-  -s  Manage ssh config for this system (default: false)
+  -e  Email address for config files (default: username@hostname)
+  -s  Manage ssh config (default: false)
   -h  Print this help menu and quit
 ```
 
