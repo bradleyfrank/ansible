@@ -131,6 +131,9 @@ vscode:
   config: "{{ ansible_user_dir }}/Library/Application Support/Code"
   bin: /usr/local/bin/code
 
+alacritty:
+  decorations: buttonless
+
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 root_home: /var/root

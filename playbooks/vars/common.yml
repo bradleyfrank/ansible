@@ -74,6 +74,8 @@ python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['ver
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
 
+bat_cmd: bat
+
 ssh_keys:
   - id_rsa
   - id_home

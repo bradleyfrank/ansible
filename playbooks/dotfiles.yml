@@ -80,6 +80,11 @@
         mode: 0644
       tags: fonts
 
+    - name: Install themes for bat
+      ansible.builtin.command: "{{ bat_cmd }} cache --build"
+      changed_when: false
+      tags: bat
+
     - name: Create vim extensions directory path
       ansible.builtin.file:
         path: "{{ vim_extensions_dest }}"
@@ -97,6 +102,15 @@
       loop_control:
         label: "{{ item['name'] }}"
       tags: vim
+
+    - name: Apply alacritty template
+      ansible.builtin.template:
+        src: alacritty.yml.j2
+        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
+        mode: 0644
+        backup: true
+      register: _backup_alacritty
+      tags: ['alacritty', 'core']
 
     - name: Apply zshrc template
       ansible.builtin.template:

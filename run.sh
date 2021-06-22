@@ -2,30 +2,24 @@
 
 # ----- global variables ----- #
 
-CHECKOUT_DIR="$(mktemp -d)"
-SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
-EMAIL_ADDRESS="$(id -un)@$(uname -n)"
+HOMEBREW_URL=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
 
+SYSTEM_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$SYSTEM_TYPE" in
-  darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
-  linux)  SUDOERS_D="/etc/sudoers.d"         ;;
+  darwin) SUDOERS_D=/private/etc/sudoers.d ;;
+  linux)  SUDOERS_D=/etc/sudoers.d         ;;
 esac
 
-HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
-ANSIBLE_HOME="$HOME/.ansible"
-ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-ANSIBLE_REPO_BRANCH="main"
-ANSIBLE_REPO_PLAYBOOK="bootstrap"
+EMAIL_ADDRESS="$(id -un)@$(uname -n)"
+DOTFILES_DIR=$HOME/.dotfiles
+
+ANSIBLE_HOME=$HOME/.ansible
+ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
+ANSIBLE_REPO_BRANCH=main
+ANSIBLE_REPO_PLAYBOOK=bootstrap
 
 
 # ----- functions ----- #
-
-trap cleanup INT
-
-cleanup() {
-  [ -e "$SUDOERS_D_TMP" ] && sudo rm -f "$SUDOERS_D_TMP"
-  [ -e "$CHECKOUT_DIR" ] && rm -rf "$CHECKOUT_DIR"
-}
 
 usage() {
     echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h"
@@ -128,8 +122,9 @@ ansible_playbook() {
 }
 
 ansible_run() {
-  git clone "$ANSIBLE_REPO_URL" "$CHECKOUT_DIR"
-  cd "$CHECKOUT_DIR" >/dev/null 2>&1 || return 1
+  [ -d "$DOTFILES_DIR" ] && rm -rf "$DOTFILES_DIR"
+  git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
+  cd "$DOTFILES_DIR" >/dev/null 2>&1 || return 1
 
   git checkout "$ANSIBLE_REPO_BRANCH"
   pipenv install
@@ -142,17 +137,8 @@ ansible_run() {
 
   pipenv run -- ansible-galaxy collection install -r requirements.yml
 
-  if ansible_playbook; then
-    dotfiles_dir="$HOME"/.dotfiles
-    rc=0
-  else
-    dotfiles_dir="$HOME"/.dotfiles_"$(date +%F%T | tr -d ':-')"
-    rc=1
-  fi
-
+  ansible_playbook; rc=$?
   cd - >/dev/null 2>&1 || return 1
-  [ -e "$dotfiles_dir" ] && rm -rf "$dotfiles_dir"
-  mv "$CHECKOUT_DIR" "$dotfiles_dir"
   return $rc
 }
 
@@ -179,4 +165,6 @@ case "$ANSIBLE_REPO_PLAYBOOK" in
   *)         exit 1 ;;
 esac
 
-ansible_run ; rc=$? ; cleanup ; exit $rc
+ansible_run; rc=$?
+[ -e "$SUDOERS_D_TMP" ] && sudo rm -f "$SUDOERS_D_TMP"
+exit $rc

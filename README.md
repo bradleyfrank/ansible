@@ -38,17 +38,22 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
 * The `bootstrap` playbook requires `sudo` privileges for any system
 * Log in to the Mac App Store to install apps via `mas` (skips if not authenticated)
 
-## Inventory
+### Inventory
 
 The `inventory` file should look like this:
 
-```text
-localhost ansible_connection=local email={{ email_address }} ssh_config={{ true|false }}
+```yaml
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      email: {{ email_address }}
+      opt_out: {{ true|false }}
 ```
 
-## Opt-Out
+### Opt-Out
 
 Passing the `-o` opt-out flag skips the following tasks:
 
 * Managing `~/.ssh/config`
-* Cloning all private and public GitHub repositories
+* Cloning all personal GitHub repositories

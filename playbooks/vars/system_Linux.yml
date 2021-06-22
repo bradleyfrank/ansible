@@ -80,6 +80,9 @@ vscode:
   config: "{{ ansible_user_dir }}/.config/Code"
   bin: /usr/bin/code
 
+alacritty:
+  decorations: none
+
 bash_shell: /usr/bin/bash
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python_version }}/site-packages"
