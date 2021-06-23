@@ -8,11 +8,11 @@ case "$SYSTEM_TYPE" in
   linux)  SUDOERS_D=/etc/sudoers.d         ;;
 esac
 
-ANSIBLE_HOME=$HOME/.ansible
+ANSIBLE_HOME="$HOME"/.ansible
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
-DOTFILES_DIR=$HOME/.dotfiles
+DOTFILES_DIR="$HOME"/.dotfiles
 EMAIL_ADDRESS="$(id -un)@$(uname -n)"
 HOMEBREW_URL=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
 TIMESTAMP=$(date +%F_%T | tr -d ':-' | tr '_' '-')
@@ -158,7 +158,7 @@ done
 
 [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
 
-if [ $ANSIBLE_REPO_PLAYBOOK = bootstrap ]; then
+if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
   create_tmp_sudoers
   keep_awake
   bootstrap_os
