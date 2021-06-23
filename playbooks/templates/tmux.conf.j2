@@ -20,7 +20,7 @@ set -g status on
 set -g status-justify left
 set -g status-left ""
 set -g status-position top
-set -g status-right "#[bold]#[fg=colour125][{{ ansible_distribution }} {{ ansible_distribution_version }}] #[fg=colour166][#h] #[fg=colour64][#{session_name}#][nobold]"
+set -g status-right "#[bold]#[fg=colour125][{{ ansible_distribution }} {{ ansible_distribution_version }}] #[fg=colour166][#h] #[fg=colour64][#{session_name}]#[nobold]"
 set -g status-right-length 250
 set -g status-style bg=default
 set -g window-status-activity-style fg=colour33,bg=default

@@ -2,24 +2,29 @@
 
 # ----- global variables ----- #
 
-HOMEBREW_URL=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
-
 SYSTEM_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 case "$SYSTEM_TYPE" in
   darwin) SUDOERS_D=/private/etc/sudoers.d ;;
   linux)  SUDOERS_D=/etc/sudoers.d         ;;
 esac
 
-EMAIL_ADDRESS="$(id -un)@$(uname -n)"
-DOTFILES_DIR=$HOME/.dotfiles
-
 ANSIBLE_HOME=$HOME/.ansible
-ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
+ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
+DOTFILES_DIR=$HOME/.dotfiles
+EMAIL_ADDRESS="$(id -un)@$(uname -n)"
+HOMEBREW_URL=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+TIMESTAMP=$(date +%F_%T | tr -d ':-' | tr '_' '-')
 
 
 # ----- functions ----- #
+
+trap 'cleanup; trap - EXIT; exit' EXIT INT HUP TERM
+
+cleanup() {
+  [ -f "$SUDOERS_D_TMP" ] && sudo rm -f "$SUDOERS_D_TMP"
+}
 
 usage() {
     echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h"
@@ -84,9 +89,8 @@ bootstrap_os() {
     *)      not_supported   ;;
   esac
 
+  PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
   python3 -m pip install --user pipenv
-  PATH="$PATH:$(python3 -m site --user-base)/bin"
-  export PATH
 }
 
 bootstrap_macos() {
@@ -114,15 +118,9 @@ bootstrap_linux() {
   esac
 }
 
-ansible_playbook() {
-  case "$ANSIBLE_REPO_PLAYBOOK" in
-    bootstrap) pipenv run -- ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
-    dotfiles)  pipenv run -- ansible-playbook playbooks/dotfiles.yml ;;
-  esac
-}
-
 ansible_run() {
-  [ -d "$DOTFILES_DIR" ] && rm -rf "$DOTFILES_DIR"
+  [ -d "$DOTFILES_DIR" ] && mv "$DOTFILES_DIR" "${DOTFILES_DIR}.${TIMESTAMP}"
+
   git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
   cd "$DOTFILES_DIR" >/dev/null 2>&1 || return 1
 
@@ -137,9 +135,10 @@ ansible_run() {
 
   pipenv run -- ansible-galaxy collection install -r requirements.yml
 
-  ansible_playbook; rc=$?
-  cd - >/dev/null 2>&1 || return 1
-  return $rc
+  case "$ANSIBLE_REPO_PLAYBOOK" in
+    bootstrap) pipenv run -- ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
+    dotfiles)  pipenv run -- ansible-playbook playbooks/dotfiles.yml ;;
+  esac
 }
 
 
@@ -151,20 +150,20 @@ while getopts ':bde:g:oh' opt; do
     d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
     e) EMAIL_ADDRESS="$OPTARG"           ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
-    o) OPT_OUT=true ;;
-    h) usage ; exit 0  ;;
-    *) usage ; exit 1  ;;
+    o) OPT_OUT=true   ;;
+    h) usage; exit 0  ;;
+    *) usage; exit 1  ;;
   esac
 done
 
 [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
 
-case "$ANSIBLE_REPO_PLAYBOOK" in
-  bootstrap) create_tmp_sudoers ; create_vault_file ; keep_awake ; bootstrap_os ;;
-  dotfiles)  create_vault_file ;;
-  *)         exit 1 ;;
-esac
+create_vault_file
 
-ansible_run; rc=$?
-[ -e "$SUDOERS_D_TMP" ] && sudo rm -f "$SUDOERS_D_TMP"
-exit $rc
+if [ $ANSIBLE_REPO_PLAYBOOK = bootstrap ]; then
+  create_tmp_sudoers
+  keep_awake
+  bootstrap_os
+fi
+
+ansible_run
