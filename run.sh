@@ -146,10 +146,10 @@ ansible_run() {
 
 while getopts ':bde:g:oh' opt; do
   case "$opt" in
-    b) ANSIBLE_REPO_PLAYBOOK="bootstrap" ;;
-    d) ANSIBLE_REPO_PLAYBOOK="dotfiles"  ;;
-    e) EMAIL_ADDRESS="$OPTARG"           ;;
-    g) ANSIBLE_REPO_BRANCH="$OPTARG"     ;;
+    b) ANSIBLE_REPO_PLAYBOOK=bootstrap ;;
+    d) ANSIBLE_REPO_PLAYBOOK=dotfiles  ;;
+    e) EMAIL_ADDRESS="$OPTARG"         ;;
+    g) ANSIBLE_REPO_BRANCH="$OPTARG"   ;;
     o) OPT_OUT=true   ;;
     h) usage; exit 0  ;;
     *) usage; exit 1  ;;
@@ -158,12 +158,11 @@ done
 
 [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
 
-create_vault_file
-
 if [ $ANSIBLE_REPO_PLAYBOOK = bootstrap ]; then
   create_tmp_sudoers
   keep_awake
   bootstrap_os
 fi
 
+create_vault_file
 ansible_run
