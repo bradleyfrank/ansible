@@ -12,6 +12,7 @@ ANSIBLE_HOME="$HOME"/.ansible
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
+ANSIBLE_VAULT="$ANSIBLE_HOME/vault"
 DOTFILES_DIR="$HOME"/.dotfiles
 EMAIL_ADDRESS="$(id -un)@$(uname -n)"
 HOMEBREW_URL=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
@@ -38,30 +39,28 @@ usage() {
 
 create_tmp_sudoers() {
   [ -e "$SUDOERS_D_TMP" ] && sudo rm -rf "$SUDOERS_D_TMP"
-  SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
+  SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-${TIMESTAMP}"
   sudo --validate --prompt "Enter sudo password: " # reset sudo timer for following command
   printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
   printf "\n" # insert newline for readability
 }
 
 create_vault_file() {
-  vaultfile="$ANSIBLE_HOME/vault"
-  [ -s "$vaultfile" ] && return 0
+  [ -s "$ANSIBLE_VAULT" ] && return 0
 
-  vaultpw=$(
+  printf "%s" "$(
     exec < /dev/tty
     tty_settings=$(stty -g) # save current tty settings
     trap 'stty "$tty_settings"' EXIT INT TERM
     stty -echo || exit # disable terminal local echo
     printf "Enter vault password: " > /dev/tty
-    IFS= read -r password; ret=$?
+    IFS= read -r password; rc=$?
     echo > /dev/tty # insert newline for readability
     printf "%s\n" "$password"
-    exit "$ret"
-  )
+    exit "$rc"
+  )" > "$ANSIBLE_VAULT"
 
-  printf "%s" "$vaultpw" > "$vaultfile"
-  chmod 0400 "$vaultfile"
+  chmod 0400 "$ANSIBLE_VAULT"
 }
 
 keep_awake() {
@@ -90,7 +89,7 @@ bootstrap_os() {
   esac
 
   PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
-  python3 -m pip install --user pipenv
+  python3 -m pip install --user ansible docker github3.py
 }
 
 bootstrap_macos() {
@@ -123,17 +122,15 @@ ansible_run() {
 
   git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
   cd "$DOTFILES_DIR" >/dev/null 2>&1 || return 1
-
   git checkout "$ANSIBLE_REPO_BRANCH"
-  pipenv install
 
-  pipenv run -- ansible localhost \
+  ansible localhost \
     --module-name ansible.builtin.template \
     --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
     --extra-vars "email=$EMAIL_ADDRESS" \
     --extra-vars "opt_out=${OPT_OUT:-false}"
 
-  pipenv run -- ansible-galaxy collection install -r requirements.yml
+  ansible-galaxy collection install -r requirements.yml
 
   case "$ANSIBLE_REPO_PLAYBOOK" in
     bootstrap) pipenv run -- ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
