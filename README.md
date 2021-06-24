@@ -40,7 +40,7 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
 
 ### Inventory
 
-The `inventory` file should look like this:
+The `inventory.yml` file should look like this:
 
 ```yaml
 all:

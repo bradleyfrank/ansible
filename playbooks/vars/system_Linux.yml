@@ -16,6 +16,7 @@ system_packages:
   - dictd
   - docker-ce
   - docker-ce-cli
+  - exa
   - fdupes
   - ffmpeg
   - figlet

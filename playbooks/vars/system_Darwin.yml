@@ -18,6 +18,7 @@ system_packages:
     - coreutils
     - dict
     - eye-d3
+    - exa
     - fdupes
     - ffmpeg
     - fileicon
@@ -84,6 +85,7 @@ system_packages:
     - calibre
     - chromium
     - dozer
+    - expressions
     - fantastical
     - firefox
     - google-cloud-sdk
