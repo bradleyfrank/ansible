@@ -96,6 +96,7 @@ bootstrap_macos() {
   if [ ! -x /usr/local/bin/brew ]; then CI=1 /bin/bash -c "$(curl -fsSL "$HOMEBREW_URL")"
   else softwareupdate --install --all
   fi
+
   brew install python3 git
 }
 
@@ -133,8 +134,8 @@ ansible_run() {
   ansible-galaxy collection install -r requirements.yml
 
   case "$ANSIBLE_REPO_PLAYBOOK" in
-    bootstrap) pipenv run -- ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
-    dotfiles)  pipenv run -- ansible-playbook playbooks/dotfiles.yml ;;
+    bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
+    dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
   esac
 }
 

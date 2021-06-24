@@ -32,7 +32,7 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
   -h  Print this help menu and quit
 ```
 
-* Creates an `inventory` file with host-specific variables
+* Creates an `inventory.yml` file with host-specific variables
 * Prompts for the Ansible vault password (saved to `~/.ansible/vault`)
 * Ansible is installed via `pip` on all systems
 * The `bootstrap` playbook requires `sudo` privileges for any system
@@ -40,15 +40,14 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
 
 ### Inventory
 
-The `inventory.yml` file should look like this:
+To regenerate `inventory.yml` anytime, run the following Ansible command, replacing the `{{ email }}` and `{{ optout }}` placeholders.
 
-```yaml
-all:
-  hosts:
-    localhost:
-      ansible_connection: local
-      email: {{ email_address }}
-      opt_out: {{ true|false }}
+```shell
+ansible localhost \
+  --module-name ansible.builtin.template \
+  --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
+  --extra-vars "email={{ email }}" \
+  --extra-vars "opt_out={{ optout }}"
 ```
 
 ### Opt-Out
