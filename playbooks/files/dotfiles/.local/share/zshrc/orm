@@ -13,10 +13,10 @@ oghpr() {
     while read -r member; do
         author=$(tr -d '\n' <<< "$member")
         printf "\n%s\n\n" "$(toilet --font pagga --width 100 "$author")" >> "$output"
-        gh api search/issues\?q=state:open+is:pr+author:"$author"+draft:false --jq '.items[] | .title,.html_url' >> "$output"
-    done <<< "$(gh api orgs/oreillymedia/teams/platform-engineering/members --jq '.[] | .login' | grep -v "$(gh config get --host github.com user))"
+        gh api search/issues?q=state:open+is:pr+author:"$author"+draft:false --jq '.items[] | .title,.html_url' >> "$output"
+    done <<< "$(gh api orgs/oreillymedia/teams/platform-engineering/members --jq '.[] | .login' | grep -v "$(gh config get --host github.com user)")"
 
-    mutt {{ email }} -s "PE Open PRs" < "$output"
+    mutt bfrank@oreilly.com -s "PE Open PRs" < "$output"
     rm "$output"
 }
 

@@ -167,6 +167,7 @@
       ansible.builtin.stat:
         path: "{{ vscode['bin'] }}"
       register: vscode_bin
+      tags: ['vscode', 'core']
 
     - name: Import VSCode tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
