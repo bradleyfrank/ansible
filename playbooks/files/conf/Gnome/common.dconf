@@ -10,7 +10,7 @@ clock-format='12h'
 clock-show-seconds=false
 clock-show-weekday=true
 enable-animations=false
-show-battery-percentage=true
+show-battery-percentage=false
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
@@ -110,11 +110,11 @@ custom-theme-running-dots-border-color='#ffffff'
 custom-theme-running-dots-border-width=0
 custom-theme-running-dots-color='#2e3436'
 custom-theme-shrink=true
-dash-max-icon-size=24
-dock-fixed=true
+dash-max-icon-size=36
+dock-fixed=false
 dock-position='BOTTOM'
-extend-height=true
-force-straight-corner=true
+extend-height=false
+force-straight-corner=false
 height-fraction=1.0
 hide-delay=0.24999999999999967
 intellihide=false
