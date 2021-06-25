@@ -143,7 +143,7 @@
         backup: true
       register: _backup_ssh_config
       when: not work_system
-      tags: ['never', 'ssh_config']
+      tags: ['ssh_config', 'core']
 
     - name: Get tmux version
       ansible.builtin.command: tmux -V
@@ -207,6 +207,7 @@
         path: "{{ backups_dir }}"
         state: directory
         mode: 0755
+      tags: ['always', 'backups']
 
     - name: Process backups
       vars:
