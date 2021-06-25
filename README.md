@@ -23,12 +23,12 @@ wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
 This repo runs entirely local, no remote connections.
 
 ```text
-sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
+sh run.sh [-g git_branch] [-b | -d] [-e email] [-w] | -h
   -g  Specify the git branch to run (default: main)
   -b  Run the bootstrap playbook (default)
   -d  Run the dotfiles playbook
   -e  Email address for config files (default: username@hostname)
-  -o  Opt-out of private settings (default: false)
+  -w  Designate a work system; skip certain tasks (default: false)
   -h  Print this help menu and quit
 ```
 
@@ -40,19 +40,19 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h
 
 ### Inventory
 
-To regenerate `inventory.yml` anytime, run the following Ansible command, replacing the `{{ email }}` and `{{ optout }}` placeholders.
+To regenerate `inventory.yml` anytime, run the following Ansible command, replacing the `{{ email }}` and `{{ work_system }}` placeholders.
 
 ```shell
 ansible localhost \
   --module-name ansible.builtin.template \
   --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
-  --extra-vars "email={{ email }}" \
-  --extra-vars "opt_out={{ optout }}"
+  --extra-vars "email={{ email_address }}" \
+  --extra-vars "work_system={{ true|false }}"
 ```
 
-### Opt-Out
+### Work Systems
 
-Passing the `-o` opt-out flag skips the following tasks:
+Passing the `-w` flag skips the following tasks:
 
 * Managing `~/.ssh/config`
 * Cloning all personal GitHub repositories

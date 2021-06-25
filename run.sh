@@ -28,12 +28,12 @@ cleanup() {
 }
 
 usage() {
-    echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-o] | -h"
+    echo "sh run.sh [-g git_branch] [-b | -d] [-e email] [-w] | -h"
     echo "  -g  Specify the git branch to run (default: main)"
     echo "  -b  Run the bootstrap playbook (default)"
     echo "  -d  Run the dotfiles playbook"
     echo "  -e  Email address for config files (default: username@hostname)"
-    echo "  -o  Opt out of private settings (default: false)"
+    echo "  -w  Designate a work system; skip certain tasks (default: false)"
     echo "  -h  Print this help menu and quit"
 }
 
@@ -76,16 +76,11 @@ keep_awake() {
   esac
 }
 
-not_supported() {
-  echo "Unsupported OS, aborting..." >&2
-  exit 1
-}
-
 bootstrap_os() {
   case "$SYSTEM_TYPE" in
     darwin) bootstrap_macos ;;
     linux)  bootstrap_linux ;;
-    *)      not_supported   ;;
+    *)      exit 1          ;;
   esac
 
   PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
@@ -96,11 +91,11 @@ bootstrap_macos() {
   if [ ! -x /usr/local/bin/brew ]; then CI=1 /bin/bash -c "$(curl -fsSL "$HOMEBREW_URL")"
   else softwareupdate --install --all
   fi
-
   brew install python3 git
 }
 
 bootstrap_linux() {
+  sudo systemctl stop packagekit
   case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
     fedora)
       sudo dnf clean all
@@ -114,7 +109,7 @@ bootstrap_linux() {
       sudo apt-get upgrade -y
       sudo apt-get install -y python3 python3-pip git lsb-release
       ;;
-    *) not_supported ;;
+    *) exit 1 ;;
   esac
 }
 
@@ -129,7 +124,7 @@ ansible_run() {
     --module-name ansible.builtin.template \
     --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
     --extra-vars "email=$EMAIL_ADDRESS" \
-    --extra-vars "opt_out=${OPT_OUT:-false}"
+    --extra-vars "work_system=${WORK_SYSTEM:-false}"
 
   ansible-galaxy collection install -r requirements.yml
 
@@ -142,15 +137,15 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bde:g:oh' opt; do
+while getopts ':bde:g:wh' opt; do
   case "$opt" in
     b) ANSIBLE_REPO_PLAYBOOK=bootstrap ;;
     d) ANSIBLE_REPO_PLAYBOOK=dotfiles  ;;
     e) EMAIL_ADDRESS="$OPTARG"         ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG"   ;;
-    o) OPT_OUT=true   ;;
-    h) usage; exit 0  ;;
-    *) usage; exit 1  ;;
+    w) WORK_SYSTEM=true ;;
+    h) usage; exit 0    ;;
+    *) usage; exit 1    ;;
   esac
 done
 

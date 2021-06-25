@@ -142,10 +142,18 @@
         mode: 0644
         backup: true
       register: _backup_ssh_config
-      when: not opt_out
+      when: not work_system
       tags: ['never', 'ssh_config']
 
+    - name: Get tmux version
+      ansible.builtin.command: tmux -V
+      register: tmux_version
+      changed_when: false
+      tags: ['tmux', 'core']
+
     - name: Install tmux config
+      vars:
+        tmux_semver: "{{ tmux_version['stdout'].split(' ') | last }}"
       ansible.builtin.template:
         src: tmux.conf.j2
         dest: "{{ ansible_user_dir }}/.tmux.conf"
@@ -180,7 +188,7 @@
 
     - name: Clone public and private GitHub repositories
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: not opt_out
+      when: not work_system
       tags: github_projects
 
     - name: Set squircle icons

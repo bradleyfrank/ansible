@@ -67,7 +67,7 @@ night-light-schedule-automatic=true
 night-light-enabled=true
 
 [org/gnome/shell]
-favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', '1password.desktop', 'org.gnome.gedit.desktop', 'org.gnome.Calculator.desktop', 'spotify.desktop', 'signal-desktop.desktop']
+favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop', 'com.alacritty.Alacritty.desktop', 'code.desktop', '1password.desktop', 'org.gnome.gedit.desktop', 'org.gnome.Calculator.desktop', 'spotify.desktop', 'signal-desktop.desktop']
 
 [org/gnome/shell/extensions/system-monitor]
 battery-display=false
