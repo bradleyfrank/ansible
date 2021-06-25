@@ -13,7 +13,7 @@ set -g aggressive-resize off
 set -g mode-style bg=colour24,fg=colour231
 set -g pane-border-format " #[bold]→ #{s|{{ ansible_user_dir }}|~|:pane_current_path}#[nobold] "
 set -g pane-border-status top
-{% if tmux_semver is version('3.2a', operator='>=') %}
+{% if tmux_semver is version('3.2', operator='>=') %}
 set -g pane-active-border-style "bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour33}}"
 set -g pane-border-lines double
 set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour240}"

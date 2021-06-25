@@ -108,6 +108,7 @@ alias show='whence -f'
 alias sync='rsync -a --info=progress2'
 alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
+alias trw='tmux rename-window "$(basename $PWD)"'
 alias vs='code .'
 {% if 'Darwin' in ansible_system %}
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
