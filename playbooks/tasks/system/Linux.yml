@@ -1,9 +1,9 @@
 ---
 
-- name: Set user shell to zsh and add to 'docker' group
+- name: Set user shell to zsh and add to groups
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups: docker
+    groups: docker, sudo
     shell: /usr/bin/zsh
   become: true
   tags: shell
@@ -31,7 +31,7 @@
   community.general.dconf:
     key: "{{ item['key'] }}"
     value: "{{ item['value'] }}"
-  loop: "{{ dconf['common'] | combine(dconf[ansible_distribution]) }}"
+  loop: "{{ dconf['common'] | combine(dconf[ansible_distribution]) | dict2items }}"
   tags: system_settings
 
 - name: Generate host keys

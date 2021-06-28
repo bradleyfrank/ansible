@@ -1,6 +1,6 @@
 ---
 
-- name: Install BBEdit cli tools
+- name: Install BBEdit cli tool
   ansible.builtin.copy:
     src: /Applications/BBEdit.app/Contents/Helpers/bbedit_tool
     dest: "/usr/local/bin/bbedit"
