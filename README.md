@@ -2,7 +2,7 @@
 
 Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfiles.
 
-**Supported systems:** *macOS, Fedora, Ubuntu, Pop!_OS*
+**Supported systems:** *macOS, Ubuntu, Pop!_OS*
 
 ## Installing
 

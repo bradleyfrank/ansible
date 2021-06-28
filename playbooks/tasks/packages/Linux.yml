@@ -2,7 +2,7 @@
 
 - name: Install Ubuntu/Pop!_OS packages
   ansible.builtin.apt:
-    name: "{{ system_packages + dist_packages }}"
+    name: "{{ packages }}"
     state: present
     install_recommends: true
     update_cache: true
@@ -11,6 +11,6 @@
 
 - name: Install snaps
   community.general.snap:
-    name: "{{ snap_packages }}"
+    name: "{{ snaps }}"
   become: true
   tags: [packages, snap]

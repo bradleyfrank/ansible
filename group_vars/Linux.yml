@@ -148,7 +148,7 @@ packages:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
 
-snap_packages:
+snaps:
   - newsflash
   - signal-desktop
   - spotify
