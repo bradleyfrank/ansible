@@ -34,7 +34,7 @@ usage() {
 }
 
 create_tmp_sudoers() {
-  SUDOERS_D_TMP="${SUDOERS_D}/ansible.${TIMESTAMP}"
+  SUDOERS_D_TMP="$SUDOERS_D/ansible.$TIMESTAMP"
   printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
 }
 
@@ -94,7 +94,7 @@ bootstrap_ansible() {
   python3 -m pip install --user ansible docker github3.py
 
   [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
-  [ -d "$DOTFILES_DIR" ] && mv "$DOTFILES_DIR" "${DOTFILES_DIR}.${TIMESTAMP}"
+  [ -d "$DOTFILES_DIR" ] && mv "$DOTFILES_DIR" "$DOTFILES_DIR.$TIMESTAMP"
 
   git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
   cd "$DOTFILES_DIR"
