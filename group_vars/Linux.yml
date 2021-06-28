@@ -1,0 +1,325 @@
+---
+
+repos:
+  - name: vscode
+    repo: >
+      deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg]
+      https://packages.microsoft.com/repos/vscode stable main
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+  - name: 1Password
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
+      https://onepassword.s3.amazonaws.com/linux/debian edge main
+    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+    keyring: /usr/share/keyrings/1password.gpg
+  - name: google-chrome
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    key: https://dl.google.com/linux/linux_signing_key.pub
+  - name: foliate
+    repo: ppa:apandada1/foliate
+    keyserver: keyserver.ubuntu.com
+    id: 95ACDEBD8BFF99ABE0F26A49A507B2BBA7803E3B
+  - name: nextcloud
+    repo: ppa:nextcloud-devs/client
+    keyserver: keyserver.ubuntu.com
+    id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
+  - name: makemkv
+    repo: ppa:heyarje/makemkv-beta
+    keyserver: keyserver.ubuntu.com
+    id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+  - name: gh-cli
+    repo: deb https://cli.github.com/packages groovy main
+    key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+  - name: kubernetes
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  - name: docker
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+      https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
+    key: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+  - name: alacritty
+    repo: ppa:mmstick76/alacritty
+    keyserver: keyserver.ubuntu.com
+    id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
+
+packages:
+  - 1password
+  - abcde
+  - alacritty
+  - apt-file
+  - apt-transport-https  # docker
+  - asciinema
+  - audacious
+  - bash-completion
+  - bat
+  - borgbackup
+  - ca-certificates  # docker
+  - calibre
+  - celluloid
+  - code
+  - containerd.io
+  - dictd
+  - docker-ce
+  - docker-ce-cli
+  - exa
+  - fdupes
+  - ffmpeg
+  - figlet
+  - foliate
+  - fonts-noto-color-emoji
+  - fwupd
+  - fzf
+  - gedit-plugin-code-comment
+  - gedit-plugin-color-picker
+  - gedit-plugin-git
+  - gedit-plugin-join-lines
+  - gedit-plugin-multi-edit
+  - gh
+  - ghostscript
+  - ghostwriter
+  - glances
+  - gnome-shell-extension-system-monitor
+  - gnome-shell-extensions-gpaste
+  - gnote
+  - gnupg  # docker
+  - gnupg2  # kubernetes
+  - google-chrome-stable
+  - gpaste*
+  - htop
+  - httpie
+  - iftop
+  - keepassxc
+  - keychain
+  - kubectl
+  - libmp4-info-perl
+  - libreoffice
+  - libvirt-clients
+  - makemkv-bin
+  - makemkv-oss
+  - meld
+  - mkvtoolnix
+  - most
+  - mpv
+  - msmtp
+  - mtr
+  - ncdu
+  - neofetch
+  - nextcloud-client
+  - nextcloud-client-nautilus
+  - nmap
+  - p7zip-*
+  - par
+  - perf-tools-unstable
+  - picard
+  - python3
+  - python3-dev
+  - python3-pip
+  - remmina
+  - reptyr
+  - ruby
+  - seahorse
+  - shellcheck
+  - snapd
+  - solaar
+  - ssh
+  - stow
+  - strace
+  - system-config-printer
+  - thunderbird
+  - timeshift
+  - tlp
+  - tmux
+  - toilet
+  - torbrowser-launcher
+  - transmission-gtk
+  - trash-cli
+  - tree
+  - vim
+  - vlc
+  - wget
+  - xdelta
+  - xsel
+  - xz-utils
+  - youtube-dl
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+
+snap_packages:
+  - newsflash
+  - signal-desktop
+  - spotify
+
+vscode:
+  config: "{{ ansible_user_dir }}/.config/Code"
+  bin: /usr/bin/code
+
+alacritty:
+  decorations: none
+
+bash_shell: /usr/bin/bash
+font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
+python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python_version }}/site-packages"
+root_home: /root
+bat_cmd: batcat
+
+zsh_directories:
+  - /usr/share
+  - /usr/share/zsh
+  - /usr/share/zsh/site-functions
+
+dconf:
+  common:
+    org/gnome/calendar/follow-night-light: "false"
+    org/gnome/desktop/datetime/automatic-timezone: "true"
+    org/gnome/desktop/input-sources/current: "uint32 0"
+    org/gnome/desktop/input-sources/sources: "[('xkb', 'us')]"
+    org/gnome/desktop/input-sources/xkb-options: "['ctrl:nocaps']"
+    org/gnome/desktop/interface/clock-format: "'12h'"
+    org/gnome/desktop/interface/clock-show-date: "true"
+    org/gnome/desktop/interface/clock-show-seconds: "false"
+    org/gnome/desktop/interface/clock-show-weekday: "true"
+    org/gnome/desktop/interface/enable-animations: "false"
+    org/gnome/desktop/interface/show-battery-percentage: "false"
+    org/gnome/desktop/media-handling/autorun-never: "true"
+    org/gnome/desktop/media-handling/autorun-x-content-ignore: "\
+      ['x-content/audio-cdda',
+      'x-content/video-dvd',
+      'x-content/audio-player',
+      'x-content/image-dcf',
+      'x-content/unix-software']"
+    org/gnome/desktop/peripherals/touchpad/tap-to-click: "true"
+    org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled: "true"
+    org/gnome/desktop/privacy/remove-old-temp-files: "true"
+    org/gnome/desktop/privacy/remove-old-trash-files: "true"
+    org/gnome/gedit/preferences/editor/auto-indent: "true"
+    org/gnome/gedit/preferences/editor/auto-save: "true"
+    org/gnome/gedit/preferences/editor/background-pattern: "'none'"
+    org/gnome/gedit/preferences/editor/bracket-matching: "true"
+    org/gnome/gedit/preferences/editor/display-line-numbers: "true"
+    org/gnome/gedit/preferences/editor/display-overview-map: "true"
+    org/gnome/gedit/preferences/editor/display-right-margin: "true"
+    org/gnome/gedit/preferences/editor/editor-font: "'Source Code Pro 11'"
+    org/gnome/gedit/preferences/editor/highlight-current-line: "true"
+    org/gnome/gedit/preferences/editor/insert-spaces: "true"
+    org/gnome/gedit/preferences/editor/right-margin-position: "uint32 80"
+    org/gnome/gedit/preferences/editor/scheme: "'solarized-light'"
+    org/gnome/gedit/preferences/editor/tabs-size: "uint32 2"
+    org/gnome/gedit/preferences/editor/use-default-font: "false"
+    org/gnome/gedit/preferences/editor/wrap-last-split-mode: "'word'"
+    org/gnome/gedit/preferences/ui/show-tabs-mode: "'auto'"
+    org/gnome/gedit/preferences/ui/side-panel-visible: "false"
+    org/gnome/nautilus/list-view/default-visible-columns: "['name', 'size', 'type', 'date_modified', 'starred']"
+    org/gnome/nautilus/list-view/default-zoom-level: "'small'"
+    org/gnome/nautilus/list-view/use-tree-view: "true"
+    org/gnome/nautilus/preferences/default-folder-viewer: "'list-view'"
+    org/gnome/nautilus/preferences/search-filter-time-type: "'last_modified'"
+    org/gnome/nautilus/preferences/show-create-link: "true"
+    org/gnome/nautilus/preferences/show-delete-permanently: "true"
+    org/gnome/settings-daemon/plugins/color/night-light-enabled: "true"
+    org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic: "true"
+    org/gnome/shell/extensions/dash-to-dock/autohide: "true"
+    org/gnome/shell/extensions/dash-to-dock/click-action: "'previews'"
+    org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size: "36"
+    org/gnome/shell/extensions/dash-to-dock/dock-fixed: "false"
+    org/gnome/shell/extensions/dash-to-dock/dock-position: "'BOTTOM'"
+    org/gnome/shell/extensions/dash-to-dock/extend-height: "false"
+    org/gnome/shell/extensions/dash-to-dock/force-straight-corner: "false"
+    org/gnome/shell/extensions/dash-to-dock/intellihide: "false"
+    org/gnome/shell/extensions/dash-to-dock/running-indicator-dominant-color: "true"
+    org/gnome/shell/extensions/dash-to-dock/scroll-action: "'switch-workspace'"
+    org/gnome/shell/extensions/system-monitor/battery-display: "false"
+    org/gnome/shell/extensions/system-monitor/battery-show-menu: "true"
+    org/gnome/shell/extensions/system-monitor/battery-show-text: "false"
+    org/gnome/shell/extensions/system-monitor/battery-style: "'digit'"
+    org/gnome/shell/extensions/system-monitor/battery-time: "true"
+    org/gnome/shell/extensions/system-monitor/center-display: "false"
+    org/gnome/shell/extensions/system-monitor/compact-display: "false"
+    org/gnome/shell/extensions/system-monitor/cpu-graph-width: "50"
+    org/gnome/shell/extensions/system-monitor/cpu-individual-cores: "false"
+    org/gnome/shell/extensions/system-monitor/cpu-show-menu: "true"
+    org/gnome/shell/extensions/system-monitor/cpu-show-text: "false"
+    org/gnome/shell/extensions/system-monitor/disk-display: "true"
+    org/gnome/shell/extensions/system-monitor/disk-graph-width: "50"
+    org/gnome/shell/extensions/system-monitor/disk-show-text: "false"
+    org/gnome/shell/extensions/system-monitor/gpu-show-menu: "true"
+    org/gnome/shell/extensions/system-monitor/icon-display: "false"
+    org/gnome/shell/extensions/system-monitor/memory-graph-width: "50"
+    org/gnome/shell/extensions/system-monitor/memory-show-menu: "false"
+    org/gnome/shell/extensions/system-monitor/memory-show-text: "false"
+    org/gnome/shell/extensions/system-monitor/move-clock: "false"
+    org/gnome/shell/extensions/system-monitor/net-display: "true"
+    org/gnome/shell/extensions/system-monitor/net-graph-width: "50"
+    org/gnome/shell/extensions/system-monitor/net-show-text: "false"
+    org/gnome/shell/extensions/system-monitor/show-tooltip: "true"
+    org/gnome/shell/extensions/system-monitor/swap-display: "false"
+    org/gnome/system/location/enabled: "true"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/audible-bell: "false"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/background-color: "'rgb(253,246,227)'"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/bold-is-bright: "false"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/cursor-colors-set: "false"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/font: "'Source Code Pro 12'"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/foreground-color: "'rgb(101,123,131)'"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/highlight-colors-set: "false"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/palette: "\
+      ['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)',
+      'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)',
+      'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)',
+      'rgb(147,161,161)', 'rgb(253,246,227)']"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/scroll-on-output: "true"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/scrollback-unlimited: "true"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/use-system-font: "false"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/use-theme-colors: "false"
+    org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/visible-name: "'Brads-Profile'"
+    org/gnome/terminal/legacy/profiles:/default: "'57ec47b4-dd6d-4fa3-9434-f65de25dd9ed'"
+    org/gnome/terminal/legacy/profiles:/list: "['57ec47b4-dd6d-4fa3-9434-f65de25dd9ed']"
+    org/gnome/terminal/legacy/theme-variant: "'system'"
+  Ubuntu:
+    org/gnome/shell/enabled-extensions: "\
+      ['system-monitor@paradoxxx.zero.gmail.com',
+      'GPaste@gnome-shell-extensions.gnome.org',
+      'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
+      'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
+      'ubuntu-appindicators@ubuntu.com',
+      'ubuntu-dock@ubuntu.com']"
+    org/gnome/shell/favorite-apps: "\
+      ['firefox.desktop',
+      'org.gnome.Nautilus.desktop',
+      'com.alacritty.Alacritty.desktop',
+      'code.desktop', '1password.desktop',
+      'org.gnome.gedit.desktop',
+      'org.gnome.Calculator.desktop',
+      'spotify.desktop', 'signal-desktop.desktop']"
+  Pop!_OS:
+    org/gnome/desktop/interface/enable-hot-corners: "true"
+    org/gnome/desktop/interface/gtk-theme: "'Pop'"
+    org/gnome/shell/enabled-extensions: "\
+      ['alt-tab-raise-first-window@system76.com',
+      'always-show-workspaces@system76.com',
+      'pop-shell@system76.com',
+      'system76-power@system76.com',
+      'ubuntu-appindicators@ubuntu.com',
+      'system-monitor@paradoxxx.zero.gmail.com',
+      'GPaste@gnome-shell-extensions.gnome.org',
+      'auto-move-windows@gnome-shell-extensions.gcampax.github.com']"
+    org/gnome/shell/extensions/pop-cosmic/clock-alignment: "'LEFT'"
+    org/gnome/shell/extensions/pop-cosmic/show-applications-button: "false"
+    org/gnome/shell/extensions/pop-cosmic/show-workspaces-button: "false"
+    org/gnome/shell/extensions/pop-shell/gap-inner: "uint32 0"
+    org/gnome/shell/extensions/pop-shell/gap-outer: "uint32 0"
+    org/gnome/shell/extensions/pop-shell/tile-by-default: "true"
+    org/gnome/shell/favorite-apps: "\
+      ['pop-cosmic-workspaces.desktop',
+      'pop-cosmic-applications.desktop',
+      'firefox.desktop',
+      'org.gnome.Nautilus.desktop',
+      'com.alacritty.Alacritty.desktop',
+      'code.desktop',
+      '1password.desktop',
+      'org.gnome.gedit.desktop',
+      'org.gnome.Calculator.desktop',
+      'spotify.desktop',
+      'signal-desktop.desktop']"

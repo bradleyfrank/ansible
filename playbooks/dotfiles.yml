@@ -2,21 +2,7 @@
 
 - name: Install and configure dotfiles on localhost
   hosts: localhost
-
   tasks:
-    - name: Include common variables
-      ansible.builtin.include_vars: common.yml
-      tags: always
-
-    - name: Include system variables
-      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
-      tags: always
-
-    - name: Include Linux distribution variables
-      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
-      when: ansible_system == 'Linux'
-      tags: always
-
     - name: Create ~/Development folder structure
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/Development/{{ item }}"
@@ -112,6 +98,11 @@
       register: _backup_alacritty
       tags: ['alacritty', 'core']
 
+    - name: Include BBEdit tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
+      when: ansible_system == 'Darwin'
+      tags: bbedit
+
     - name: Apply zshrc template
       ansible.builtin.template:
         src: zshrc.j2
@@ -137,7 +128,7 @@
 
     - name: Install SSH config
       ansible.builtin.copy:
-        src: conf/ssh/config
+        src: ssh/config
         dest: "{{ ansible_user_dir }}/.ssh/config"
         mode: 0644
         backup: true
@@ -195,9 +186,9 @@
       vars:
         app: "{{ item['path'] | splitext | first }}"
       ansible.builtin.command: "fileicon set /Applications/{{ app }}.app {{ item['src'] }}"
-      when: "'Darwin' in ansible_system"
       changed_when: false
-      loop: "{{ lookup('community.general.filetree', 'conf/MacOSX/icons/') }}"
+      when: "'Darwin' in ansible_system"
+      loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:
         label: "{{ app }}"
       tags: icons

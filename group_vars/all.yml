@@ -1,11 +1,5 @@
 ---
 
-distro_vars:
-  Fedora: Fedora
-  Pop!_OS: Ubuntu
-  Ubuntu: Ubuntu
-  MacOSX: MacOSX
-
 github:
   username: bradleyfrank
   key_file: "{{ ansible_user_dir }}/.ssh/github"
@@ -73,8 +67,6 @@ vim_extensions:
 python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
-
-bat_cmd: bat
 
 ssh_keys:
   - id_rsa

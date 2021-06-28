@@ -20,7 +20,7 @@
 
 - name: Install VSCode configs
   ansible.builtin.copy:
-    src: conf/vscode/
+    src: apps/vscode/
     dest: "{{ vscode['config'] }}/"
     mode: 0755
     backup: true

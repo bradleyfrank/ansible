@@ -28,12 +28,11 @@
   tags: docker
 
 - name: Import dconf settings
-  ansible.builtin.shell: "dconf load / < {{ item }}"
-  with_fileglob:
-    - "conf/Gnome/common.dconf"
-    - "conf/Gnome/{{ ansible_distribution }}.dconf"
-  changed_when: false
-  tags: dconf
+  community.general.dconf:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+  loop: "{{ dconf['common'] | combine(dconf[ansible_distribution]) }}"
+  tags: system_settings
 
 - name: Generate host keys
   ansible.builtin.command:

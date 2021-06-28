@@ -3,39 +3,12 @@
 - name: Bootstrap localhost system
   hosts: localhost
   tasks:
-    - name: Include common variables
-      ansible.builtin.include_vars: common.yml
-      tags: always
-
-    - name: Include system variables
-      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
-      tags: always
-
-    - name: Include Linux distribution variables
-      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
-      when: ansible_system == 'Linux'
-      tags: always
-
     - name: Configure Linux repositories
-      ansible.builtin.include_tasks: "tasks/repositories/{{ distro_vars[ansible_distribution] }}.yml"
+      ansible.builtin.include_tasks: "tasks/repositories.yml"
       when: ansible_system == 'Linux'
-
-    - name: Lookup GitHub package latest release
-      environment:
-        PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
-      community.general.github_release:
-        user: "{{ item['value']['user'] }}"
-        repo: "{{ item['key'] }}"
-        action: latest_release
-        token: "{{ github['token'] }}"
-      register: github_package_metadata
-      loop: "{{ github_packages | default({}) | dict2items }}"
-      loop_control:
-        label: "{{ item['key'] }}"
-      tags: [packages, github]
 
     - name: Include OS-specific packages
-      ansible.builtin.include_tasks: "tasks/packages/{{ distro_vars[ansible_distribution] }}.yml"
+      ansible.builtin.include_tasks: "tasks/packages/{{ ansible_system }}.yml"
       tags: always
 
     - name: Make bash default for root

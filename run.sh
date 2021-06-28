@@ -1,12 +1,8 @@
 #!/usr/bin/env sh
 
-# ----- global variables ----- #
+set -e
 
-SYSTEM_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
-case "$SYSTEM_TYPE" in
-  darwin) SUDOERS_D=/private/etc/sudoers.d ;;
-  linux)  SUDOERS_D=/etc/sudoers.d         ;;
-esac
+# ----- global variables ----- #
 
 ANSIBLE_HOME="$HOME"/.ansible
 ANSIBLE_REPO_BRANCH=main
@@ -38,11 +34,8 @@ usage() {
 }
 
 create_tmp_sudoers() {
-  [ -e "$SUDOERS_D_TMP" ] && sudo rm -rf "$SUDOERS_D_TMP"
-  SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-${TIMESTAMP}"
-  sudo --validate --prompt "Enter sudo password: " # reset sudo timer for following command
+  SUDOERS_D_TMP="${SUDOERS_D}/ansible.${TIMESTAMP}"
   printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
-  printf "\n" # insert newline for readability
 }
 
 create_vault_file() {
@@ -50,12 +43,12 @@ create_vault_file() {
 
   printf "%s" "$(
     exec < /dev/tty
-    tty_settings=$(stty -g) # save current tty settings
+    tty_settings=$(stty -g)
     trap 'stty "$tty_settings"' EXIT INT TERM
-    stty -echo || exit # disable terminal local echo
+    stty -echo || exit
     printf "Enter vault password: " > /dev/tty
     IFS= read -r password; rc=$?
-    echo > /dev/tty # insert newline for readability
+    echo > /dev/tty
     printf "%s\n" "$password"
     exit "$rc"
   )" > "$ANSIBLE_VAULT"
@@ -63,61 +56,48 @@ create_vault_file() {
   chmod 0400 "$ANSIBLE_VAULT"
 }
 
-keep_awake() {
-  case "$SYSTEM_TYPE" in
-    darwin)
-      kill "$(pgrep caffeinate)" >/dev/null 2>&1
-      (caffeinate -d -i -m -u &)
-      ;;
-    linux)
-      dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
-      dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
-      ;;
-  esac
-}
+bootstrap_mac() {
+  SUDOERS_D=/private/etc/sudoers.d; create_tmp_sudoers
 
-bootstrap_os() {
-  case "$SYSTEM_TYPE" in
-    darwin) bootstrap_macos ;;
-    linux)  bootstrap_linux ;;
-    *)      exit 1          ;;
-  esac
+  kill "$(pgrep caffeinate)" >/dev/null 2>&1
+  (caffeinate -d -i -m -u &)
 
-  PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
-  python3 -m pip install --user ansible docker github3.py
-}
-
-bootstrap_macos() {
-  if [ ! -x /usr/local/bin/brew ]; then CI=1 /bin/bash -c "$(curl -fsSL "$HOMEBREW_URL")"
-  else softwareupdate --install --all
+  if [ ! -x /usr/local/bin/brew ]; then
+    CI=1 /bin/bash -c "$(curl -fsSL "$HOMEBREW_URL")"
+  else
+    softwareupdate --install --all
   fi
+
   brew install python3 git
 }
 
 bootstrap_linux() {
+  SUDOERS_D=/etc/sudoers.d; create_tmp_sudoers
+
+  # shellcheck disable=SC1091
+  . /etc/os-release
+
+  if [ "$ID" != ubuntu ] && [ "$ID" != pop ]; then exit 1; fi
+
+  dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
+  dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
+
   sudo systemctl stop packagekit
-  case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
-    fedora)
-      sudo dnf clean all
-      sudo dnf makecache
-      sudo dnf upgrade -y
-      sudo dnf install -y python3 python3-pip git redhat-lsb-core
-      ;;
-    ubuntu|pop)
-      sudo apt-get clean
-      sudo apt-get update
-      sudo apt-get upgrade -y
-      sudo apt-get install -y python3 python3-pip git lsb-release
-      ;;
-    *) exit 1 ;;
-  esac
+  sudo apt-get clean
+  sudo apt-get update
+  sudo apt-get upgrade -y
+  sudo apt-get install -y python3 python3-pip git lsb-release
 }
 
-ansible_run() {
+bootstrap_ansible() {
+  PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
+  python3 -m pip install --user ansible docker github3.py
+
+  [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
   [ -d "$DOTFILES_DIR" ] && mv "$DOTFILES_DIR" "${DOTFILES_DIR}.${TIMESTAMP}"
 
   git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
-  cd "$DOTFILES_DIR" >/dev/null 2>&1 || return 1
+  cd "$DOTFILES_DIR"
   git checkout "$ANSIBLE_REPO_BRANCH"
 
   ansible localhost \
@@ -128,10 +108,17 @@ ansible_run() {
 
   ansible-galaxy collection install -r requirements.yml
 
+  create_vault_file
+  cd -
+}
+
+ansible_run() {
+  cd "$DOTFILES_DIR"
   case "$ANSIBLE_REPO_PLAYBOOK" in
     bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
     dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
   esac
+  cd -
 }
 
 
@@ -149,13 +136,13 @@ while getopts ':bde:g:wh' opt; do
   esac
 done
 
-[ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
-
 if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
-  create_tmp_sudoers
-  keep_awake
-  bootstrap_os
+  case $(uname -s) in
+    Darwin) bootstrap_mac ;;
+    Linux)  bootstrap_linux ;;
+    *)      exit 1 ;;
+  esac
 fi
 
-create_vault_file
+bootstrap_ansible
 ansible_run

@@ -136,9 +136,13 @@ vscode:
 alacritty:
   decorations: buttonless
 
+bbedit:
+  color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"
+
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 root_home: /var/root
+bat_cmd: bat
 
 python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python_version }}"
 python_user_site: "{{ python_user_base }}/lib/python/site-packages"
