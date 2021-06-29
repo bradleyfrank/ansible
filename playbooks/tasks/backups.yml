@@ -1,6 +1,8 @@
 ---
 
 - name: Find backups older than 4 weeks
+  vars:
+    backup_file: "{{ backup_var['dest'] | basename | replace('.', '') }}"
   ansible.builtin.find:
     paths: "{{ backups_dir }}"
     patterns: "{{ backup_file }}.*"
@@ -9,6 +11,8 @@
   tags: ['always', 'backups']
 
 - name: Get list of all backups
+  vars:
+    backup_file: "{{ backup_var['dest'] | basename | replace('.', '') }}"
   ansible.builtin.find:
     paths: "{{ backups_dir }}"
     patterns: "{{ backup_file }}.*"
@@ -28,6 +32,8 @@
   tags: ['always', 'backups']
 
 - name: Make custom backup
+  vars:
+    backup_file: "{{ backup_var['dest'] | basename | replace('.', '') }}"
   ansible.builtin.copy:
     src: "{{ backup_var['backup_file'] }}"
     dest: "{{ backups_dir }}/{{ backup_file }}.{{ ansible_date_time['iso8601_basic_short'] }}"
