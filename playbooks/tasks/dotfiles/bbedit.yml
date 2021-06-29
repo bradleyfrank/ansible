@@ -1,0 +1,22 @@
+---
+
+- name: Install BBEdit cli tool
+  ansible.builtin.copy:
+    src: /Applications/BBEdit.app/Contents/Helpers/bbedit_tool
+    dest: "/usr/local/bin/bbedit"
+    mode: 0755
+  tags: bbedit
+
+- name: Ensure BBEdit color themes folder exists
+  ansible.builtin.file:
+    path: "{{ bbedit['color_themes'] }}/"
+    state: directory
+    mode: 0755
+  tags: bbedit
+
+- name: Install BBEdit color themes
+  ansible.builtin.copy:
+    src: apps/bbedit/
+    dest: "{{ bbedit['color_themes'] }}/"
+    mode: 0755
+  tags: bbedit

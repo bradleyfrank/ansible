@@ -20,7 +20,7 @@
   block:
     - name: Copy GitHub SSH key
       ansible.builtin.copy:
-        src: conf/ssh/github.pem
+        src: ssh/github.pem
         dest: "{{ github['key_file'] }}"
         mode: 0600
     - name: Clone my GitHub repositories

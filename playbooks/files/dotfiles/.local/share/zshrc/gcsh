@@ -1,51 +1,40 @@
 # [gc] alias for gcloud
 alias gc='gcloud'
 
-# [gc-] gcloud --project <project>
-alias gc-bh-dev='gcloud --project binderhub-dev'
-alias gc-bh-prod='gcloud --project binderhub-prod'
-alias gc-common-build='gcloud --project common-build'
-alias gc-dataeng-dev='gcloud --project dataeng-dev-273349'
-alias gc-dataeng-prod='gcloud --project dataeng-prod-308999'
-alias gc-kc-core-dev='gcloud --project kc-core-dev'
-alias gc-kc-core-prod='gcloud --project kc-core-prod'
-alias gc-platform-data-dev='gcloud --project platform-data-dev-301120'
-alias gc-platform-dev='gcloud --project platform-dev-788014'
-alias gc-platform-prod='gcloud --project platform-prod-399563'
-alias gc-playground='gcloud --project strong-keyword-184513'
-
 # [gpc] show current GCP project
 alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
 
-# [gpl] list all GCP projects
-alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
+# [gpl] list a subset of projects ; gpl <project1,project2,projectN>
+gpl() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})" ; }
+
+# [gpla] list all GCP projects
+alias gpla='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 
 # [gps] set the active GCP project
 gps() {
     local projects
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
     gcloud config set project "$projects"
-    [ ! -z "$TMUX" ] && tmux refresh-client -S
 }
 
 # [gpu] gcloud project unset
 alias gpu='gcloud config unset project'
 
-# [gcreds] sets GCP project credentials via environment variables (ORM only)
+# [gcreds] sets GCP project credentials via environment variables
 gcreds() {
     local sacct
     sacct="$(env | grep 'APPLICATION_CREDENTIALS' | _inline_fzf_nh | cut -f1 -d'=' | awk '{print $1}')"
-    [[ -z "${(P)sacct}" ]] && { echo "Missing INFRACTL credential json file." ; return 1 ; }
+    [[ -z "${(P)sacct}" ]] && { echo "Missing credential json file." ; return 1 ; }
     echo "Set GOOGLE_APPLICATION_CREDENTIALS to ${(P)sacct}"
     export GOOGLE_APPLICATION_CREDENTIALS="${(P)sacct}"
 }
 
+# [gtags] show tags for docker image in GCR ; gtags <image>
+gtags() { gcloud container images list-tags gcr.io/common-build/"$1" ; }
+
 # [ghelp] show this help message
 ghelp() {
-    echo "Usage of gcsh"
+    echo "helper aliases and functions for gcloud SDK"
     echo
-    echo "Helper aliases and functions for gcloud SDK"
-    echo
-    echo "Usage:"
     grep -E '^# \[.+\]' "${(%):-%x}"
 }

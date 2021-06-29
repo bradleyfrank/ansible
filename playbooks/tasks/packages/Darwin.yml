@@ -24,18 +24,14 @@
   tags: [packages, homebrew_casks]
 
 - name: Check Mac App Store authentication status
-  ansible.builtin.shell:
-    executable: "{{ bash_shell }}"
-    cmd: |
-      set -o pipefail
-      mas account >&1 | grep -vq 'Not signed in'
+  ansible.builtin.command: mas account
   changed_when: false
   failed_when: mas_account['rc'] not in [0,1]
-  register: mas_account  # success is not finding 'Not signed in'
+  register: mas_account
   tags: [packages, mac_app_store]
 
 - name: Install apps
   ansible.builtin.command: "mas install {{ item }}"
   loop: "{{ system_packages['apps'] }}"
-  when: mas_account['rc'] == 0  # authenticated to mac app store
+  when: mas_account['rc'] == 0
   tags: [packages, mac_app_store]

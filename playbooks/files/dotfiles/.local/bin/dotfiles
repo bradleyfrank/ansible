@@ -12,16 +12,16 @@
 # ----- functions ----- #
 
 function select_tags() {
-    ansible-playbook playbooks/dotfiles.yml --list-tags \
-        | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' | yq eval --tojson | jq -r '.[]' \
-        | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border | xargs | tr ' ' ','
+  pushd ~/.dotfiles > /dev/null || exit 1
+  git pull > /dev/null
+  ansible-playbook playbooks/dotfiles.yml --list-tags \
+      | sed -rn 's/^\s+TASK\sTAGS:\s(\[.*\])$/\1/p' | yq eval --tojson | jq -r '.[]' \
+      | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border | xargs | tr ' ' ','
+  popd > /dev/null || exit 1
 }
 
 
 # ----- begin ----- #
-
-pushd ~/.dotfiles > /dev/null || exit 1
-git pull > /dev/null
 
 while getopts ':haqst:' flag; do
   case "$flag" in
@@ -34,5 +34,7 @@ while getopts ':haqst:' flag; do
   esac
 done
 
+pushd ~/.dotfiles > /dev/null || exit 1
+git pull > /dev/null
 ansible-playbook --tags "${tags:-core}" playbooks/dotfiles.yml
 popd > /dev/null || exit 1

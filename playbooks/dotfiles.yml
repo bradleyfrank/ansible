@@ -4,19 +4,6 @@
   hosts: localhost
 
   tasks:
-    - name: Include common variables
-      ansible.builtin.include_vars: common.yml
-      tags: always
-
-    - name: Include system variables
-      ansible.builtin.include_vars: "system_{{ ansible_system }}.yml"
-      tags: always
-
-    - name: Include Linux distribution variables
-      ansible.builtin.include_vars: "os_{{ distro_vars[ansible_distribution] }}.yml"
-      when: ansible_system == 'Linux'
-      tags: always
-
     - name: Create ~/Development folder structure
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/Development/{{ item }}"
@@ -30,7 +17,7 @@
         repo: "{{ item['https_url'] }}"
         dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
         depth: '1'
-        version: "{{ item['version'] }}"
+        version: "{{ item['version'] | default('master') }}"
       loop: "{{ git_reference_repos }}"
       loop_control:
         label: "{{ item['name'] }}"
@@ -80,11 +67,10 @@
         mode: 0644
       tags: fonts
 
-    - name: Install Python packages
-      ansible.builtin.pip:
-        name: "{{ python_packages }}"
-        extra_args: --user
-      tags: python
+    - name: Install themes for bat
+      ansible.builtin.command: "{{ bat_cmd }} cache --build"
+      changed_when: false
+      tags: bat
 
     - name: Create vim extensions directory path
       ansible.builtin.file:
@@ -104,6 +90,21 @@
         label: "{{ item['name'] }}"
       tags: vim
 
+    - name: Apply alacritty template
+      ansible.builtin.template:
+        src: alacritty.yml.j2
+        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
+        mode: 0644
+        backup: true
+      register: _backup_alacritty
+      notify: Process backups
+      tags: ['alacritty', 'core']
+
+    - name: Include BBEdit tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
+      when: ansible_system == 'Darwin'
+      tags: bbedit
+
     - name: Apply zshrc template
       ansible.builtin.template:
         src: zshrc.j2
@@ -111,6 +112,7 @@
         mode: 0644
         backup: true
       register: _backup_zshrc
+      notify: Process backups
       tags: ['zsh', 'core']
 
     - name: Ensure ~/.ssh directory exists
@@ -129,21 +131,31 @@
 
     - name: Install SSH config
       ansible.builtin.copy:
-        src: conf/ssh/config
+        src: ssh/config
         dest: "{{ ansible_user_dir }}/.ssh/config"
         mode: 0644
         backup: true
       register: _backup_ssh_config
-      when: is_personal_system
-      tags: ['ssh', 'ssh_config']
+      notify: Process backups
+      when: not work_system
+      tags: ['ssh_config', 'core']
+
+    - name: Get tmux version
+      ansible.builtin.command: tmux -V
+      register: tmux_version
+      changed_when: false
+      tags: ['tmux', 'core']
 
     - name: Install tmux config
+      vars:
+        tmux_semver: "{{ tmux_version['stdout'].split(' ') | last }}"
       ansible.builtin.template:
         src: tmux.conf.j2
         dest: "{{ ansible_user_dir }}/.tmux.conf"
         mode: 0644
         backup: true
       register: _backup_tmux_conf
+      notify: Process backups
       tags: ['tmux', 'core']
 
     - name: Install gitconfig
@@ -153,37 +165,36 @@
         mode: 0755
         backup: true
       register: _backup_gitconfig
+      notify: Process backups
       tags: ['git', 'core']
 
-    - name: Install VSCode configs
-      ansible.builtin.copy:
-        src: conf/vscode/
-        dest: "{{ vscode['config'] }}/"
-        mode: 0755
-        backup: true
-      register: _backup_vscode_settings_json
+    - name: Check if vscode is installed
+      ansible.builtin.stat:
+        path: "{{ vscode['bin'] }}"
+      register: vscode_bin
+      tags: ['vscode', 'core']
+
+    - name: Import VSCode tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
+      when: vscode_bin['stat']['exists']
       tags: ['vscode', 'core']
 
     - name: Import kubectl tasks
       ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
       tags: kubectl
 
-    - name: Import VSCode tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
-      tags: vscode
-
     - name: Clone public and private GitHub repositories
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: is_personal_system
+      when: not work_system
       tags: github_projects
 
     - name: Set squircle icons
       vars:
         app: "{{ item['path'] | splitext | first }}"
-      ansible.builtin.command: "fileicon set /Applications/{{ app }}.app {{ item['src'] }}"
-      when: "'Darwin' in ansible_system"
+      ansible.builtin.command: "fileicon set '/Applications/{{ app }}.app' '{{ item['src'] }}'"
       changed_when: false
-      loop: "{{ lookup('community.general.filetree', 'conf/MacOSX/icons/') }}"
+      when: "'Darwin' in ansible_system"
+      loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:
         label: "{{ app }}"
       tags: icons
@@ -193,14 +204,15 @@
         path: "{{ backups_dir }}"
         state: directory
         mode: 0755
+      tags: ['always', 'backups']
 
+  handlers:
     - name: Process backups
       vars:
         backup_var: "{{ lookup('vars', item) }}"
-        backup_file: "{{ backup_var['dest'] | basename | replace('.', '') }}"
       ansible.builtin.include_tasks: tasks/backups.yml
       when: backup_var['backup_file'] is defined
       loop: "{{ query('varnames', '^_backup_.+$') }}"
       loop_control:
-        label: "{{ backup_file }}"
+        label: "{{ item | replace('_backup_', '') }}"
       tags: ['always', 'backups']

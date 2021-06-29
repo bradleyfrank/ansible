@@ -18,6 +18,7 @@ system_packages:
     - coreutils
     - dict
     - eye-d3
+    - exa
     - fdupes
     - ffmpeg
     - fileicon
@@ -38,7 +39,6 @@ system_packages:
     - gzip
     - helm
     - httpie
-    - iconsur
     - iftop
     - jq
     - keychain
@@ -65,7 +65,6 @@ system_packages:
     - ssh-copy-id
     - stern
     - stow
-    - terraform
     - tmux
     - tree
     - vim
@@ -86,6 +85,7 @@ system_packages:
     - calibre
     - chromium
     - dozer
+    - expressions
     - fantastical
     - firefox
     - google-cloud-sdk
@@ -94,6 +94,7 @@ system_packages:
     - jumpcut
     - keepassxc
     - keepingyouawake
+    - kindle
     - logitech-options
     - macdown
     - menumeters
@@ -132,9 +133,16 @@ vscode:
   config: "{{ ansible_user_dir }}/Library/Application Support/Code"
   bin: /usr/local/bin/code
 
+alacritty:
+  decorations: buttonless
+
+bbedit:
+  color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"
+
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 root_home: /var/root
+bat_cmd: bat
 
 python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python_version }}"
 python_user_site: "{{ python_user_base }}/lib/python/site-packages"

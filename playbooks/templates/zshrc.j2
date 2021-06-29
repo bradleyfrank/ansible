@@ -12,8 +12,7 @@ PATH="$PATH:{{ python_user_path }}"
 PATH="$PATH:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 PATH="$PATH:/opt/X11/bin"
 {% endif %}
-PATH="$PATH:/usr/local/bin:/usr/local/sbin"
-PATH="$PATH:/usr/bin:/usr/sbin:/bin:/sbin"
+PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 
 MANPATH="$HOME/.local/share/man"
@@ -58,7 +57,6 @@ export HOMEBREW_CELLAR=/usr/local/Cellar
 export HOMEBREW_REPOSITORY=/usr/local/Homebrew
 export INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
 export CLOUDSDK_PYTHON=/usr/bin/python3
-export ZSH_GCLOUD_CONFIG_PATH=$(gcloud info --format='value(config.paths.active_config_path)' 2> /dev/null)
 {% endif %}
 
 
@@ -80,7 +78,6 @@ alias df='df -h'
 alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
 alias glances='glances --theme-white'
-alias glow='glow -s light'
 alias grep='grep -I'
 alias gcommon='cd $(dirname $(git rev-parse --git-common-dir))'
 alias gtop='cd "$(git rev-parse --show-toplevel)"'
@@ -89,16 +86,17 @@ alias gwt='git-worktree'
 alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
-alias lb='ls --color --classify --human-readable'  # ls base alias
-alias l1='lb -1'
-alias la='lb -l --all'
-alias lg='lb -g --no-group'
-alias ll='lb -l'
-alias lS='lb -1S --almost-all --group-directories-first --size'
-alias lt='lb -lt --reverse --almost-all'
-alias lu='lb -ltu --reverse --almost-all'
+alias lc='ll --grid'
+alias lg='ll --git'
+alias lG='ll --group'
+alias ll='exa --color always --classify --long --all'
+alias lp='ll --no-permissions --octal-permissions'
+alias lS='ll --group-directories-first --sort size'
+alias ls='ls --color --classify --human-readable'
+alias lt='ll --sort time'
 alias lolo='echo {{ docker_images | join(' ') }} | xargs -P10 -n1 docker pull'
 alias lsmnt='mount | column -t'
+alias mat='glow -s light'
 alias mp='multipass'
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
@@ -110,6 +108,7 @@ alias show='whence -f'
 alias sync='rsync -a --info=progress2'
 alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
+alias trw='tmux rename-window "$(basename $PWD)"'
 alias vs='code .'
 {% if 'Darwin' in ansible_system %}
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
@@ -298,23 +297,13 @@ function precmd() {
         base03="%F{234}"
   local eol=$'\n'
 
-  _CWD="" _KUBECTL="" _GCP="" _PYENV="" _GIT="" _PROMPT=""
+  _CWD="" _PYENV="" _GIT="" _PROMPT=""
 
   # -- cwd segment -- #
   if [[ -n $TMUX ]]; then
     _CWD="${blue}→ %1~ ${nocolor}"
   else
     _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}"
-  fi
-
-  # -- gcloud project segment -- #
-  if _res=$(sed -rn 's/^project\s=\s(.+)$/\1/p' < $ZSH_GCLOUD_CONFIG_PATH 2> /dev/null); then
-    [[ $_res != "" ]] && _GCP="${orange}● ${_res/$(grep -Eo '\-[0-9]+$' <<< $_res)/} ${nocolor}"
-  fi
-
-  # -- kubectl context segment -- #
-  if _res="$(kubectl config current-context 2> /dev/null | grep -o '[^_]*$')"; then
-    _KUBECTL="${violet}○ ${_res} ${nocolor}"
   fi
 
   # -- virtualenv segment -- #
@@ -334,7 +323,7 @@ function precmd() {
     *) _PROMPT="${magenta}%#${nocolor} " ;;
   esac
 
-  __git_ps1 "${eol}${bold}${_CWD}${_GCP}${_KUBECTL}${_PYENV}${_GIT}" "${eol}${_PROMPT}${nobold}" "%s"
+  __git_ps1 "${eol}${bold}${_CWD}${_GIT}" "${_PYENV}${eol}${_PROMPT}${nobold}" "%s "
 }
 
 
@@ -355,7 +344,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=2000
 SAVEHIST=5000
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Case insensitive tab completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
+zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
 zstyle ':completion:*' menu select                 # Use menu selection for completion
 zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
 zstyle ':completion:*' rehash true                 # Auto find new executables in path
@@ -365,7 +355,6 @@ zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 WORDCHARS=${WORDCHARS//\/[&.;]}                    # Don't consider these part of the word
 
 bindkey -e                                         # Emacs style shortcuts
-
 bindkey '^[[7~' beginning-of-line                  # Home key
 bindkey '^[[H' beginning-of-line                   # Home key
 if [[ "${terminfo[khome]}" != "" ]]; then
@@ -381,13 +370,8 @@ bindkey '^[[C'  forward-char                       # Right key
 bindkey '^[[D'  backward-char                      # Left key
 bindkey '^[[5~' history-beginning-search-backward  # Page up key
 bindkey '^[[6~' history-beginning-search-forward   # Page down key
-bindkey '^[Oc' forward-word                        # Navigate words with ctrl+arrow keys
-bindkey '^[Od' backward-word                       # "
-bindkey '^[[1;5D' backward-word                    # "
-bindkey '^[[1;5C' forward-word                     # "
-bindkey '^H' backward-kill-word                    # Delete previous word with ctrl+backspace
-bindkey '^[[Z' undo                                # Shift+tab undo last action
 
+autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc && compinit
 
 
@@ -415,8 +399,11 @@ source {{ shell_conf }}/kubectl
 source {{ shell_conf }}/gcsh
 source {{ shell_conf }}/pipenv
 {% if 'remmac06432' in ansible_hostname %}
+source {{ shell_conf }}/orm
 source ~/.infractl/secrets
 {% endif %}
 
-
+{% if 'remmac06432' in ansible_hostname %}
+complete -o nospace -C /usr/local/bin/terraform terraform
+{% endif %}
 complete -F __start_kubectl k

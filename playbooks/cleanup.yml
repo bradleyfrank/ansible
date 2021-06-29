@@ -7,6 +7,8 @@
     files:
       - .ansible_vault_password
       - .config/p10k.zsh
+      - .local/bin/gcp-kubeconfigs
+      - .local/bin/orm
       - .local/share/fubectl
       - .local/share/kubectl
       - .local/share/alacritty
