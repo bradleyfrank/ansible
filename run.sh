@@ -59,8 +59,10 @@ create_vault_file() {
 bootstrap_mac() {
   SUDOERS_D=/private/etc/sudoers.d; create_tmp_sudoers
 
-  kill "$(pgrep caffeinate)" >/dev/null 2>&1
-  (caffeinate -d -i -m -u &)
+
+  if ! pgrep caffeinate >/dev/null; then
+    (caffeinate -d -i -m -u &)
+  fi
 
   if [ ! -x /usr/local/bin/brew ]; then
     CI=1 /bin/bash -c "$(curl -fsSL "$HOMEBREW_URL")"
