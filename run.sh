@@ -97,7 +97,7 @@ bootstrap_ansible() {
   [ -d "$DOTFILES_DIR" ] && mv "$DOTFILES_DIR" "$DOTFILES_DIR.$TIMESTAMP"
   git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
 
-  cd "$DOTFILES_DIR"
+  cd "$DOTFILES_DIR" >/dev/null
   git checkout "$ANSIBLE_REPO_BRANCH"
 
   ansible localhost \
@@ -109,16 +109,16 @@ bootstrap_ansible() {
 
   ansible-galaxy collection install -r requirements.yml
 
-  cd -
+  cd - >/dev/null
 }
 
 ansible_run() {
-  cd "$DOTFILES_DIR"
+  cd "$DOTFILES_DIR" >/dev/null
   case "$ANSIBLE_REPO_PLAYBOOK" in
     bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
     dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
   esac
-  cd -
+  cd - >/dev/null
 }
 
 

@@ -31,10 +31,6 @@
     loop_var: object
   tags: ['always', 'backups']
 
-- name: debug
-  ansible.builtin.debug:
-    msg: "{{ backup_var }}"
-
 - name: Make custom backup
   vars:
     backup_file: "{{ backup_var['dest'] | basename | replace('.', '') }}"
