@@ -185,7 +185,7 @@
     - name: Set squircle icons
       vars:
         app: "{{ item['path'] | splitext | first }}"
-      ansible.builtin.command: "fileicon set /Applications/{{ app }}.app {{ item['src'] }}"
+      ansible.builtin.command: "fileicon set '/Applications/{{ app }}.app' '{{ item['src'] }}'"
       changed_when: false
       when: "'Darwin' in ansible_system"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"

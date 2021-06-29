@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set -e
+set -o errexit
 
 # ----- global variables ----- #
 
@@ -8,7 +8,7 @@ ANSIBLE_HOME="$HOME"/.ansible
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
-ANSIBLE_VAULT="$ANSIBLE_HOME/vault"
+ANSIBLE_VAULT="$ANSIBLE_HOME"/vault
 DOTFILES_DIR="$HOME"/.dotfiles
 EMAIL_ADDRESS="$(id -un)@$(uname -n)"
 HOMEBREW_URL=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
@@ -59,7 +59,6 @@ create_vault_file() {
 bootstrap_mac() {
   SUDOERS_D=/private/etc/sudoers.d; create_tmp_sudoers
 
-
   if ! pgrep caffeinate >/dev/null; then
     (caffeinate -d -i -m -u &)
   fi
@@ -95,10 +94,9 @@ bootstrap_ansible() {
   PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
   python3 -m pip install --user ansible docker github3.py
 
-  [ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
   [ -d "$DOTFILES_DIR" ] && mv "$DOTFILES_DIR" "$DOTFILES_DIR.$TIMESTAMP"
-
   git clone "$ANSIBLE_REPO_URL" "$DOTFILES_DIR"
+
   cd "$DOTFILES_DIR"
   git checkout "$ANSIBLE_REPO_BRANCH"
 
@@ -111,7 +109,6 @@ bootstrap_ansible() {
 
   ansible-galaxy collection install -r requirements.yml
 
-  create_vault_file
   cd -
 }
 
@@ -138,6 +135,9 @@ while getopts ':bde:g:wh' opt; do
     *) usage; exit 1    ;;
   esac
 done
+
+[ ! -d "$ANSIBLE_HOME" ] && mkdir "$ANSIBLE_HOME"
+create_vault_file
 
 if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
   case $(uname -s) in

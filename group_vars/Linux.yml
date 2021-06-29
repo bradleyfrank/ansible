@@ -206,7 +206,7 @@ dconf:
     /org/gnome/gedit/preferences/editor/editor-font: "'Source Code Pro 11'"
     /org/gnome/gedit/preferences/editor/highlight-current-line: "true"
     /org/gnome/gedit/preferences/editor/insert-spaces: "true"
-    /org/gnome/gedit/preferences/editor/right-margin-position: "uint32 80"
+    /org/gnome/gedit/preferences/editor/right-margin-position: "uint32 100"
     /org/gnome/gedit/preferences/editor/scheme: "'solarized-light'"
     /org/gnome/gedit/preferences/editor/tabs-size: "uint32 2"
     /org/gnome/gedit/preferences/editor/use-default-font: "false"
