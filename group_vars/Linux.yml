@@ -82,6 +82,7 @@ packages:
   - ghostwriter
   - glances
   - gnome-shell-extension-system-monitor
+  - gnome-shell-extensions
   - gnome-shell-extensions-gpaste
   - gnote
   - gnupg  # docker
@@ -185,8 +186,8 @@ dconf:
     /org/gnome/desktop/interface/enable-animations: "false"
     /org/gnome/desktop/interface/show-battery-percentage: "false"
     /org/gnome/desktop/media-handling/autorun-never: "true"
-    /org/gnome/desktop/media-handling/autorun-x-content-ignore: "\
-      ['x-content/audio-cdda',
+    /org/gnome/desktop/media-handling/autorun-x-content-ignore: "[\
+      'x-content/audio-cdda',
       'x-content/video-dvd',
       'x-content/audio-player',
       'x-content/image-dcf',
@@ -279,15 +280,16 @@ dconf:
     /org/gnome/terminal/legacy/theme-variant: "'system'"
   Ubuntu:
     /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
-    /org/gnome/shell/enabled-extensions: "\
-      ['system-monitor@paradoxxx.zero.gmail.com',
+    /org/gnome/disable-user-extensions: "false"
+    /org/gnome/shell/enabled-extensions: "[\
+      'system-monitor@paradoxxx.zero.gmail.com',
       'GPaste@gnome-shell-extensions.gnome.org',
       'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
       'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
       'ubuntu-appindicators@ubuntu.com',
       'ubuntu-dock@ubuntu.com']"
-    /org/gnome/shell/favorite-apps: "\
-      ['firefox.desktop',
+    /org/gnome/shell/favorite-apps: "[\
+      'firefox.desktop',
       'org.gnome.Nautilus.desktop',
       'com.alacritty.Alacritty.desktop',
       'code.desktop', '1password.desktop',
@@ -297,8 +299,8 @@ dconf:
   Pop!_OS:
     /org/gnome/desktop/interface/enable-hot-corners: "true"
     /org/gnome/desktop/interface/gtk-theme: "'Pop'"
-    /org/gnome/shell/enabled-extensions: "\
-      ['alt-tab-raise-first-window@system76.com',
+    /org/gnome/shell/enabled-extensions: "[\
+      'alt-tab-raise-first-window@system76.com',
       'always-show-workspaces@system76.com',
       'pop-shell@system76.com',
       'system76-power@system76.com',
@@ -312,8 +314,8 @@ dconf:
     /org/gnome/shell/extensions/pop-shell/gap-inner: "uint32 0"
     /org/gnome/shell/extensions/pop-shell/gap-outer: "uint32 0"
     /org/gnome/shell/extensions/pop-shell/tile-by-default: "true"
-    /org/gnome/shell/favorite-apps: "\
-      ['pop-cosmic-workspaces.desktop',
+    /org/gnome/shell/favorite-apps: "[\
+      'pop-cosmic-workspaces.desktop',
       'pop-cosmic-applications.desktop',
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',

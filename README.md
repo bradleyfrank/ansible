@@ -46,7 +46,7 @@ To regenerate `inventory.yml` anytime, run the following Ansible command, replac
 ansible localhost \
   --module-name ansible.builtin.template \
   --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
-  --extra-vars "kernal_name=$(uname -s)" \
+  --extra-vars "kernel_name=$(uname -s)" \
   --extra-vars "email={{ email_address }}" \
   --extra-vars "work_system={{ true|false }}"
 ```
