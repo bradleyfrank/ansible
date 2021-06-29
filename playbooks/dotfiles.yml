@@ -211,6 +211,7 @@
       vars:
         backup_var: "{{ lookup('vars', item) }}"
       ansible.builtin.include_tasks: tasks/backups.yml
+      when: backup_var['backup_file'] is defined
       loop: "{{ query('varnames', '^_backup_.+$') }}"
       loop_control:
         label: "{{ item | replace('_backup_', '') }}"
