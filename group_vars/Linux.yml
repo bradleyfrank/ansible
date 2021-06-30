@@ -152,6 +152,7 @@ packages:
 snaps:
   - newsflash
   - signal-desktop
+  - slides
   - spotify
 
 vscode:
