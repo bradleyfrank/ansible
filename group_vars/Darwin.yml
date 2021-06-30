@@ -62,6 +62,7 @@ system_packages:
     - shellcheck
     - shellharden
     - shfmt
+    - slides
     - ssh-copy-id
     - stern
     - stow

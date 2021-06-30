@@ -114,19 +114,15 @@ alias vs='code .'
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 alias osupdate='sudo softwareupdate -ia'
 {% elif 'Linux' in ansible_system %}
+alias bat='batcat'
 alias free='free -g'
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
+alias lsports='lsof -i -P -n'
+alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
-alias lsports='lsof -i -P -n'
-{% endif %}
-{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
-alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-alias bat='batcat'
-{% elif 'Fedora' in ansible_distribution %}
-alias osupdate='sudo dnf makecache && sudo dnf upgrade -y'
 {% endif %}
 {% if 'remmac06432' in ansible_hostname %}
 alias infrasetup='./install.sh env && ./install.sh && source ./ve/bin/activate && ./install.sh deploy-local'
@@ -234,11 +230,6 @@ function pyenv() {
   esac
 }
 
-function pylinter() {
-  blackdiff "$@"
-  pylint "$@"
-}
-
 function sshf() {
   ssh $(grep -Er '^Host' ~/.ssh/config | cut -d' ' -f2 | grep -v '*' | sort -u | _inline_fzf_nh)
 }
@@ -340,6 +331,8 @@ setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt rcexpandparam           # Array expension with parameters
 
+CORRECT_IGNORE_FILE='[_|.]*'   # Skip correcting commands matching pattern
+
 HISTFILE=~/.zsh_history
 HISTSIZE=2000
 SAVEHIST=5000
@@ -375,22 +368,17 @@ autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc && compinit
 
 
-{% if 'MacOSX' in ansible_distribution %}
+{% if 'Darwin' in ansible_system %}
 source /usr/local/etc/bash_completion.d/git-prompt.sh
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-{% elif ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
+{% elif 'Linux' in ansible_system %}
 source /etc/bash_completion.d/git-prompt
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% elif 'Fedora' in ansible_distribution %}
-source /etc/bash_completion.d/git-prompt
-source /usr/share/fzf/shell/key-bindings.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 {% endif %}
