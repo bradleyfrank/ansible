@@ -92,6 +92,7 @@ packages:
   - htop
   - httpie
   - iftop
+  - jq
   - keepassxc
   - keychain
   - kubectl
@@ -130,6 +131,7 @@ packages:
   - strace
   - system-config-printer
   - thunderbird
+  - tidy
   - timeshift
   - tlp
   - tmux

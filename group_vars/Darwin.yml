@@ -66,6 +66,7 @@ system_packages:
     - ssh-copy-id
     - stern
     - stow
+    - tidy
     - tmux
     - tree
     - vim
