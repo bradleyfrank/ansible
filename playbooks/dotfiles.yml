@@ -53,6 +53,12 @@
         recurse: true
       tags: ['dotfiles', 'core']
 
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name: "{{ python_packages }}"
+        extra_args: --user
+      tags: python
+
     - name: Ensure fonts directory exists
       ansible.builtin.file:
         path: "{{ font_dir }}"

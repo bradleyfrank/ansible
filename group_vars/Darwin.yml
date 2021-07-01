@@ -74,7 +74,6 @@ system_packages:
     - wget
     - yamllint
     - youtube-dl
-    - yq
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
