@@ -37,6 +37,15 @@ vscode_extensions:
   - zaaack.markdown-editor
   - zbr.vscode-ansible
 
+python_packages:
+  - ansible-lint
+  - beets
+  - pipenv
+  - pre-commit
+  - pydf
+  - virtualenv
+  - yq
+
 docker_images:
   - archivebox/archivebox
   - ghcr.io/hadolint/hadolint
