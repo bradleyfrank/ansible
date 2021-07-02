@@ -1,0 +1,37 @@
+---
+
+- name: Create Ansible vault password file
+  hosts: localhost
+
+  vars:
+    kernel_name: "{{ ansible_system }}"
+    basedir: "{{ ansible_env['PWD'] | dirname }}"
+
+  vars_prompt:
+    - name: vault_password
+      prompt: Enter vault password
+
+  tasks:
+    - name: Create inventory
+      ansible.builtin.template:
+        src: inventory.yml.j2
+        dest: "{{ basedir }}/inventory.yml"
+        mode: 0755
+
+    - name: Make temporary copy of config
+      ansible.builtin.copy:
+        src: "{{ basedir }}/ansible.cfg"
+        dest: /tmp/ansible.cfg
+
+    - name: Create vault file
+      vars:
+        vault_password_file: "{{ lookup('ansible.builtin.ini', 'vault_password_file section=defaults file=/tmp/ansible.cfg') }}"
+      ansible.builtin.copy:
+        dest: "{{ vault_password_file | replace('~', ansible_user_dir) }}"
+        content: "{{ vault_password }}"
+        mode: 0600
+
+    - name: Delete temporary config file
+      ansible.builtin.file:
+        path: /tmp/ansible.cfg
+        state: absent
