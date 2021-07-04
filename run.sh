@@ -80,9 +80,8 @@ bootstrap_ansible() {
 
   ansible-galaxy collection install -r requirements.yml
 
-  ANSIBLE_CONFIG=setup.cfg \
-  ansible-playbook playbooks/setup.yml \
-    --inventory setup.yml \
+  ANSIBLE_CONFIG=setup/setup.cfg \
+  ansible-playbook setup/site.yml \
     --extra-vars "email=$EMAIL_ADDRESS" \
     --extra-vars "work_system=${WORK_SYSTEM:-false}"
 

@@ -1,0 +1,17 @@
+---
+
+- name: Create inventory for localhost
+  hosts: localhost
+
+  vars:
+    basedir: "{{ ansible_env['PWD'] | dirname }}"
+    email: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+    work_system: false
+
+  tasks:
+    - name: Create inventory
+      ansible.builtin.template:
+        src: inventory.json.j2
+        dest: "{{ basedir }}/inventory.json"
+        mode: 0755
+      tags: inventory

@@ -1,0 +1,16 @@
+---
+
+- name: Create Ansible vault password file
+  hosts: localhost
+
+  vars_prompt:
+    - name: vault_password
+      prompt: Enter vault password
+
+  tasks:
+    - name: Create vault file
+      ansible.builtin.copy:
+        dest: "{{ ansible_user_dir }}/.ansible/vault"
+        content: "{{ vault_password }}"
+        mode: 0600
+      tags: vault
