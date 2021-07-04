@@ -6,6 +6,7 @@
   vars:
     files:
       - .ansible_vault_password
+      - .dotfiles/inventory.yml
       - .config/p10k.zsh
       - .local/bin/gcp-kubeconfigs
       - .local/bin/orm
@@ -28,6 +29,7 @@
       - raindropio
       - stay
       - typora
+      - yq
 
   tasks:
     - name: Remove files
