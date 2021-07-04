@@ -78,7 +78,7 @@ bootstrap_ansible() {
   cd "$DOTFILES_DIR" >/dev/null
   git checkout "$ANSIBLE_REPO_BRANCH"
 
-  ansible-galaxy collection install -r requirements.yml
+  ansible-galaxy collection install -r setup/requirements.yml
 
   ANSIBLE_CONFIG=setup/setup.cfg \
   ansible-playbook setup/site.yml \

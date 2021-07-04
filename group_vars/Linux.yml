@@ -260,6 +260,7 @@ dconf:
     /org/gnome/shell/extensions/system-monitor/net-show-text: "false"
     /org/gnome/shell/extensions/system-monitor/show-tooltip: "true"
     /org/gnome/shell/extensions/system-monitor/swap-display: "false"
+    /org/gnome/shell/disable-user-extensions: "false"
     /org/gnome/system/location/enabled: "true"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/audible-bell: "false"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/background-color: "'rgb(253,246,227)'"
@@ -283,7 +284,6 @@ dconf:
     /org/gnome/terminal/legacy/theme-variant: "'system'"
   Ubuntu:
     /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
-    /org/gnome/disable-user-extensions: "false"
     /org/gnome/shell/enabled-extensions: "[\
       'system-monitor@paradoxxx.zero.gmail.com',
       'GPaste@gnome-shell-extensions.gnome.org',
@@ -302,6 +302,11 @@ dconf:
   Pop!_OS:
     /org/gnome/desktop/interface/enable-hot-corners: "true"
     /org/gnome/desktop/interface/gtk-theme: "'Pop'"
+    /org/gnome/shell/disabled-extensions: "[\
+      'ding@rastersoft.com',
+      'user-theme@gnome-shell-extensions.gcampax.github.com',
+      'windowsNavigator@gnome-shell-extensions.gcampax.github.com',
+      'auto-move-windows@gnome-shell-extensions.gcampax.github.com']"
     /org/gnome/shell/enabled-extensions: "[\
       'alt-tab-raise-first-window@system76.com',
       'always-show-workspaces@system76.com',
@@ -310,7 +315,9 @@ dconf:
       'ubuntu-appindicators@ubuntu.com',
       'system-monitor@paradoxxx.zero.gmail.com',
       'GPaste@gnome-shell-extensions.gnome.org',
-      'auto-move-windows@gnome-shell-extensions.gcampax.github.com']"
+      'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
+      'workspace-indicator@gnome-shell-extensions.gcampax.github.com',
+      'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com']"
     /org/gnome/shell/extensions/pop-cosmic/clock-alignment: "'LEFT'"
     /org/gnome/shell/extensions/pop-cosmic/show-applications-button: "false"
     /org/gnome/shell/extensions/pop-cosmic/show-workspaces-button: "false"
