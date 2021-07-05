@@ -32,7 +32,8 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-w] | -h
   -h  Print this help menu and quit
 ```
 
-* Creates an `inventory.yml` file with host-specific variables
+* Installs repository to `~/.dotfiles`
+* Creates `inventory.json` with host-specific variables
 * Prompts for the Ansible vault password (saved to `~/.ansible/vault`)
 * Ansible is installed via `pip` on all systems
 * The `bootstrap` playbook requires `sudo` privileges for any system
@@ -40,13 +41,13 @@ sh run.sh [-g git_branch] [-b | -d] [-e email] [-w] | -h
 
 ### Inventory
 
-To regenerate `inventory.yml` anytime, run the following Ansible command, replacing the `{{ email }}` and `{{ work_system }}` placeholders.
+To regenerate `~/.dotfiles/inventory.json` anytime, run the following Ansible command, replacing the `{{ email_address }}` and `{{ work_system }}` placeholders.
 
 ```shell
 ansible localhost \
   --module-name ansible.builtin.template \
-  --args "src=playbooks/templates/inventory.yml.j2 dest=inventory.yml" \
-  --extra-vars "kernel_name=$(uname -s)" \
+  --args "src=setup/templates/inventory.json.j2 dest=$HOME/.dotfiles/inventory.json" \
+  --extra-vars "ansible_system=$(uname -s)" \
   --extra-vars "email={{ email_address }}" \
   --extra-vars "work_system={{ true|false }}"
 ```

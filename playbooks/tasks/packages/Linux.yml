@@ -4,9 +4,15 @@
   ansible.builtin.apt:
     name: "{{ packages }}"
     state: present
-    install_recommends: true
+    autoclean: true
+    autoremove: true
     update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
   become: true
+  register: apt_install
+  retries: 100
+  until: apt_install is success or ('Failed to lock apt for exclusive operation' not in apt_install['msg'] and '/var/lib/dpkg/lock' not in apt_install['msg'])
   tags: [packages, apt]
 
 - name: Install snaps
