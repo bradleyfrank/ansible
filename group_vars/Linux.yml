@@ -295,10 +295,12 @@ dconf:
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
       'com.alacritty.Alacritty.desktop',
-      'code.desktop', '1password.desktop',
+      'code.desktop',
+      '1password.desktop',
       'org.gnome.gedit.desktop',
       'org.gnome.Calculator.desktop',
-      'spotify.desktop', 'signal-desktop.desktop']"
+      'spotify.desktop',
+      'signal-desktop.desktop']"
   Pop!_OS:
     /org/gnome/desktop/interface/enable-hot-corners: "true"
     /org/gnome/desktop/interface/gtk-theme: "'Pop'"

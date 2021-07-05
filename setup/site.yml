@@ -3,8 +3,26 @@
 - name: Bootstrap Ansible settings
   hosts: localhost
 
-- name: Import inventory playbook
-  ansible.builtin.import_playbook: local_inventory.yml
+  vars:
+    basedir: "{{ ansible_env['PWD'] | dirname }}"
+    email: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+    work_system: false
 
-- name: Import vault playbook
-  ansible.builtin.import_playbook: local_vault.yml
+  vars_prompt:
+    - name: vault_password
+      prompt: Enter vault password
+
+  tasks:
+    - name: Create vault file
+      ansible.builtin.copy:
+        dest: "{{ ansible_user_dir }}/.ansible/vault"
+        content: "{{ vault_password }}"
+        mode: 0600
+      tags: vault
+
+    - name: Create inventory
+      ansible.builtin.template:
+        src: inventory.json.j2
+        dest: "{{ basedir }}/inventory.json"
+        mode: 0755
+      tags: inventory
