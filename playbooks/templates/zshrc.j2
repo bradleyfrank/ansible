@@ -34,11 +34,6 @@ export VISUAL=vim
 export EDITOR=vim
 export DOCKER_BUILDKIT=1                # Build containers in parallel
 export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi"
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWSTASHSTATE=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUPSTREAM="verbose name auto"
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
 export LESS_TERMCAP_me=$'\E[0m'         # "
@@ -48,7 +43,7 @@ export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
 export PRE_COMMIT_COLOR=never           # pre-commit colors incompatible with solarized-light
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=136"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=234"
 {% if 'Darwin' in ansible_system %}
 export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
 export CLICOLOR=1
@@ -276,7 +271,7 @@ function gedit() {
 {% endif %}
 
 function precmd() {
-  local rc=$?
+  local rc=$? eol=$'\n' _gitdir _color
   local bold="%B" nobold="%b" nocolor="%f"
   local blue="%F{33}" \
         cyan="%F{37}" \
@@ -286,7 +281,6 @@ function precmd() {
         red="%F{160}" \
         orange="%F{166}" \
         base03="%F{234}"
-  local eol=$'\n'
 
   _CWD="" _PYENV="" _GIT="" _PROMPT=""
 
@@ -303,18 +297,15 @@ function precmd() {
   fi
 
   # -- git segment -- #
-  if _res="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_res)))/${nocolor}"
+  if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
+    _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
   fi
 
   # -- prompt segment -- #
-  case "$rc" in
-    0) _PROMPT="${green}%#${nocolor} "   ;;
-    1) _PROMPT="${red}%#${nocolor} "     ;;
-    *) _PROMPT="${magenta}%#${nocolor} " ;;
-  esac
+  case "$rc" in 0) _color="${green}" ;; 1) _color="${red}" ;; 2) _color="${magenta}" ;; esac
+  _PROMPT="${_color}%#${nocolor}"
 
-  __git_ps1 "${eol}${bold}${_CWD}${_GIT}" "${_PYENV}${eol}${_PROMPT}${nobold}" "%s "
+  PS1="${eol}${bold}${_CWD}${_PYENV}${_GIT}${eol}${_PROMPT}${nobold} "
 }
 
 
@@ -336,6 +327,12 @@ CORRECT_IGNORE_FILE='[_|.]*'   # Skip correcting commands matching pattern
 HISTFILE=~/.zsh_history
 HISTSIZE=2000
 SAVEHIST=5000
+
+zstyle ':vcs_info:*' actionformats '%a|%F{64}%b %F{136}%u%c%f'
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' formats '%F{64}%b %F{136}%u%c%f'
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:*' unstagedstr '*'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
@@ -365,18 +362,16 @@ bindkey '^[[5~' history-beginning-search-backward  # Page up key
 bindkey '^[[6~' history-beginning-search-forward   # Page down key
 
 autoload -U +X bashcompinit && bashcompinit
-autoload -Uz compinit zmv zcalc && compinit
+autoload -Uz compinit zmv zcalc vcs_info && compinit
 
 
 {% if 'Darwin' in ansible_system %}
-source /usr/local/etc/bash_completion.d/git-prompt.sh
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 {% elif 'Linux' in ansible_system %}
-source /etc/bash_completion.d/git-prompt
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
