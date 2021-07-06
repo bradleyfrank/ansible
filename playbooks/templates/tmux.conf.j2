@@ -22,7 +22,7 @@ set -g status on
 set -g status-justify left
 set -g status-left ""
 set -g status-position top
-set -g status-right "#[bold]#[fg=colour125]
+set -g status-right "#[bold]#[fg=colour61]
 {%- if 'Darwin' in ansible_system -%} [#(sw_vers | awk '{print $2}' | xargs echo)]
 {%- elif 'Linux' in ansible_system -%} [#(source /etc/os-release; echo $PRETTY_NAME)]
 {%- endif -%} #[fg=colour64] [#h]#[fg=colour166] [#{session_name}]#[nobold]"

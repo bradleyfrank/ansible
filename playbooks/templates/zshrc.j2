@@ -280,6 +280,7 @@ function precmd() {
         magenta="%F{125}" \
         red="%F{160}" \
         orange="%F{166}" \
+        yellow="%F{136}" \
         base03="%F{234}"
 
   _CWD="" _PYENV="" _GIT="" _PROMPT=""
@@ -298,7 +299,7 @@ function precmd() {
 
   # -- git segment -- #
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
+    vcs_info; _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
   fi
 
   # -- prompt segment -- #
