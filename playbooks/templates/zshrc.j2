@@ -271,44 +271,38 @@ function gedit() {
 {% endif %}
 
 function precmd() {
-  local rc=$? eol=$'\n' _gitdir _color
-  local bold="%B" nobold="%b" nocolor="%f"
-  local blue="%F{33}" \
-        cyan="%F{37}" \
-        violet="%F{61}" \
-        green="%F{64}" \
-        magenta="%F{125}" \
-        red="%F{160}" \
-        orange="%F{166}" \
-        yellow="%F{136}" \
-        base03="%F{234}"
-
-  _CWD="" _PYENV="" _GIT="" _PROMPT=""
-
-  # -- cwd segment -- #
-  if [[ -n $TMUX ]]; then
-    _CWD="${blue}→ %1~ ${nocolor}"
-  else
-    _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}"
-  fi
-
-  # -- virtualenv segment -- #
-  if [[ -n "$VIRTUAL_ENV" ]]; then
-    _PYENV="${cyan}೭ $(python --version | grep -Eo '([0-9]+.?)+') ($(basename "$VIRTUAL_ENV")) ${nocolor}"
-  fi
-
-  # -- git segment -- #
-  if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
-  fi
-
-  # -- prompt segment -- #
-  case "$rc" in 0) _color="${green}" ;; 1) _color="${red}" ;; 2) _color="${magenta}" ;; esac
-  _PROMPT="${_color}%#${nocolor}"
-
-  PS1="${eol}${bold}${_CWD}${_PYENV}${_GIT}${eol}${_PROMPT}${nobold} "
+  local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" pcolor
+  local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
+  [[ -n $TMUX ]] && _CWD="${blue}→ %1~ ${nocolor}" || _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}೭ $(python --version | awk '{print $2}') ($(basename "$VIRTUAL_ENV")) ${nocolor}" || _PYENV=""
+  case "$rc" in 0) pcolor="${green}" ;; 1) pcolor="${red}" ;; *) pcolor="${magenta}" ;; esac; _PROMPT="${pcolor}%#${nocolor}"
+  vcs_info; PS1="${eol}${bold}${_CWD}${_PYENV}${vcs_info_msg_0_}${eol}${_PROMPT}${nobold} "
 }
 
+function +vi-git-stash() { [[ -s ${hook_com[base]}/.git/refs/stash ]] && hook_com[misc]="$" ; }
+
+
+zstyle ':vcs_info:git*' actionformats '%F{64}⇄ %r/%b %F{136}%u%c%m%f|%F{160}%a%f'
+zstyle ':vcs_info:git*' check-for-changes true
+zstyle ':vcs_info:git*' formats '%F{64}⇄ %r/%b %F{136}%u%c%m%f'
+zstyle ':vcs_info:git*' stagedstr '+'
+zstyle ':vcs_info:git*' unstagedstr '*'
+zstyle ':vcs_info:git*+set-message:*' hooks git-stash
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
+zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
+zstyle ':completion:*' menu select                 # Use menu selection for completion
+zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
+zstyle ':completion:*' rehash true                 # Auto find new executables in path
+zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
+zstyle ':completion:*' use-cache on                # "
+zstyle ':completion:*' cache-path ~/.zsh/cache     # "
+
+WORDCHARS=${WORDCHARS//\/[&.;]}                    # Don't consider these part of the word
+CORRECT_IGNORE_FILE='[_|.]*'                       # Skip correcting commands matching pattern
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=5000
 
 setopt appendhistory           # Immediately append history instead of overwriting
 setopt autocd                  # If only directory path is entered, cd there.
@@ -322,28 +316,6 @@ setopt nobeep                  # No beep
 setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt rcexpandparam           # Array expension with parameters
-
-CORRECT_IGNORE_FILE='[_|.]*'   # Skip correcting commands matching pattern
-
-HISTFILE=~/.zsh_history
-HISTSIZE=2000
-SAVEHIST=5000
-
-zstyle ':vcs_info:*' actionformats '%a|%F{64}%b %F{136}%u%c%f'
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats '%F{64}%b %F{136}%u%c%f'
-zstyle ':vcs_info:*' stagedstr '+'
-zstyle ':vcs_info:*' unstagedstr '*'
-
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
-zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
-zstyle ':completion:*' menu select                 # Use menu selection for completion
-zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
-zstyle ':completion:*' rehash true                 # Auto find new executables in path
-zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
-zstyle ':completion:*' use-cache on                # "
-zstyle ':completion:*' cache-path ~/.zsh/cache     # "
-WORDCHARS=${WORDCHARS//\/[&.;]}                    # Don't consider these part of the word
 
 bindkey -e                                         # Emacs style shortcuts
 bindkey '^[[7~' beginning-of-line                  # Home key
