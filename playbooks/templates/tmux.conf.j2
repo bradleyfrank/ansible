@@ -21,7 +21,7 @@ set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour2
 set -g status on
 set -g status-justify left
 set -g status-left ""
-set -g status-position top
+set -g status-position bottom
 set -g status-right "#[bold]#[fg=colour61]
 {%- if 'Darwin' in ansible_system -%} [#(sw_vers | awk '{print $2}' | xargs echo)]
 {%- elif 'Linux' in ansible_system -%} [#(source /etc/os-release; echo $PRETTY_NAME)]
