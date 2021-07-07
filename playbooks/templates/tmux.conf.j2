@@ -3,36 +3,39 @@ set -g base-index 1
 set -g default-command "${SHELL}"
 set -g default-terminal "screen-256color"
 set -g history-limit 10000
-set -g message-command-style fg=colour234
-set -g message-style fg=colour234
+set -g message-command-style "fg=colour234"
+set -g message-style "fg=colour234"
 set -g mouse on
 set -g renumber-windows on
 set -g status-interval 1
 
 set -g aggressive-resize off
-set -g mode-style bg=colour24,fg=colour231
-set -g pane-border-format " #[bold]→ #{s|{{ ansible_user_dir }}|~|:pane_current_path}#[nobold] "
+set -g mode-style "bg=colour24,fg=colour231"
+set -g pane-border-format " #P | #{s|{{ ansible_user_dir }}|~|:pane_current_path} "
 set -g pane-border-status top
 {% if tmux_semver is version('3.2', operator='>=') %}
-set -g pane-active-border-style "bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour33}}"
-set -g pane-border-lines double
-set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour240}"
-{% endif %}
-set -g status on
-set -g status-justify left
-set -g status-left ""
+set -g pane-active-border-style "bold,bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour166}}"
+set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour136}"
+set -g pane-border-lines single
+{% endif -%}
+set -g status 2
+set -g status-format[1] "#[align=right]#[bold]#[fg=colour125]
+{%- if 'Darwin' in ansible_system -%} [#(sw_vers | awk '{print $2}' | xargs echo)]
+{%- elif 'Linux' in ansible_system -%} [#(source /etc/os-release; echo $PRETTY_NAME)]
+{%- endif -%} #[fg=colour64] [#h]#[nobold]"
+set -g status-left "#[bg=colour61,fg=colour231,bold] #{session_name} #[nobold,bg=default] "
+set -g status-left-length 40
 set -g status-position top
-set -g status-right "#[bold]#[fg=colour125][{{ ansible_distribution }} {{ ansible_distribution_version }}] #[fg=colour166][#h] #[fg=colour64][#{session_name}]#[nobold]"
-set -g status-right-length 250
-set -g status-style bg=default
-set -g window-status-activity-style fg=colour33,bg=default
-set -g window-status-current-format "#[fg=colour33,bg=default,bold]\[#I\] #[fg=colour33]#W#[nobold] "
-set -g window-status-current-style fg=colour231,bg=default
-set -g window-status-format "#[fg=colour245,bg=default,bold]\[#I\] #[fg=colour241]#W#[nobold] "
+set -g status-right ""
+set -g status-style "bg=default"
+set -g window-status-activity-style "fg=colour33,bg=default"
+set -g window-status-current-format "#[bg=colour33,bold] #I #W #[nobold]"
+set -g window-status-current-style "fg=colour231,bg=default"
+set -g window-status-format "#[fg=colour33,bg=default,bold] #I #W #[nobold]"
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {%- if 'Darwin' in ansible_system %} "pbcopy"
-{% else %} "xsel -i -p && xsel -o -p | xsel -i -b"
+{% elif 'Linux' in ansible_system %} "xsel -i -p && xsel -o -p | xsel -i -b"
 {% endif -%}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
@@ -40,6 +43,7 @@ bind '%' split-window -h -c "#{pane_current_path}"          # new pane opens to 
 bind '"' split-window -c "#{pane_current_path}"             # new pane opens to same directory
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
+bind 'r' rename-window "#{b:pane_current_path}"
 bind 'u' source-file "~/.tmux.conf"
 bind 'v' select-layout even-horizontal
 bind 'y' set synchronize-panes
