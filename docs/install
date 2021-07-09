@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+set -o errexit
+
+INSTALL_DIR=$HOME/.local/bin
+LOCAL_SCRIPT=$INSTALL_DIR/bbdm
+REMOTE_SCRIPT=https://raw.githubusercontent.com/bradleyfrank/ansible/bbdm/bbdm
+
+[ -d "$INSTALL_DIR" ] || mkdir -p "$INSTALL_DIR"
+
+if type curl >/dev/null 2>&1; then
+    curl --silent --output "$LOCAL_SCRIPT" "$REMOTE_SCRIPT"
+elif type wget >/dev/null 2>&1; then
+    wget --quiet --output-document "$LOCAL_SCRIPT" "$REMOTE_SCRIPT"
+fi
+
+chmod 755 "$LOCAL_SCRIPT"

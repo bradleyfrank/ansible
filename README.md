@@ -4,20 +4,6 @@ Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfile
 
 **Supported systems:** *macOS, Ubuntu, Pop!_OS*
 
-## Installing
-
-To install with `curl` (i.e. **macOS**):
-
-```shell
-curl -O https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
-```
-
-To install with `wget` (i.e. **Linux**):
-
-```shell
-wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
-```
-
 ## Running
 
 This repo runs entirely local, no remote connections.
