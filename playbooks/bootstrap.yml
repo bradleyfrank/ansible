@@ -8,6 +8,7 @@
         content: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
         dest: "{{ nopasswd_sudo }}"
         validate: /usr/sbin/visudo -csf %s
+        mode: 0644
       become: true
       notify: Remove passwordless sudo permissions
 
