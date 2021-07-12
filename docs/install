@@ -49,4 +49,8 @@ git checkout "$ANSIBLE_REPO_BRANCH"
 
 ansible-galaxy collection install -r setup/requirements.yml
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml
-ansible-playbook --ask-become-pass playbooks/bootstrap.yml
+
+case $ANSIBLE_REPO_PLAYBOOK in
+  bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
+  dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
+esac

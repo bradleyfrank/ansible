@@ -3,14 +3,6 @@
 - name: Bootstrap localhost system
   hosts: localhost
   tasks:
-    - name: Configure Linux repositories
-      ansible.builtin.include_tasks: "tasks/repositories.yml"
-      when: ansible_system == 'Linux'
-
-    - name: Include OS-specific packages
-      ansible.builtin.include_tasks: "tasks/packages/{{ ansible_system }}.yml"
-      tags: always
-
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.copy:
         content: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
@@ -18,6 +10,20 @@
         validate: /usr/sbin/visudo -csf %s
       become: true
       notify: Remove passwordless sudo permissions
+
+    - name: Stop packagekit
+      ansible.builtin.systemd:
+        name: packagekit
+        state: stopped
+      when: ansible_system == 'Linux'
+
+    - name: Configure Linux repositories
+      ansible.builtin.include_tasks: "tasks/repositories.yml"
+      when: ansible_system == 'Linux'
+
+    - name: Include OS-specific packages
+      ansible.builtin.include_tasks: "tasks/packages/{{ ansible_system }}.yml"
+      tags: always
 
     - name: Make bash default for root
       ansible.builtin.user:
