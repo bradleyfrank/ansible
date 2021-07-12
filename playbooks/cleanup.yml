@@ -6,8 +6,10 @@
   vars:
     files:
       - .ansible_vault_password
-      - .dotfiles/inventory.yml
+      - .dotfiles
       - .config/p10k.zsh
+      - .local/bin/diff-so-fancy
+      - .local/bin/lib
       - .local/bin/gcp-kubeconfigs
       - .local/bin/orm
       - .local/share/fubectl

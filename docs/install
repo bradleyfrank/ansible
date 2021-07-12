@@ -2,16 +2,51 @@
 
 set -o errexit
 
-INSTALL_DIR=$HOME/.local/bin
-LOCAL_SCRIPT=$INSTALL_DIR/bbdm
-REMOTE_SCRIPT=https://raw.githubusercontent.com/bradleyfrank/ansible/bbdm/bbdm
+ANSIBLE_REPO_BRANCH=main
+ANSIBLE_REPO_PLAYBOOK=bootstrap
+ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
+INSTALL_BASE=$HOME/.local/opt
+INSTALL_DIR=$INSTALL_BASE/bbdm
 
-[ -d "$INSTALL_DIR" ] || mkdir -p "$INSTALL_DIR"
+bootstrap_mac() {
+  pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
+  CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  brew install python3 git
+}
 
-if type curl >/dev/null 2>&1; then
-    curl --silent --output "$LOCAL_SCRIPT" "$REMOTE_SCRIPT"
-elif type wget >/dev/null 2>&1; then
-    wget --quiet --output-document "$LOCAL_SCRIPT" "$REMOTE_SCRIPT"
+bootstrap_linux() {
+  dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
+  dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
+  sudo systemctl stop packagekit
+  sudo apt-get clean
+  sudo apt-get install -y python3 python3-pip git lsb-release
+}
+
+while getopts ':dg:' opt; do
+  case "$opt" in
+    d) ANSIBLE_REPO_PLAYBOOK=dotfiles ;;
+    g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
+    *) exit 1 ;;
+  esac
+done
+
+if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
+  case $(uname -s) in
+    Darwin) bootstrap_mac ;;
+    Linux)  bootstrap_linux ;;
+    *)      exit 1 ;;
+  esac
 fi
 
-chmod 755 "$LOCAL_SCRIPT"
+PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
+python3 -m pip install --user ansible docker github3.py
+
+[ -d "$INSTALL_BASE" ] || mkdir -p "$INSTALL_BASE"
+
+git clone "$ANSIBLE_REPO_URL" "$INSTALL_DIR"
+cd "$INSTALL_DIR" >/dev/null
+git checkout "$ANSIBLE_REPO_BRANCH"
+
+ansible-galaxy collection install -r setup/requirements.yml
+ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml
+ansible-playbook --ask-become-pass playbooks/bootstrap.yml
