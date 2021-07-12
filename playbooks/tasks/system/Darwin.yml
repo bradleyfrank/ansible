@@ -1,5 +1,10 @@
 ---
 
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+    strategy: macos
+
 - name: Configure shells
   block:
     - name: Make additional shells available

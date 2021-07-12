@@ -20,7 +20,11 @@
       - .hyper_plugins
 
     brew_packages:
+      - diff-so-fancy
       - ffsend
+      - hstr
+      - tmux-mem-cpu-load
+      - yq
 
     brew_casks:
       - anylist
@@ -30,8 +34,9 @@
       - openshot-video-editor
       - raindropio
       - stay
+      - sublime-text
       - typora
-      - yq
+      - vivaldi
 
   tasks:
     - name: Remove files

@@ -22,7 +22,7 @@ set -g status 2
 set -g status-format[1] "#[align=right]#[bold]#[fg=colour125]
 {%- if 'Darwin' in ansible_system -%} [#(sw_vers | awk '{print $2}' | xargs echo)]
 {%- elif 'Linux' in ansible_system -%} [#(lsb_release -sd)]
-{%- endif -%} #[fg=colour64] [#h]#[nobold]"
+{%- endif -%} #[fg=colour64] [#h]#[fg=default] [%a %b %d %I:%M]#[nobold]"
 set -g status-left "#[bg=colour61,fg=colour231,bold] #{session_name} #[nobold,bg=default] "
 set -g status-left-length 40
 set -g status-position top

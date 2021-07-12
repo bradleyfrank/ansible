@@ -12,6 +12,9 @@
     - name: work_system
       prompt: System belongs to employer (true|false)
       private: false
+    - name: hostname
+      prompt: Enter system hostname
+      private: false
 
   tasks:
     - name: Create vault file
