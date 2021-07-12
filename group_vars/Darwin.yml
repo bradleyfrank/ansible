@@ -89,6 +89,7 @@ system_packages:
     - expressions
     - fantastical
     - firefox
+    - firefox-developer-edition
     - google-cloud-sdk
     - iina
     - istat-menus
@@ -140,6 +141,8 @@ alacritty:
 bbedit:
   color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"
 
+sudoers_d: /private/etc/sudoers.d
+nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 root_home: /var/root

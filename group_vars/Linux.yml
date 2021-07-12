@@ -164,6 +164,8 @@ vscode:
 alacritty:
   decorations: none
 
+sudoers_d: /etc/sudoers.d
+nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 bash_shell: /usr/bin/bash
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python_version }}/site-packages"

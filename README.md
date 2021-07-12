@@ -4,57 +4,47 @@ Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfile
 
 **Supported systems:** *macOS, Ubuntu, Pop!_OS*
 
-## Installing
-
-To install with `curl` (i.e. **macOS**):
+## Install & Run
 
 ```shell
-curl -O https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
+bbdm=https://bbdm.franklybrad.com/install && \
+case $(uname -s) in Darwin) curl -sO $bbdm ;; Linux) wget -q $bbdm ;; esac
 ```
 
-To install with `wget` (i.e. **Linux**):
+Usage:
 
-```shell
-wget https://raw.githubusercontent.com/bradleyfrank/ansible/main/run.sh
+```text
+sh install [-g git_branch] [-d]
+  -g  Specify the git branch to run (default: main)
+  -d  Run the dotfiles playbook only
 ```
-
-## Running
 
 This repo runs entirely local, no remote connections.
 
-```text
-sh run.sh [-g git_branch] [-b | -d] [-e email] [-w] | -h
-  -g  Specify the git branch to run (default: main)
-  -b  Run the bootstrap playbook (default)
-  -d  Run the dotfiles playbook
-  -e  Email address for config files (default: username@hostname)
-  -w  Designate a work system; skip certain tasks (default: false)
-  -h  Print this help menu and quit
-```
+* Requires `sudo` privileges
+* Prompts for:
+  * Ansible vault password (saved to `~/.ansible/vault`)
+  * System ownership (personal vs employer)
+  * Email address
+* Creates `inventory.json` with the above host-specific variables
+* Installs repository to `~/.local/opt/bbdm`
 
-* Installs repository to `~/.dotfiles`
-* Creates `inventory.json` with host-specific variables
-* Prompts for the Ansible vault password (saved to `~/.ansible/vault`)
-* Ansible is installed via `pip` on all systems
-* The `bootstrap` playbook requires `sudo` privileges for any system
-* Log in to the Mac App Store to install apps via `mas` (skips if not authenticated)
+***Mac App Store:*** log in to the App Store to install apps via `mas` (skips if not authenticated)
 
-### Inventory
+### Settings
 
-To regenerate `~/.dotfiles/inventory.json` anytime, run the following Ansible command, replacing the `{{ email_address }}` and `{{ work_system }}` placeholders.
+To regenerate `inventory.json` anytime, run the following Ansible command from the `bbdm` install directory, replacing the `{{ email_address }}` and `{{ work_system }}` placeholders.
 
 ```shell
 ansible localhost \
   --module-name ansible.builtin.template \
-  --args "src=setup/templates/inventory.json.j2 dest=$HOME/.dotfiles/inventory.json" \
+  --args "src=setup/templates/inventory.json.j2 dest=inventory.json" \
   --extra-vars "ansible_system=$(uname -s)" \
   --extra-vars "email={{ email_address }}" \
   --extra-vars "work_system={{ true|false }}"
 ```
 
-### Work Systems
-
-Passing the `-w` flag skips the following tasks:
+If `work_system` is **true**, the following tasks are skipped:
 
 * Managing `~/.ssh/config`
-* Cloning all personal GitHub repositories
+* Cloning personal GitHub repositories

@@ -6,8 +6,10 @@
   vars:
     files:
       - .ansible_vault_password
-      - .dotfiles/inventory.yml
+      - .dotfiles
       - .config/p10k.zsh
+      - .local/bin/diff-so-fancy
+      - .local/bin/lib
       - .local/bin/gcp-kubeconfigs
       - .local/bin/orm
       - .local/share/fubectl
@@ -18,7 +20,11 @@
       - .hyper_plugins
 
     brew_packages:
+      - diff-so-fancy
       - ffsend
+      - hstr
+      - tmux-mem-cpu-load
+      - yq
 
     brew_casks:
       - anylist
@@ -28,8 +34,9 @@
       - openshot-video-editor
       - raindropio
       - stay
+      - sublime-text
       - typora
-      - yq
+      - vivaldi
 
   tasks:
     - name: Remove files

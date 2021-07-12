@@ -1,5 +1,20 @@
 ---
 
+- name: Update system
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
+  become: true
+  register: apt_upgrade
+  retries: 100
+  until: apt_upgrade is success or ('Failed to lock apt for exclusive operation' not in apt_upgrade['msg'] and '/var/lib/dpkg/lock' not in apt_upgrade['msg'])
+  tags: [upgrade, apt]
+
 - name: Install Ubuntu/Pop!_OS packages
   ansible.builtin.apt:
     name: "{{ packages }}"
