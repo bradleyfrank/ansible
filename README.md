@@ -19,32 +19,34 @@ sh install [-g git_branch] [-d]
   -d  Run the dotfiles playbook only
 ```
 
-This repo runs entirely local, no remote connections.
-
-* Requires `sudo` privileges
 * Prompts for:
   * Ansible vault password (saved to `~/.ansible/vault`)
+  * Hostname
   * System ownership (personal vs employer)
   * Email address
 * Creates `inventory.json` with the above host-specific variables
 * Installs repository to `~/.local/opt/bbdm`
 
-***Mac App Store:*** log in to the App Store to install apps via `mas` (skips if not authenticated)
+### Notes
 
-### Settings
+* Both playbooks run entirely local, no remote connections
+* Only the `bootstrap` playbook requires sudo privileges
+* The `dotfiles` playbook assumes all dependencies are pre-installed
+* For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas` (skips if not authenticated)
+* If `work_system` is **true**, the following tasks are skipped:
+  * Managing `~/.ssh/config`
+  * Cloning personal GitHub repositories
 
-To regenerate `inventory.json` anytime, run the following Ansible command from the `bbdm` install directory, replacing the `{{ email_address }}` and `{{ work_system }}` placeholders.
+### Inventory
+
+To regenerate `inventory.json` anytime, run the following Ansible command from the `bbdm` install directory, replacing `{{ hostname }}`, `{{ email_address }}` and `{{ work_system }}` placeholders.
 
 ```shell
 ansible localhost \
   --module-name ansible.builtin.template \
   --args "src=setup/templates/inventory.json.j2 dest=inventory.json" \
   --extra-vars "ansible_system=$(uname -s)" \
+  --extra-vars "hostname={{ hostname }}" \
   --extra-vars "email={{ email_address }}" \
   --extra-vars "work_system={{ true|false }}"
 ```
-
-If `work_system` is **true**, the following tasks are skipped:
-
-* Managing `~/.ssh/config`
-* Cloning personal GitHub repositories

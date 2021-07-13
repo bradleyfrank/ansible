@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+#
+# Displays various information for tmux status bar
+# Author: Brad Frank
+# Date: July 2021
+# Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
+#
+
+batt-Darwin() {
+    pmset -g batt | grep 'InternalBattery' | cut -f2 | awk -F\; '{print $1$2}'
+}
+
+batt-Linux() {
+    echo "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"
+}
+
+sysinfo-Darwin() {
+    sw_vers | awk '{print $2}' | xargs echo
+}
+
+sysinfo-Linux() {
+    lsb_release -sd
+}
+
+while getopts ':s:d:' flag; do
+  case "$flag" in
+    s) SEGMENT=$OPTARG ;;
+    d) DISTRO=$OPTARG ;;
+    *) echo "Invalid argument." >&2 ; exit 1 ;;
+  esac
+done
+
+function_to_call="$SEGMENT-$DISTRO"; $function_to_call
