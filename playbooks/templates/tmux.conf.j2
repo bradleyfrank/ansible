@@ -19,7 +19,7 @@ set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour1
 set -g pane-border-lines single
 {% endif -%}
 set -g status 2
-set -g status-format[1] "#[align=right]#[bold]#[fg=colour125][#(tmux-info -s sysinfo -d {{ ansible_system }})] #[fg=colour64][#h] #[fg=colour166][#(tmux-info -s batt -d {{ ansible_system }})] #[fg=default][%a %b %d %I:%M]#[nobold]"
+set -g status-format[1] "#[align=right]#[bold]#(tmux-info {{ ansible_system }})#[nobold]"
 set -g status-left "#[bg=colour61,fg=colour231,bold] #{session_name} #[nobold,bg=default] "
 set -g status-left-length 40
 set -g status-position top

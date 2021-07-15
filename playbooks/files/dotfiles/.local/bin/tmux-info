@@ -7,28 +7,32 @@
 # Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
 #
 
-batt-Darwin() {
-    pmset -g batt | grep 'InternalBattery' | cut -f2 | awk -F\; '{print $1$2}'
+SYSINFO=""
+BATT=""
+
+fg_Magenta="#[fg=colour125]"
+fg_Orange="#[fg=colour166]"
+fg_Green="#[fg=colour64]"
+fg_Base00="#[fg=colour241]"
+
+macos() {
+  SYSINFO="$(sw_vers | awk '{print $2}' | xargs echo)"
+  BATT="$(pmset -g batt | grep 'InternalBattery' | cut -f2 | awk -F\; '{print $1$2}')"
 }
 
-batt-Linux() {
-    echo "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"
+linux() {
+  SYSINFO="$(lsb_release -sd)"
+  BATT="$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"
 }
 
-sysinfo-Darwin() {
-    sw_vers | awk '{print $2}' | xargs echo
-}
+case $1 in
+  Darwin) macos ;;
+  Linux ) linux ;;
+esac
 
-sysinfo-Linux() {
-    lsb_release -sd
-}
+SYSINFO="${fg_Magenta}[${SYSINFO}]"
+BATT="${fg_Orange}[${BATT}]"
+SYSTEMNAME="${fg_Green}[$(hostname -s)]"
+DATE="${fg_Base00}[$(date +'%a %b %d %I:%M')]"
 
-while getopts ':s:d:' flag; do
-  case "$flag" in
-    s) SEGMENT=$OPTARG ;;
-    d) DISTRO=$OPTARG ;;
-    *) echo "Invalid argument." >&2 ; exit 1 ;;
-  esac
-done
-
-function_to_call="$SEGMENT-$DISTRO"; $function_to_call
+printf "%s %s %s %s" "$SYSINFO" "$SYSTEMNAME" "$BATT" "$DATE"
