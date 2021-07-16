@@ -27,6 +27,7 @@ vscode_extensions:
   - ms-vscode-remote.remote-ssh
   - ms-vscode-remote.remote-ssh-edit
   - naumovs.color-highlight
+  - njpwerner.autodocstring
   - richie5um2.vscode-sort-json
   - rogalmic.bash-debug
   - samuelcolvin.jinjahtml
