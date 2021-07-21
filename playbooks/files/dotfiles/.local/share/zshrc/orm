@@ -20,6 +20,17 @@ oghpr() {
     rm "$output"
 }
 
+# [ois] creates python environment for infractl
+alias ois='orm-infractl-setup'
+orm-infractl-setup() {
+    [[ -f ./install.sh ]] || return 1
+    rm .env
+    bash install.sh env
+    bash install.sh
+    source ./ve/bin/activate
+    bash install.sh deploy-local
+}
+
 # [_ogp] interactive gcloud project select
 alias -g _ogp='--project $(echo -e ${ORM_GCP_PROJECTS//,/\\n} | _inline_fzf_nh_single)'
 
