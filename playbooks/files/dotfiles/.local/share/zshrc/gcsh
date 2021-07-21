@@ -1,14 +1,37 @@
+# helper functions
+
+gproject() { echo ${1//,/\\n} | _inline_fzf_nh_single | xargs -I{} sh -c 'echo --project {}'; }
+
+gcpkonfig() {
+    [[ -z $1 ]] && { echo "Usage: gcpkconfig <project1,project2,projectN>"; exit 1; }
+
+    local projects project cluster _project
+    readarray -t -d ',' projects <<< "$1"
+
+    mv ~/.kube/config ~/.kube/config."$(date --iso-8601=seconds | tr -d ':-')"
+
+    for project in "${projects[@]}"; do
+        _project="$(tr -d '\n' <<< "$project")"
+        while read -r cluster; do
+            [[ -z "$cluster" ]] && continue
+            gcloud --project "$_project" container clusters get-credentials \
+                "$(cut -d, -f2 <<< "$cluster")" --region="$(cut -d, -f1 <<< "$cluster")"
+        done <<< "$(gcloud --project "$_project" container clusters list --format="value[separator=','](zone,name)")"
+    done
+}
+
+
 # [gc] alias for gcloud
 alias gc='gcloud'
 
 # [gpc] show current GCP project
 alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
 
-# [gpl] list a subset of projects ; gpl <project1,project2,projectN>
-gpl() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})" ; }
+# [gpf] grep for gcloud projects ; gpl <project1,project2,projectN>
+gpf() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})"; }
 
-# [gpla] list all GCP projects
-alias gpla='gcloud projects list --format="table(name,projectId,lifecycleState)"'
+# [gpl] list all GCP projects
+alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 
 # [gps] set the active GCP project
 gps() {
@@ -30,7 +53,7 @@ gcreds() {
 }
 
 # [gtags] show tags for docker image in GCR ; gtags <image>
-gtags() { gcloud container images list-tags gcr.io/common-build/"$1" ; }
+gtags() { gcloud container images list-tags gcr.io/common-build/"$1"; }
 
 # [ghelp] show this help message
 ghelp() {

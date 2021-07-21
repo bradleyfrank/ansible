@@ -61,6 +61,8 @@ krew:
     - deprecations
     - doctor
     - get-all
+    - neat
+    - tree
 
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:

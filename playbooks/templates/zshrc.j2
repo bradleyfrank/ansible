@@ -63,8 +63,9 @@ eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 eval "$(dircolors $HOME/.dir_colors)"
 
 
-alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
 alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
+alias _inline_fzf_nh_single='fzf --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
+alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
@@ -82,6 +83,7 @@ alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
 alias lc='ll --grid'
+alias ld='ll --only-dirs'
 alias lg='ll --git'
 alias lG='ll --group'
 alias ll='exa --color always --classify --long --all'
@@ -119,7 +121,7 @@ alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 {% if 'remmac06432' in ansible_hostname %}
-alias infrasetup='./install.sh env && ./install.sh && source ./ve/bin/activate && ./install.sh deploy-local'
+alias infrasetup='./install.sh && ./install.sh env && source ./ve/bin/activate && ./install.sh deploy-local'
 {% endif %}
 
 
@@ -366,6 +368,7 @@ source {{ shell_conf }}/fubectl
 source {{ shell_conf }}/kubectl
 source {{ shell_conf }}/gcsh
 source {{ shell_conf }}/pipenv
+source {{ shell_conf }}/op
 {% if 'remmac06432' in ansible_hostname %}
 source {{ shell_conf }}/orm
 source ~/.infractl/secrets

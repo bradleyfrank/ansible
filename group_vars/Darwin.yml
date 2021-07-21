@@ -79,6 +79,7 @@ system_packages:
     - zsh-syntax-highlighting
   casks_common:
     - 1password
+    - 1password-cli
     - alacritty
     - appcleaner
     - balenaetcher

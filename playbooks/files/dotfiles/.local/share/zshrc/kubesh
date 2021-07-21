@@ -1,0 +1,21 @@
+# helper functions
+
+kcontext() {
+    echo "--context $(kubectl config get-contexts | tr -d '\*' | tail -n+2 | awk '{print $1}' | _inline_fzf_nh_single)"
+}
+
+
+# [kapi] show api-resources (i.e. shortnames)
+alias kapi='kubectl api-resources'
+
+# [kcu] kubectl context unset
+alias kcu='kubectl config unset current-context'
+
+# [krename] rename all contexts with shorter names
+krename() {
+    local context
+    kubectl config unset current-context
+    for context in $(kubectl config get-contexts | grep -v '\*' | awk '(NR>1) {print $1}'); do
+        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")"
+    done
+}

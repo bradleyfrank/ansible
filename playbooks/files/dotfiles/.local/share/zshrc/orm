@@ -4,7 +4,7 @@ export ORM_GCP_PROJECTS="binderhub-dev,binderhub-prod,common-build,dataeng-dev-2
 okonfig() { gcpkonfig "$ORM_GCP_PROJECTS" ; }
 
 # [ogpl] list a subset of ORM GCP projects
-ogpl() { gpl "$ORM_GCP_PROJECTS" ; }
+ogpl() { gpf "$ORM_GCP_PROJECTS" ; }
 
 # [oghpr] print all open PRs by team members
 oghpr() {
@@ -20,9 +20,15 @@ oghpr() {
     rm "$output"
 }
 
+# [_ogp] interactive gcloud project select
+alias -g _ogp='$(gproject $ORM_GCP_PROJECTS)'
+
+# [_okc] interactive kubectl context select
+alias -g _okc='$(kcontext)'
+
 alias gc-bhdev='gcloud --project binderhub-dev'
 alias gc-bhprod='gcloud --project binderhub-prod'
-alias gc-common='gcloud --project common-build'
+alias gc-commonbuild='gcloud --project common-build'
 alias gc-dataengdev='gcloud --project dataeng-dev-273349'
 alias gc-dataeng-prod='gcloud --project dataeng-prod-308999'
 alias gc-kcdev='gcloud --project kc-core-dev'
@@ -34,7 +40,7 @@ alias gc-playground='gcloud --project strong-keyword-184513'
 
 alias -g gbhdev='--project binderhub-dev'
 alias -g gbhprod='--project binderhub-prod'
-alias -g gcommon='--project common-build'
+alias -g gcommonbuild='--project common-build'
 alias -g gdataengdev='--project dataeng-dev-273349'
 alias -g gdataengprod='--project dataeng-prod-308999'
 alias -g gkcdev='--project kc-core-dev'
@@ -46,7 +52,7 @@ alias -g gplayground='--project strong-keyword-184513'
 
 alias k-bhdev='kubectl --context binderhub-dev-cluster'
 alias k-bhprod='kubectl --context binderhub-prod-cluster'
-alias k-common='kubectl --context common-build-cluster'
+alias k-commonbuild='kubectl --context common-build-cluster'
 alias k-kcdev='kubectl --context kc-dev'
 alias k-kcprod='kubectl --context kc-prod'
 alias k-kfdev='kubectl --context kubeflow-dev'
@@ -57,7 +63,7 @@ alias k-playground='kubectl --context playground-cluster'
 
 alias -g kbhdev='--context binderhub-dev-cluster'
 alias -g kbhprod='--context binderhub-prod-cluster'
-alias -g kcommon='--context common-build-cluster'
+alias -g kcommonbuild='--context common-build-cluster'
 alias -g kkcdev='--context kc-dev'
 alias -g kkcprod='--context kc-prod'
 alias -g kkfdev='--context kubeflow-dev'
