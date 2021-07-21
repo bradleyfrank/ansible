@@ -115,6 +115,7 @@
       ansible.builtin.shell: "op completion zsh > {{ shell_conf }}/op"
       changed_when: false
       tags: 1password
+      when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
 
     - name: Apply zshrc template
       ansible.builtin.template:
