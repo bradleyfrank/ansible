@@ -75,10 +75,6 @@ alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
 alias glances='glances --theme-white'
 alias grep='grep -I'
-alias gcommon='cd $(dirname $(git rev-parse --git-common-dir))'
-alias gtop='cd "$(git rev-parse --show-toplevel)"'
-alias gbd='git-branch-delete'
-alias gwt='git-worktree'
 alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
@@ -121,9 +117,8 @@ alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
-{% if 'remmac06432' in ansible_hostname %}
-alias infrasetup='./install.sh && ./install.sh env && source ./ve/bin/activate && ./install.sh deploy-local'
-{% endif %}
+alias -g gitc='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
+alias -g gitt='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
 
 
 function blackdiff() {
@@ -156,21 +151,6 @@ function decrypt() {
 
 function encrypt() {
   openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
-}
-
-function git-branch-delete() {
-  git branch | grep --invert-match '\*' | cut -c 3- | _inline_fzf_nh --preview="git log {} --" \
-    | xargs --no-run-if-empty git branch --delete --force
-}
-
-function git-worktree() {
-  case "$1" in
-    add|create) git worktree add ./.worktree/"$2" ;;
-    remove)     git worktree remove "$2" ;;
-    delete)     git worktree remove "$(git-worktree list | _inline_fzf_nh | awk '{print $1}')" ;;
-    list)       git worktree list | awk '(NR>1)' | sed -r "s|$PWD/.worktree/||" ;;
-    *)          echo "git-worktree [add|remove <branch>] | list | delete" ;;
-  esac
 }
 
 function httptrace() {
@@ -215,10 +195,6 @@ function pyenv() {
               source "${pyname-ve}"/bin/activate
               ;;
   esac
-}
-
-function sshf() {
-  ssh $(grep -Er '^Host' ~/.ssh/config | cut -d' ' -f2 | grep -v '*' | sort -u | _inline_fzf_nh)
 }
 
 function tardir() {
