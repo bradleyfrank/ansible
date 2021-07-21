@@ -37,8 +37,8 @@ gps() {
 }
 
 # [_gp] interactive gcloud project select
-alias -g _gp='echo "--project $(_gp_helper)"'
-_gp_helper() { gcloud projects list --format=json | jq -r '.[].projectId' | _inline_fzf_nh_single; }
+alias -g _gp='--project $(_gp_helper)'
+_gp_helper() { printf "%s" "$(gcloud projects list --format=json | jq -r '.[].projectId' | _inline_fzf_nh_single)"; }
 
 # [gpu] gcloud project unset
 alias gpu='gcloud config unset project'
