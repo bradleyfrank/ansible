@@ -35,6 +35,7 @@
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintUseMinimalCheckers": false,
+    "security.workspace.trust.enabled": false,
     "shellcheck.customArgs": [
         "-x"
     ],

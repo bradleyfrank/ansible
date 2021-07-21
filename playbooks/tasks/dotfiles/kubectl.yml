@@ -33,6 +33,12 @@
   ansible.builtin.shell: "kubectl completion zsh > {{ shell_conf }}/kubectl"
   changed_when: false
 
+- name: Download fubectl
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
+    dest: "{{ ansible_user_dir }}/.local/share/zshrc/fubectl"
+    mode: 0644
+
 - name: Check if Krew is installed
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"

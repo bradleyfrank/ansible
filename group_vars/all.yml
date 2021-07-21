@@ -15,6 +15,7 @@ github:
 vscode_extensions:
   - adpyke.codesnap
   - bungcip.better-toml
+  - chrmarti.regex
   - DavidAnson.vscode-markdownlint
   - donjayamanne.githistory
   - eamodio.gitlens
@@ -28,7 +29,6 @@ vscode_extensions:
   - ms-vscode-remote.remote-ssh-edit
   - naumovs.color-highlight
   - njpwerner.autodocstring
-  - richie5um2.vscode-sort-json
   - rogalmic.bash-debug
   - samuelcolvin.jinjahtml
   - shd101wyy.markdown-preview-enhanced
@@ -61,6 +61,8 @@ krew:
     - deprecations
     - doctor
     - get-all
+    - neat
+    - tree
 
 vim_extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
 vim_extensions:

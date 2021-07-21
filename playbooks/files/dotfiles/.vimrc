@@ -1,9 +1,10 @@
 let g:airline_theme='sol'
 let g:airline_skip_empty_sections = 1
 
-set signcolumn=no
-let g:gitgutter_signs = 0
-let g:gitgutter_highlight_lines = 1
+highlight! link SignColumn LineNr
+highlight GitGutterAdd    cterm=bold ctermfg=33
+highlight GitGutterChange cterm=bold ctermfg=136
+highlight GitGutterDelete cterm=bold ctermfg=160
 
 map <C-n> :NERDTreeToggle<CR>
 " open a NERDTree automatically when vim starts up if no files were specified
@@ -32,7 +33,7 @@ hi Search ctermbg=DarkBlue ctermfg=White
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 set colorcolumn=100
-hi colorcolumn ctermbg=LightMagenta guibg=LightMagenta
+hi colorcolumn ctermbg=LightGray
 
 " use hybrid line numbering by default with automatic toggling
 set number relativenumber
