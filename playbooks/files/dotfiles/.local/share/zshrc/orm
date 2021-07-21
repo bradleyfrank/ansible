@@ -21,10 +21,10 @@ oghpr() {
 }
 
 # [_ogp] interactive gcloud project select
-alias -g _ogp='$(gproject $ORM_GCP_PROJECTS)'
+alias -g _ogp='echo "--project $(echo ${ORM_GCP_PROJECTS//,/\\n} | _inline_fzf_nh_single)'
 
 # [_okc] interactive kubectl context select
-alias -g _okc='$(kcontext)'
+alias -g _okc='_kc'
 
 alias gc-bhdev='gcloud --project binderhub-dev'
 alias gc-bhprod='gcloud --project binderhub-prod'

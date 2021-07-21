@@ -1,9 +1,6 @@
-# helper functions
-
-kcontext() {
-    echo "--context $(kubectl config get-contexts | tr -d '\*' | tail -n+2 | awk '{print $1}' | _inline_fzf_nh_single)"
-}
-
+# [_kc] interactive kubectl context select
+alias -g _kc='echo "--context $(_kc_helper)"'
+_kc_helper() { kubectl config get-contexts | tr -d '\*' | tail -n+2 | awk '{print $1}' | _inline_fzf_nh_single; }
 
 # [kapi] show api-resources (i.e. shortnames)
 alias kapi='kubectl api-resources'

@@ -1,7 +1,3 @@
-# helper functions
-
-gproject() { echo ${1//,/\\n} | _inline_fzf_nh_single | xargs -I{} sh -c 'echo --project {}'; }
-
 # [gcpkonfig] generate kubectl credentials, usage: gcpkconfig <project1,project2,projectN>
 gcpkonfig() {
     [[ -z $1 ]] && exit 1
@@ -21,7 +17,6 @@ gcpkonfig() {
     done
 }
 
-
 # [gc] alias for gcloud
 alias gc='gcloud'
 
@@ -31,7 +26,7 @@ alias gpc='gcloud config configurations describe default --format="value(propert
 # [gpf] grep for gcloud projects, usage: gpl <project1,project2,projectN>
 gpf() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})"; }
 
-# [gpl] list all GCP projects
+# [gpl] list all GCP projects (table format)
 alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 
 # [gps] set the active GCP project
@@ -40,6 +35,10 @@ gps() {
     projects="$(gcloud projects list | _inline_fzf | awk '{print $1}')"
     gcloud config set project "$projects"
 }
+
+# [_gp] interactive gcloud project select
+alias -g _gp='echo "--project $(_gp_helper)"'
+_gp_helper() { gcloud projects list --format=json | jq -r '.[].projectId' | _inline_fzf_nh_single; }
 
 # [gpu] gcloud project unset
 alias gpu='gcloud config unset project'
