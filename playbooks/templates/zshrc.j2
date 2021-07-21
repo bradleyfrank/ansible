@@ -95,6 +95,7 @@ alias lolo='echo {{ docker_images | join(' ') }} | xargs -P10 -n1 docker pull'
 alias lsmnt='mount | column -t'
 alias mat='glow -s light'
 alias mp='multipass'
+alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
 alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
@@ -158,11 +159,8 @@ function encrypt() {
 }
 
 function git-branch-delete() {
-  git branch |
-    grep --invert-match '\*' |
-    cut -c 3- |
-    _inline_fzf_nh --preview="git log {} --" |
-    xargs --no-run-if-empty git branch --delete --force
+  git branch | grep --invert-match '\*' | cut -c 3- | _inline_fzf_nh --preview="git log {} --" \
+    | xargs --no-run-if-empty git branch --delete --force
 }
 
 function git-worktree() {
@@ -188,13 +186,6 @@ function import-ssh-config() {
 
 function mkpasswd() {
   keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
-}
-
-function mux() {
-  [[ -n "$TMUX" ]] && return 1
-  if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
-  else tmux new -s main
-  fi
 }
 
 function pyenv() {
@@ -281,7 +272,7 @@ function precmd() {
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}೭ $(python --version | awk '{print $2}') ($(basename "$VIRTUAL_ENV")) ${nocolor}"
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info ; _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
+    vcs_info; _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
   fi
 
   case "$rc" in
@@ -293,7 +284,7 @@ function precmd() {
   PS1="${eol}${bold}${_CWD}${_PYENV}${_GIT}${eol}${_pcolor}%#${nocolor}${nobold} "
 }
 
-function +vi-git-stash() { [[ -s ${hook_com[base]}/.git/refs/stash ]] && hook_com[misc]="$" ; }
+function +vi-git-stash() { [[ -s ${hook_com[base]}/.git/refs/stash ]] && hook_com[misc]="$"; }
 
 
 zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{160}%a%f'
@@ -367,6 +358,7 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source {{ shell_conf }}/fubectl
 source {{ shell_conf }}/kubectl
 source {{ shell_conf }}/gcsh
+source {{ shell_conf }}/kubesh
 source {{ shell_conf }}/pipenv
 source {{ shell_conf }}/op
 {% if 'remmac06432' in ansible_hostname %}

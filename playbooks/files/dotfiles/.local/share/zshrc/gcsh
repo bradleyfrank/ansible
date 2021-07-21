@@ -2,8 +2,9 @@
 
 gproject() { echo ${1//,/\\n} | _inline_fzf_nh_single | xargs -I{} sh -c 'echo --project {}'; }
 
+# [gcpkonfig] generate kubectl credentials, usage: gcpkconfig <project1,project2,projectN>
 gcpkonfig() {
-    [[ -z $1 ]] && { echo "Usage: gcpkconfig <project1,project2,projectN>"; exit 1; }
+    [[ -z $1 ]] && exit 1
 
     local projects project cluster _project
     readarray -t -d ',' projects <<< "$1"
@@ -27,7 +28,7 @@ alias gc='gcloud'
 # [gpc] show current GCP project
 alias gpc='gcloud config configurations describe default --format="value(properties.core.project)"'
 
-# [gpf] grep for gcloud projects ; gpl <project1,project2,projectN>
+# [gpf] grep for gcloud projects, usage: gpl <project1,project2,projectN>
 gpf() { gcloud projects list | grep -E "^(PROJECT_ID|${1//,/|})"; }
 
 # [gpl] list all GCP projects
@@ -52,7 +53,7 @@ gcreds() {
     export GOOGLE_APPLICATION_CREDENTIALS="${(P)sacct}"
 }
 
-# [gtags] show tags for docker image in GCR ; gtags <image>
+# [gtags] show tags for docker image in GCR, usage: gtags <image>
 gtags() { gcloud container images list-tags gcr.io/common-build/"$1"; }
 
 # [ghelp] show this help message
