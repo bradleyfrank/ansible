@@ -120,7 +120,7 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 
 alias -g _gcom='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
 alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
-alias -g _gwt='$(git worktree list --porcelain | sed -rn 's/^worktree\s(.+)$/\1/p' | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 
 
 function blackdiff() {
