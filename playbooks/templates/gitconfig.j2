@@ -15,9 +15,10 @@
   unstage = reset HEAD --
   wipe = !git stash --include-untracked && git stash drop
   wt = worktree
-  wtr = !git worktree list | tail -n+2 | awk '{print $3}' | tr -d '[]' \
-    | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' \
-    | xargs git worktree remove
+  wta = "!git worktree add .worktree/$1"
+  wtr = !git worktree list --porcelain | grep -E "^worktree" | tail -n+2 | awk '{print $2}' \
+    | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' --delimiter / --with-nth -1 \
+    | xargs -I{} git worktree remove {}
   wtl = worktree list
 [core]
   excludesfile = {{ ansible_user_dir }}/.gitignore
