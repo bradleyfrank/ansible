@@ -40,8 +40,8 @@ bind '%' split-window -h -c "#{pane_current_path}"          # new pane opens to 
 bind '"' split-window -c "#{pane_current_path}"             # new pane opens to same directory
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
-bind 'N' display-popup -E "vim ~/Scratch/Notes"
-bind 'O' display-popup -E "cd ~/Scratch/; vim"
+bind 'N' display-popup -E "vim ~/Development/Scratch/Notes"
+bind 'O' display-popup -E "cd ~/Development/Scratch/; vim"
 bind 'r' rename-window "#{b:pane_current_path}"
 bind 'u' source-file "~/.tmux.conf"
 bind 'v' select-layout even-horizontal
