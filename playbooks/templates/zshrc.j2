@@ -123,53 +123,22 @@ alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .
 alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 
 
-function blackdiff() {
-  black --line-length 100 --diff "$@"
-}
-
-function cheat() {
-  curl -s "cheat.sh/$1?style=vs"
-}
-
-function crackpdf() {
-  qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf
-}
-
-function dclint() {
-  docker-compose -f "$1" config --quiet
-}
-
-function dtags() {
-  wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'
-}
-
-function diceware() {
-  keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
-}
-
-function decrypt() {
-  openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
-}
-
-function encrypt() {
-  openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
-}
-
-function httptrace() {
-  curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
-}
-
+function blackdiff() { black --line-length 100 --diff "$@"; }
+function cheat() { curl -s "cheat.sh/$1?style=vs"; }
+function crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
+function dclint() { docker-compose -f "$1" config --quiet; }
+function dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
+function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
+function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
+function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
+function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
 function import-ssh-config() {
   pushd ~/Development/Projects/ansible &> /dev/null
   command cp -f ~/.ssh/config roles/dotfiles/files/ssh/.ssh/
   ansible-vault encrypt roles/dotfiles/files/ssh/.ssh/config
   popd &> /dev/null
 }
-
-function mkpasswd() {
-  keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
-}
-
+function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
 function pyenv() {
   local pyname pyver=3.8 pyfunc
 
@@ -198,47 +167,20 @@ function pyenv() {
               ;;
   esac
 }
-
-function tardir() {
-  tar -czf "${1%/}".tar.gz "$1"
-}
-
-function ytdl-video() {
-  youtube-dl \
-  --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
-  --merge-output-format mp4 \
-  -o "%(title)s.%(ext)s" "$1"
-}
-
+function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 {% if 'Darwin' in ansible_system %}
-function steep() {
-  if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
-  for step in update upgrade cleanup doctor; do toilet --font future --width 100 "$step"; brew "$step"; done
-}
-
-function uptime-p() {
-  uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"
-}
-
-function ytdl-music() {
-    youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
-      --postprocessor-args "-strict experimental" "$1"
-}
+function steep() { xcode-install; for c in update upgrade cleanup doctor; do brew "$c"; done; }
+function uptime-p() { uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"; }
+function xcode-install() { xcode-select --version &> /dev/null || xcode-select --install; }
 {% elif 'Linux' in ansible_system %}
-function ytdl-music() {
-  youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"
-}
-
 function findproc() {
   local pid
   if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"; else pid="$(pgrep "$1")"; fi
   ps --forest -o pid,ppid,user,time,cmd -g "$pid"
 }
-
-function gedit() {
-  nohup /usr/bin/gedit "$@" &> /dev/null &
-}
+function gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
+
 
 function precmd() {
   local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir
