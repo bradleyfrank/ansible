@@ -300,6 +300,10 @@ setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt rcexpandparam           # Array expension with parameters
 
+autoload -U +X bashcompinit && bashcompinit
+autoload -Uz compinit zmv zcalc vcs_info edit-command-line && compinit
+zle -N edit-command-line
+
 bindkey -e                                         # Emacs style shortcuts
 bindkey '^[[7~' beginning-of-line                  # Home key
 bindkey '^[[H' beginning-of-line                   # Home key
@@ -316,9 +320,7 @@ bindkey '^[[C'  forward-char                       # Right key
 bindkey '^[[D'  backward-char                      # Left key
 bindkey '^[[5~' history-beginning-search-backward  # Page up key
 bindkey '^[[6~' history-beginning-search-forward   # Page down key
-
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz compinit zmv zcalc vcs_info && compinit
+bindkey '^X^E' edit-command-line
 
 
 {% if 'Darwin' in ansible_system %}
