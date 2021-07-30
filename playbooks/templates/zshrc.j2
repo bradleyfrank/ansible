@@ -132,13 +132,17 @@ function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
 function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
 function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
-function import-ssh-config() {
-  pushd ~/Development/Projects/ansible &> /dev/null
-  command cp -f ~/.ssh/config roles/dotfiles/files/ssh/.ssh/
-  ansible-vault encrypt roles/dotfiles/files/ssh/.ssh/config
-  popd &> /dev/null
-}
 function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
+function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
+{% if 'Darwin' in ansible_system %}
+function steep() { xcode-install; for c in update upgrade cleanup doctor; do brew "$c"; done; }
+function uptime-p() { uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"; }
+function xcode-install() { xcode-select --version &> /dev/null || xcode-select --install; }
+{% elif 'Linux' in ansible_system %}
+function gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
+{% endif %}
+
+
 function pyenv() {
   local pyname pyver=3.8 pyfunc
 
@@ -167,19 +171,6 @@ function pyenv() {
               ;;
   esac
 }
-function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-{% if 'Darwin' in ansible_system %}
-function steep() { xcode-install; for c in update upgrade cleanup doctor; do brew "$c"; done; }
-function uptime-p() { uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"; }
-function xcode-install() { xcode-select --version &> /dev/null || xcode-select --install; }
-{% elif 'Linux' in ansible_system %}
-function findproc() {
-  local pid
-  if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"; else pid="$(pgrep "$1")"; fi
-  ps --forest -o pid,ppid,user,time,cmd -g "$pid"
-}
-function gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
-{% endif %}
 
 
 function precmd() {
