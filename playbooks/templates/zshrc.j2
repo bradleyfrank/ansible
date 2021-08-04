@@ -63,9 +63,9 @@ eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 eval "$(dircolors $HOME/.dir_colors)"
 
 
-alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
-alias _inline_fzf_nh_single='fzf --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
-alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
+alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
+alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
+alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
@@ -123,52 +123,25 @@ alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .
 alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 
 
-function blackdiff() {
-  black --line-length 100 --diff "$@"
-}
+function blackdiff() { black --line-length 100 --diff "$@"; }
+function cheat() { curl -s "cheat.sh/$1?style=vs"; }
+function crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
+function dclint() { docker-compose -f "$1" config --quiet; }
+function dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
+function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
+function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
+function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
+function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
+function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
+function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
+{% if 'Darwin' in ansible_system %}
+function steep() { xcode-install; for c in update upgrade cleanup doctor; do brew "$c"; done; }
+function uptime-p() { uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"; }
+function xcode-install() { xcode-select --version &> /dev/null || xcode-select --install; }
+{% elif 'Linux' in ansible_system %}
+function gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
+{% endif %}
 
-function cheat() {
-  curl -s "cheat.sh/$1?style=vs"
-}
-
-function crackpdf() {
-  qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf
-}
-
-function dclint() {
-  docker-compose -f "$1" config --quiet
-}
-
-function dtags() {
-  wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'
-}
-
-function diceware() {
-  keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
-}
-
-function decrypt() {
-  openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
-}
-
-function encrypt() {
-  openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
-}
-
-function httptrace() {
-  curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
-}
-
-function import-ssh-config() {
-  pushd ~/Development/Projects/ansible &> /dev/null
-  command cp -f ~/.ssh/config roles/dotfiles/files/ssh/.ssh/
-  ansible-vault encrypt roles/dotfiles/files/ssh/.ssh/config
-  popd &> /dev/null
-}
-
-function mkpasswd() {
-  keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
-}
 
 function pyenv() {
   local pyname pyver=3.8 pyfunc
@@ -199,46 +172,6 @@ function pyenv() {
   esac
 }
 
-function tardir() {
-  tar -czf "${1%/}".tar.gz "$1"
-}
-
-function ytdl-video() {
-  youtube-dl \
-  --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
-  --merge-output-format mp4 \
-  -o "%(title)s.%(ext)s" "$1"
-}
-
-{% if 'Darwin' in ansible_system %}
-function steep() {
-  if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
-  for step in update upgrade cleanup doctor; do toilet --font future --width 100 "$step"; brew "$step"; done
-}
-
-function uptime-p() {
-  uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"
-}
-
-function ytdl-music() {
-    youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
-      --postprocessor-args "-strict experimental" "$1"
-}
-{% elif 'Linux' in ansible_system %}
-function ytdl-music() {
-  youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"
-}
-
-function findproc() {
-  local pid
-  if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"; else pid="$(pgrep "$1")"; fi
-  ps --forest -o pid,ppid,user,time,cmd -g "$pid"
-}
-
-function gedit() {
-  nohup /usr/bin/gedit "$@" &> /dev/null &
-}
-{% endif %}
 
 function precmd() {
   local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir
@@ -300,6 +233,10 @@ setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt rcexpandparam           # Array expension with parameters
 
+autoload -U +X bashcompinit && bashcompinit
+autoload -Uz compinit zmv zcalc vcs_info edit-command-line && compinit
+zle -N edit-command-line
+
 bindkey -e                                         # Emacs style shortcuts
 bindkey '^[[7~' beginning-of-line                  # Home key
 bindkey '^[[H' beginning-of-line                   # Home key
@@ -316,9 +253,7 @@ bindkey '^[[C'  forward-char                       # Right key
 bindkey '^[[D'  backward-char                      # Left key
 bindkey '^[[5~' history-beginning-search-backward  # Page up key
 bindkey '^[[6~' history-beginning-search-forward   # Page down key
-
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz compinit zmv zcalc vcs_info && compinit
+bindkey '^X^E' edit-command-line
 
 
 {% if 'Darwin' in ansible_system %}
@@ -327,18 +262,19 @@ source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-source {{ shell_conf }}/op
+source {{ shell_completions }}/op
 {% elif 'Linux' in ansible_system %}
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 {% endif %}
+source {{ shell_completions }}/kubectl
+source {{ shell_completions }}/pipenv
+source {{ shell_conf }}/cmarks
 source {{ shell_conf }}/fubectl
-source {{ shell_conf }}/kubectl
 source {{ shell_conf }}/gcsh
 source {{ shell_conf }}/kubesh
-source {{ shell_conf }}/pipenv
 {% if 'remmac06432' in ansible_hostname %}
 source {{ shell_conf }}/orm
 source ~/.infractl/secrets

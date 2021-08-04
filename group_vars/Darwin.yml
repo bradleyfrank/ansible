@@ -55,6 +55,7 @@ system_packages:
     - p7zip
     - par
     - prettyping
+    - qpdf
     - rename
     - ripgrep
     - rpm2cpio

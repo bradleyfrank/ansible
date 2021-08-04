@@ -79,6 +79,7 @@ vim_extensions:
 python_version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 shell_conf: "{{ ansible_user_dir }}/.local/share/zshrc"
+shell_completions: "{{ ansible_user_dir }}/.local/share/zsh-completion"
 
 ssh_keys:
   - id_rsa

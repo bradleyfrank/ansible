@@ -112,7 +112,7 @@
       tags: bbedit
 
     - name: Generate 1Password-cli completions
-      ansible.builtin.shell: "op completion zsh > {{ shell_conf }}/op"
+      ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
       changed_when: false
       tags: 1password
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
