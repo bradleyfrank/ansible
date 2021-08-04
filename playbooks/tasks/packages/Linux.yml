@@ -30,6 +30,24 @@
   until: apt_install is success or ('Failed to lock apt for exclusive operation' not in apt_install['msg'] and '/var/lib/dpkg/lock' not in apt_install['msg'])
   tags: [packages, apt]
 
+- name: Install flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item['name'] }}"
+    state: present
+    flatpakrepo_url: "{{ item['url'] }}"
+    method: user
+  loop: "{{ flatpak_remotes }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+
+- name: Install flatpak packages
+  community.general.flatpak:
+    name: "{{ item['value'] }}"
+    state: present
+    method: user
+    remote: "{{ item['key'] }}"
+  loop: "{{ flatpaks | dict2items }}"
+
 - name: Install snaps
   community.general.snap:
     name: "{{ snaps }}"
