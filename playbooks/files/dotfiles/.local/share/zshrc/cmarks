@@ -22,10 +22,10 @@ function cmarks() {
   fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
   sync_down() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
   sync_up() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
-  usage() { echo "Usage: cmarks [ -a(dd) <num> | -c(lean) | -d(elete) <num> | -f(ind) | -l(ist) | -r(etrieve) <num> | -s(ync) ]"; }
+  usage() { echo "Usage: cmarks [ -a(dd) <num> | -d(elete) <num> | -f(ind) | -l(ist) | -r(etrieve) <num> | -s(ync) ]"; }
   TRAPEXIT() { cat =(awk NF "$CMARKS_FILE") > "$CMARKS_FILE"; }
 
-  local date_regex="[0-9]{4}(-[0-9]+){2}\s(:?[0-9]+){2}"
+  local date_regex="^[0-9]{4}(-[0-9]+){2}\s(:?[0-9]+){2}"
 
   while getopts ':ha:d:flr:s' flag; do
     case "$flag" in
