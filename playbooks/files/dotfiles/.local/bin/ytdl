@@ -25,4 +25,8 @@ function video() {
     -o "%(title)s.%(ext)s" "$1"
 }
 
-case "$1" in music) music "$@" ;; video) video "$@" ;; *) command youtube-dl "$@"; esac
+case "$1" in
+  music) music "$2" ;;
+  video) video "$2" ;;
+  *)     echo "usage: ytdl music|video <url>" >&2; exit 1 ;;
+esac
