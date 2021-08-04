@@ -1,0 +1,45 @@
+#
+# Bookmarks CLI commands so they don't get lost in history.
+# Author: Brad Frank
+# Date: August 2021
+# Tested: zsh 5.8 (x86_64-apple-darwin20.1.0)
+# Requires: fzf, bat, gh
+#
+
+export CMARKS_FILE=$HOME/.cmarks
+export CMARKS_GIST=c10b419ffff4fa8a1cf5f60b0249367a
+
+[[ -f "$CMARKS_FILE" ]] || touch "$CMARKS_FILE"
+
+alias cma='cmarks -a'
+alias cmd='cmarks -d'
+alias cmf='cmarks -f'
+alias cml='cmarks -l'
+alias cmr='cmarks -r'
+alias cms='cmarks -s'
+
+function cmarks() {
+  fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
+  sync_down() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
+  sync_up() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
+  usage() { echo "Usage: cmarks [ -a(dd) <num> | -c(lean) | -d(elete) <num> | -f(ind) | -l(ist) | -r(etrieve) <num> | -s(ync) ]"; }
+  TRAPEXIT() { cat =(awk NF "$CMARKS_FILE") > "$CMARKS_FILE"; }
+
+  local date_regex="[0-9]{4}(-[0-9]+){2}\s(:?[0-9]+){2}"
+
+  while getopts ':ha:d:flr:s' flag; do
+    case "$flag" in
+      h)  usage; return 0 ;;
+      a)  fc -lin "$OPTARG" "$OPTARG" >> "$CMARKS_FILE"; return $? ;;
+      d)  sed -i "${OPTARG}d" "$CMARKS_FILE"; return $? ;;
+      f)  fc -R =(fzfind "$CMARKS_FILE" | sed -E "s/$date_regex\s+//"); return $? ;;
+      l)  bat --number "$CMARKS_FILE"; return $? ;;
+      r)  fc -R =(sed "${OPTARG}!d" "$CMARKS_FILE" | sed -E "s/$date_regex\s+//"); return $? ;;
+      s)  sync_down && sync_up; return $? ;;
+      \?) echo "cmarks: invalid option -$OPTARG" >&2; usage; return 1 ;;
+      :)  echo "cmarks: option -$OPTARG requires an argument" >&2; usage; return 1 ;;
+    esac
+  done
+
+  usage; return 1
+}

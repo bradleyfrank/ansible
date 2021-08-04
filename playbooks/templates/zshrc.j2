@@ -63,9 +63,9 @@ eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 eval "$(dircolors $HOME/.dir_colors)"
 
 
-alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
-alias _inline_fzf_nh_single='fzf --ansi -i -1 --height=50% --reverse -0 --inline-info --border'
-alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border'
+alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
+alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
+alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
@@ -269,6 +269,7 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 {% endif %}
+source {{ shell_conf }}/cmarks
 source {{ shell_conf }}/fubectl
 source {{ shell_conf }}/kubectl
 source {{ shell_conf }}/gcsh
