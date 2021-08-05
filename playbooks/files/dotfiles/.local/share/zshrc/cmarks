@@ -6,10 +6,19 @@
 # Requires: fzf, bat, gh
 #
 
-export CMARKS_FILE=$HOME/.cmarks
-export CMARKS_GIST=c10b419ffff4fa8a1cf5f60b0249367a
+#
+# To get started:
+#   1. Create a GitHub Gist (private or public) and note the hash ID
+#   2. Source this file (add `source /path/to/cmarks` to your `.zshrc`)
+#   3. Edit `~/.config/cmarks` and add the Gist hash ID
+#
 
-[[ -f "$CMARKS_FILE" ]] || touch "$CMARKS_FILE"
+export CMARKS_CONFIG=$HOME/.config/cmarks
+
+if [[ ! -s "$CMARKS_CONFIG" ]]; then
+  echo "CMARKS_FILE=$HOME/.cmarks" >> "$CMARKS_CONFIG"
+  echo "CMARKS_GIST=" >> "$CMARKS_CONFIG"
+fi
 
 alias cma='cmarks -a'
 alias cmd='cmarks -d'
@@ -19,6 +28,11 @@ alias cmr='cmarks -r'
 alias cms='cmarks -s'
 
 function cmarks() {
+  source "$CMARKS_CONFIG"
+  [[ -f "$CMARKS_FILE" ]] || touch "$CMARKS_FILE"
+ 
+  # TODO: sync won't work when deleting entries locally
+
   fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
   sync_down() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
   sync_up() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
