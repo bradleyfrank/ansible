@@ -31,9 +31,8 @@ alias cms='cmarks -s'
 function cmarks() {
   [[ ! -x $(which fzf) || ! -x $(which bat) ]] && { echo "Missing dependencies."; return 1; }
   source "$CMARKS_CONFIG"; [[ -f "$CMARKS_FILE" ]] || touch "$CMARKS_FILE"
-  TRAPEXIT() { cat =(awk NF "$CMARKS_FILE") > "$CMARKS_FILE"; }
 
-  usage() {
+  _cm_usage() {
     echo "Usage: cmarks [OPTION]"
     echo "-a <num1>[,<num2>]    Add commands from history"
     echo "-d <num1>[,<num2>]    Delete commands from bookmarks"
@@ -44,28 +43,35 @@ function cmarks() {
     echo "-s push|pull          Sync bookmarks with GitHub gist"
   }
 
-  arg() { cut -d, -f$1 <<< $OPTARG; }
-  fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
-  println() { sed "${OPTARG}!d" "$CMARKS_FILE" | sed -E "s/${date_regex}\s+//"; }
-  sync_pull() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
-  sync_push() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
+  _cm_gist_sync() {
+    gh auth status &> /dev/null || { echo "Not authenticated to GitHub." >&2; return 1; }
+    [[ -z $CMARKS_GIST ]] && { echo "No Gist ID set." >&2; return 1; }
+    case $OPTARG in push) _cm_gist_push ;; pull) _cm_gist_pull ;; *) { _cm_usage >&2; return 1; } ;; esac
+    return $?
+  }
+  _cm_gist_pull() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
+  _cm_gist_push() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
+  _cm_arg() { cut -d, -f$1 <<< $OPTARG; }
+  _cm_fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
+  _cm_println() { sed "${OPTARG}!d" "$CMARKS_FILE" | sed -E "s/${date_regex}\s+//"; }
+  _cm_compact() { cat =(awk NF "$CMARKS_FILE") > "$CMARKS_FILE"; }
 
-  local date_regex="^[0-9]{4}(-[0-9]+){2}\s(:?[0-9]+){2}"
+  local date_regex="^[0-9]{4}(-[0-9]+){2}\s(:?[0-9]+){2}" rc
 
   while getopts ':ha:d:flp:r:s:' flag; do
     case "$flag" in
-      h)  usage; return 0 ;;
-      a)  fc -lin "$(arg 1)" "$(arg 2)" >> "$CMARKS_FILE"; return $? ;;
-      d)  sed -i "${OPTARG}d" "$CMARKS_FILE"; return $? ;;
-      f)  fc -R =(fzfind "$CMARKS_FILE" | sed -E "s/${date_regex}\s+//"); return $? ;;
+      h)  _cm_usage; return 0 ;;
+      a)  fc -lin "$(_cm_arg 1)" "$(_cm_arg 2)" >> "$CMARKS_FILE"; rc=$?; _cm_compact; return $rc ;;
+      d)  sed -i "${OPTARG}d" "$CMARKS_FILE"; rc=$?; _cm_compact; return $rc ;;
+      f)  fc -R =(_cm_fzfind "$CMARKS_FILE" | sed -E "s/${date_regex}\s+//"); return $? ;;
       l)  bat --number "$CMARKS_FILE"; return $? ;;
-      p)  println; return $? ;;
-      r)  fc -R =(println); return $? ;;
-      s)  case $OPTARG in push) sync_push ;; pull) sync_pull ;; esac; return $? ;;
-      \?) echo "cmarks: invalid option -$OPTARG" >&2; usage; return 1 ;;
-      :)  echo "cmarks: option -$OPTARG requires an argument" >&2; usage; return 1 ;;
+      p)  _cm_println; return $? ;;
+      r)  fc -R =(_cm_println); return $? ;;
+      s)  _cm_gist_sync; return $? ;;
+      \?) echo "cmarks: invalid option -$OPTARG" >&2 ;;
+      :)  echo "cmarks: option -$OPTARG requires an argument" >&2 ;;
     esac
   done
 
-  usage; return 1
+  echo; _cm_usage >&2; return 1
 }
