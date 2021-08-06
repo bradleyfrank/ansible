@@ -11,8 +11,8 @@ alias kcu='kubectl config unset current-context'
 # [krename] rename all contexts with shorter names
 krename() {
     local context
-    kubectl config unset current-context
-    for context in $(kubectl config get-contexts | grep -v '\*' | awk '(NR>1) {print $1}'); do
-        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")"
+    kubectl config unset current-context &> /dev/null
+    for context in $(kubectl config get-contexts | awk '(NR>1) {print $1}'); do
+        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")" 2> /dev/null
     done
 }

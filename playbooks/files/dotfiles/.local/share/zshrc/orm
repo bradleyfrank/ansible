@@ -31,12 +31,23 @@ orm-infractl-setup() {
     bash install.sh deploy-local
 }
 
+# [okclean] remove contexts added by infractl
+okclean() {
+    local context current_context; current_context=$(kubectl config current-context)
+    krename; kubectl config unset current-context &> /dev/null
+    for context in $(kubectl config get-contexts | awk '(NR>1) {print $1}' | grep -E '^gke'); do
+        kubectl config delete-context "$context"
+    done
+    kubectl config set current-context "$(grep -o '[^_]*$' <<< "$current_context")" &> /dev/null
+}
+
 # [_ogp] interactive gcloud project select
 alias -g _ogp='--project $(echo -e ${ORM_GCP_PROJECTS//,/\\n} | _inline_fzf_nh_single)'
 
 # [_okc] interactive kubectl context select
 alias -g _okc='_kc'
 
+# [gc-] gcloud aliases
 alias gc-bhdev='gcloud --project binderhub-dev'
 alias gc-bhprod='gcloud --project binderhub-prod'
 alias gc-commonbuild='gcloud --project common-build'
@@ -49,18 +60,7 @@ alias gc-platformdev='gcloud --project platform-dev-788014'
 alias gc-platformprod='gcloud --project platform-prod-399563'
 alias gc-playground='gcloud --project strong-keyword-184513'
 
-alias -g gbhdev='--project binderhub-dev'
-alias -g gbhprod='--project binderhub-prod'
-alias -g gcommonbuild='--project common-build'
-alias -g gdataengdev='--project dataeng-dev-273349'
-alias -g gdataengprod='--project dataeng-prod-308999'
-alias -g gkcdev='--project kc-core-dev'
-alias -g gkcprod='--project kc-core-prod'
-alias -g gplatdatadev='--project platform-data-dev-301120'
-alias -g gplatformdev='--project platform-dev-788014'
-alias -g gplatformprod='--project platform-prod-399563'
-alias -g gplayground='--project strong-keyword-184513'
-
+# [k-] kubectl aliases
 alias k-bhdev='kubectl --context binderhub-dev-cluster'
 alias k-bhprod='kubectl --context binderhub-prod-cluster'
 alias k-commonbuild='kubectl --context common-build-cluster'
@@ -71,27 +71,6 @@ alias k-kfprod='kubectl --context kubeflow-prod'
 alias k-platformdev='kubectl --context platform-dev-cluster'
 alias k-platformprod='kubectl --context platform-prod-cluster'
 alias k-playground='kubectl --context playground-cluster'
-
-alias -g kbhdev='--context binderhub-dev-cluster'
-alias -g kbhprod='--context binderhub-prod-cluster'
-alias -g kcommonbuild='--context common-build-cluster'
-alias -g kkcdev='--context kc-dev'
-alias -g kkcprod='--context kc-prod'
-alias -g kkfdev='--context kubeflow-dev'
-alias -g kkfprod='--context kubeflow-prod'
-alias -g kplatformdev='--context platform-dev-cluster'
-alias -g kplatformprod='--context platform-prod-cluster'
-alias -g kplayground='--context playground-cluster'
-
-# [ogalias] list all GCP aliases
-ogalias() {
-    grep -E '^alias\s(-g\s)*g' "${(%):-%x}"
-}
-
-# [okalias] list all kubectl aliases
-okalias() {
-    grep -E '^alias\s(-g\s)*k' "${(%):-%x}"
-}
 
 # [ohelp] show this help message
 ohelp() {

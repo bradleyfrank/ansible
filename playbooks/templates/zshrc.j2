@@ -199,14 +199,18 @@ function precmd() {
   PS1="${eol}${bold}${_CWD}${_PYENV}${_KUBECTL}${_GIT}${eol}${_pcolor}%#${nocolor}${nobold} "
 }
 
-function +vi-git-stash() { [[ -s ${hook_com[base]}/.git/refs/stash ]] && hook_com[misc]="$"; }
-function +vi-git-untracked() { git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="T"; }
+function +vi-extended-git() {
+  [[ -s $(git rev-parse --show-toplevel)/.git/refs/stash ]] && hook_com[staged]+="$"
+  git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
+}
 
 
 zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{160}%a%f'
 zstyle ':vcs_info:git*' check-for-changes true
 zstyle ':vcs_info:git*' formats '%F{64}%b %F{136}%u%c%m%f'
-zstyle ':vcs_info:git*+set-message:*' hooks git-stash, git-untracked
+zstyle ':vcs_info:git*' stagedstr '+'
+zstyle ':vcs_info:git*' unstagedstr '*'
+zstyle ':vcs_info:git*+set-message:*' hooks extended-git
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
