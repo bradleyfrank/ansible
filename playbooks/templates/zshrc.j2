@@ -43,7 +43,7 @@ export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
 export PRE_COMMIT_COLOR=never           # pre-commit colors incompatible with solarized-light
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=234"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'Darwin' in ansible_system %}
 export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
 export CLICOLOR=1
@@ -118,7 +118,7 @@ alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
-alias -g _gcom='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
+alias -g _groot='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
 alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
 alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 
@@ -174,16 +174,20 @@ function pyenv() {
 
 
 function precmd() {
-  local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir
+  local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir _kcxt
   local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
 
-  _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}" _PYENV="" _GIT=""
+  _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}" _PYENV="" _GIT="" _KUBECTL=""
 
   [[ -n $TMUX ]] && _CWD="${blue}→ %1~ ${nocolor}"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}೭ $(python --version | awk '{print $2}') ($(basename "$VIRTUAL_ENV")) ${nocolor}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}೭ $(python --version | awk '{print $2}') ${nocolor}"
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
     vcs_info; _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
+  fi
+
+  if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
+    _KUBECTL="${violet}≈ ${_kcxt} ${nocolor}"
   fi
 
   case "$rc" in
@@ -192,18 +196,17 @@ function precmd() {
     *) _pcolor="${magenta}" ;;
   esac
 
-  PS1="${eol}${bold}${_CWD}${_PYENV}${_GIT}${eol}${_pcolor}%#${nocolor}${nobold} "
+  PS1="${eol}${bold}${_CWD}${_PYENV}${_KUBECTL}${_GIT}${eol}${_pcolor}%#${nocolor}${nobold} "
 }
 
 function +vi-git-stash() { [[ -s ${hook_com[base]}/.git/refs/stash ]] && hook_com[misc]="$"; }
+function +vi-git-untracked() { git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="T"; }
 
 
 zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{160}%a%f'
 zstyle ':vcs_info:git*' check-for-changes true
 zstyle ':vcs_info:git*' formats '%F{64}%b %F{136}%u%c%m%f'
-zstyle ':vcs_info:git*' stagedstr '+'
-zstyle ':vcs_info:git*' unstagedstr '*'
-zstyle ':vcs_info:git*+set-message:*' hooks git-stash
+zstyle ':vcs_info:git*+set-message:*' hooks git-stash, git-untracked
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
