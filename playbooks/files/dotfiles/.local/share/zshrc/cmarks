@@ -3,14 +3,14 @@
 # Author: Brad Frank
 # Date: August 2021
 # Tested: zsh 5.8 (x86_64-apple-darwin20.1.0)
-# Requires: fzf, bat, gh
-#
-
+# Requires: fzf, bat; Recommended: gh
 #
 # To get started:
-#   1. Create a GitHub Gist (private or public) and note the hash ID
-#   2. Source this file (add `source /path/to/cmarks` to your `.zshrc`)
-#   3. Edit `~/.config/cmarks` and add the Gist hash ID
+#   1. Source this file (add `source /path/to/cmarks` to your `.zshrc`)
+#
+# To use sync:
+#   1. Create a GitHub Gist (private or public) and note the hash ID (in the url)
+#   2. Add the Gist hash ID to the config file
 #
 
 export CMARKS_CONFIG=$HOME/.config/cmarks
@@ -24,32 +24,44 @@ alias cma='cmarks -a'
 alias cmd='cmarks -d'
 alias cmf='cmarks -f'
 alias cml='cmarks -l'
+alias cmp='cmarks -p'
 alias cmr='cmarks -r'
 alias cms='cmarks -s'
 
 function cmarks() {
-  source "$CMARKS_CONFIG"
-  [[ -f "$CMARKS_FILE" ]] || touch "$CMARKS_FILE"
- 
-  # TODO: sync won't work when deleting entries locally
-
-  fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
-  sync_down() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
-  sync_up() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
-  usage() { echo "Usage: cmarks [ -a(dd) <num> | -d(elete) <num> | -f(ind) | -l(ist) | -r(etrieve) <num> | -s(ync) ]"; }
+  [[ ! -x $(which fzf) || ! -x $(which bat) ]] && { echo "Missing dependencies."; return 1; }
+  source "$CMARKS_CONFIG"; [[ -f "$CMARKS_FILE" ]] || touch "$CMARKS_FILE"
   TRAPEXIT() { cat =(awk NF "$CMARKS_FILE") > "$CMARKS_FILE"; }
+
+  usage() {
+    echo "Usage: cmarks [OPTION]"
+    echo "-a <num1>[,<num2>]    Add commands from history"
+    echo "-d <num1>[,<num2>]    Delete commands from bookmarks"
+    echo "-f                    Use fzf to find commands in bookmarks and append to history"
+    echo "-l                    List all commands in bookmarks"
+    echo "-p <num1>[,<num2>]    Print commands to stdout from bookmarks"
+    echo "-r <num1>[,<num2>]    Retrieve commands from bookmarks and append to history"
+    echo "-s push|pull          Sync bookmarks with GitHub gist"
+  }
+
+  arg() { cut -d, -f$1 <<< $OPTARG; }
+  fzfind() { fzf --ansi -i --exit-0 --height=50% --no-multi --inline-info --border rounded < "$1"; }
+  println() { sed "${OPTARG}!d" "$CMARKS_FILE" | sed -E "s/${date_regex}\s+//"; }
+  sync_pull() { sort -u =(gh gist view "$CMARKS_GIST"; cat "$CMARKS_FILE") > "$CMARKS_FILE"; }
+  sync_push() { VISUAL='tee' gh gist edit "$CMARKS_GIST" < "$CMARKS_FILE" > /dev/null; }
 
   local date_regex="^[0-9]{4}(-[0-9]+){2}\s(:?[0-9]+){2}"
 
-  while getopts ':ha:d:flr:s' flag; do
+  while getopts ':ha:d:flp:r:s:' flag; do
     case "$flag" in
       h)  usage; return 0 ;;
-      a)  fc -lin "$OPTARG" "$OPTARG" >> "$CMARKS_FILE"; return $? ;;
+      a)  fc -lin "$(arg 1)" "$(arg 2)" >> "$CMARKS_FILE"; return $? ;;
       d)  sed -i "${OPTARG}d" "$CMARKS_FILE"; return $? ;;
-      f)  fc -R =(fzfind "$CMARKS_FILE" | sed -E "s/$date_regex\s+//"); return $? ;;
+      f)  fc -R =(fzfind "$CMARKS_FILE" | sed -E "s/${date_regex}\s+//"); return $? ;;
       l)  bat --number "$CMARKS_FILE"; return $? ;;
-      r)  fc -R =(sed "${OPTARG}!d" "$CMARKS_FILE" | sed -E "s/$date_regex\s+//"); return $? ;;
-      s)  sync_down && sync_up; return $? ;;
+      p)  println; return $? ;;
+      r)  fc -R =(println); return $? ;;
+      s)  case $OPTARG in push) sync_push ;; pull) sync_pull ;; esac; return $? ;;
       \?) echo "cmarks: invalid option -$OPTARG" >&2; usage; return 1 ;;
       :)  echo "cmarks: option -$OPTARG requires an argument" >&2; usage; return 1 ;;
     esac
