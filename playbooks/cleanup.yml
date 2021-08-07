@@ -17,6 +17,9 @@
       - .local/share/kubectl
       - .local/share/alacritty
       - .local/share/icons
+      - .local/share/zshrc/pipenv
+      - .local/share/zshrc/kubectl
+      - .local/share/zshrc/op
       - .hyper.js
       - .hyper_plugins
 
