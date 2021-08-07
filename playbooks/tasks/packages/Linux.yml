@@ -47,9 +47,3 @@
     method: user
     remote: "{{ item['key'] }}"
   loop: "{{ flatpaks | dict2items }}"
-
-- name: Install snaps
-  community.general.snap:
-    name: "{{ snaps }}"
-  become: true
-  tags: [packages, snap]

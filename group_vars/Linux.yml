@@ -45,10 +45,6 @@ repos:
     keyserver: keyserver.ubuntu.com
     id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
 
-flatpak_remotes:
-  - name: flathub
-    url: https://flathub.org/repo/flathub.flatpakrepo
-
 packages:
   - 1password
   - abcde
@@ -129,7 +125,6 @@ packages:
   - ruby
   - seahorse
   - shellcheck
-  - snapd
   - solaar
   - ssh
   - stow
@@ -156,15 +151,18 @@ packages:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
 
+flatpak_remotes:
+  - name: flathub
+    url: https://flathub.org/repo/flathub.flatpakrepo
+
 flatpaks:
   flathub:
     - com.gitlab.newsflash
     - com.spotify.Client
+    - io.github.seadve.Kooha
+    - org.gnome.Games
     - org.signal.Signal
     - us.zoom.Zoom
-
-snaps:
-  - slides
 
 vscode:
   config: "{{ ansible_user_dir }}/.config/Code"

@@ -8,7 +8,7 @@
     "editor.renderWhitespace": "none",
     "editor.rulers": [100],
     "editor.selectionHighlight": false,
-    "editor.tabSize": 4,
+    "editor.tabSize": 2,
     "editor.tokenColorCustomizations": {
         "[Solarized Light]": {
             "comments": "#6c71c4"
