@@ -16,6 +16,7 @@
       ansible.builtin.systemd:
         name: packagekit
         state: stopped
+      become: true
       when: ansible_system == 'Linux'
 
     - name: Configure Linux repositories

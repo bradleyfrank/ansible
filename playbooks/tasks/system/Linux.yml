@@ -3,7 +3,6 @@
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ hostname }}"
-    strategy: systemd
 
 - name: Set user shell to zsh and add to groups
   ansible.builtin.user:
