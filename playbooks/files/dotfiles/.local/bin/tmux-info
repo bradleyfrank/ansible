@@ -22,7 +22,11 @@ macos() {
 
 linux() {
   SYSINFO="$(lsb_release -sd)"
-  BATT="$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"
+  if [[ -d /sys/class/power_supply/BAT0 ]]; then
+    BATT="$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"
+  else
+    BATT="a/c power"
+  fi
 }
 
 case $1 in
