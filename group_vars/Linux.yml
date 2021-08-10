@@ -69,6 +69,7 @@ packages:
   - fdupes
   - ffmpeg
   - figlet
+  - flatpak
   - foliate
   - fonts-noto-color-emoji
   - fwupd
