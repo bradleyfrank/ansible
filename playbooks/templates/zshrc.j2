@@ -131,6 +131,7 @@ function dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/
 function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
 function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
+function histnum() { fc='%!'; echo ${(%)fc; }
 function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
 function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
 function tardir() { tar -czf "${1%/}".tar.gz "$1"; }

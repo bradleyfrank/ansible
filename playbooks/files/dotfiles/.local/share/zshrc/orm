@@ -1,10 +1,13 @@
 export ORM_GCP_PROJECTS="binderhub-dev,binderhub-prod,common-build,dataeng-dev-273349,dataeng-prod-308999,kc-core-dev,kc-core-prod,platform-dev-788014,platform-prod-399563,strong-keyword-184513"
 
 # [okonfig] generate kubectl config from GCP projects
-okonfig() { gcpkonfig "$ORM_GCP_PROJECTS" ; }
+okonfig() { gcpkonfig "$ORM_GCP_PROJECTS"; }
 
 # [ogpl] list a subset of ORM GCP projects
-ogpl() { gpf "$ORM_GCP_PROJECTS" ; }
+ogpl() { gpf "$ORM_GCP_PROJECTS"; }
+
+# [otags] list container image tags
+otags { gtags common-build "$1" ; }
 
 # [oghpr] print all open PRs by team members
 oghpr() {
