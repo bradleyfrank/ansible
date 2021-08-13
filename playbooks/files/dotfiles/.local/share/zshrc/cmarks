@@ -26,8 +26,9 @@
 #   `cmarks -a <num1>,<num2>`
 #
 # Notes:
-#   * Once added to cmarks, commands are given new index numbers.
-#   * Sync is rudimentary; pull first, edit, then push; otherwise local deletions are restored.
+#   * Bookmarked commands have separate index numbers than zsh history.
+#   * Index numbers are re-assigned when bookmarks are removed.
+#   * Sync is rudimentary, use with caution.
 #
 
 export CMARKS_CONFIG=$HOME/.config/cmarks
