@@ -108,7 +108,7 @@ system_packages:
     - plexamp
     - rectangle
     - signal
-    - sony-ps4-remote-play
+    - sony-ps-remote-play
     - spotify
     - transmission
     - transmit
@@ -132,6 +132,7 @@ system_packages:
     - 1289378661  # Twitterific
     - 1320666476  # Wipr
     - 1529448980  # Reeder 5
+    - 1555925018  # Genki Arcade
 
 vscode:
   config: "{{ ansible_user_dir }}/Library/Application Support/Code"
