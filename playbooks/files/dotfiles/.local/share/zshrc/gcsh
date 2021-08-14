@@ -52,8 +52,8 @@ gcreds() {
     export GOOGLE_APPLICATION_CREDENTIALS="${(P)sacct}"
 }
 
-# [gtags] show tags for docker image in GCR, usage: gtags <image>
-gtags() { gcloud container images list-tags gcr.io/common-build/"$1"; }
+# [gtags] show tags for docker image in GCR, usage: gtags <project> <image>
+gtags() { gcloud container images list-tags gcr.io/"$1"/"$2"; }
 
 # [ghelp] show this help message
 ghelp() {

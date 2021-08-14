@@ -44,6 +44,10 @@ repos:
     repo: ppa:mmstick76/alacritty
     keyserver: keyserver.ubuntu.com
     id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
+  - name: shutter
+    repo: ppa:shutter/ppa
+    keyserver: keyserver.ubuntu.com
+    id: 5017D4931D0ACADE295B68ADFC6D7D9D009ED615
 
 packages:
   - 1password
@@ -86,6 +90,7 @@ packages:
   - gnome-shell-extension-system-monitor
   - gnome-shell-extensions
   - gnome-shell-extensions-gpaste
+  - gnome-sushi
   - gnote
   - gnupg  # docker
   - gnupg2  # kubernetes
@@ -124,8 +129,8 @@ packages:
   - remmina
   - reptyr
   - ruby
-  - seahorse
   - shellcheck
+  - shutter
   - solaar
   - ssh
   - stow

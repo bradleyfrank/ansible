@@ -12,6 +12,24 @@
 #   1. Create a GitHub Gist (private or public) and note the hash ID (in the url)
 #   2. Add the Gist hash ID to the config file
 #
+# Help:
+#   Find the history index number for a recent command:
+#   `fc -l`
+#
+#   Add a single command to cmarks (also works for delete/retrieve/print):
+#   `cmarks -a <num>`
+#
+#   Add the previous command to cmarks:
+#   `cmarks -a -1`
+#
+#   Add a range of commands to cmarks (also works for delete/retrieve/print):
+#   `cmarks -a <num1>,<num2>`
+#
+# Notes:
+#   * Bookmarked commands have separate index numbers than zsh history.
+#   * Index numbers are re-assigned when bookmarks are removed.
+#   * Sync is rudimentary, use with caution.
+#
 
 export CMARKS_CONFIG=$HOME/.config/cmarks
 
@@ -27,6 +45,7 @@ alias cml='cmarks -l'
 alias cmp='cmarks -p'
 alias cmr='cmarks -r'
 alias cms='cmarks -s'
+alias fcl='fc -l'
 
 function cmarks() {
   [[ ! -x $(which fzf) || ! -x $(which bat) ]] && { echo "Missing dependencies."; return 1; }

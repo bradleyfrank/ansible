@@ -10,10 +10,11 @@
 SYSINFO=""
 BATT=""
 
+fg_Base00="#[fg=colour241]"
+fg_Green="#[fg=colour64]"
 fg_Magenta="#[fg=colour125]"
 fg_Orange="#[fg=colour166]"
-fg_Green="#[fg=colour64]"
-fg_Base00="#[fg=colour241]"
+fg_Red="#[fg=colour160]"
 
 macos() {
   SYSINFO="$(sw_vers | awk '{print $2}' | xargs echo)"
@@ -34,9 +35,14 @@ case $1 in
   Linux ) linux ;;
 esac
 
+if [[ -n $SSH_CONNECTION ]]; then
+  SYSTEMNAME="${fg_Red}[$(hostname -s)]"
+else
+  SYSTEMNAME="${fg_Green}[$(hostname -s)]"
+fi
+
 SYSINFO="${fg_Magenta}[${SYSINFO}]"
 BATT="${fg_Orange}[${BATT}]"
-SYSTEMNAME="${fg_Green}[$(hostname -s)]"
 DATE="${fg_Base00}[$(date +'%a %b %d %I:%M')]"
 
-printf "%s %s %s %s" "$SYSINFO" "$SYSTEMNAME" "$BATT" "$DATE"
+printf "%s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATT" "$DATE"

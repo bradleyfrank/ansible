@@ -69,7 +69,6 @@ alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-l
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
-alias dc='docker-compose'
 alias df='df -h'
 alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
@@ -88,7 +87,6 @@ alias lS='ll --group-directories-first --sort size'
 alias ls='ls --color --classify --human-readable'
 alias lt='ll --sort time'
 alias lolo='echo {{ docker_images | join(' ') }} | xargs -P10 -n1 docker pull'
-alias lsmnt='mount | column -t'
 alias mat='glow -s light'
 alias mp='multipass'
 alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
@@ -96,7 +94,6 @@ alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
 alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
-alias readme='macdown README*'
 alias scp='rsync'
 alias show='whence -f'
 alias sync='rsync -a --info=progress2'
@@ -104,8 +101,9 @@ alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
 {% if 'Darwin' in ansible_system %}
-alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 alias osupdate='sudo softwareupdate -ia'
+alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
+alias readme='macdown README*'
 {% elif 'Linux' in ansible_system %}
 alias bat='batcat'
 alias free='free -g'
@@ -131,6 +129,7 @@ function dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/
 function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
 function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
+function fcn() { fc='%!'; echo "${(%)fc}"; }
 function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
 function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
 function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
