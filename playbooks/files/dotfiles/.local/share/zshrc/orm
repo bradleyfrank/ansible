@@ -7,7 +7,7 @@ okonfig() { gcpkonfig "$ORM_GCP_PROJECTS"; }
 ogpl() { gpf "$ORM_GCP_PROJECTS"; }
 
 # [otags] list container image tags
-otags { gtags common-build "$1" ; }
+otags() { gtags common-build "$1"; }
 
 # [oghpr] print all open PRs by team members
 oghpr() {
