@@ -141,6 +141,7 @@ vscode:
 
 alacritty:
   decorations: buttonless
+  size: 14.0
 
 bbedit:
   color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"
