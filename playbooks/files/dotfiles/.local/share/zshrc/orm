@@ -10,18 +10,7 @@ ogpl() { gpf "$ORM_GCP_PROJECTS"; }
 otags() { gtags common-build "$1"; }
 
 # [oghpr] print all open PRs by team members
-oghpr() {
-    output=$(mktemp)
-
-    while read -r member; do
-        author=$(tr -d '\n' <<< "$member")
-        printf "\n%s\n\n" "$(toilet --font pagga --width 100 "$author")" >> "$output"
-        gh api search/issues?q=state:open+is:pr+author:"$author"+draft:false --jq '.items[] | .title,.html_url' >> "$output"
-    done <<< "$(gh api orgs/oreillymedia/teams/platform-engineering/members --jq '.[] | .login' | grep -v "$(gh config get --host github.com user)")"
-
-    mutt bfrank@oreilly.com -s "PE Open PRs" < "$output"
-    rm "$output"
-}
+oghpr() { ghpr -o oreillymedia -t platform-engineering -e bfrank@oreilly.com; }
 
 # [ois] creates python environment for infractl
 alias ois='orm-infractl-setup'

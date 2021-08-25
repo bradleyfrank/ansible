@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+#
+# Finds all open PRs in Github within a team.
+# Author: Brad Frank
+# Date: August 2021
+# Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
+# Requires: gh; Optional: mutt, msmtp
+#
+# ~/.muttrc
+#   set sendmail=/usr/local/bin/msmtp
+#   set use_from=yes
+#   set realname="<Name>"
+#   set from=<Email>
+#   set envelope_from=yes
+#   set content_type=text/plain
+#
+# ~/.msmtprc
+#   defaults
+#   auth           on
+#   tls            on
+#   logfile        ~/.msmtp.log
+#   account        gmail
+#   host           smtp.gmail.com
+#   port           587
+#   from           <Email>
+#   user           <User>
+#   password       <Password>
+#   account default : gmail
+#
+
+function main() {
+  local member
+  while read -r member; do
+    process_team_member "$member"
+  done <<< "$(get_team_members)"
+}
+
+function get_team_members() {
+  local user; user="$(gh config get --host github.com user)"
+  gh api orgs/"$_GH_ORG"/teams/"$_GH_TEAM"/members --jq '.[] | .login' | grep -v "$user"
+}
+
+function process_team_member() {
+  local pr_metadata author; author=$(tr -d '\n' <<< "$1")
+  printf "%s\n\n" "## ${author^^} ##" >> "$_EMAIL_BODY"
+  while read -r pr_metadata; do
+    process_open_prs "$pr_metadata"
+  done <<< "$(get_open_prs "$author")"
+}
+
+function get_open_prs() {
+  gh api search/issues?q=state:open+is:pr+author:"$1"+draft:false --jq \
+    '.items[] | {
+      id: .number,
+      title:.title,
+      pr_url:.html_url,
+      created:.created_at,
+      repo_url:.repository_url
+    }'
+}
+
+function process_open_prs() {
+  local json now; json=$1 now=$(date +%s)
+
+  local id title pr_url created repo_url
+  repo_url=$(jq -r '.repo_url' <<< "$json")
+  id=$(jq -r '.id' <<< "$json")
+  title=$(jq -r '.title' <<< "$json")
+  pr_url=$(jq -r '.pr_url' <<< "$json")
+  created=$(jq -r '.created' <<< "$json")
+
+  [[ $repo_url == *$_GH_ORG* ]] || return
+
+  local repo created_ago
+  repo=$(echo "$repo_url" | rev | cut -d/ -f1,2 | rev)
+  created_ago=$(printf "%.0f\n" "$( echo "($now-$(date +%s -d "$created")) / 86400" | bc -l)")
+
+  {
+    printf "#%s %s <%s>\n" "$id" "$title" "$pr_url"
+    printf "%s <%s>\n" "$repo" "$repo_url"
+    printf "opened %s days ago\n\n" "$created_ago"
+  } >> "$_EMAIL_BODY"
+}
+
+
+declare _GH_ORG _GH_TEAM _EMAIL_ADDRESS _EMAIL_BODY; _EMAIL_BODY="$(mktemp)"
+
+while getopts ':ho:t:e:' flag; do
+  case "${flag}" in
+    h) echo "Usage: ghpr -o <org> -t <team> -e <email>" ; exit 0 ;;
+    o) _GH_ORG=$OPTARG ;;
+    t) _GH_TEAM=$OPTARG ;;
+    e) _EMAIL_ADDRESS=$OPTARG ;;
+   \?) echo "ghpr: invalid option -$OPTARG" >&2 ;;
+    :) echo "ghpr: option -$OPTARG requires an argument" >&2 ;;
+  esac
+done
+
+main
+
+if [[ -n $_EMAIL_ADDRESS ]]; then
+  mutt "$_EMAIL_ADDRESS" -s "PE Open PRs" < "$_EMAIL_BODY"
+else
+  cat "$_EMAIL_BODY"
+fi
+
+rm "$_EMAIL_BODY"
