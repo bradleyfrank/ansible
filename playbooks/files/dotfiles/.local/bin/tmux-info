@@ -9,22 +9,34 @@
 
 SYSINFO=""
 BATT=""
+SYSLOAD=""
+LOADAVG=""
 
 fg_Base00="#[fg=colour241]"
+fg_Yellow="#[fg=#FF0000]"
 fg_Green="#[fg=colour64]"
 fg_Magenta="#[fg=colour125]"
 fg_Orange="#[fg=colour166]"
 fg_Red="#[fg=colour160]"
 
 macos() {
+  local battery hex_value
   SYSINFO="$(sw_vers | awk '{print $2}' | xargs echo)"
   BATT="$(pmset -g batt | grep 'InternalBattery' | cut -f2 | awk -F\; '{print $1$2}')"
+  hex_value="$(echo "$(cut -d% -f1 <<< "$BATT") * 650" | bc -l)"
+  BATT_COLOR="$(echo "obase=16; $hex_value" | bc | tr '[:upper:]' '[:lower:]')00"
+  readarray -t LOADAVG <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
 }
 
 linux() {
+  local percent status
+
   SYSINFO="$(lsb_release -sd)"
   if [[ -d /sys/class/power_supply/BAT0 ]]; then
-    BATT="$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"
+    percent=$(cat /sys/class/power_supply/BAT0/capacity)
+    status=$(cat /sys/class/power_supply/BAT0/status)
+
+    BATT="${percent}% ${status}"
   else
     BATT="a/c power"
   fi
@@ -41,8 +53,10 @@ else
   SYSTEMNAME="${fg_Green}[$(hostname -s)]"
 fi
 
+SYSLOAD="#[fg=#d03400][${LOADAVG[0]} ${LOADAVG[1]} ${LOADAVG[2]}]"
 SYSINFO="${fg_Magenta}[${SYSINFO}]"
 BATT="${fg_Orange}[${BATT}]"
 DATE="${fg_Base00}[$(date +'%a %b %d %I:%M')]"
 
-printf "%s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATT" "$DATE"
+printf "%s" "$SYSLOAD"
+#printf "%s %s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATT" "$SYSLOAD" "$DATE"
