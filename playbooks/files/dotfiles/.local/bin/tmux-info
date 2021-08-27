@@ -7,56 +7,68 @@
 # Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
 #
 
-SYSINFO=""
-BATT=""
-SYSLOAD=""
-LOADAVG=""
+declare SYSINFO LOADAVG _LOADAVG CPU_CORES BATTERY BATT_PERCENT BATT_STATUS
+declare -r fg_Default="#[fg=default]" \
+           fg_Yellow="#[fg=colour136]" \
+           fg_Green="#[fg=colour64]" \
+           fg_Magenta="#[fg=colour125]" \
+           fg_Orange="#[fg=colour166]" \
+           fg_Red="#[fg=colour160]"
 
-fg_Base00="#[fg=colour241]"
-fg_Yellow="#[fg=#FF0000]"
-fg_Green="#[fg=colour64]"
-fg_Magenta="#[fg=colour125]"
-fg_Orange="#[fg=colour166]"
-fg_Red="#[fg=colour160]"
-
-macos() {
-  local battery hex_value
-  SYSINFO="$(sw_vers | awk '{print $2}' | xargs echo)"
-  BATT="$(pmset -g batt | grep 'InternalBattery' | cut -f2 | awk -F\; '{print $1$2}')"
-  hex_value="$(echo "$(cut -d% -f1 <<< "$BATT") * 650" | bc -l)"
-  BATT_COLOR="$(echo "obase=16; $hex_value" | bc | tr '[:upper:]' '[:lower:]')00"
-  readarray -t LOADAVG <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
+colorize() {
+  local value scale color_index; value=${1//[$'\t\r\n ']} scale=$2 color_index=$3
+  fg_Range=("$fg_Green" "$fg_Yellow" "$fg_Orange" "$fg_Red" "$fg_Magenta")
+  for i in {0..4}; do
+    [[ $value -ge $(( i * scale )) ]] && fg_Color=${fg_Range[${color_index:$i:1}]}
+  done
+  echo "$fg_Color"
 }
 
-linux() {
-  local percent status
-
-  SYSINFO="$(lsb_release -sd)"
-  if [[ -d /sys/class/power_supply/BAT0 ]]; then
-    percent=$(cat /sys/class/power_supply/BAT0/capacity)
-    status=$(cat /sys/class/power_supply/BAT0/status)
-
-    BATT="${percent}% ${status}"
-  else
-    BATT="a/c power"
-  fi
+load_avg() {
+  for i in {0..2}; do
+    _LOADAVG[$i]="$(printf "%.0f" "$(echo "(${_LOADAVG[$i]}*100)/$CPU_CORES" | bc -l)")"
+    _LOADAVG[$i]="$(colorize "${_LOADAVG[$i]}" "100" "01234")${_LOADAVG[$i]}%${fg_Default}"
+  done
+  LOADAVG="[${_LOADAVG[0]} ${_LOADAVG[1]} ${_LOADAVG[2]}]"
 }
 
-case $1 in
-  Darwin) macos ;;
-  Linux ) linux ;;
-esac
-
-if [[ -n $SSH_CONNECTION ]]; then
-  SYSTEMNAME="${fg_Red}[$(hostname -s)]"
+if [[ $1 == Darwin ]]; then
+  SYSINFO="[$(sw_vers | awk '{print $2}' | xargs echo)]"
+  {
+    CPU_CORES="$(sysctl -a | grep machdep.cpu.core_count | grep -Po '\d')"
+    readarray -t _LOADAVG <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
+    load_avg
+  }
+  {
+    BATTERY="$(pmset -g batt | grep 'InternalBattery' | cut -f2)"
+    BATT_PERCENT="$(awk -F\; '{print $1}' <<< "$BATTERY")"
+    BATT_STATUS="$(awk -F\; '{print $2}' <<< "$BATTERY")"
+    BATTERY="[$(colorize "${BATT_PERCENT//\%}" "20" "43210")${BATT_PERCENT}${fg_Default}${BATT_STATUS}]"
+  }
+elif [[ $1 == Linux ]]; then
+  SYSINFO="[$(lsb_release -sd)]"
+  {
+    CPU_CORES="$(nproc)"
+    readarray -t _LOADAVG <<< "$(grep -Po '\d+\.\d+' /proc/loadavg)"
+    load_avg
+  }
+  {
+    if [[ -d /sys/class/power_supply/BAT0 ]]; then
+      BATT_PERCENT="$(cat /sys/class/power_supply/BAT0/capacity)"
+      BATT_STATUS="$(cat /sys/class/power_supply/BAT0/status)"
+      BATTERY="[$(colorize "${BATT_PERCENT//\%}" "20" "43210")${BATT_PERCENT}${fg_Default}${BATT_STATUS}]"
+    else
+      BATTERY="[${fg_Green}a/c power${fg_Default}]"
+    fi
+  }
 else
-  SYSTEMNAME="${fg_Green}[$(hostname -s)]"
+  printf "%s[unknown system]" "$fg_Red"
 fi
 
-SYSLOAD="#[fg=#d03400][${LOADAVG[0]} ${LOADAVG[1]} ${LOADAVG[2]}]"
-SYSINFO="${fg_Magenta}[${SYSINFO}]"
-BATT="${fg_Orange}[${BATT}]"
-DATE="${fg_Base00}[$(date +'%a %b %d %I:%M')]"
+if [[ -n $SSH_CONNECTION ]]; then SYSTEMNAME="[${fg_Red}$(hostname -s)${fg_Default}]"
+else SYSTEMNAME="[${fg_Green}$(hostname -s)${fg_Default}]"
+fi
 
-printf "%s" "$SYSLOAD"
-#printf "%s %s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATT" "$SYSLOAD" "$DATE"
+DATE="[${fg_Green}$(date +%a)${fg_Default} $(date +'%b %d %I:%M')]"
+
+printf "%s %s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATTERY" "$LOADAVG" "$DATE"
