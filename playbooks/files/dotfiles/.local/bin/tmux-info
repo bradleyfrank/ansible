@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 #
-# Displays various information for tmux status bar
+# Displays various information for the tmux status bar.
 # Author: Brad Frank
 # Date: July 2021
 # Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
 #
 
-declare SYSINFO LOADAVG _LOADAVG CPU_CORES BATTERY BATT_PERCENT BATT_STATUS
+declare SYSINFO SYSLOAD CPU_CORES MACOS_BATTERY BATTERY BATT_PERCENT BATT_STATUS
+declare -a LOADAVG
 declare -r fg_Default="#[fg=default]" \
            fg_Yellow="#[fg=colour136]" \
            fg_Green="#[fg=colour64]" \
@@ -15,60 +16,73 @@ declare -r fg_Default="#[fg=default]" \
            fg_Orange="#[fg=colour166]" \
            fg_Red="#[fg=colour160]"
 
-colorize() {
-  local value scale color_index; value=${1//[$'\t\r\n ']} scale=$2 color_index=$3
-  fg_Range=("$fg_Green" "$fg_Yellow" "$fg_Orange" "$fg_Red" "$fg_Magenta")
-  for i in {0..4}; do
-    [[ $value -ge $(( i * scale )) ]] && fg_Color=${fg_Range[${color_index:$i:1}]}
-  done
-  echo "$fg_Color"
-}
-
 load_avg() {
-  for i in {0..2}; do
-    _LOADAVG[$i]="$(printf "%.0f" "$(echo "(${_LOADAVG[$i]}*100)/$CPU_CORES" | bc -l)")"
-    _LOADAVG[$i]="$(colorize "${_LOADAVG[$i]}" "100" "01234")${_LOADAVG[$i]}%${fg_Default}"
+  local avg load _loadavg
+  for avg in "${LOADAVG[@]}"; do
+    load="$(printf "%.0f" "$(echo "($avg*100)/$CPU_CORES" | bc -l)")"
+    if   [[ $load -ge 0   && $load -lt 100 ]]; then fg_Color=$fg_Green
+    elif [[ $load -ge 100 && $load -lt 200 ]]; then fg_Color=$fg_Yellow
+    elif [[ $load -ge 200 && $load -lt 300 ]]; then fg_Color=$fg_Orange
+    elif [[ $load -ge 300 && $load -lt 400 ]]; then fg_Color=$fg_Red
+    elif [[ $load -ge 400                  ]]; then fg_Color=$fg_Magenta
+    fi
+    _loadavg+="${fg_Color}$(printf "%.2f" "$(echo "$avg/$CPU_CORES" | bc -l)")${fg_Default} "
   done
-  LOADAVG="[${_LOADAVG[0]} ${_LOADAVG[1]} ${_LOADAVG[2]}]"
+  SYSLOAD="[$(awk '{print $1" "$2" "$3}' <<< "$_loadavg")]"
 }
 
 if [[ $1 == Darwin ]]; then
+  # OS INFORMATION
   SYSINFO="[$(sw_vers | awk '{print $2}' | xargs echo)]"
-  {
-    CPU_CORES="$(sysctl -a | grep machdep.cpu.core_count | grep -Po '\d')"
-    readarray -t _LOADAVG <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
-    load_avg
-  }
-  {
-    BATTERY="$(pmset -g batt | grep 'InternalBattery' | cut -f2)"
-    BATT_PERCENT="$(awk -F\; '{print $1}' <<< "$BATTERY")"
-    BATT_STATUS="$(awk -F\; '{print $2}' <<< "$BATTERY")"
-    BATTERY="[$(colorize "${BATT_PERCENT//\%}" "20" "43210")${BATT_PERCENT}${fg_Default}${BATT_STATUS}]"
-  }
+
+  # SYSTEM LOAD
+  CPU_CORES="$(sysctl -a | grep machdep.cpu.core_count | grep -Po '\d')"
+  readarray -t LOADAVG <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
+  load_avg
+
+  # BATTERY
+  MACOS_BATTERY="$(pmset -g batt | grep 'InternalBattery' | cut -f2)"
+  BATT_PERCENT="$(awk -F\; '{print $1}' <<< "$MACOS_BATTERY" | sed 's|%||')"
+  BATT_STATUS="$(awk -F\; '{print $2}' <<< "$MACOS_BATTERY")"
 elif [[ $1 == Linux ]]; then
+  # OS INFORMATION
   SYSINFO="[$(lsb_release -sd)]"
-  {
-    CPU_CORES="$(nproc)"
-    readarray -t _LOADAVG <<< "$(grep -Po '\d+\.\d+' /proc/loadavg)"
-    load_avg
-  }
-  {
-    if [[ -d /sys/class/power_supply/BAT0 ]]; then
-      BATT_PERCENT="$(cat /sys/class/power_supply/BAT0/capacity)"
-      BATT_STATUS="$(cat /sys/class/power_supply/BAT0/status)"
-      BATTERY="[$(colorize "${BATT_PERCENT//\%}" "20" "43210")${BATT_PERCENT}${fg_Default}${BATT_STATUS}]"
-    else
-      BATTERY="[${fg_Green}a/c power${fg_Default}]"
-    fi
-  }
+
+  # SYSTEM LOAD
+  CPU_CORES="$(nproc)"
+  readarray -t LOADAVG <<< "$(grep -Po '\d+\.\d+' /proc/loadavg)"
+  load_avg
+
+  # BATTERY
+  if [[ -d /sys/class/power_supply/BAT0 ]]; then
+    BATT_PERCENT="$(sed 's|%||' /sys/class/power_supply/BAT0/capacity)"
+    BATT_STATUS="$(cat /sys/class/power_supply/BAT0/status)"
+  else
+    BATTERY="[${fg_Green}a/c power${fg_Default}]"
+  fi
 else
   printf "%s[unknown system]" "$fg_Red"
 fi
 
-if [[ -n $SSH_CONNECTION ]]; then SYSTEMNAME="[${fg_Red}$(hostname -s)${fg_Default}]"
-else SYSTEMNAME="[${fg_Green}$(hostname -s)${fg_Default}]"
+# BATTERY
+if [[ -z $BATTERY ]]; then
+  if   [[ $BATT_PERCENT -le 100 && $BATT_PERCENT -ge 80 ]]; then fg_Color=$fg_Green
+  elif [[ $BATT_PERCENT -lt 80  && $BATT_PERCENT -ge 60 ]]; then fg_Color=$fg_Yellow
+  elif [[ $BATT_PERCENT -lt 60  && $BATT_PERCENT -ge 40 ]]; then fg_Color=$fg_Orange
+  elif [[ $BATT_PERCENT -lt 40  && $BATT_PERCENT -ge 20 ]]; then fg_Color=$fg_Red
+  elif [[ $BATT_PERCENT -lt 20  && $BATT_PERCENT -ge 0  ]]; then fg_Color=$fg_Magenta
+  fi
+  BATTERY="[${fg_Color}${BATT_PERCENT}%${fg_Default}${BATT_STATUS}${fg_Default}]"
 fi
 
+# HOSTNAME
+if [[ -n $SSH_CONNECTION ]]; then
+  SYSTEMNAME="[${fg_Red}$(hostname -s)${fg_Default}]"
+else
+  SYSTEMNAME="[${fg_Green}$(hostname -s)${fg_Default}]"
+fi
+
+# DATE & TIME
 DATE="[${fg_Green}$(date +%a)${fg_Default} $(date +'%b %d %I:%M')]"
 
-printf "%s %s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATTERY" "$LOADAVG" "$DATE"
+printf "%s %s %s %s %s" "$SYSTEMNAME" "$SYSINFO" "$BATTERY" "$SYSLOAD" "$DATE"
