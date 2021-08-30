@@ -152,31 +152,9 @@
       when: not work_system
       tags: ['ssh_config', 'core']
 
-    - name: Get tmux version
-      ansible.builtin.command: tmux -V
-      register: tmux_version
-      changed_when: false
+    - name: Include tmux tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
       tags: ['tmux', 'core']
-
-    - name: Install tmux config
-      vars:
-        tmux_semver: "{{ tmux_version['stdout'].split(' ') | last }}"
-      ansible.builtin.template:
-        src: tmux.conf.j2
-        dest: "{{ ansible_user_dir }}/.tmux.conf"
-        mode: 0644
-        backup: true
-      register: _backup_tmux_conf
-      notify: Process backups
-      tags: ['tmux', 'core']
-
-    - name: Install tmux script
-      ansible.builtin.template:
-        src: tmux-status.bash.j2
-        dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
-        mode: 0755
-        backup: true
-      tags: tmux
 
     - name: Install gitconfig
       ansible.builtin.template:

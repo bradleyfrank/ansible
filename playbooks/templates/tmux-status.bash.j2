@@ -13,9 +13,9 @@ declare -r fg_Default="#[fg=default]" \
            fg_Orange="#[fg=colour166]" \
            fg_Red="#[fg=colour160]"
 
-system_stats() {
-  local cores="{{ ansible_processor_cores }}" clock="${fg_Green}{{ ansible_processor | split(' ') | last | trim }}${fg_Default}" mem="{{ ansible_memtotal_mb // 1024 }}${fg_Green}GB${fg_Default}"
-  printf "[%s@%s; %s]" "$cores" "$clock" "$mem"
+get_uptime() {
+  local uptime; uptime=$(uptime | grep -Po 'up(.*?),' | awk '$1=$1' | sed "s/up/${fg_Green}up${fg_Default}/")
+  printf "[%s]" "${uptime/,/}"
 }
 
 load_average() {
@@ -77,4 +77,8 @@ host_name() {
   printf "[%s{{ ansible_hostname }}%s]" "${fg_Color}" "${fg_Default}"
 }
 
-printf "#[bold]%s %s %s %s %s#[nobold]" "$(host_name)" "$(battery)" "$(load_average)" "$(system_stats)" "$(distribution)"
+{% if battery_present -%}
+printf "#[bold]%s %s %s %s %s#[nobold]" "$(host_name)" "$(battery)" "$(load_average)" "$(get_uptime)" "$(distribution)"
+{% else -%}
+printf "#[bold]%s %s %s %s#[nobold]" "$(host_name)" "$(load_average)" "$(get_uptime)" "$(distribution)"
+{% endif -%}
