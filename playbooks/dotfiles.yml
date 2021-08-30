@@ -208,11 +208,10 @@
       when: not work_system
       tags: github_projects
 
-    - name: Set squircle icons
+    - name: Update macOS app icons
       vars:
-        app: "{{ item['path'] | splitext | first }}"
-      ansible.builtin.command: "fileicon set '/Applications/{{ app }}.app' '{{ item['src'] }}'"
-      changed_when: false
+        app: "/Applications/{{ item['path'] | splitext | first }}.app"
+      ansible.builtin.include_tasks: tasks/dotfiles/icons.yml
       when: "'Darwin' in ansible_system"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:
