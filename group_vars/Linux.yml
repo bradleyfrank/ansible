@@ -16,10 +16,6 @@ repos:
   - name: google-chrome
     repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
-  - name: foliate
-    repo: ppa:apandada1/foliate
-    keyserver: keyserver.ubuntu.com
-    id: 95ACDEBD8BFF99ABE0F26A49A507B2BBA7803E3B
   - name: nextcloud
     repo: ppa:nextcloud-devs/client
     keyserver: keyserver.ubuntu.com
@@ -59,6 +55,7 @@ packages:
   - audacious
   - bash-completion
   - bat
+  - bcal
   - borgbackup
   - ca-certificates  # docker
   - calibre
@@ -74,7 +71,6 @@ packages:
   - ffmpeg
   - figlet
   - flatpak
-  - foliate
   - fonts-noto-color-emoji
   - fwupd
   - fzf
@@ -119,12 +115,14 @@ packages:
   - nextcloud-client
   - nextcloud-client-nautilus
   - nmap
+  - openrazer-meta
   - p7zip-*
   - par
   - perf-tools-unstable
   - picard
   - python3
   - python3-dev
+  - python3-openrazer
   - python3-pip
   - remmina
   - reptyr
@@ -163,6 +161,8 @@ flatpak_remotes:
 
 flatpaks:
   flathub:
+    - com.github.geigi.cozy
+    - com.github.johnfactotum.Foliate
     - com.gitlab.newsflash
     - com.spotify.Client
     - io.github.seadve.Kooha
@@ -176,6 +176,7 @@ vscode:
 
 alacritty:
   decorations: none
+  size: 12.0
 
 sudoers_d: /etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"

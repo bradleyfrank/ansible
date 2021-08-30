@@ -7,7 +7,7 @@
 - name: Set user shell to zsh and add to groups
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups: docker, sudo
+    groups: docker, sudo, plugdev  # plugdev for open-razer
     shell: /usr/bin/zsh
   become: true
   tags: shell

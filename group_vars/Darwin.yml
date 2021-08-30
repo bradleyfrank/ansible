@@ -128,6 +128,7 @@ system_packages:
     - 409201541  # Pages
     - 409203825  # Numbers
     - 425424353  # The Unarchiver
+    - 568494494  # Pocket
     - 924726344  # Deliveries
     - 1179623856  # Pastebot
     - 1289378661  # Twitterific
@@ -141,6 +142,7 @@ vscode:
 
 alacritty:
   decorations: buttonless
+  size: 14.0
 
 bbedit:
   color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"

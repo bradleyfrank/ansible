@@ -1,0 +1,36 @@
+---
+
+- name: Get tmux version
+  ansible.builtin.command: tmux -V
+  register: tmux_version
+  changed_when: false
+  tags: ['tmux', 'core']
+
+- name: Check for battery
+  ansible.builtin.stat:
+    path: /sys/class/power_supply/BAT0
+  register: battery
+  when: "'Linux' in ansible_system"
+  tags: ['tmux', 'core']
+
+- name: Install tmux config
+  vars:
+    tmux_semver: "{{ tmux_version['stdout'].split(' ') | last }}"
+  ansible.builtin.template:
+    src: tmux.conf.j2
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    mode: 0644
+    backup: true
+  register: _backup_tmux_conf
+  notify: Process backups
+  tags: ['tmux', 'core']
+
+- name: Install tmux script
+  vars:
+    battery_present: "{{ battery['stat']['exists'] | default(True) }}"
+  ansible.builtin.template:
+    src: tmux-status.bash.j2
+    dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
+    mode: 0755
+    backup: true
+  tags: tmux

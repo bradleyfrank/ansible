@@ -21,7 +21,7 @@
   wtr = !git worktree list --porcelain | grep -E "^worktree" | tail -n+2 | awk '{print $2}' \
     | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' --delimiter / --with-nth -1 \
     | xargs -I{} git worktree remove {}
-  wtl = worktree list
+  wtl = !git worktree list --porcelain | grep -E "^worktree" | tail -n+2 | awk '{print $2}'
 [core]
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
