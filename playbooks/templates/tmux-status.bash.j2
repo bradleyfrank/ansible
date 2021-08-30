@@ -19,8 +19,7 @@ system_stats() {
 }
 
 load_average() {
-  local avg load output
-
+  local avg load output fg_Color
   while read -r avg; do
     load="$(printf "%.0f" "$(echo "($avg*100)/{{ ansible_processor_cores }}" | bc -l)")"
     if   [[ $load -ge 0   && $load -lt 100 ]]; then fg_Color=$fg_Green
@@ -33,14 +32,13 @@ load_average() {
   done <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
   {% elif 'Linux' in ansible_system -%}
   done <<< "$(grep -Po '\d+\.\d+' /proc/loadavg)"
-  {% endif %}
+  {% endif -%}
 
   printf "[%s]" "$(awk -F\; '{print $1" "$2" "$3}' <<< "$output")"
 }
 
 battery() {
-  local battery percent status
-
+  local battery percent status fg_Color
   {% if 'Darwin' in ansible_system -%}
   battery="$(pmset -g batt | grep 'InternalBattery' | cut -f2)"
   percent="$(awk -F\; '{print $1}' <<< "$battery" | sed 's|%||')"
@@ -50,7 +48,7 @@ battery() {
     percent="$(sed 's|%||' /sys/class/power_supply/BAT0/capacity)"
     status="$(cat /sys/class/power_supply/BAT0/status)"
   fi
-  {% endif %}
+  {% endif -%}
 
   if [[ -n $percent ]] && [[ -n $status ]]; then
     if   [[ $percent -le 100 && $percent -ge 75 ]]; then fg_Color=$fg_Green
@@ -68,7 +66,15 @@ distribution() {
 }
 
 host_name() {
-  printf "[%s{{ ansible_hostname }}%s]" "${fg_Green}" "${fg_Default}"
+  local fg_Color
+  {% if 'Linux' in ansible_system -%}
+  if w --short | grep $(tty | sed 's|/dev/||') | grep -qE '(?.[0-9]+){4}'; then fg_Color=$fg_Orange
+  else fg_Color=$fg_Green
+  fi
+  {% else -%}
+  fg_Color=$fg_Green
+  {% endif -%}
+  printf "[%s{{ ansible_hostname }}%s]" "${fg_Color}" "${fg_Default}"
 }
 
 printf "#[bold]%s %s %s %s %s#[nobold]" "$(host_name)" "$(battery)" "$(load_average)" "$(system_stats)" "$(distribution)"
