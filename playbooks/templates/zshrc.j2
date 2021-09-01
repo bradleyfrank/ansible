@@ -176,17 +176,17 @@ function precmd() {
   local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir _kcxt
   local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
 
-  _CWD="[cwd ${blue} %(3~|%-1~/.../%1~|%~)] ${nocolor} " _PYENV="" _GIT="" _KUBECTL=""
+  _CWD="[→ ${blue} %(3~|%-1~/.../%1~|%~)] ${nocolor} " _PYENV="" _GIT="" _KUBECTL=""
 
-  [[ -n $TMUX ]] && _CWD="[cwd ${blue}%1~${nocolor}] "
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="[env ${cyan}$(python --version | awk '{print $2}')${nocolor}] "
+  [[ -n $TMUX ]] && _CWD="[→ ${blue}%1~${nocolor}] "
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="[೭ ${cyan}$(python --version | awk '{print $2}')${nocolor}] "
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="[git ${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})]"
+    vcs_info; _GIT="[⇄ ${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})]"
   fi
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    _KUBECTL="[k8s ${violet}${_kcxt}${nocolor}] "
+    _KUBECTL="[≈ ${violet}${_kcxt}${nocolor}] "
   fi
 
   case "$rc" in
@@ -195,7 +195,7 @@ function precmd() {
     *) _pcolor="${magenta}" ;;
   esac
 
-  PS1="${eol}${bold}${_CWD}${_PYENV}${_KUBECTL}${_GIT}${eol}${nocolor}[${_pcolor}%#${nocolor}]${nobold} "
+  PS1="${eol}${bold}${_CWD}${_PYENV}${_KUBECTL}${_GIT}${eol}${nocolor}${_pcolor}>${nocolor}${nobold} "
 }
 
 function +vi-extended-git() {

@@ -145,7 +145,8 @@ alacritty:
   size: 14.0
 
 bbedit:
-  color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"
+  application_support: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit"
+  color_schemes: "{{ ansible_user_dir }}/Library/Application Support/BBEdit/Color Schemes"
 
 sudoers_d: /private/etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"

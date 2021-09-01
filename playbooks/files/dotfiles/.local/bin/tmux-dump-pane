@@ -15,3 +15,4 @@ filename="$(tmux display-message -p 'tmux-%Y%m%d%I%M-#{session_name}-w#{window_i
 
 tmux capture-pane -S -
 tmux save-buffer "$log_dir"/"$filename"
+code "$log_dir"/"$filename"
