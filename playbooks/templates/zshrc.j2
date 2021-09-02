@@ -173,17 +173,16 @@ function precmd() {
 
   _PYENV="" _GIT="" _KUBECTL=""
 
-  _CWD="${blue}%(3~|%-1~/.../%1~|%~)${nocolor} "
-  [[ -n $TMUX ]] && _CWD="${blue}%1~${nocolor} "
+  _CWD="${bold}${blue}%1~${nocolor}${nobold} "
 
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="[೭ ${cyan}$(python --version | awk '{print $2}')${nocolor}] "
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="❯ ${bold}${cyan}$(python --version | awk '{print $2}')${nocolor}${nobold} "
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    _KUBECTL="[≈ ${violet}${_kcxt}${nocolor}] "
+    _KUBECTL="❯ ${bold}${violet}${_kcxt}${nocolor}${nobold} "
   fi
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="[⇄ ${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})] "
+    vcs_info; _GIT="❯ ${bold}${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})${nobold}"
   fi
 
   case "$rc" in
@@ -192,10 +191,10 @@ function precmd() {
     *) _prompt_color="${magenta}" ;;
   esac
 
-  _prompt_line1="${_CWD}${_PYENV}${_KUBECTL}${_GIT}"
-  _prompt_line2="${_prompt_color}%#${nocolor}"
+  _prompt_line1="${_CWD}${_KUBECTL}${_PYENV}${_GIT}"
+  _prompt_line2="${bold}${_prompt_color}%#${nocolor}${nobold} "
 
-  PS1="${eol}${bold}${_prompt_line1}${eol}${_prompt_line2}${nobold} "
+  PS1="${eol}${_prompt_line1}${eol}${_prompt_line2}"
 }
 
 function +vi-extended-git() {

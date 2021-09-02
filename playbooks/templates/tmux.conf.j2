@@ -25,9 +25,9 @@ set -g status-position top
 set -g status-right "#[fg=colour61,bold][#{session_name}]#[nobold]"
 set -g status-style "bg=default"
 set -g window-status-activity-style "fg=colour33,bg=default"
-set -g window-status-current-format "#[bg=colour33,bold] #I #W #[nobold]"
+set -g window-status-current-format "#[bg=colour33,bold] #I: #W #[nobold]"
 set -g window-status-current-style "fg=colour231,bg=default"
-set -g window-status-format "#[fg=colour33,bg=default,bold] #I #W #[nobold]"
+set -g window-status-format "#[fg=colour33,bg=default,bold] #I: #W #[nobold]"
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {%- if 'Darwin' in ansible_system %} "pbcopy"
@@ -43,6 +43,7 @@ bind 'N' display-popup -E "vim ~/Development/Scratch/Notes"
 bind 'O' display-popup -E "cd ~/Development/Scratch/; vim"
 bind 'P' display-popup -E "zsh"
 {% endif -%}
+bind 'U' run-shell "exec zsh"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
 bind 'r' rename-window "#{b:pane_current_path}"

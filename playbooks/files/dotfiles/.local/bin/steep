@@ -11,6 +11,6 @@
 xcode-select --version &> /dev/null || xcode-select --install
 brew update
 brew upgrade
-while read -r pkg; do brew uninstall "$pkg"; done <<< "$(brew leaves --installed-as-dependency)"
+brew leaves --installed-as-dependency | xargs -0r | xargs -0r brew uninstall
 brew cleanup
 brew doctor
