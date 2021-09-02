@@ -124,20 +124,14 @@ alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/
 function blackdiff() { black --line-length 100 --diff "$@"; }
 function cheat() { curl -s "cheat.sh/$1?style=vs"; }
 function crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
-function dclint() { docker-compose -f "$1" config --quiet; }
 function dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
 function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
 function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
-function fcn() { fc='%!'; echo "${(%)fc}"; }
 function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
 function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
 function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-{% if 'Darwin' in ansible_system %}
-function steep() { xcode-install; for c in update upgrade cleanup doctor; do brew "$c"; done; }
-function uptime-p() { uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"; }
-function xcode-install() { xcode-select --version &> /dev/null || xcode-select --install; }
-{% elif 'Linux' in ansible_system %}
+{% if 'Linux' in ansible_system %}
 function gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
 
@@ -173,29 +167,35 @@ function pyenv() {
 
 
 function precmd() {
-  local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir _kcxt
+  local rc=$? eol=$'\n' _gitdir _kcxt _prompt_color _prompt_line1 _prompt_line2
+  local bold="%B" nobold="%b" nocolor="%f"
   local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
 
-  _CWD="[→ ${blue} %(3~|%-1~/.../%1~|%~)] ${nocolor} " _PYENV="" _GIT="" _KUBECTL=""
+  _PYENV="" _GIT="" _KUBECTL=""
 
-  [[ -n $TMUX ]] && _CWD="[→ ${blue}%1~${nocolor}] "
+  _CWD="${blue}%(3~|%-1~/.../%1~|%~)${nocolor} "
+  [[ -n $TMUX ]] && _CWD="${blue}%1~${nocolor} "
+
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="[೭ ${cyan}$(python --version | awk '{print $2}')${nocolor}] "
-
-  if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="[⇄ ${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})]"
-  fi
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
     _KUBECTL="[≈ ${violet}${_kcxt}${nocolor}] "
   fi
 
+  if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
+    vcs_info; _GIT="[⇄ ${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})] "
+  fi
+
   case "$rc" in
-    0) _pcolor="${green}"   ;;
-    1) _pcolor="${red}"     ;;
-    *) _pcolor="${magenta}" ;;
+    0) _prompt_color="${green}"   ;;
+    1) _prompt_color="${red}"     ;;
+    *) _prompt_color="${magenta}" ;;
   esac
 
-  PS1="${eol}${bold}${_CWD}${_PYENV}${_KUBECTL}${_GIT}${eol}${nocolor}${_pcolor}>${nocolor}${nobold} "
+  _prompt_line1="${_CWD}${_PYENV}${_KUBECTL}${_GIT}"
+  _prompt_line2="${_prompt_color}%#${nocolor}"
+
+  PS1="${eol}${bold}${_prompt_line1}${eol}${_prompt_line2}${nobold} "
 }
 
 function +vi-extended-git() {
