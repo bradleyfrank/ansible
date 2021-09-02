@@ -243,16 +243,6 @@ dconf:
     /org/gnome/nautilus/preferences/show-delete-permanently: "true"
     /org/gnome/settings-daemon/plugins/color/night-light-enabled: "true"
     /org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic: "true"
-    /org/gnome/shell/extensions/dash-to-dock/autohide: "true"
-    /org/gnome/shell/extensions/dash-to-dock/click-action: "'previews'"
-    /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size: "36"
-    /org/gnome/shell/extensions/dash-to-dock/dock-fixed: "false"
-    /org/gnome/shell/extensions/dash-to-dock/dock-position: "'BOTTOM'"
-    /org/gnome/shell/extensions/dash-to-dock/extend-height: "false"
-    /org/gnome/shell/extensions/dash-to-dock/force-straight-corner: "false"
-    /org/gnome/shell/extensions/dash-to-dock/intellihide: "false"
-    /org/gnome/shell/extensions/dash-to-dock/manualhide: "false"
-    /org/gnome/shell/extensions/dash-to-dock/running-indicator-dominant-color: "true"
     /org/gnome/shell/disable-user-extensions: "false"
     /org/gnome/system/location/enabled: "true"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/audible-bell: "false"
@@ -277,12 +267,13 @@ dconf:
     /org/gnome/terminal/legacy/theme-variant: "'system'"
   Ubuntu:
     /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
+    /org/gnome/shell/disabled-extensions: "['ding@rastersoft.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'ubuntu-dock@ubuntu.com']"
     /org/gnome/shell/enabled-extensions: "[\
       'GPaste@gnome-shell-extensions.gnome.org',
       'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
       'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
       'ubuntu-appindicators@ubuntu.com',
-      'ubuntu-dock@ubuntu.com']"
+      'system-monitor@paradoxxx.zero.gmail.com']"
     /org/gnome/shell/favorite-apps: "[\
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
@@ -290,7 +281,6 @@ dconf:
       'code.desktop',
       '1password.desktop',
       'org.gnome.gedit.desktop',
-      'spotify.desktop',
       'signal-desktop.desktop']"
   Pop!_OS:
     /org/gnome/desktop/interface/enable-hot-corners: "true"
@@ -324,5 +314,4 @@ dconf:
       'code.desktop',
       '1password.desktop',
       'org.gnome.gedit.desktop',
-      'spotify.desktop',
       'signal-desktop.desktop']"
