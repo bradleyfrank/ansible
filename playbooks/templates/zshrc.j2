@@ -167,22 +167,22 @@ function pyenv() {
 
 
 function precmd() {
-  local rc=$? eol=$'\n' _gitdir _kcxt _prompt_color _prompt_line1 _prompt_line2
+  local rc=$? eol=$'\n' _gitdir _kcxt _prompt_color _prompt_line1 _prompt_line2 _pre="%B[%b" _suf="%B]%b "
   local bold="%B" nobold="%b" nocolor="%f"
   local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
 
   _PYENV="" _GIT="" _KUBECTL=""
 
-  _CWD="${bold}${blue}%1~${nocolor}${nobold} "
+  _CWD="${_pre}cwd ${bold}${blue}%1~${nocolor}${nobold}${_suf}"
 
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="❯ ${bold}${cyan}$(python --version | awk '{print $2}')${nocolor}${nobold} "
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${_pre}env ${bold}${cyan}$(python --version | awk '{print $2}')${nocolor}${nobold}${_suf}"
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    _KUBECTL="❯ ${bold}${violet}${_kcxt}${nocolor}${nobold} "
+    _KUBECTL="${_pre}k8s ${bold}${violet}${_kcxt}${nocolor}${nobold}${_suf}"
   fi
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="❯ ${bold}${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})${nobold}"
+    vcs_info; _GIT="${_pre}git ${bold}${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})${nobold}${_suf}"
   fi
 
   case "$rc" in
@@ -192,7 +192,7 @@ function precmd() {
   esac
 
   _prompt_line1="${_CWD}${_KUBECTL}${_PYENV}${_GIT}"
-  _prompt_line2="${bold}${_prompt_color}%#${nocolor}${nobold} "
+  _prompt_line2="${_pre}${bold}${_prompt_color}%#${nocolor}${nobold}${_suf}"
 
   PS1="${eol}${_prompt_line1}${eol}${_prompt_line2}"
 }

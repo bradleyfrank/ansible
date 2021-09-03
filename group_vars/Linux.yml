@@ -267,13 +267,19 @@ dconf:
     /org/gnome/terminal/legacy/theme-variant: "'system'"
   Ubuntu:
     /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
-    /org/gnome/shell/disabled-extensions: "['ding@rastersoft.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'ubuntu-dock@ubuntu.com']"
+    /org/gnome/shell/disabled-extensions: "[\
+      'ding@rastersoft.com',
+      'window-list@gnome-shell-extensions.gcampax.github.com',
+      'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
+      'places-menu@gnome-shell-extensions.gcampax.github.com',
+      'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
     /org/gnome/shell/enabled-extensions: "[\
       'GPaste@gnome-shell-extensions.gnome.org',
       'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
       'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
       'ubuntu-appindicators@ubuntu.com',
-      'system-monitor@paradoxxx.zero.gmail.com']"
+      'system-monitor@paradoxxx.zero.gmail.com',
+      'ubuntu-dock@ubuntu.com']"
     /org/gnome/shell/favorite-apps: "[\
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',

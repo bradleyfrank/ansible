@@ -13,7 +13,6 @@
       - .local/bin/gcp-kubeconfigs
       - .local/bin/gcpkonfig
       - .local/bin/orm
-      - .local/bin/tmux-*
       - .local/share/fubectl
       - .local/share/kubectl
       - .local/share/alacritty
@@ -21,8 +20,6 @@
       - .local/share/zshrc/pipenv
       - .local/share/zshrc/kubectl
       - .local/share/zshrc/op
-      - .hyper.js
-      - .hyper_plugins
 
     brew_packages:
       - diff-so-fancy
