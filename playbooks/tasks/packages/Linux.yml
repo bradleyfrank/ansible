@@ -11,8 +11,12 @@
     install_recommends: true
   become: true
   register: apt_upgrade
-  retries: 100
-  until: apt_upgrade is success or ('Failed to lock apt for exclusive operation' not in apt_upgrade['msg'] and '/var/lib/dpkg/lock' not in apt_upgrade['msg'])
+  until: (apt_upgrade is success) or (
+            'Failed to lock apt for exclusive operation' not in apt_upgrade['msg'] and
+            '/var/lib/dpkg/lock' not in apt_upgrade['msg']
+          )
+  retries: 10
+  delay: 30
   tags: [upgrade, apt]
 
 - name: Install Ubuntu/Pop!_OS packages
@@ -26,8 +30,12 @@
     install_recommends: true
   become: true
   register: apt_install
-  retries: 100
-  until: apt_install is success or ('Failed to lock apt for exclusive operation' not in apt_install['msg'] and '/var/lib/dpkg/lock' not in apt_install['msg'])
+  until: (apt_install is success) or (
+            'Failed to lock apt for exclusive operation' not in apt_install['msg'] and
+            '/var/lib/dpkg/lock' not in apt_install['msg']
+          )
+  retries: 10
+  delay: 30
   tags: [packages, apt]
 
 - name: Install flatpak remotes
@@ -39,6 +47,7 @@
   loop: "{{ flatpak_remotes }}"
   loop_control:
     label: "{{ item['name'] }}"
+  tags: [packages, flatpak]
 
 - name: Install flatpak packages
   community.general.flatpak:
@@ -47,3 +56,32 @@
     method: user
     remote: "{{ item['key'] }}"
   loop: "{{ flatpaks | dict2items }}"
+  tags: [packages, flatpak]
+
+- name: Get latest version of Hyper
+  community.general.github_release:
+    user: vercel
+    repo: hyper
+    action: latest_release
+  register: hyper_version
+  tags: [packages, deb]
+
+- name: Install Hyper
+  vars:
+    github_url: "https://github.com/vercel/hyper/releases/download"
+    filename: "hyper_{{ hyper_version | replace('v','') }}_amd64.deb"
+  ansible.builtin.apt:
+    deb: "{{ github_url }}/{{ hyper_version }}/{{ filename }}"
+    install_recommends: true
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+  register: deb_install
+  until: (deb_install is success) or (
+            'Failed to lock apt for exclusive operation' not in deb_install['msg'] and
+            '/var/lib/dpkg/lock' not in deb_install['msg']
+          )
+  retries: 10
+  delay: 30
+  tags: [packages, deb]

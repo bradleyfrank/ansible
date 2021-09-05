@@ -1,6 +1,6 @@
 {
     "editor.cursorBlinking": "phase",
-    "editor.fontFamily": "Source Code Pro",
+    "editor.fontFamily": "SauceCodePro Nerd Font",
     "editor.fontLigatures": true,
     "editor.fontSize": 13,
     "editor.insertSpaces": true,
@@ -35,6 +35,7 @@
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintUseMinimalCheckers": false,
+    "redhat.telemetry.enabled": true,
     "security.workspace.trust.enabled": false,
     "shellcheck.customArgs": [
         "-x"
@@ -64,5 +65,9 @@
     "workbench.panel.defaultLocation": "right",
     "workbench.startupEditor": "none",
     "workbench.statusBar.visible": true,
-    "workbench.tree.renderIndentGuides": "onHover"
+    "workbench.tree.renderIndentGuides": "onHover",
+    "yaml.customTags": [
+        "!encrypted/pkcs1-oaep scalar",
+        "!vault scalar"
+    ]
 }
