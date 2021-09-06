@@ -167,32 +167,38 @@ function pyenv() {
 
 
 function precmd() {
-  local rc=$? eol=$'\n' _gitdir _kcxt _prompt_color _prompt_line1 _prompt_line2 _pre="%B[%b" _suf="%B]%b "
-  local bold="%B" nobold="%b" nocolor="%f"
-  local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
+  local rc=$? eol=$'\n' _gitdir _kcxt _prompt_color _prompt_line1 _prompt_line2
+  local fg_Blue="%F{33}" fg_Cyan="%F{37}" fg_Violet="%F{61}" fg_Green="%F{64}" fg_Magenta="%F{125}" fg_Red="%F{160}"
+  local fg_Reset="%f" bold="%B" nobold="%b"
 
   _PYENV="" _GIT="" _KUBECTL=""
 
-  _CWD="${_pre}cwd ${bold}${blue}%1~${nocolor}${nobold}${_suf}"
+  _CWD="${fg_Blue} %1~${fg_NoColor}${fg_Reset}  "
 
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${_pre}env ${bold}${cyan}$(python --version | awk '{print $2}')${nocolor}${nobold}${_suf}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${fg_Cyan} $(python --version | awk '{print $2}')${fg_Reset}  "
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    _KUBECTL="${_pre}k8s ${bold}${violet}${_kcxt}${nocolor}${nobold}${_suf}"
+    _KUBECTL="${fg_Violet}ﴱ ${_kcxt}${fg_Reset}  "
   fi
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="${_pre}git ${bold}${green}$(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}$(sed 's/\s%F{136}%f//' <<< ${vcs_info_msg_0_})${nobold}${_suf}"
+    vcs_info; _GIT="${fg_Green} $(basename $(readlink -f $(dirname $_gitdir)))/${fg_Reset}${vcs_info_msg_0_}"
   fi
 
   case "$rc" in
-    0) _prompt_color="${green}"   ;;
-    1) _prompt_color="${red}"     ;;
-    *) _prompt_color="${magenta}" ;;
+    0) _prompt_color="${fg_Green}"   ;;
+    1) _prompt_color="${fg_Red}"     ;;
+    *) _prompt_color="${fg_Magenta}" ;;
   esac
 
-  _prompt_line1="${_CWD}${_KUBECTL}${_PYENV}${_GIT}"
-  _prompt_line2="${_pre}${bold}${_prompt_color}%#${nocolor}${nobold}${_suf}"
+  {% if 'Darwin' in ansible_system %}
+  _prefix="%F{125} ❯%f "
+  {% elif 'Linux' in ansible_system %}
+  _prefix="%F{125} ❯%f "
+  {% endif %}
+
+  _prompt_line1="${_prefix}${bold}${_CWD}${_KUBECTL}${_PYENV}${_GIT}${nobold}"
+  _prompt_line2="${bold}${_prompt_color}%#${fg_Reset}${nobold} "
 
   PS1="${eol}${_prompt_line1}${eol}${_prompt_line2}"
 }
