@@ -1,7 +1,5 @@
-add_newline = true
 format = """
 $directory\
-$docker_context\
 $kubernetes\
 $python\
 $git_branch\
@@ -11,17 +9,29 @@ $git_metrics\
 $git_status\
 $cmd_duration\
 $line_break\
-$status\
-$shell\
 $character
 """
+[character]
+success_symbol = "[❯](bold fg:64)"
+error_symbol = "[❯](bold fg:160)"
+[cmd_duration]
+min_time = 1
+show_milliseconds = true
 [directory]
-truncation_length = 3
-style = "bold blue"
+truncation_length = 1
+style = "bold fg:33"
 [git_branch]
-style = "bold green"
+style = "bold fg:64"
 symbol = " "
+[kubernetes]
+disabled = false
+format = 'using [$symbol$context]($style) '
+style = "bold fg:61"
+symbol = "ﴱ "
 [python]
+detect_extensions = []
+detect_files = []
 format = 'via [${symbol}${pyenv_prefix}${version}]($style) '
-style = "bold cyan"
+style = "bold fg:37"
 symbol = " "
+version_format = "${raw}"

@@ -34,10 +34,6 @@ case $open in
           ;;
 esac
 
-tmux send-keys -t "$target" " \
-  cd ~/Development/Projects/$repo && \
-  git pull && \
-  git worktree add --checkout -b $branch ~/Development/Worktrees/$repo/$branch && \
-  cd ~/Development/Worktrees/$repo/$branch && \
-  clear \
-  " C-m
+tmux send-keys -t \
+  "$target" \
+  "cd ~/Development/Projects/$repo && git worktree add $branch && cd $branch && clear" C-m
