@@ -41,7 +41,7 @@
         "-x"
     ],
     "terminal.integrated.fontSize": 13,
-    "terminal.integrated.fontFamily": "Source Code Pro",
+    "terminal.integrated.fontFamily": "SauceCodePro Nerd Font",
     "terminal.integrated.inheritEnv": false,
     "update.mode": "none",
     "window.newWindowDimensions": "maximized",

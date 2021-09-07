@@ -32,7 +32,6 @@ default_branch="$(git remote show origin | sed -rn 's/\s+HEAD branch:\s+(.*)$/\1
 git worktree add "$default_branch"
 
 if [[ -n $branch ]] && [[ "$branch" != "$default_branch" ]]; then
-  git fetch origin
   git worktree add "$branch"
   tmux send-keys -t "$(tmux new-window -n "$branch" -P)" "cd ${repo_path}/${branch} && clear" C-m
 else
