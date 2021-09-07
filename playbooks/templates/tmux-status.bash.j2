@@ -42,11 +42,11 @@ battery() {
   local battery percent status fg_Color
   {% if 'Darwin' in ansible_system -%}
   battery="$(pmset -g batt | grep 'InternalBattery' | cut -f2)"
-  percent="$(awk -F\; '{print $1}' <<< "$battery" | sed 's|%||')"
-  status="$(awk -F\; '{print $2}' <<< "$battery")"
+  percent="$(awk '{print $1}' <<< "$battery" | tr -d '%;')"
+  status="$(awk '{print $2}' <<< "$battery" | tr -d ';')"
   {% elif 'Linux' in ansible_system -%}
   percent="$(sed 's|%||' /sys/class/power_supply/BAT0/capacity)"
-  status=" $(cat /sys/class/power_supply/BAT0/status)"
+  status="$(cat /sys/class/power_supply/BAT0/status)"
   {% endif -%}
 
   if   [[ $percent -le 100 && $percent -ge 75 ]]; then fg_Color=$fg_Green
@@ -55,7 +55,7 @@ battery() {
   elif [[ $percent -lt 25  && $percent -ge 0  ]]; then fg_Color=$fg_Red
   fi
 
-  printf "%s%s%%%s%s" "${fg_Color}" "${percent}" "${fg_Default}" "${status,,}"
+  printf "%s%s%%%s %s" "${fg_Color}" "${percent}" "${fg_Default}" "${status,,}"
 }
 
 distribution() {

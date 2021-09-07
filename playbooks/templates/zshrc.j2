@@ -173,7 +173,7 @@ function precmd() {
 
   _PYENV="" _GIT="" _KUBECTL="" _HOSTNAME="" _CWD="${bold}${fg_Blue}%(5~|%-1~/.../%1~|%~)${fg_Reset} "
 
-  [[ -n $SSH_CONNECTION ]] && _HOSTNAME="${bold}${fg_Magenta} $(hostname -s)${fg_Reset} "
+  [[ -n $SSH_CONNECTION ]] && _HOSTNAME="${bold}${fg_Magenta}$(hostname -s)${fg_Reset} in "
   [[ -n $TMUX ]] && _CWD="${bold}${fg_Blue}%1~${fg_Reset} "
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="via ${bold}${fg_Cyan} $(python --version | awk '{print $2}')${fg_Reset} "
 
