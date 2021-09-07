@@ -27,7 +27,7 @@
       ansible.builtin.git:
         repo: "{{ item['ssh_url'] }}"
         bare: true
-        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/.git }}"
+        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/.git"
         accept_hostkey: true
         ssh_opts: "-i {{ github['key_file'] }}"
       loop: "{{ github_repos['json']['items'] }}"
