@@ -9,7 +9,7 @@
 
 - name: Create Git project directories
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+    path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
     state: directory
     mode: 0755
   loop: "{{ github_repos['json']['items'] }}"
@@ -26,16 +26,17 @@
     - name: Clone my GitHub repositories
       ansible.builtin.git:
         repo: "{{ item['ssh_url'] }}"
-        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
         accept_hostkey: true
         ssh_opts: "-i {{ github['key_file'] }}"
         update: false
         version: "{{ item['default_branch'] }}"
+        separate_git_dir: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/.git"
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
   always:
     - name: Remove GitHub SSH key
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.ssh/github"
+        path: "{{ github['key_file'] }}"
         state: absent
