@@ -1,0 +1,27 @@
+add_newline = true
+format = """
+$directory\
+$docker_context\
+$kubernetes\
+$python\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$cmd_duration\
+$line_break\
+$status\
+$shell\
+$character
+"""
+[directory]
+truncation_length = 3
+style = "bold blue"
+[git_branch]
+style = "bold green"
+symbol = " "
+[python]
+format = 'via [${symbol}${pyenv_prefix}${version}]($style) '
+style = "bold cyan"
+symbol = " "
