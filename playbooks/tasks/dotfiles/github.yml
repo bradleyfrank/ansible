@@ -26,6 +26,7 @@
     - name: Clone my GitHub repositories
       ansible.builtin.git:
         repo: "{{ item['ssh_url'] }}"
+        version: "{{ item['default_branch'] }}"
         dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
         accept_hostkey: true
         ssh_opts: "-i {{ github['key_file'] }}"
