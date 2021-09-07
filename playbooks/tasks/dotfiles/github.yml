@@ -16,26 +16,36 @@
   loop_control:
     label: "{{ item['name'] }}"
 
-- name: Clone repositories
+- name: Checkout my Github repositories
   block:
     - name: Copy GitHub SSH key
       ansible.builtin.copy:
         src: ssh/github.pem
         dest: "{{ github['key_file'] }}"
         mode: 0600
-    - name: Clone my GitHub repositories
+    - name: Clone bare repositories
       ansible.builtin.git:
         repo: "{{ item['ssh_url'] }}"
-        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+        bare: true
+        dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/.git"
         accept_hostkey: true
         ssh_opts: "-i {{ github['key_file'] }}"
         update: false
-        version: "{{ item['default_branch'] }}"
+      loop: "{{ github_repos['json']['items'] }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+    - name: Add worktree for default branches
+      environment:
+        GIT_SSH_COMMAND: "ssh -i {{ github['key_file'] }}"
+      ansible.builtin.command:
+        chdir: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}"
+        cmd: "git worktree add {{ item['default_branch'] }}"
+        creates: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
   always:
     - name: Remove GitHub SSH key
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.ssh/github"
+        path: "{{ github['key_file'] }}"
         state: absent

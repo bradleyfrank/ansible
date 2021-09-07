@@ -9,7 +9,7 @@
         path: "{{ ansible_user_dir }}/Development/{{ item }}"
         state: directory
         mode: 0755
-      loop: ['Projects', 'Build', 'Scratch', 'Reference']
+      loop: ['Projects', 'Build', 'Scratch', 'Reference', 'Logs']
       tags: devdirs
 
     - name: Clone reference Git repositories
@@ -96,16 +96,6 @@
         label: "{{ item['name'] }}"
       tags: vim
 
-    - name: Apply alacritty template
-      ansible.builtin.template:
-        src: alacritty.yml.j2
-        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
-        mode: 0644
-        backup: true
-      register: _backup_alacritty
-      notify: Process backups
-      tags: ['alacritty', 'core']
-
     - name: Include BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
       when: ansible_system == 'Darwin'
@@ -116,6 +106,10 @@
       changed_when: false
       tags: 1password
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
+
+    - name: Install Starship
+      ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
+      tags: starship
 
     - name: Apply zshrc template
       ansible.builtin.template:

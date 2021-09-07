@@ -121,28 +121,22 @@ alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .
 alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 
 
-function blackdiff() { black --line-length 100 --diff "$@"; }
-function cheat() { curl -s "cheat.sh/$1?style=vs"; }
-function crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
-function dclint() { docker-compose -f "$1" config --quiet; }
-function dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
-function diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
-function decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
-function encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
-function fcn() { fc='%!'; echo "${(%)fc}"; }
-function httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
-function mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
-function tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-{% if 'Darwin' in ansible_system %}
-function steep() { xcode-install; for c in update upgrade cleanup doctor; do brew "$c"; done; }
-function uptime-p() { uptime | sed -rn "s/.*(up\s[0-9]+)\sdays\s([0-9]+):([0-9]+).*/\1d \2h \3m/p"; }
-function xcode-install() { xcode-select --version &> /dev/null || xcode-select --install; }
-{% elif 'Linux' in ansible_system %}
-function gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
+blackdiff() { black --line-length 100 --diff "$@"; }
+cheat() { curl -s "cheat.sh/$1?style=vs"; }
+crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
+dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
+diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
+decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
+encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
+httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
+mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
+tardir() { tar -czf "${1%/}".tar.gz "$1"; }
+tnw() { tmux send-keys -t "$(tmux new-window -n "$1" -P)" "cd ~/Development/Projects/$1 && clear" C-m; }
+{% if 'Linux' in ansible_system %}
+gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
 
-
-function pyenv() {
+pyenv() {
   local pyname pyver=3.8 pyfunc
 
   while getopts ':acdhn:v:' flag; do
@@ -171,45 +165,6 @@ function pyenv() {
   esac
 }
 
-
-function precmd() {
-  local rc=$? eol=$'\n' bold="%B" nobold="%b" nocolor="%f" _pcolor _gitdir _kcxt
-  local blue="%F{33}" cyan="%F{37}" violet="%F{61}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
-
-  _CWD="${blue}→ %(3~|%-1~/.../%1~|%~) ${nocolor}" _PYENV="" _GIT="" _KUBECTL=""
-
-  [[ -n $TMUX ]] && _CWD="${blue}→ %1~ ${nocolor}"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}೭ $(python --version | awk '{print $2}') ${nocolor}"
-
-  if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="${green}⇄ $(basename $(readlink -f $(dirname $_gitdir)))/${nocolor}${vcs_info_msg_0_}"
-  fi
-
-  if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    _KUBECTL="${violet}≈ ${_kcxt} ${nocolor}"
-  fi
-
-  case "$rc" in
-    0) _pcolor="${green}"   ;;
-    1) _pcolor="${red}"     ;;
-    *) _pcolor="${magenta}" ;;
-  esac
-
-  PS1="${eol}${bold}${_CWD}${_PYENV}${_KUBECTL}${_GIT}${eol}${_pcolor}%#${nocolor}${nobold} "
-}
-
-function +vi-extended-git() {
-  [[ -s $(git rev-parse --show-toplevel)/.git/refs/stash ]] && hook_com[staged]+="$"
-  git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
-}
-
-
-zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{160}%a%f'
-zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' formats '%F{64}%b %F{136}%u%c%m%f'
-zstyle ':vcs_info:git*' stagedstr '+'
-zstyle ':vcs_info:git*' unstagedstr '*'
-zstyle ':vcs_info:git*+set-message:*' hooks extended-git
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
@@ -290,3 +245,5 @@ source ~/.infractl/secrets
 complete -o nospace -C /usr/local/bin/terraform terraform
 {% endif %}
 complete -F __start_kubectl k
+
+eval "$(starship init zsh)"
