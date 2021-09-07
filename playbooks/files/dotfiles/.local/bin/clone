@@ -1,5 +1,4 @@
-# shellcheck disable=SC1071
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 #
 # Clones a bare repository, and adds the default branch as a worktree.
@@ -18,9 +17,13 @@ while getopts ':hr:b:' flag; do
     esac
 done
 
+[[ -z $repo_url ]] && exit 1
+
 repo_name="$(basename "$repo_url")"
 repo_name="${repo_name%%.*}"
 repo_path="$HOME/Development/Projects/$repo_name"
+
+[[ -d "$repo_path" ]] && exit 1
 
 mkdir -p "$repo_path"
 cd "$repo_path" || return 1
@@ -30,7 +33,7 @@ git worktree add "$default_branch"
 
 if [[ -n $branch ]] && [[ "$branch" != "$default_branch" ]]; then
   git worktree add "$branch"
-  fc -R =(echo "cd ${repo_path}/${branch}")
+  tmux send-keys -t "$(tmux new-window -n "$branch" -P)" "cd ${repo_path}/${branch} && clear" C-m
 else
-  fc -R =(echo "cd ${repo_path}/${default_branch}")
+  tmux send-keys -t "$(tmux new-window -n "$repo_name" -P)" "cd ${repo_path}/${default_branch} && clear" C-m
 fi
