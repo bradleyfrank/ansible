@@ -36,10 +36,6 @@ repos:
       https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
     key: https://download.docker.com/linux/ubuntu/gpg
     keyring: /usr/share/keyrings/docker-archive-keyring.gpg
-  - name: alacritty
-    repo: ppa:mmstick76/alacritty
-    keyserver: keyserver.ubuntu.com
-    id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
   - name: shutter
     repo: ppa:shutter/ppa
     keyserver: keyserver.ubuntu.com
@@ -48,7 +44,6 @@ repos:
 packages:
   - 1password
   - abcde
-  - alacritty
   - apt-file
   - apt-transport-https  # docker
   - asciinema
@@ -174,9 +169,8 @@ vscode:
   config: "{{ ansible_user_dir }}/.config/Code"
   bin: /usr/bin/code
 
-alacritty:
-  decorations: none
-  size: 12.0
+hyper:
+  config: "{{ ansible_user_dir }}/.config/Hyper"
 
 sudoers_d: /etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
@@ -224,7 +218,7 @@ dconf:
     /org/gnome/gedit/preferences/editor/display-line-numbers: "true"
     /org/gnome/gedit/preferences/editor/display-overview-map: "true"
     /org/gnome/gedit/preferences/editor/display-right-margin: "true"
-    /org/gnome/gedit/preferences/editor/editor-font: "'Source Code Pro 11'"
+    /org/gnome/gedit/preferences/editor/editor-font: "'SauceCodePro Nerd Font 11'"
     /org/gnome/gedit/preferences/editor/highlight-current-line: "true"
     /org/gnome/gedit/preferences/editor/insert-spaces: "true"
     /org/gnome/gedit/preferences/editor/right-margin-position: "uint32 100"
@@ -249,7 +243,7 @@ dconf:
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/background-color: "'rgb(253,246,227)'"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/bold-is-bright: "false"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/cursor-colors-set: "false"
-    /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/font: "'Source Code Pro 12'"
+    /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/font: "'SauceCodePro Nerd Font 12'"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/foreground-color: "'rgb(101,123,131)'"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/highlight-colors-set: "false"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/palette: "\
@@ -283,7 +277,6 @@ dconf:
     /org/gnome/shell/favorite-apps: "[\
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
-      'com.alacritty.Alacritty.desktop',
       'code.desktop',
       '1password.desktop',
       'org.gnome.gedit.desktop',
@@ -316,7 +309,6 @@ dconf:
       'pop-cosmic-applications.desktop',
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
-      'com.alacritty.Alacritty.desktop',
       'code.desktop',
       '1password.desktop',
       'org.gnome.gedit.desktop',

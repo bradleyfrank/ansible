@@ -22,12 +22,12 @@ set -g status 2
 set -g status-format[1] "#[align=right]#(tmux-status)"
 set -g status-left ""
 set -g status-position top
-set -g status-right "#[fg=colour61,bold][#{session_name}]#[nobold]"
+set -g status-right "#[fg=colour61,bold]#{session_name} #[fg=default]@ #[fg=colour64]#h#[nobold]"
 set -g status-style "bg=default"
 set -g window-status-activity-style "fg=colour33,bg=default"
-set -g window-status-current-format "#[bg=colour33,bold] #I: #W #[nobold]"
+set -g window-status-current-format "#[fg=colour231,bg=colour33,bold] #I: #W #[nobold]"
 set -g window-status-current-style "fg=colour231,bg=default"
-set -g window-status-format "#[fg=colour33,bg=default,bold] #I: #W #[nobold]"
+set -g window-status-format "#[fg=colour33,bg=colour254,bold] #I: #W #[nobold]"
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {%- if 'Darwin' in ansible_system %} "pbcopy"

@@ -167,22 +167,23 @@ function pyenv() {
 
 
 function precmd() {
-  local rc=$? eol=$'\n' _gitdir _kcxt _prompt_color _prompt_line1 _prompt_line2
+  local rc=$? eol=$'\n' _gitdir _kcxt _vcs _prompt_color _prompt_line1 _prompt_line2
   local fg_Blue="%F{33}" fg_Cyan="%F{37}" fg_Violet="%F{61}" fg_Green="%F{64}" fg_Magenta="%F{125}" fg_Red="%F{160}"
-  local fg_Reset="%f" bold="%B" nobold="%b"
+  local fg_NoColor="%f" bold="%B" nobold="%b" fg_Reset="%b%f"
 
-  _PYENV="" _GIT="" _KUBECTL=""
+  _PYENV="" _GIT="" _KUBECTL="" _HOSTNAME="" _CWD="${bold}${fg_Blue}%(5~|%-1~/.../%1~|%~)${fg_Reset} "
 
-  _CWD="${fg_Blue} %1~${fg_NoColor}${fg_Reset}  "
-
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${fg_Cyan} $(python --version | awk '{print $2}')${fg_Reset}  "
+  [[ -n $SSH_CONNECTION ]] && _HOSTNAME="${bold}${fg_Magenta} $(hostname -s)${fg_Reset} "
+  [[ -n $TMUX ]] && _CWD="${bold}${fg_Blue}%1~${fg_Reset} "
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="via ${bold}${fg_Cyan} $(python --version | awk '{print $2}')${fg_Reset} "
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    _KUBECTL="${fg_Violet}ﴱ ${_kcxt}${fg_Reset}  "
+    _KUBECTL="using ${bold}${fg_Violet}ﴱ ${_kcxt}${fg_Reset} "
   fi
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
-    vcs_info; _GIT="${fg_Green} $(basename $(readlink -f $(dirname $_gitdir)))/${fg_Reset}${vcs_info_msg_0_}"
+    vcs_info; _vcs="${vcs_info_msg_0_//\[\]}"
+    _GIT="on ${bold}${fg_Green} $(basename $(readlink -f $(dirname $_gitdir)))/${fg_NoColor}${_vcs}${nobold}"
   fi
 
   case "$rc" in
@@ -191,14 +192,8 @@ function precmd() {
     *) _prompt_color="${fg_Magenta}" ;;
   esac
 
-  {% if 'Darwin' in ansible_system %}
-  _prefix="%F{125} ❯%f "
-  {% elif 'Linux' in ansible_system %}
-  _prefix="%F{125} ❯%f "
-  {% endif %}
-
-  _prompt_line1="${_prefix}${bold}${_CWD}${_KUBECTL}${_PYENV}${_GIT}${nobold}"
-  _prompt_line2="${bold}${_prompt_color}%#${fg_Reset}${nobold} "
+  _prompt_line1="${_HOSTNAME}${_CWD}${_KUBECTL}${_PYENV}${_GIT}"
+  _prompt_line2="${bold}${_prompt_color}%#${fg_NoColor}${nobold} "
 
   PS1="${eol}${_prompt_line1}${eol}${_prompt_line2}"
 }
@@ -209,9 +204,9 @@ function +vi-extended-git() {
 }
 
 
-zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{160}%a%f'
+zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{160}[%u%c%m%f|%F{136}%a]%f'
 zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' formats '%F{64}%b%f %F{136}%u%c%m%f'
+zstyle ':vcs_info:git*' formats '%F{64}%b%f %F{160}[%u%c%m]%f'
 zstyle ':vcs_info:git*' stagedstr '+'
 zstyle ':vcs_info:git*' unstagedstr '*'
 zstyle ':vcs_info:git*+set-message:*' hooks extended-git

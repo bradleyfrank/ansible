@@ -69,14 +69,15 @@
 - name: Install Hyper
   vars:
     github_url: "https://github.com/vercel/hyper/releases/download"
-    filename: "hyper_{{ hyper_version | replace('v','') }}_amd64.deb"
+    filename: "hyper_{{ hyper_version['tag'] | replace('v','') }}_amd64.deb"
   ansible.builtin.apt:
-    deb: "{{ github_url }}/{{ hyper_version }}/{{ filename }}"
+    deb: "{{ github_url }}/{{ hyper_version['tag'] }}/{{ filename }}"
     install_recommends: true
     autoclean: true
     autoremove: true
     update_cache: true
     cache_valid_time: 3600
+  become: true
   register: deb_install
   until: (deb_install is success) or (
             'Failed to lock apt for exclusive operation' not in deb_install['msg'] and

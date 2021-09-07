@@ -73,6 +73,16 @@
         mode: 0644
       tags: fonts
 
+    - name: Install Hyper config
+      ansible.builtin.copy:
+        src: apps/hyper/
+        dest: "{{ hyper['config'] }}/"
+        mode: 0755
+        backup: true
+      register: _backup_hyper
+      notify: Process backups
+      tags: ['hyper', 'core']
+
     - name: Install themes for bat
       ansible.builtin.command: "{{ bat_cmd }} cache --build"
       changed_when: false
@@ -95,16 +105,6 @@
       loop_control:
         label: "{{ item['name'] }}"
       tags: vim
-
-    - name: Apply alacritty template
-      ansible.builtin.template:
-        src: alacritty.yml.j2
-        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
-        mode: 0644
-        backup: true
-      register: _backup_alacritty
-      notify: Process backups
-      tags: ['alacritty', 'core']
 
     - name: Include BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
