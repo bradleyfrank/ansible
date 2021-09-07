@@ -23,7 +23,7 @@
         src: ssh/github.pem
         dest: "{{ github['key_file'] }}"
         mode: 0600
-    - name: Clone my Github repositories
+    - name: Clone my GitHub repositories
       ansible.builtin.git:
         repo: "{{ item['ssh_url'] }}"
         dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"

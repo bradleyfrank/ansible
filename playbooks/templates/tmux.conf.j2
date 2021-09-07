@@ -11,7 +11,7 @@ set -g status-interval 1
 
 set -g aggressive-resize off
 set -g mode-style "bg=colour24,fg=colour231"
-set -g pane-border-format " #P: #{s|/Users/bfrank|~|:pane_current_path} "
+set -g pane-border-format " #P: #{s|{{ ansible_user_dir }}|~|:pane_current_path} "
 set -g pane-border-status top
 {% if tmux_semver is version('3.2', operator='>=') %}
 set -g pane-active-border-style "bold,bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour166}}"

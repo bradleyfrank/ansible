@@ -8,17 +8,7 @@
 # Requires: git
 #
 
-while getopts ':hr:b:' flag; do
-    case "${flag}" in
-        h) echo "Usage: clone [-r <repo_git_url>] [-b <branch_name>]" ; exit 0 ;;
-        r) repo_url=$OPTARG ;;
-        b) branch=$OPTARG ;;
-        *) echo "Invalid argument." >&2 ; exit 1 ;;
-    esac
-done
-
-[[ -z $repo_url ]] && exit 1
-
+repo_url=$1
 repo_name="$(basename "$repo_url")"
 repo_name="${repo_name%%.*}"
 repo_path="$HOME/Development/Projects/$repo_name"
@@ -27,13 +17,13 @@ repo_path="$HOME/Development/Projects/$repo_name"
 
 mkdir -p "$repo_path"
 cd "$repo_path" || return 1
-git clone "$repo_url" --bare .git
+git clone "$repo_url" main
+cd main || return 1
 default_branch="$(git remote show origin | sed -rn 's/\s+HEAD branch:\s+(.*)$/\1/p')"
-git worktree add "$default_branch"
 
-if [[ -n $branch ]] && [[ "$branch" != "$default_branch" ]]; then
-  git worktree add "$branch"
-  tmux send-keys -t "$(tmux new-window -n "$branch" -P)" "cd ${repo_path}/${branch} && clear" C-m
-else
-  tmux send-keys -t "$(tmux new-window -n "$repo_name" -P)" "cd ${repo_path}/${default_branch} && clear" C-m
+if [[ $default_branch != main ]]; then
+  cd .. || return 1
+  mv main "$default_branch"
 fi
+
+tmux send-keys -t "$(tmux new-window -n "$repo_name" -P)" "cd ${repo_path}/${default_branch} && clear" C-m
