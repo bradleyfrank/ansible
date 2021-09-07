@@ -1,14 +1,31 @@
 ---
 
-- name: Download Starship tarball
-  ansible.builtin.get_url:
-    url: "{{ starship['tarball'] }}"
-    dest: /tmp/starship.tar.gz
-    mode: 0644
+- name: Get latest version of Starship
+  community.general.github_release:
+    user: starship
+    repo: starship
+    action: latest_release
+  register: starship_remote_version
+  tags: starship
+
+- name: Get installed version of Starship
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.command: "starship --version"
+  changed_when: false
+  register: starship_local_version
   tags: starship
 
 - name: Run Starship installer
+  vars:
+    version_local: "{{ starship_local_version['stdout'] | regex_search('tag:(.*)', '\\1') }}"
+    version_remote: "{{ starship_remote_version['tag'] }}"
   block:
+    - name: Download Starship tarball
+      ansible.builtin.get_url:
+        url: "{{ starship['tarball'] }}"
+        dest: /tmp/starship.tar.gz
+        mode: 0644
     - name: Extract Starship installer
       ansible.builtin.unarchive:
         src: /tmp/starship.tar.gz
@@ -22,4 +39,5 @@
       ansible.builtin.file:
         path: /tmp/starship.tar.gz
         state: absent
+  when: version_local != version_remote
   tags: starship
