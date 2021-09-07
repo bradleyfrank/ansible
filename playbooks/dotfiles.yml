@@ -73,16 +73,6 @@
         mode: 0644
       tags: fonts
 
-    - name: Install Hyper config
-      ansible.builtin.copy:
-        src: apps/hyper/
-        dest: "{{ hyper['config'] }}/"
-        mode: 0755
-        backup: true
-      register: _backup_hyper
-      notify: Process backups
-      tags: ['hyper', 'core']
-
     - name: Install themes for bat
       ansible.builtin.command: "{{ bat_cmd }} cache --build"
       changed_when: false

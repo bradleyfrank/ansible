@@ -169,9 +169,6 @@ vscode:
   config: "{{ ansible_user_dir }}/.config/Code"
   bin: /usr/bin/code
 
-hyper:
-  config: "{{ ansible_user_dir }}/.config/Hyper"
-
 sudoers_d: /etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 bash_shell: /usr/bin/bash
