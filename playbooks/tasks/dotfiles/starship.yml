@@ -6,7 +6,6 @@
     repo: starship
     action: latest_release
   register: starship_remote_version
-  tags: starship
 
 - name: Get installed version of Starship
   environment:
@@ -14,7 +13,6 @@
   ansible.builtin.command: "starship --version"
   changed_when: false
   register: starship_local_version
-  tags: starship
 
 - name: Run Starship installer
   vars:
@@ -40,4 +38,3 @@
         path: /tmp/starship.tar.gz
         state: absent
   when: version_local != version_remote
-  tags: starship
