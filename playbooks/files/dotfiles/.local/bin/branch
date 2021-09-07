@@ -37,7 +37,7 @@ esac
 tmux send-keys -t "$target" " \
   cd ~/Development/Projects/$repo && \
   git pull && \
-  git worktree add --checkout -b $branch .worktree/$branch && \
-  cd ./.worktree/$branch && \
+  git worktree add --checkout -b $branch ~/Development/Worktrees/$repo/$branch && \
+  cd ~/Development/Worktrees/$repo/$branch && \
   clear \
   " C-m

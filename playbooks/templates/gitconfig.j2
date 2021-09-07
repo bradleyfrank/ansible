@@ -20,7 +20,7 @@
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
   wipe = !git stash --include-untracked && git stash drop
   wt = worktree
-  wta = "!git worktree add .worktree/$1"
+  wta = "!pwd | xargs basename | xargs -I{} git worktree add ~/Development/Worktrees/{}/$1"
   wtr = !git worktree list --porcelain | grep -E "^worktree" | tail -n+2 | awk '{print $2}' \
     | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' --delimiter / --with-nth -1 \
     | xargs -I{} git worktree remove {}
