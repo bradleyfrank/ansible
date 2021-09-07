@@ -107,6 +107,10 @@
       tags: 1password
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
 
+    - name: Install Starship
+      ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
+      tags: starship
+
     - name: Apply zshrc template
       ansible.builtin.template:
         src: zshrc.j2

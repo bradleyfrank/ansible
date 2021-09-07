@@ -64,6 +64,7 @@
       ansible.builtin.command:
         cmd: "/tmp/krew/{{ krew['installer'] }} install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
+  always:
     - name: Cleanup Krew temp files
       ansible.builtin.file:
         path: "/tmp/{{ item }}"
