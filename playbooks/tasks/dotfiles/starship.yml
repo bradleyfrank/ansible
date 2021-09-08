@@ -1,40 +1,46 @@
 ---
 
+- name: Check if Starship is installed
+  ansible.builtin.stat:
+    path: "{{ starship['install_path'] }}/starship"
+  register: starship_package
+
 - name: Get latest version of Starship
   community.general.github_release:
     user: starship
     repo: starship
     action: latest_release
-  register: starship_remote_version
+  register: latest_version
 
 - name: Get installed version of Starship
   environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+    PATH: "{{ ansible_env.PATH }}:{{ starship['install_path'] }}"
   ansible.builtin.command: "starship --version"
   changed_when: false
-  register: starship_local_version
+  register: installed_version
+  when: starship_package['stat']['exists']
 
 - name: Run Starship installer
   vars:
-    version_local: "{{ starship_local_version['stdout'] | regex_search('tag:(.*)', '\\1') | first }}"
-    version_remote: "{{ starship_remote_version['tag'] }}"
+    version_local: "{{ installed_version['stdout'] | regex_search('tag:(.*)', '\\1') | first | default('0') }}"
+    version_remote: "{{ latest_version['tag'] }}"
   block:
     - name: Download Starship tarball
       ansible.builtin.get_url:
         url: "{{ starship['tarball'] }}"
-        dest: /tmp/starship.tar.gz
+        dest: "{{ starship['download_path'] }}"
         mode: 0644
     - name: Extract Starship installer
       ansible.builtin.unarchive:
-        src: /tmp/starship.tar.gz
-        dest: "{{ ansible_user_dir }}/.local/bin/"
+        src: "{{ starship['download_path'] }}"
+        dest: "{{ starship['install_path'] }}/"
     - name: Make Starship executable
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin/starship"
+        path: "{{ starship['install_path'] }}/starship"
         mode: 0755
   always:
     - name: Remove Starship tarball
       ansible.builtin.file:
-        path: /tmp/starship.tar.gz
+        path: "{{ starship['download_path'] }}"
         state: absent
   when: version_local != version_remote

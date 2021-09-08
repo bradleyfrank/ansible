@@ -145,6 +145,8 @@ bbedit:
 
 starship:
   tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-apple-darwin.tar.gz
+  install_path: "{{ ansible_user_dir }}/.local/bin"
+  download_path: /tmp/starship.tar.gz
 
 sudoers_d: /private/etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
