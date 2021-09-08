@@ -5,7 +5,7 @@
 # Author: Brad Frank
 # Date: September 2021
 # Tested: zsh 5.8 (x86_64-apple-darwin19.6.0)
-# Requires: git
+# Requires: git, jq
 #
 
 repo_url=$1
@@ -15,15 +15,14 @@ repo_path="$HOME/Development/Projects/$repo_name"
 
 [[ -d "$repo_path" ]] && exit 1
 
-mkdir -p "$repo_path"
-cd "$repo_path" || return 1
-git clone "$repo_url" main
-cd main || return 1
-default_branch="$(git remote show origin | sed -rn 's/\s+HEAD branch:\s+(.*)$/\1/p')"
+tmp_repo=$(mktemp -d)
+pushd "$tmp_repo" || exit 1
+git clone "$repo_url"
+default_branch="$(git remote show origin | grep 'HEAD branch' | awk '{print $3}')"
+repo_branch="$repo_path"/"$default_branch"
 
-if [[ $default_branch != main ]]; then
-  cd .. || return 1
-  mv main "$default_branch"
-fi
+[[ -d "$repo_branch" ]] && exit 1
 
-tmux send-keys -t "$(tmux new-window -n "$repo_name" -P)" "cd ${repo_path}/${default_branch} && clear" C-m
+mkdir -p "$repo_path" || exit 1
+mv "$tmp_repo"/"$repo_name" "$repo_branch"
+tmux new-window -n "$repo_name" -c "$repo_branch"
