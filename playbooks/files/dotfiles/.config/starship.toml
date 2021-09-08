@@ -1,4 +1,5 @@
 format = """
+$hostname\
 $directory\
 $kubernetes\
 $python\
@@ -23,6 +24,8 @@ style = "bold fg:33"
 [git_branch]
 style = "bold fg:64"
 symbol = " "
+[hostname]
+style = "bold fg:125"
 [kubernetes]
 disabled = false
 format = 'using [$symbol$context]($style) '
