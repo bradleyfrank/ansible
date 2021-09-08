@@ -16,7 +16,7 @@
 
 - name: Run Starship installer
   vars:
-    version_local: "{{ starship_local_version['stdout'] | regex_search('tag:(.*)', '\\1') }}"
+    version_local: "{{ starship_local_version['stdout'] | regex_search('tag:(.*)', '\\1') | first }}"
     version_remote: "{{ starship_remote_version['tag'] }}"
   block:
     - name: Download Starship tarball
