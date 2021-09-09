@@ -4,7 +4,6 @@
   ansible.builtin.command: tmux -V
   register: tmux_version
   changed_when: false
-  tags: [tmux, core]
 
 - name: Check for battery
   ansible.builtin.stat:
@@ -33,4 +32,6 @@
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
     backup: true
+  register: _backup_tmux_status
+  notify: Process backups
   tags: [tmux, core]

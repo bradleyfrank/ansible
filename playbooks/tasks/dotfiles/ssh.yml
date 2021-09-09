@@ -1,0 +1,23 @@
+---
+
+- name: Ensure ~/.ssh directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: 0755
+
+- name: Set proper permissions on ~/.ssh/authorized_keys
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+    state: touch
+    mode: 0600
+
+- name: Install SSH config
+  ansible.builtin.copy:
+    src: ssh/config
+    dest: "{{ ansible_user_dir }}/.ssh/config"
+    mode: 0644
+    backup: true
+  register: _backup_ssh_config
+  notify: Process backups
+  when: not work_system

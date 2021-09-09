@@ -7,7 +7,7 @@
     files:
       - .ansible_vault_password
       - .dotfiles
-      - .config/alacritty
+      - .config/cmarks
       - .config/p10k.zsh
       - .local/bin/diff-so-fancy
       - .local/bin/lib
@@ -29,7 +29,6 @@
       - yq
 
     brew_casks:
-      - alacritty
       - anylist
       - firefox-nightly
       - qownnotes

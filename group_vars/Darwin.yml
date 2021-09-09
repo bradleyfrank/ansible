@@ -118,6 +118,7 @@ system_packages:
     - xquartz
     - zoom
   casks_hardware_only:
+    - alacritty
     - docker
     - multipass
     - parallels
@@ -138,6 +139,10 @@ system_packages:
 vscode:
   config: "{{ ansible_user_dir }}/Library/Application Support/Code"
   bin: /usr/local/bin/code
+
+alacritty:
+  decorations: buttonless
+  size: 14.0
 
 bbedit:
   application_support: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit"

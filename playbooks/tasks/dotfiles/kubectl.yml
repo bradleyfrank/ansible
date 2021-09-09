@@ -5,7 +5,6 @@
   changed_when: false
   failed_when: which_kubectl['rc'] not in [0,1]
   register: which_kubectl
-  tags: kubectl
 
 - name: Install local version of kubectl
   block:
@@ -27,27 +26,23 @@
         path: /tmp/kubectl.txt
         state: absent
   when: which_kubectl['rc'] == 1
-  tags: kubectl
 
 - name: Generate kubectl completions
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
   ansible.builtin.shell: "kubectl completion zsh > {{ shell_completions }}/kubectl"
   changed_when: false
-  tags: kubectl
 
 - name: Download fubectl
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
     dest: "{{ ansible_user_dir }}/.local/share/zshrc/fubectl"
     mode: 0644
-  tags: kubectl
 
 - name: Check if Krew is installed
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
   register: kubectl_krew
-  tags: [kubectl, krew]
 
 - name: Download and install Krew
   block:
@@ -75,7 +70,6 @@
         state: absent
       loop: ['krew.tar.gz', 'krew']
   when: not kubectl_krew['stat']['exists']
-  tags: [kubectl, krew]
 
 - name: Install Krew plugins
   environment:
@@ -83,4 +77,3 @@
   ansible.builtin.command: "kubectl krew install {{ krew['plugins'] | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install.stdout"
-  tags: [kubectl, krew]

@@ -3,6 +3,21 @@
 - name: Install and configure dotfiles on localhost
   hosts: localhost
 
+  handlers:
+    - name: Process backups
+      vars:
+        backup_var: "{{ lookup('vars', item) }}"
+      ansible.builtin.include_tasks: tasks/backups.yml
+      when: backup_var['backup_file'] is defined
+      loop: "{{ query('varnames', '^_backup_.+$') }}"
+      loop_control:
+        label: "{{ item | replace('_backup_', '') }}"
+      tags: ['always', 'backups']
+
+# ============================================================================
+#  home directory structure & assets
+# ----------------------------------------------------------------------------
+
   tasks:
     - name: Create ~/Development folder structure
       ansible.builtin.file:
@@ -10,54 +25,7 @@
         state: directory
         mode: 0755
       loop: ['Projects', 'Build', 'Scratch', 'Reference', 'Logs']
-      tags: devdirs
-
-    - name: Clone reference Git repositories
-      ansible.builtin.git:
-        repo: "{{ item['https_url'] }}"
-        dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
-        depth: '1'
-        version: "{{ item['version'] | default('master') }}"
-      loop: "{{ git_reference_repos }}"
-      loop_control:
-        label: "{{ item['name'] }}"
-      tags: git_reference
-
-    - name: Create dotfile directory structure
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        state: directory
-        mode: 0755
-      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
-      loop_control:
-        label: "{{ item['path'] }}"
-      when: item['state'] == 'directory'
-      tags: ['apps', 'core']
-
-    - name: Copy dotfiles into home directory
-      ansible.builtin.copy:
-        src: "{{ item['src'] }}"
-        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        mode: 0644
-      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
-      loop_control:
-        label: "{{ item['path'] }}"
-      when: item['state'] == 'file'
-      tags: ['apps', 'core']
-
-    - name: Make scripts executable
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin"
-        state: directory
-        mode: 0755
-        recurse: true
-      tags: ['dotfiles', 'core']
-
-    - name: Install Python packages
-      ansible.builtin.pip:
-        name: "{{ python_packages }}"
-        extra_args: --user
-      tags: python
+      tags: core
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
@@ -73,34 +41,92 @@
         mode: 0644
       tags: fonts
 
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: "{{ backups_dir }}"
+        state: directory
+        mode: 0755
+      tags: [always, backups]
+
+    - name: Import GitHub tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/github.yml
+      when: not work_system
+      tags: github
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name: "{{ python_packages }}"
+        extra_args: --user
+      tags: python
+
+# ============================================================================
+#  dotfiles & command line configuration
+# ----------------------------------------------------------------------------
+
+    - name: Create dotfile directory structure
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        state: directory
+        mode: 0755
+      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      when: item['state'] == 'directory'
+      tags: core
+
+    - name: Install dotfiles
+      ansible.builtin.copy:
+        src: "{{ item['src'] }}"
+        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
+        mode: 0644
+      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      when: item['state'] == 'file'
+      tags: core
+
+    - name: Make scripts executable
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.local/bin"
+        state: directory
+        mode: 0755
+        recurse: true
+      tags: core
+
     - name: Install themes for bat
       ansible.builtin.command: "{{ bat_cmd }} cache --build"
       changed_when: false
-      tags: bat
+      tags: core
 
-    - name: Create vim extensions directory path
-      ansible.builtin.file:
-        path: "{{ vim_extensions_dest }}"
-        state: directory
+    - name: Install gitconfig
+      ansible.builtin.template:
+        src: gitconfig.j2
+        dest: "{{ ansible_user_dir }}/.gitconfig"
         mode: 0755
-      tags: vim
+        backup: true
+      register: _backup_gitconfig
+      notify: Process backups
+      tags: core
 
-    - name: Install vim extensions
-      ansible.builtin.git:
-        repo: "{{ item['repo'] }}"
-        dest: "{{ vim_extensions_dest }}/{{ item['name'] }}"
-        depth: '1'
-        version: "{{ item['version'] | default(omit) }}"
-      loop: "{{ vim_extensions }}"
-      loop_control:
-        label: "{{ item['name'] }}"
-      tags: vim
+    - name: Import ssh tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
+      tags: [ssh, core]
 
-    - name: Generate 1Password-cli completions
-      ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
-      changed_when: false
-      tags: 1password
-      when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
+    - name: Import tmux tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
+      tags: [tmux, core]
+
+    - name: Import vim tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
+      tags: [vim, core]
+
+    - name: Import kubectl tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
+      tags: kubectl
+
+# ============================================================================
+#  zsh & completions
+# ----------------------------------------------------------------------------
 
     - name: Install Starship
       ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
@@ -114,66 +140,46 @@
         backup: true
       register: _backup_zshrc
       notify: Process backups
-      tags: ['zsh', 'core']
+      tags: [zsh, core]
 
-    - name: Ensure ~/.ssh directory exists
+    - name: Generate 1Password-cli completions
+      ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
+      changed_when: false
+      tags: 1password
+      when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
+
+# ============================================================================
+#  gui apps configuration
+# ----------------------------------------------------------------------------
+
+    - name: Ensure ~/.config/alacritty directory exists
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.ssh"
+        path: "{{ ansible_user_dir }}/.config/alacritty"
         state: directory
         mode: 0755
-      tags: ssh
 
-    - name: Set proper permissions on ~/.ssh/authorized_keys
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
-        state: touch
-        mode: 0600
-      tags: ssh
-
-    - name: Install SSH config
-      ansible.builtin.copy:
-        src: ssh/config
-        dest: "{{ ansible_user_dir }}/.ssh/config"
+    - name: Apply alacritty template
+      ansible.builtin.template:
+        src: alacritty.yml.j2
+        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
         mode: 0644
         backup: true
-      register: _backup_ssh_config
+      register: _backup_alacritty
       notify: Process backups
-      when: not work_system
-      tags: ['ssh_config', 'core']
-
-    - name: Install gitconfig
-      ansible.builtin.template:
-        src: gitconfig.j2
-        dest: "{{ ansible_user_dir }}/.gitconfig"
-        mode: 0755
-        backup: true
-      register: _backup_gitconfig
-      notify: Process backups
-      tags: ['git', 'core']
+      tags: alacritty
 
     - name: Check if vscode is installed
       ansible.builtin.stat:
         path: "{{ vscode['bin'] }}"
       register: vscode_bin
-      tags: [vscode, core]
-
-    - name: Include tmux tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
+      tags: vscode
 
     - name: Import VSCode tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
       when: vscode_bin['stat']['exists']
+      tags: vscode
 
-    - name: Import kubectl tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
-      tags: kubectl
-
-    - name: Clone public and private GitHub repositories
-      ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: not work_system
-      tags: github
-
-    - name: Include BBEdit tasks
+    - name: Import BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
       when: ansible_system == 'Darwin'
       tags: bbedit
@@ -181,27 +187,9 @@
     - name: Update macOS app icons
       vars:
         app: "/Applications/{{ item['path'] | splitext | first }}.app"
-      ansible.builtin.include_tasks: tasks/dotfiles/icons.yml
+      ansible.builtin.include_tasks: tasks/dotfiles/mac_icons.yml
       when: "'Darwin' in ansible_system"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:
         label: "{{ app }}"
       tags: icons
-
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: "{{ backups_dir }}"
-        state: directory
-        mode: 0755
-      tags: ['always', 'backups']
-
-  handlers:
-    - name: Process backups
-      vars:
-        backup_var: "{{ lookup('vars', item) }}"
-      ansible.builtin.include_tasks: tasks/backups.yml
-      when: backup_var['backup_file'] is defined
-      loop: "{{ query('varnames', '^_backup_.+$') }}"
-      loop_control:
-        label: "{{ item | replace('_backup_', '') }}"
-      tags: ['always', 'backups']

@@ -36,6 +36,10 @@ repos:
       https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
     key: https://download.docker.com/linux/ubuntu/gpg
     keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+  - name: alacritty
+    repo: ppa:mmstick76/alacritty
+    keyserver: keyserver.ubuntu.com
+    id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
   - name: shutter
     repo: ppa:shutter/ppa
     keyserver: keyserver.ubuntu.com
@@ -44,6 +48,7 @@ repos:
 packages:
   - 1password
   - abcde
+  - alacritty
   - apt-file
   - apt-transport-https  # docker
   - asciinema
@@ -169,6 +174,10 @@ flatpaks:
 vscode:
   config: "{{ ansible_user_dir }}/.config/Code"
   bin: /usr/bin/code
+
+alacritty:
+  decorations: none
+  size: 12.0
 
 starship:
   tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
