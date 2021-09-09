@@ -152,21 +152,10 @@
 #  gui apps configuration
 # ----------------------------------------------------------------------------
 
-    - name: Ensure ~/.config/alacritty directory exists
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.config/alacritty"
-        state: directory
-        mode: 0755
-
-    - name: Apply alacritty template
-      ansible.builtin.template:
-        src: alacritty.yml.j2
-        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
-        mode: 0644
-        backup: true
-      register: _backup_alacritty
-      notify: Process backups
-      tags: alacritty
+    - name: Import terminal tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/terminals.yml
+      when: ansible_system == 'Darwin'
+      tags: terminals
 
     - name: Check if vscode is installed
       ansible.builtin.stat:

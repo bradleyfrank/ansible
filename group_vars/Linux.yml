@@ -179,6 +179,9 @@ alacritty:
   decorations: none
   size: 12.0
 
+hyper:
+  fontFamily: 'SauceCodePro Nerd Font'
+
 starship:
   tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
   install_path: "{{ ansible_user_dir }}/.local/bin"

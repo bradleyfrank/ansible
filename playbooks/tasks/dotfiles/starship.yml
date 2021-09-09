@@ -20,9 +20,15 @@
   register: installed_version
   when: starship_package['stat']['exists']
 
+- name: Print fake version for Starship
+  ansible.builtin.command: "echo 0.0.0"
+  changed_when: false
+  register: installed_version
+  when: not starship_package['stat']['exists']
+
 - name: Run Starship installer
   vars:
-    version_local: "{{ installed_version['stdout'] | regex_search('tag:(.*)', '\\1') | first | default('0') }}"
+    version_local: "{{ installed_version['stdout'] | regex_search('tag:(.*)', '\\1') | first }}"
     version_remote: "{{ latest_version['tag'] }}"
   block:
     - name: Download Starship tarball
