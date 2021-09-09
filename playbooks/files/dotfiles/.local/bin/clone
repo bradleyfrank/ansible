@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# Clones a bare repository, and adds the default branch as a worktree.
+# Clones a repository into a directory named for its default branch.
 # Author: Brad Frank
 # Date: September 2021
 # Tested: zsh 5.8 (x86_64-apple-darwin19.6.0)

@@ -24,4 +24,4 @@
     dest: "{{ vscode['config'] }}/"
     mode: 0755
     backup: true
-  tags: ['vscode', 'core']
+  tags: [vscode, core]

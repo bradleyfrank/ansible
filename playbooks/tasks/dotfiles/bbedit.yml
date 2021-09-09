@@ -5,18 +5,15 @@
     src: /Applications/BBEdit.app/Contents/Helpers/bbedit_tool
     dest: "/usr/local/bin/bbedit"
     mode: 0755
-  tags: bbedit
 
 - name: Install BBEdit color themes
   ansible.builtin.copy:
     src: apps/bbedit/
     dest: "{{ bbedit['color_schemes'] }}/"
     mode: 0755
-  tags: bbedit
 
 - name: Ensure symlink exists to 'Application Support' directory
   ansible.builtin.file:
     src: "{{ ansible_user_dir }}/Library/Application Support/BBEdit"
     dest: "{{ bbedit['application_support'] }}"
     state: link
-  tags: bbedit

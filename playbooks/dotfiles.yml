@@ -96,11 +96,6 @@
         label: "{{ item['name'] }}"
       tags: vim
 
-    - name: Include BBEdit tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
-      when: ansible_system == 'Darwin'
-      tags: bbedit
-
     - name: Generate 1Password-cli completions
       ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
       changed_when: false
@@ -146,10 +141,6 @@
       when: not work_system
       tags: ['ssh_config', 'core']
 
-    - name: Include tmux tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
-      tags: ['tmux', 'core']
-
     - name: Install gitconfig
       ansible.builtin.template:
         src: gitconfig.j2
@@ -164,12 +155,14 @@
       ansible.builtin.stat:
         path: "{{ vscode['bin'] }}"
       register: vscode_bin
-      tags: ['vscode', 'core']
+      tags: [vscode, core]
+
+    - name: Include tmux tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
 
     - name: Import VSCode tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
       when: vscode_bin['stat']['exists']
-      tags: ['vscode', 'core']
 
     - name: Import kubectl tasks
       ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
@@ -178,7 +171,12 @@
     - name: Clone public and private GitHub repositories
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
       when: not work_system
-      tags: github_projects
+      tags: github
+
+    - name: Include BBEdit tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
+      when: ansible_system == 'Darwin'
+      tags: bbedit
 
     - name: Update macOS app icons
       vars:
