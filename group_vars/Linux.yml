@@ -180,7 +180,8 @@ alacritty:
   size: 12.0
 
 hyper:
-  fontFamily: 'SauceCodePro Nerd Font'
+  fontFamily: "SauceCodePro Nerd Font"
+  padding: "0px 14px"
 
 starship:
   tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz

@@ -145,7 +145,8 @@ alacritty:
   size: 14.0
 
 hyper:
-  fontFamily: 'SauceCodeProNerdFontComplete-Regular',
+  fontFamily: "SauceCodeProNerdFontComplete-Regular"
+  padding: "12px 14px"
 
 bbedit:
   application_support: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit"

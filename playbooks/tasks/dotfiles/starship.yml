@@ -5,13 +5,6 @@
     path: "{{ starship['install_path'] }}/starship"
   register: starship_package
 
-- name: Get latest version of Starship
-  community.general.github_release:
-    user: starship
-    repo: starship
-    action: latest_release
-  register: latest_version
-
 - name: Get installed version of Starship
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ starship['install_path'] }}"
@@ -21,10 +14,17 @@
   when: starship_package['stat']['exists']
 
 - name: Print fake version for Starship
-  ansible.builtin.command: "echo 0.0.0"
+  ansible.builtin.command: "echo 'tag:v0.0.0'"
   changed_when: false
   register: installed_version
   when: not starship_package['stat']['exists']
+
+- name: Get latest version of Starship
+  community.general.github_release:
+    user: starship
+    repo: starship
+    action: latest_release
+  register: latest_version
 
 - name: Run Starship installer
   vars:
