@@ -14,11 +14,12 @@
         label: "{{ item | replace('_backup_', '') }}"
       tags: ['always', 'backups']
 
+  tasks:
+
 # ============================================================================
-#  home directory structure & assets
+#  dotfiles & command line configuration
 # ----------------------------------------------------------------------------
 
-  tasks:
     - name: Create ~/Development folder structure
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/Development/{{ item }}"
@@ -26,42 +27,6 @@
         mode: 0755
       loop: ['Projects', 'Build', 'Scratch', 'Reference', 'Logs']
       tags: core
-
-    - name: Ensure fonts directory exists
-      ansible.builtin.file:
-        path: "{{ font_dir }}"
-        state: directory
-        mode: 0700
-      tags: fonts
-
-    - name: Copy fonts
-      ansible.builtin.copy:
-        src: fonts/
-        dest: "{{ font_dir }}/"
-        mode: 0644
-      tags: fonts
-
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: "{{ backups_dir }}"
-        state: directory
-        mode: 0755
-      tags: [always, backups]
-
-    - name: Import GitHub tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: not work_system
-      tags: github
-
-    - name: Install Python packages
-      ansible.builtin.pip:
-        name: "{{ python_packages }}"
-        extra_args: --user
-      tags: python
-
-# ============================================================================
-#  dotfiles & command line configuration
-# ----------------------------------------------------------------------------
 
     - name: Create dotfile directory structure
       ansible.builtin.file:
@@ -108,6 +73,20 @@
       notify: Process backups
       tags: core
 
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: "{{ backups_dir }}"
+        state: directory
+        mode: 0755
+      tags: [always, backups]
+
+    - name: Ensure fonts directory exists
+      ansible.builtin.file:
+        path: "{{ font_dir }}"
+        state: directory
+        mode: 0700
+      tags: fonts
+
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
       tags: [ssh, core]
@@ -147,6 +126,28 @@
       changed_when: false
       tags: 1password
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
+
+# ============================================================================
+#  assets & modules
+# ----------------------------------------------------------------------------
+
+    - name: Copy fonts
+      ansible.builtin.copy:
+        src: fonts/
+        dest: "{{ font_dir }}/"
+        mode: 0644
+      tags: fonts
+
+    - name: Import GitHub tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/github.yml
+      when: not work_system
+      tags: github
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        name: "{{ python_packages }}"
+        extra_args: --user
+      tags: python
 
 # ============================================================================
 #  gui apps configuration
