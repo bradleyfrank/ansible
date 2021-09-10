@@ -154,7 +154,6 @@
 
     - name: Import terminal tasks
       ansible.builtin.import_tasks: tasks/dotfiles/terminals.yml
-      when: ansible_system == 'Darwin'
       tags: terminals
 
     - name: Check if vscode is installed
