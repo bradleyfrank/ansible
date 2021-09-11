@@ -10,14 +10,8 @@
     PATH: "{{ ansible_env.PATH }}:{{ starship['install_path'] }}"
   ansible.builtin.command: "starship --version"
   changed_when: false
-  register: installed_version
+  register: starship_version
   when: starship_package['stat']['exists']
-
-- name: Print fake version for Starship
-  ansible.builtin.command: "echo 'tag:v0.0.0'"
-  changed_when: false
-  register: installed_version
-  when: not starship_package['stat']['exists']
 
 - name: Get latest version of Starship
   community.general.github_release:
@@ -28,7 +22,8 @@
 
 - name: Run Starship installer
   vars:
-    version_local: "{{ installed_version['stdout'] | regex_search('tag:(.*)', '\\1') | first }}"
+    installed_version: "{{ starship_version['stdout'] | default('tag:v0.0.0') }}"
+    version_local: "{{ installed_version | regex_search('tag:(.*)', '\\1') | first }}"
     version_remote: "{{ latest_version['tag'] }}"
   block:
     - name: Download Starship tarball
