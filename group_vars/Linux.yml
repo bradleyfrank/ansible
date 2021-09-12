@@ -100,6 +100,7 @@ packages:
     - python3-dev
     - python3-pip
     - reptyr
+    - ripgrep
     - ruby
     - shellcheck
     - ssh

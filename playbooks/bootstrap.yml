@@ -19,6 +19,12 @@
       become: true
       when: "'Linux' in ansible_system"
 
+    - name: Add DNS fallback
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^#?FallbackDNS='
+        line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
+
     - name: Setup Linux repositories
       block:
         - name: Install gpg keys
