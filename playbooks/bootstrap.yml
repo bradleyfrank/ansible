@@ -24,6 +24,7 @@
         path: /etc/systemd/resolved.conf
         regexp: '^#?FallbackDNS='
         line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
+      become: true
 
     - name: Setup Linux repositories
       block:
