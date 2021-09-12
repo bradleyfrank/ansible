@@ -3,6 +3,7 @@
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ hostname }}"
+  become: true
 
 - name: Set user shell to zsh and add to groups
   ansible.builtin.user:
