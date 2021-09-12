@@ -5,8 +5,7 @@ set -o errexit
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
-INSTALL_BASE=$HOME/.local/opt
-INSTALL_DIR=$INSTALL_BASE/bbdm
+ANSIBLE_REPO_PATH="$(mktemp -d)"
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
@@ -44,11 +43,8 @@ fi
 PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
 python3 -m pip install --user ansible docker github3.py
 
-[ -d "$INSTALL_DIR" ] && rm -rf "$INSTALL_DIR"
-[ -d "$INSTALL_BASE" ] || mkdir -p "$INSTALL_BASE"
-
-git clone "$ANSIBLE_REPO_URL" "$INSTALL_DIR"
-cd "$INSTALL_DIR" >/dev/null
+git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
+cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
 
 ansible-galaxy collection install -r setup/requirements.yml
@@ -58,3 +54,5 @@ case $ANSIBLE_REPO_PLAYBOOK in
   bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
   dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
 esac
+
+rm -rf "$ANSIBLE_REPO_PATH"

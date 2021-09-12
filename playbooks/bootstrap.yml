@@ -57,6 +57,7 @@
         path: "{{ item }}"
         mode: 0755
       loop: "{{ zsh_directories }}"
+      when: "'Darwin' in ansible_system"
       tags: shell
 
     - name: Clone dotfiles repo
