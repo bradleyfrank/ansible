@@ -82,7 +82,6 @@ system_packages:
   casks_common:
     - 1password
     - 1password-cli
-    - alacritty
     - appcleaner
     - balenaetcher
     - bbedit
@@ -119,6 +118,7 @@ system_packages:
     - xquartz
     - zoom
   casks_hardware_only:
+    - alacritty
     - docker
     - multipass
     - parallels
@@ -144,8 +144,19 @@ alacritty:
   decorations: buttonless
   size: 14.0
 
+hyper:
+  fontFamily: "SauceCodeProNerdFontComplete-Regular"
+  padding: "12px 14px"
+  fontSize: 14
+
 bbedit:
-  color_themes: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes"
+  application_support: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit"
+  color_schemes: "{{ ansible_user_dir }}/Library/Application Support/BBEdit/Color Schemes"
+
+starship:
+  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-apple-darwin.tar.gz
+  install_path: "{{ ansible_user_dir }}/.local/bin"
+  download_path: /tmp/starship.tar.gz
 
 sudoers_d: /private/etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+#
+# Clones a repository into a directory named for its default branch.
+# Author: Brad Frank
+# Date: September 2021
+# Tested: zsh 5.8 (x86_64-apple-darwin19.6.0)
+# Requires: git, jq
+#
+
+repo_url=$1
+repo_name="$(basename "$repo_url")"
+repo_name="${repo_name%%.*}"
+repo_path="$HOME/Development/Projects/$repo_name"
+
+[[ -d "$repo_path" ]] && exit 1
+
+tmp_repo=$(mktemp -d)
+git clone "$repo_url" "$tmp_repo/$repo_name"
+cd "$tmp_repo/$repo_name" || exit 1
+default_branch="$(git remote show origin | grep 'HEAD branch' | awk '{print $3}')"
+repo_branch="$repo_path/$default_branch"
+
+[[ -d "$repo_branch" ]] && exit 1
+
+mkdir -p "$repo_path"
+mv -T "$tmp_repo/$repo_name" "$repo_branch"
+tmux new-window -n "$repo_name" -c "$repo_branch"

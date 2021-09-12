@@ -95,6 +95,7 @@ packages:
   - htop
   - httpie
   - iftop
+  - inxi
   - jq
   - keepassxc
   - keychain
@@ -178,6 +179,16 @@ alacritty:
   decorations: none
   size: 12.0
 
+hyper:
+  fontFamily: "SauceCodePro Nerd Font"
+  padding: "0px 14px"
+  fontSize: 12
+
+starship:
+  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
+  install_path: "{{ ansible_user_dir }}/.local/bin"
+  download_path: /tmp/starship.tar.gz
+
 sudoers_d: /etc/sudoers.d
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 bash_shell: /usr/bin/bash
@@ -224,7 +235,7 @@ dconf:
     /org/gnome/gedit/preferences/editor/display-line-numbers: "true"
     /org/gnome/gedit/preferences/editor/display-overview-map: "true"
     /org/gnome/gedit/preferences/editor/display-right-margin: "true"
-    /org/gnome/gedit/preferences/editor/editor-font: "'Source Code Pro 11'"
+    /org/gnome/gedit/preferences/editor/editor-font: "'SauceCodePro Nerd Font 11'"
     /org/gnome/gedit/preferences/editor/highlight-current-line: "true"
     /org/gnome/gedit/preferences/editor/insert-spaces: "true"
     /org/gnome/gedit/preferences/editor/right-margin-position: "uint32 100"
@@ -243,23 +254,26 @@ dconf:
     /org/gnome/nautilus/preferences/show-delete-permanently: "true"
     /org/gnome/settings-daemon/plugins/color/night-light-enabled: "true"
     /org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic: "true"
-    /org/gnome/shell/extensions/dash-to-dock/autohide: "true"
-    /org/gnome/shell/extensions/dash-to-dock/click-action: "'previews'"
-    /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size: "36"
-    /org/gnome/shell/extensions/dash-to-dock/dock-fixed: "false"
-    /org/gnome/shell/extensions/dash-to-dock/dock-position: "'BOTTOM'"
-    /org/gnome/shell/extensions/dash-to-dock/extend-height: "false"
-    /org/gnome/shell/extensions/dash-to-dock/force-straight-corner: "false"
-    /org/gnome/shell/extensions/dash-to-dock/intellihide: "false"
-    /org/gnome/shell/extensions/dash-to-dock/manualhide: "false"
-    /org/gnome/shell/extensions/dash-to-dock/running-indicator-dominant-color: "true"
     /org/gnome/shell/disable-user-extensions: "false"
+    /org/gnome/shell/extensions/system-monitor/battery-display: "false"
+    /org/gnome/shell/extensions/system-monitor/cpu-graph-width: "25"
+    /org/gnome/shell/extensions/system-monitor/cpu-show-text: "false"
+    /org/gnome/shell/extensions/system-monitor/cpu-style: "'both'"
+    /org/gnome/shell/extensions/system-monitor/icon-display: "false"
+    /org/gnome/shell/extensions/system-monitor/memory-graph-width: "25"
+    /org/gnome/shell/extensions/system-monitor/memory-show-text: "false"
+    /org/gnome/shell/extensions/system-monitor/memory-style: "'both'"
+    /org/gnome/shell/extensions/system-monitor/net-display: "false"
+    /org/gnome/shell/extensions/system-monitor/swap-display: "true"
+    /org/gnome/shell/extensions/system-monitor/swap-graph-width: "25"
+    /org/gnome/shell/extensions/system-monitor/swap-show-text: "false"
+    /org/gnome/shell/extensions/system-monitor/swap-style: "'both'"
     /org/gnome/system/location/enabled: "true"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/audible-bell: "false"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/background-color: "'rgb(253,246,227)'"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/bold-is-bright: "false"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/cursor-colors-set: "false"
-    /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/font: "'Source Code Pro 12'"
+    /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/font: "'SauceCodePro Nerd Font 12'"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/foreground-color: "'rgb(101,123,131)'"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/highlight-colors-set: "false"
     /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/palette: "\
@@ -277,20 +291,25 @@ dconf:
     /org/gnome/terminal/legacy/theme-variant: "'system'"
   Ubuntu:
     /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
+    /org/gnome/shell/disabled-extensions: "[\
+      'ding@rastersoft.com',
+      'window-list@gnome-shell-extensions.gcampax.github.com',
+      'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
+      'places-menu@gnome-shell-extensions.gcampax.github.com',
+      'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
     /org/gnome/shell/enabled-extensions: "[\
       'GPaste@gnome-shell-extensions.gnome.org',
       'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
       'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
       'ubuntu-appindicators@ubuntu.com',
+      'system-monitor@paradoxxx.zero.gmail.com',
       'ubuntu-dock@ubuntu.com']"
     /org/gnome/shell/favorite-apps: "[\
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
-      'com.alacritty.Alacritty.desktop',
       'code.desktop',
       '1password.desktop',
       'org.gnome.gedit.desktop',
-      'spotify.desktop',
       'signal-desktop.desktop']"
   Pop!_OS:
     /org/gnome/desktop/interface/enable-hot-corners: "true"
@@ -320,9 +339,7 @@ dconf:
       'pop-cosmic-applications.desktop',
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
-      'com.alacritty.Alacritty.desktop',
       'code.desktop',
       '1password.desktop',
       'org.gnome.gedit.desktop',
-      'spotify.desktop',
       'signal-desktop.desktop']"

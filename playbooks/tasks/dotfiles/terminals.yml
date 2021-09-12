@@ -1,0 +1,25 @@
+---
+
+- name: Apply Hyper template
+  ansible.builtin.template:
+    src: hyper.js.j2
+    dest: "{{ ansible_user_dir }}/.hyper.js"
+    mode: 0644
+    backup: true
+  register: _backup_hyperjs
+  notify: Process backups
+
+- name: Ensure ~/.config/alacritty directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/alacritty"
+    state: directory
+    mode: 0755
+
+- name: Apply Alacritty template
+  ansible.builtin.template:
+    src: alacritty.yml.j2
+    dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
+    mode: 0644
+    backup: true
+  register: _backup_alacritty
+  notify: Process backups

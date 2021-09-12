@@ -1,0 +1,17 @@
+---
+
+- name: Create vim extensions directory path
+  ansible.builtin.file:
+    path: "{{ vim_extensions_dest }}"
+    state: directory
+    mode: 0755
+
+- name: Install vim extensions
+  ansible.builtin.git:
+    repo: "{{ item['repo'] }}"
+    dest: "{{ vim_extensions_dest }}/{{ item['name'] }}"
+    depth: '1'
+    version: "{{ item['version'] | default(omit) }}"
+  loop: "{{ vim_extensions }}"
+  loop_control:
+    label: "{{ item['name'] }}"

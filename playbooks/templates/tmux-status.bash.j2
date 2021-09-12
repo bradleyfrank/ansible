@@ -11,11 +11,12 @@ declare -r fg_Default="#[fg=default]" \
            fg_Yellow="#[fg=colour136]" \
            fg_Green="#[fg=colour64]" \
            fg_Orange="#[fg=colour166]" \
-           fg_Red="#[fg=colour160]"
+           fg_Red="#[fg=colour160]" \
+           fg_Magenta="#[fg=colour125]"
 
 get_uptime() {
   local uptime; uptime=$(uptime | grep -Po 'up(.*?),' | awk '$1=$1' | sed "s/up/${fg_Green}up${fg_Default}/")
-  printf "[%s]" "${uptime/,/}"
+  printf "%s" "${uptime/,/}"
 }
 
 load_average() {
@@ -34,51 +35,43 @@ load_average() {
   done <<< "$(grep -Po '\d+\.\d+' /proc/loadavg)"
   {% endif -%}
 
-  printf "[%s]" "$(awk -F\; '{print $1" "$2" "$3}' <<< "$output")"
+  printf "%s" "$(awk -F\; '{print $1" "$2" "$3}' <<< "$output")"
 }
 
 battery() {
   local battery percent status fg_Color
   {% if 'Darwin' in ansible_system -%}
   battery="$(pmset -g batt | grep 'InternalBattery' | cut -f2)"
-  percent="$(awk -F\; '{print $1}' <<< "$battery" | sed 's|%||')"
-  status="$(awk -F\; '{print $2}' <<< "$battery")"
+  percent="$(awk '{print $1}' <<< "$battery" | tr -d '%;')"
+  status="$(awk '{print $2}' <<< "$battery" | tr -d ';')"
   {% elif 'Linux' in ansible_system -%}
-  if [[ -d /sys/class/power_supply/BAT0 ]]; then
-    percent="$(sed 's|%||' /sys/class/power_supply/BAT0/capacity)"
-    status="$(cat /sys/class/power_supply/BAT0/status)"
-  fi
+  percent="$(sed 's|%||' /sys/class/power_supply/BAT0/capacity)"
+  status="$(cat /sys/class/power_supply/BAT0/status)"
   {% endif -%}
 
-  if [[ -n $percent ]] && [[ -n $status ]]; then
-    if   [[ $percent -le 100 && $percent -ge 75 ]]; then fg_Color=$fg_Green
-    elif [[ $percent -lt 75  && $percent -ge 50 ]]; then fg_Color=$fg_Yellow
-    elif [[ $percent -lt 50  && $percent -ge 25 ]]; then fg_Color=$fg_Orange
-    elif [[ $percent -lt 25  && $percent -ge 0  ]]; then fg_Color=$fg_Red
-    fi
+  if   [[ $percent -le 100 && $percent -ge 75 ]]; then fg_Color=$fg_Green
+  elif [[ $percent -lt 75  && $percent -ge 50 ]]; then fg_Color=$fg_Yellow
+  elif [[ $percent -lt 50  && $percent -ge 25 ]]; then fg_Color=$fg_Orange
+  elif [[ $percent -lt 25  && $percent -ge 0  ]]; then fg_Color=$fg_Red
   fi
 
-  printf "[%s%s%%%s%s]" "${fg_Color}" "${percent}" "${fg_Default}" "${status}"
+  printf "%s%s%%%s %s" "${fg_Color}" "${percent}" "${fg_Default}" "${status,,}"
 }
 
 distribution() {
-  printf "[%s{{ ansible_distribution }}%s {{ ansible_distribution_version }}]" "${fg_Green}" "${fg_Default}"
-}
-
-host_name() {
-  local fg_Color
-  {% if 'Linux' in ansible_system -%}
-  if w --short | grep $(tty | sed 's|/dev/||') | grep -qE '(?.[0-9]+){4}'; then fg_Color=$fg_Orange
-  else fg_Color=$fg_Green
-  fi
-  {% else -%}
-  fg_Color=$fg_Green
+  local system_info distro version
+  {% if 'Darwin' in ansible_system -%}
+  system_info="$(sw_vers | awk '{print $2}' | head -n 2 | xargs)"
+  {% elif 'Linux' in ansible_system -%}
+  system_info="$(lsb_release --short --description)"
   {% endif -%}
-  printf "[%s{{ ansible_hostname }}%s]" "${fg_Color}" "${fg_Default}"
+  distro="${fg_Green}$(awk '{print $1}' <<< $system_info)"
+  version="${fg_Default}$(awk '{print $2}' <<< $system_info)"
+  printf "%s %s" "${distro}" "${version}"
 }
 
 {% if battery_present -%}
-printf "#[bold]%s %s %s %s %s#[nobold]" "$(host_name)" "$(battery)" "$(load_average)" "$(get_uptime)" "$(distribution)"
+printf "#[bold]%s  %s  %s  %s#[nobold]" "$(battery)" "$(load_average)" "$(get_uptime)" "$(distribution)"
 {% else -%}
-printf "#[bold]%s %s %s %s#[nobold]" "$(host_name)" "$(load_average)" "$(get_uptime)" "$(distribution)"
+printf "#[bold]%s  %s  %s#[nobold]" "$(load_average)" "$(get_uptime)" "$(distribution)"
 {% endif -%}

@@ -4,14 +4,13 @@
   ansible.builtin.command: tmux -V
   register: tmux_version
   changed_when: false
-  tags: ['tmux', 'core']
 
 - name: Check for battery
   ansible.builtin.stat:
     path: /sys/class/power_supply/BAT0
   register: battery
   when: "'Linux' in ansible_system"
-  tags: ['tmux', 'core']
+  tags: [tmux, core]
 
 - name: Install tmux config
   vars:
@@ -23,7 +22,7 @@
     backup: true
   register: _backup_tmux_conf
   notify: Process backups
-  tags: ['tmux', 'core']
+  tags: [tmux, core]
 
 - name: Install tmux script
   vars:
@@ -33,4 +32,6 @@
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
     backup: true
-  tags: tmux
+  register: _backup_tmux_status
+  notify: Process backups
+  tags: [tmux, core]

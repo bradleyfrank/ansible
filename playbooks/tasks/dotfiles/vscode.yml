@@ -5,7 +5,6 @@
   changed_when: false
   failed_when: code_list_extensions['rc'] not in [0,1]
   register: code_list_extensions
-  tags: vscode
 
 - name: Install VSCode extensions not already installed
   vars:
@@ -16,7 +15,6 @@
   loop: "{{ vscode_extensions | difference(installed_extensions) }}"
   loop_control:
     label: "{{ item }}"
-  tags: vscode
 
 - name: Install VSCode configs
   ansible.builtin.copy:
@@ -24,4 +22,3 @@
     dest: "{{ vscode['config'] }}/"
     mode: 0755
     backup: true
-  tags: ['vscode', 'core']

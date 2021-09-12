@@ -43,7 +43,6 @@
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
   register: kubectl_krew
-  tags: krew
 
 - name: Download and install Krew
   block:
@@ -64,13 +63,13 @@
       ansible.builtin.command:
         cmd: "/tmp/krew/{{ krew['installer'] }} install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
+  always:
     - name: Cleanup Krew temp files
       ansible.builtin.file:
         path: "/tmp/{{ item }}"
         state: absent
       loop: ['krew.tar.gz', 'krew']
   when: not kubectl_krew['stat']['exists']
-  tags: krew
 
 - name: Install Krew plugins
   environment:
@@ -78,4 +77,3 @@
   ansible.builtin.command: "kubectl krew install {{ krew['plugins'] | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install.stdout"
-  tags: krew
