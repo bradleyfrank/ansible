@@ -14,14 +14,14 @@
   until: (apt_upgrade is success) or (
             'Failed to lock apt for exclusive operation' not in apt_upgrade['msg'] and
             '/var/lib/dpkg/lock' not in apt_upgrade['msg']
-          )
+         )
   retries: 10
   delay: 30
   tags: [upgrade, apt]
 
-- name: Install Ubuntu/Pop!_OS packages
+- name: Install Ubuntu/Pop!_OS cli packages
   ansible.builtin.apt:
-    name: "{{ packages }}"
+    name: "{{ packages['cli'] }}"
     state: present
     autoclean: true
     autoremove: true
@@ -29,14 +29,34 @@
     cache_valid_time: 3600
     install_recommends: true
   become: true
-  register: apt_install
-  until: (apt_install is success) or (
-            'Failed to lock apt for exclusive operation' not in apt_install['msg'] and
-            '/var/lib/dpkg/lock' not in apt_install['msg']
-          )
+  register: cli_install
+  until: (cli_install is success) or (
+            'Failed to lock apt for exclusive operation' not in cli_install['msg'] and
+            '/var/lib/dpkg/lock' not in cli_install['msg']
+         )
   retries: 10
   delay: 30
   tags: [packages, apt]
+
+- name: Install Ubuntu/Pop!_OS gui packages
+  ansible.builtin.apt:
+    name: "{{ packages['gui'] }}"
+    state: present
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
+  become: true
+  register: gui_install
+  until: (gui_install is success) or (
+            'Failed to lock apt for exclusive operation' not in gui_install['msg'] and
+            '/var/lib/dpkg/lock' not in gui_install['msg']
+         )
+  retries: 10
+  delay: 30
+  tags: [packages, apt]
+  when: is_desktop
 
 - name: Install flatpak remotes
   community.general.flatpak_remote:
@@ -48,6 +68,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   tags: [packages, flatpak]
+  when: is_desktop
 
 - name: Install flatpak packages
   community.general.flatpak:
@@ -57,6 +78,7 @@
     remote: "{{ item['key'] }}"
   loop: "{{ flatpaks | dict2items }}"
   tags: [packages, flatpak]
+  when: is_desktop
 
 - name: Get latest version of Hyper
   community.general.github_release:
@@ -65,6 +87,7 @@
     action: latest_release
   register: hyper_version
   tags: [packages, deb]
+  when: is_desktop
 
 - name: Install Hyper
   vars:
@@ -82,7 +105,8 @@
   until: (deb_install is success) or (
             'Failed to lock apt for exclusive operation' not in deb_install['msg'] and
             '/var/lib/dpkg/lock' not in deb_install['msg']
-          )
+         )
   retries: 10
   delay: 30
   tags: [packages, deb]
+  when: is_desktop

@@ -17,11 +17,29 @@
         name: packagekit
         state: stopped
       become: true
-      when: ansible_system == 'Linux'
+      when: "'Linux' in ansible_system"
 
-    - name: Configure Linux repositories
-      ansible.builtin.include_tasks: "tasks/repositories.yml"
-      when: ansible_system == 'Linux'
+    - name: Setup Linux repositories
+      block:
+        - name: Install gpg keys
+          ansible.builtin.apt_key:
+            url: "{{ item['key'] | default(omit) }}"
+            keyring: "{{ item['keyring'] | default(omit) }}"
+            id: "{{ item['id'] | default(omit) }}"
+            keyserver: "{{ item['keyserver'] | default(omit) }}"
+          loop: "{{ repos }}"
+          loop_control:
+            label: "{{ item['name'] }}"
+        - name: Install repositories
+          ansible.builtin.apt_repository:
+            repo: "{{ item['repo'] }}"
+            filename: "{{ item['name'] }}"
+          loop: "{{ repos }}"
+          loop_control:
+            label: "{{ item['name'] }}"
+      become: true
+      when: "'Linux' in ansible_system"
+      tags: repos
 
     - name: Include OS-specific packages
       ansible.builtin.include_tasks: "tasks/packages/{{ ansible_system }}.yml"
