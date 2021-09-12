@@ -46,6 +46,10 @@ repos:
     repo: ppa:shutter/ppa
     keyserver: keyserver.ubuntu.com
     id: 5017D4931D0ACADE295B68ADFC6D7D9D009ED615
+  - name: exa  # ubuntu 20.04
+    repo: ppa:spvkgn/exa
+    keyserver: keyserver.ubuntu.com
+    id: F2C37BD8BDF01321549242C9AEC82AC78B65E182
 
 packages:
   cli:
