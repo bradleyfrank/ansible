@@ -1,5 +1,40 @@
 ---
 
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  tags: [packages, apt]
+
+- name: Install gpg keys
+  vars:
+    distro: "{{ item['distro'] | default(ansible_distribution_version) }}"
+  ansible.builtin.apt_key:
+    url: "{{ item['key'] | default(omit) }}"
+    keyring: "{{ item['keyring'] | default(omit) }}"
+    id: "{{ item['id'] | default(omit) }}"
+    keyserver: "{{ item['keyserver'] | default(omit) }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: distro == ansible_distribution_version
+  tags: repos
+
+- name: Install repositories
+  vars:
+    distro: "{{ item['distro'] | default(ansible_distribution_version) }}"
+  ansible.builtin.apt_repository:
+    repo: "{{ item['repo'] }}"
+    filename: "{{ item['name'] }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: distro == ansible_distribution_version
+  tags: repos
+
 - name: Update system
   ansible.builtin.apt:
     name: "*"
@@ -56,8 +91,8 @@
          )
   retries: 10
   delay: 30
-  tags: [packages, apt]
   when: is_desktop
+  tags: [packages, apt]
 
 - name: Install flatpak remotes
   community.general.flatpak_remote:
@@ -68,8 +103,8 @@
   loop: "{{ flatpak_remotes }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [packages, flatpak]
   when: is_desktop
+  tags: [packages, flatpak]
 
 - name: Install flatpak packages
   community.general.flatpak:
@@ -78,8 +113,8 @@
     method: user
     remote: "{{ item['key'] }}"
   loop: "{{ flatpaks | dict2items }}"
-  tags: [packages, flatpak]
   when: is_desktop
+  tags: [packages, flatpak]
 
 - name: Get latest version of Hyper
   community.general.github_release:
@@ -87,8 +122,8 @@
     repo: hyper
     action: latest_release
   register: hyper_version
-  tags: [packages, deb]
   when: is_desktop
+  tags: [packages, deb]
 
 - name: Install Hyper
   vars:
@@ -109,5 +144,5 @@
          )
   retries: 10
   delay: 30
-  tags: [packages, deb]
   when: is_desktop
+  tags: [packages, deb]
