@@ -1,6 +1,6 @@
 ---
 
-is_desktop: "{{ true if ansible_env['XDG_SESSION_DESKTOP'] is defined else false }}"
+is_desktop: "{{ ansible_env['XDG_SESSION_DESKTOP'] is defined }}"
 
 repos:
   - name: vscode
