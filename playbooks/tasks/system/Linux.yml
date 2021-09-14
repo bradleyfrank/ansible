@@ -3,14 +3,14 @@
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ hostname }}"
+  become: true
 
 - name: Set user shell to zsh and add to groups
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups: docker, sudo, plugdev  # plugdev for open-razer
+    groups: sudo, docker, plugdev, cdrom  # plugdev for open-razer
     shell: /usr/bin/zsh
   become: true
-  tags: shell
 
 - name: Ensure Docker is running
   ansible.builtin.systemd:
@@ -36,7 +36,8 @@
     key: "{{ item['key'] }}"
     value: "{{ item['value'] }}"
   loop: "{{ dconf['common'] | combine(dconf[ansible_distribution]) | dict2items }}"
-  tags: system_settings
+  tags: dconf
+  when: is_desktop
 
 - name: Generate host keys
   ansible.builtin.command:

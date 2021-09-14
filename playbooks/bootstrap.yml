@@ -12,16 +12,13 @@
       become: true
       notify: Remove passwordless sudo permissions
 
-    - name: Stop packagekit
-      ansible.builtin.systemd:
-        name: packagekit
-        state: stopped
+    - name: Add DNS fallback
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^#?FallbackDNS='
+        line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
       become: true
-      when: ansible_system == 'Linux'
-
-    - name: Configure Linux repositories
-      ansible.builtin.include_tasks: "tasks/repositories.yml"
-      when: ansible_system == 'Linux'
+      when: "'Linux' in ansible_system"
 
     - name: Include OS-specific packages
       ansible.builtin.include_tasks: "tasks/packages/{{ ansible_system }}.yml"
@@ -39,6 +36,7 @@
         path: "{{ item }}"
         mode: 0755
       loop: "{{ zsh_directories }}"
+      when: "'Darwin' in ansible_system"
       tags: shell
 
     - name: Clone dotfiles repo

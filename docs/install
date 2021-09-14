@@ -5,8 +5,7 @@ set -o errexit
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
-INSTALL_BASE=$HOME/.local/opt
-INSTALL_DIR=$INSTALL_BASE/bbdm
+ANSIBLE_REPO_PATH="$(mktemp -d)"
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
@@ -15,10 +14,13 @@ bootstrap_mac() {
 }
 
 bootstrap_linux() {
-  dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
-  dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
+  if env | grep -q XDG_SESSION_DESKTOP; then
+    dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
+    dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
+  fi
   sudo systemctl stop packagekit
   sudo apt-get clean
+  sudo apt-get update
   sudo apt-get install -y python3 python3-pip git lsb-release
 }
 
@@ -41,10 +43,8 @@ fi
 PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
 python3 -m pip install --user ansible docker github3.py
 
-[ -d "$INSTALL_BASE" ] || mkdir -p "$INSTALL_BASE"
-
-git clone "$ANSIBLE_REPO_URL" "$INSTALL_DIR"
-cd "$INSTALL_DIR" >/dev/null
+git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
+cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
 
 ansible-galaxy collection install -r setup/requirements.yml
@@ -54,3 +54,5 @@ case $ANSIBLE_REPO_PLAYBOOK in
   bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
   dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
 esac
+
+rm -rf "$ANSIBLE_REPO_PATH"
