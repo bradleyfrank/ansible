@@ -1,0 +1,176 @@
+---
+
+hostname: {{ hostname }}
+email: {{ email }}
+work_system: {{ work_system }}
+
+{% if 'RedHat' in ansible_os_family -%}
+
+bat_cmd: bat
+
+copr_url: https://copr-be.cloud.fedoraproject.org/results
+rpmfusion_url: https://download1.rpmfusion.org
+
+rpms:
+  - name: rpmfusion-free
+    url: "{{ rpmfusion_url }}/free/fedora"
+    rpm: "rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+  - name: rpmfusion-nonfree
+    url: "{{ rpmfusion_url }}/nonfree/fedora"
+    rpm: "rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+
+repos:
+  - name: better_fonts
+    description: Better Fonts
+    baseurl: "{{ copr_url }}/dawid/better_fonts/fedora-$releasever-$basearch/"
+    gpgkey: "{{ copr_url }}/dawid/better_fonts/pubkey.gpg"
+  - name: google-chrome
+    description: Google Chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+  - name: negativo17-multimedia
+    description: negativo17 - Multimedia
+    baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
+    gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+    includepkgs: ['spotify*', 'makemkv*', 'ccextractor*']
+  - name: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+  - name: 1Password
+    description: 1Password
+    baseurl: https://downloads.1password.com/linux/rpm
+    gpgkey: https://downloads.1password.com/linux/keys/1password.asc
+  - name: gh-cli
+    description: packages for the GitHub CLI
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+  - name: kubernetes
+    description: Kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+{% elif 'Debian' in ansible_os_family -%}
+
+bat_cmd: batcat
+
+repos:
+  - name: vscode
+    repo: >
+      deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg]
+      https://packages.microsoft.com/repos/vscode stable main
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+  - name: 1Password
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
+      https://onepassword.s3.amazonaws.com/linux/debian edge main
+    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+    keyring: /usr/share/keyrings/1password.gpg
+  - name: google-chrome
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    key: https://dl.google.com/linux/linux_signing_key.pub
+  - name: nextcloud
+    repo: ppa:nextcloud-devs/client
+    keyserver: keyserver.ubuntu.com
+    id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
+  - name: makemkv
+    repo: ppa:heyarje/makemkv-beta
+    keyserver: keyserver.ubuntu.com
+    id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+  - name: gh-cli
+    repo: deb https://cli.github.com/packages groovy main
+    key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+  - name: kubernetes
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  - name: docker
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+      https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
+    key: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+  - name: alacritty
+    repo: ppa:mmstick76/alacritty
+    keyserver: keyserver.ubuntu.com
+    id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
+  - name: shutter
+    repo: ppa:shutter/ppa
+    keyserver: keyserver.ubuntu.com
+    id: 5017D4931D0ACADE295B68ADFC6D7D9D009ED615
+  - name: exa
+    repo: ppa:spvkgn/exa
+    keyserver: keyserver.ubuntu.com
+    id: F2C37BD8BDF01321549242C9AEC82AC78B65E182
+    distro: 20.04
+
+dconf_distro:
+{% if 'Fedora' in ansible_distribution -%}
+  /org/gnome/shell/enabled-extensions: "[\
+    'GPaste@gnome-shell-extensions.gnome.org',
+    'background-logo@fedorahosted.org',
+    'system-monitor@paradoxxx.zero.gmail.com']"
+  /org/gnome/shell/favorite-apps: "[\
+    'firefox.desktop',
+    'org.gnome.Nautilus.desktop',
+    'code.desktop',
+    '1password.desktop',
+    'org.gnome.gedit.desktop',
+    'signal-desktop.desktop']"
+{% elif 'Ubuntu' in ansible_distribution -%}
+  /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
+  /org/gnome/shell/disabled-extensions: "[\
+    'ding@rastersoft.com',
+    'window-list@gnome-shell-extensions.gcampax.github.com',
+    'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
+    'places-menu@gnome-shell-extensions.gcampax.github.com',
+    'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
+  /org/gnome/shell/enabled-extensions: "[\
+    'GPaste@gnome-shell-extensions.gnome.org',
+    'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
+    'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
+    'ubuntu-appindicators@ubuntu.com',
+    'system-monitor@paradoxxx.zero.gmail.com',
+    'ubuntu-dock@ubuntu.com']"
+  /org/gnome/shell/favorite-apps: "[\
+    'firefox.desktop',
+    'org.gnome.Nautilus.desktop',
+    'code.desktop',
+    '1password.desktop',
+    'org.gnome.gedit.desktop',
+    'signal-desktop.desktop']"
+{% elif 'Pop!_OS' in ansible_distribution -%}
+  /org/gnome/desktop/interface/enable-hot-corners: "true"
+  /org/gnome/desktop/interface/gtk-theme: "'Pop'"
+  /org/gnome/shell/disabled-extensions: "[\
+    'ding@rastersoft.com',
+    'user-theme@gnome-shell-extensions.gcampax.github.com',
+    'windowsNavigator@gnome-shell-extensions.gcampax.github.com',
+    'auto-move-windows@gnome-shell-extensions.gcampax.github.com']"
+  /org/gnome/shell/enabled-extensions: "[\
+    'alt-tab-raise-first-window@system76.com',
+    'always-show-workspaces@system76.com',
+    'pop-shell@system76.com',
+    'system76-power@system76.com',
+    'ubuntu-appindicators@ubuntu.com',
+    'GPaste@gnome-shell-extensions.gnome.org',
+    'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
+    'workspace-indicator@gnome-shell-extensions.gcampax.github.com',
+    'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com']"
+  /org/gnome/shell/extensions/pop-cosmic/show-applications-button: "false"
+  /org/gnome/shell/extensions/pop-cosmic/show-workspaces-button: "false"
+  /org/gnome/shell/extensions/pop-shell/gap-inner: "uint32 0"
+  /org/gnome/shell/extensions/pop-shell/gap-outer: "uint32 0"
+  /org/gnome/shell/extensions/pop-shell/tile-by-default: "true"
+  /org/gnome/shell/favorite-apps: "[\
+    'pop-cosmic-workspaces.desktop',
+    'pop-cosmic-applications.desktop',
+    'firefox.desktop',
+    'org.gnome.Nautilus.desktop',
+    'code.desktop',
+    '1password.desktop',
+    'org.gnome.gedit.desktop',
+    'signal-desktop.desktop']"
+{% endif -%}
+
+{% endif -%}

@@ -18,10 +18,24 @@ bootstrap_linux() {
     dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
     dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
   fi
+
   sudo systemctl stop packagekit
-  sudo apt-get clean
-  sudo apt-get update
-  sudo apt-get install -y python3 python3-pip git lsb-release
+  # shellcheck disable=SC1091
+  . /etc/os-release
+
+  case "$NAME" in
+    Fedora)
+      sudo dnf clean all
+      sudo dnf makecache
+      sudo dnf install -y python3 python3-pip git redhat-lsb-core
+      ;;
+    Ubuntu|Pop)
+      sudo apt-get clean
+      sudo apt-get update
+      sudo apt-get install -y python3 python3-pip git lsb-release
+      ;;
+    *) exit 1 ;;
+  esac
 }
 
 while getopts ':dg:' opt; do
