@@ -149,7 +149,6 @@
 
     - name: Import GitHub tasks
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: not work_system
       tags: github
 
     - name: Install Python packages
