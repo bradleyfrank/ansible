@@ -32,6 +32,10 @@ repos:
     description: Kubernetes
     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
     gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+  - name: hardware:razer
+    description: packages for Razer hardware
+    baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
+    gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
 
 rpms:
   - name: rpmfusion-free
@@ -46,10 +50,12 @@ packages:
     - abcde
     - bash-completion
     - bat
+    - bcal
     - borgbackup
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
+    - exa
     - fdupes
     - ffmpeg
     - figlet
@@ -62,6 +68,9 @@ packages:
     - htop
     - httpie
     - iftop
+    - inxi
+    - jq
+    - kernel-devel  # openrazer
     - keychain
     - kubectl
     - libmp4v2
@@ -131,6 +140,7 @@ packages:
     - mpv
     - nextcloud-client
     - nextcloud-client-nautilus
+    - openrazer-meta
     - picard
     - remmina
     - seahorse
