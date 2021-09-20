@@ -35,8 +35,8 @@ vscode:
   config: '{{ ansible_user_dir }}/Library/Application Support/Code'
 
 zsh_source_dirs:
-  - "{{ ansible_user_dir }}/.local/share/zsh-completion"
-  - "{{ ansible_user_dir }}/.local/share/zshrc"
+  - "{{ zsh['completions'] }}"
+  - "{{ zsh['conf'] }}"
 
 packages:
   taps:

@@ -40,8 +40,8 @@ vscode:
   bin: /usr/bin/code
 
 zsh_source_dirs:
-  - "{{ ansible_user_dir }}/.local/share/zsh-completion"
-  - "{{ ansible_user_dir }}/.local/share/zshrc"
+  - "{{ zsh['completions'] }}"
+  - "{{ zsh['conf'] }}"
   - /etc/bash_completion.d
 
 dconf_common:
