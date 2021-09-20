@@ -39,6 +39,7 @@
       ansible.builtin.file:
         path: "{{ github['key_file'] }}"
         state: absent
+  when: clone_personal_repos
 
 - name: Clone reference Git repositories
   ansible.builtin.git:
