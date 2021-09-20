@@ -39,11 +39,6 @@ vscode:
   config: "{{ ansible_user_dir }}/.config/Code"
   bin: /usr/bin/code
 
-zsh_source_dirs:
-  - "{{ zsh['completions'] }}"
-  - "{{ zsh['conf'] }}"
-  - /etc/bash_completion.d
-
 dconf_common:
   /org/gnome/calendar/follow-night-light: "false"
   /org/gnome/desktop/datetime/automatic-timezone: "true"

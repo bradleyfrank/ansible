@@ -101,5 +101,5 @@ vscode_extensions:
   - zbr.vscode-ansible
 
 zsh:
-  completions: "{{ ansible_user_dir }}/.local/share/zsh-completion"
-  conf: "{{ ansible_user_dir }}/.local/share/zshrc"
+  completions: "{{ ansible_user_dir }}/.local/share/zsh/completions"
+  functions: "{{ ansible_user_dir }}/.local/share/zsh/functions"

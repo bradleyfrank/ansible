@@ -34,10 +34,6 @@ vscode:
   bin: /usr/local/bin/code
   config: '{{ ansible_user_dir }}/Library/Application Support/Code'
 
-zsh_source_dirs:
-  - "{{ zsh['completions'] }}"
-  - "{{ zsh['conf'] }}"
-
 packages:
   taps:
     - homebrew/bundle

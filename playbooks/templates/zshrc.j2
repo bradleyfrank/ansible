@@ -26,6 +26,8 @@ MANPATH="$MANPATH:/usr/local/opt/findutils/libexec/gnuman"
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
+FPATH="$HOME/.local/share/zsh/functions:$HOME/.local/share/zsh/completions:$FPATH"
+
 
 export PATH
 export MANPATH
@@ -192,8 +194,7 @@ setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt rcexpandparam           # Array expension with parameters
 
-autoload -Uz compinit zmv zcalc vcs_info edit-command-line bashcompinit
-compinit && bashcompinit
+autoload -Uz compinit zmv zcalc vcs_info edit-command-line && compinit
 zle -N edit-command-line
 
 bindkey -e                                         # Emacs style shortcuts
@@ -231,17 +232,16 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% elif 'Fedora' in ansible_distribution -%}
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif -%}
-{% for file in zsh_source_files -%}
-source {{ file['path'] }}
-{% endfor -%}
 {% if 'remmac06432' in ansible_hostname -%}
 source ~/.infractl/orm
 source ~/.infractl/secrets
 {% endif -%}
 
+
 {% if 'remmac06432' in ansible_hostname %}
 complete -o nospace -C /usr/local/bin/terraform terraform
 {% endif %}
 complete -F __start_kubectl k
+
 
 eval "$(starship init zsh)"

@@ -17,9 +17,8 @@
       - .local/share/fubectl
       - .local/share/kubectl
       - .local/share/icons
-      - .local/share/zshrc/pipenv
-      - .local/share/zshrc/kubectl
-      - .local/share/zshrc/op
+      - .local/share/zshrc
+      - .local/share/zsh-completion
 
     brew_packages:
       - diff-so-fancy
