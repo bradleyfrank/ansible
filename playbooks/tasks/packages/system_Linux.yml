@@ -7,15 +7,6 @@
   become: true
   tags: [packages, apt, dnf]
 
-- name: Get latest version of Hyper
-  community.general.github_release:
-    user: vercel
-    repo: hyper
-    action: latest_release
-  register: hyper_version
-  when: is_desktop
-  tags: [packages, deb, rpm]
-
 - name: Include os-family-specific package installations
   ansible.builtin.include_tasks: "tasks/packages/family_{{ ansible_os_family }}.yml"
   tags: always
@@ -26,7 +17,7 @@
     state: present
     flatpakrepo_url: "{{ item['url'] }}"
     method: user
-  loop: "{{ flatpak['remotes'] }}"
+  loop: "{{ flatpaks['remotes'] }}"
   loop_control:
     label: "{{ item['name'] }}"
   when: is_desktop

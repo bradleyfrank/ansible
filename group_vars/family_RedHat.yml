@@ -1,5 +1,7 @@
 ---
 
+user_groups: [wheel, plugdev, cdrom]  # plugdev for open-razer
+
 repos:
   - name: better_fonts
     description: Better Fonts
@@ -45,7 +47,6 @@ packages:
     - bash-completion
     - bat
     - borgbackup
-    - containerd.io
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils

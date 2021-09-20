@@ -2,6 +2,8 @@
 
 bat_cmd: batcat
 
+user_groups: [sudo, plugdev, cdrom]  # plugdev for open-razer
+
 repos:
   - name: vscode
     repo: >
