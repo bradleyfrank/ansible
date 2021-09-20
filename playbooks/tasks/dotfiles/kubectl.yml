@@ -36,7 +36,7 @@
 - name: Download fubectl
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
-    dest: "{{ ansible_user_dir }}/.local/share/zshrc/fubectl"
+    dest: "{{ zsh['functions'] }}/fubectl"
     mode: 0644
 
 - name: Check if Krew is installed

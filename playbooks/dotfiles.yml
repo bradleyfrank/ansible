@@ -117,6 +117,15 @@
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
       tags: [zsh, 1password]
 
+    - name: Find all zsh completions and sources
+      ansible.builtin.find:
+        file_type: file
+        paths:
+          - "{{ zsh['completions'] }}"
+          - "{{ zsh['functions'] }}"
+      register: find_zsh_source_dirs
+      tags: [zsh, core]
+
     - name: Apply zshrc template
       vars:
         zsh_source_files: "{{ find_zsh_source_dirs['files'] }}"

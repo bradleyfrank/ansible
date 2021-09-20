@@ -24,7 +24,7 @@
     value: "{{ item['value'] }}"
   loop: "{{ dconf_common | combine(dconf_distro[ansible_distribution]) | dict2items }}"
   loop_control:
-    label: "{{ item['name'] }}"
+    label: "{{ item['key'] }}"
   when: is_desktop
   tags: dconf
 
