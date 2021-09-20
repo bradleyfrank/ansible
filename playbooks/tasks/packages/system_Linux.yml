@@ -1,0 +1,43 @@
+---
+
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  tags: [packages, apt, dnf]
+
+- name: Get latest version of Hyper
+  community.general.github_release:
+    user: vercel
+    repo: hyper
+    action: latest_release
+  register: hyper_version
+  when: is_desktop
+  tags: [packages, deb, rpm]
+
+- name: Include os-family-specific package installations
+  ansible.builtin.include_tasks: "tasks/packages/family_{{ ansible_os_family }}.yml"
+  tags: always
+
+- name: Install flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item['name'] }}"
+    state: present
+    flatpakrepo_url: "{{ item['url'] }}"
+    method: user
+  loop: "{{ flatpak['remotes'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  when: is_desktop
+  tags: [packages, flatpak]
+
+- name: Install flatpak packages
+  community.general.flatpak:
+    name: "{{ item['name'] }}"
+    state: present
+    method: user
+    remote: "{{ item['remote'] | default('flathub') }}"
+  loop: "{{ flatpaks['packages'] }}"
+  when: is_desktop
+  tags: [packages, flatpak]

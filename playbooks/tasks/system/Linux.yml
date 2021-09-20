@@ -8,36 +8,23 @@
 - name: Set user shell to zsh and add to groups
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups: sudo, docker, plugdev, cdrom  # plugdev for open-razer
+    groups: sudo, plugdev, cdrom  # plugdev for open-razer
     shell: /usr/bin/zsh
   become: true
 
-- name: Ensure Docker is running
-  ansible.builtin.systemd:
-    name: docker
-    daemon_reload: true
-    enabled: true
-    state: started
-  become: true
-  tags: docker
-
-- name: Pull latest Docker images
-  environment:
-    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
-  community.docker.docker_image:
-    name: "{{ item }}"
-    source: pull
-  loop: "{{ docker_images }}"
-  become: true
-  tags: docker
+- name: Pull latest container images
+  containers.podman.podman_image:
+    name: "{{ item['repo'] | default('docker.io') }}/{{ item['name'] }}"
+  loop: "{{ containers }}"
+  tags: containers
 
 - name: Import dconf settings
   community.general.dconf:
     key: "{{ item['key'] }}"
     value: "{{ item['value'] }}"
-  loop: "{{ dconf['common'] | combine(dconf[ansible_distribution]) | dict2items }}"
-  tags: dconf
+  loop: "{{ dconf | combine(dconf_distro[ansible_distribution]) | dict2items }}"
   when: is_desktop
+  tags: dconf
 
 - name: Generate host keys
   ansible.builtin.command:

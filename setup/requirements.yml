@@ -9,3 +9,5 @@ collections:
     source: https://galaxy.ansible.com
   - name: community.docker
     source: https://galaxy.ansible.com
+  - name: containers.podman
+    source: https://galaxy.ansible.com

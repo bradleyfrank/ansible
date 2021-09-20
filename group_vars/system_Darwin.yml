@@ -1,0 +1,480 @@
+---
+
+alacritty:
+  decorations: buttonless
+  size: 14
+
+bash_shell: /usr/local/bin/bash
+
+bbedit:
+  application_support: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit"
+  color_schemes: "{{ ansible_user_dir }}/Library/Application Support/BBEdit/Color Schemes"
+
+font_dir: "{{ ansible_user_dir }}/Library/Fonts"
+
+hyper:
+  fontFamily: SauceCodeProNerdFontComplete-Regular
+  fontSize: 14
+  padding: 12px 14px
+
+nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
+python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}"
+python_user_path: "{{ python_user_base }}/bin"
+python_user_site: "{{ python_user_base }}/lib/python/site-packages"
+root_home: /var/root
+
+starship:
+  download_path: /tmp/starship.tar.gz
+  install_path: "{{ ansible_user_dir }}/.local/bin"
+  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-apple-darwin.tar.gz
+
+sudoers_d: /private/etc/sudoers.d
+
+vscode:
+  bin: /usr/local/bin/code
+  config: '{{ ansible_user_dir }}/Library/Application Support/Code'
+
+zsh_source_dirs:
+  - "{{ ansible_user_dir }}/.local/share/zsh-completion"
+  - "{{ ansible_user_dir }}/.local/share/zshrc"
+
+packages:
+  taps:
+    - homebrew/bundle
+    - homebrew/cask
+    - homebrew/cask-drivers
+    - homebrew/cask-fonts
+    - homebrew/core
+  formulas:
+    - asciinema
+    - awscli
+    - bash
+    - bash-completion@2
+    - bat
+    - bcal
+    - cabextract
+    - coreutils
+    - dict
+    - eye-d3
+    - exa
+    - fdupes
+    - ffmpeg
+    - fileicon
+    - findutils
+    - flac
+    - fzf
+    - gawk
+    - gh
+    - ghostscript
+    - git-delta
+    - glances
+    - glow
+    - gnu-sed
+    - gnu-tar
+    - gnu-which
+    - grep
+    - gron
+    - gzip
+    - helm
+    - httpie
+    - iftop
+    - jq
+    - keychain
+    - kpcli
+    - kubectl
+    - kube-linter
+    - lame
+    - less
+    - markdown
+    - mas
+    - mtr
+    - ncdu
+    - neofetch
+    - nmap
+    - p7zip
+    - par
+    - prettyping
+    - qpdf
+    - rename
+    - ripgrep
+    - rpm2cpio
+    - rsync
+    - shellcheck
+    - shellharden
+    - shfmt
+    - slides
+    - ssh-copy-id
+    - stern
+    - stow
+    - tidy
+    - tmux
+    - tree
+    - vim
+    - watch
+    - wget
+    - yamllint
+    - youtube-dl
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  casks:
+    - 1password
+    - 1password-cli
+    - alacritty
+    - appcleaner
+    - balenaetcher
+    - bbedit
+    - calibre
+    - chromium
+    - dozer
+    - expressions
+    - fantastical
+    - firefox
+    - firefox-developer-edition
+    - google-cloud-sdk
+    - iina
+    - istat-menus
+    - jumpcut
+    - keepassxc
+    - keepingyouawake
+    - kindle
+    - logitech-options
+    - macdown
+    - menumeters
+    - microsoft-auto-update
+    - microsoft-office
+    - musicbrainz-picard
+    - plexamp
+    - rectangle
+    - signal
+    - sony-ps-remote-play
+    - spotify
+    - transmission
+    - transmit
+    - visual-studio-code
+    - vivaldi
+    - vlc
+    - xquartz
+    - zoom
+  virtualization:
+    - multipass
+    - parallels
+  mas:
+    - 407963104
+    - 409183694
+    - 409201541
+    - 409203825
+    - 425424353
+    - 568494494
+    - 924726344
+    - 1179623856
+    - 1289378661
+    - 1320666476
+    - 1529448980
+    - 1555925018
+
+defaults:
+  - domain: com.apple.TimeMachine
+    key: DoNotOfferNewDisksForBackup
+    name: Disable prompting to use new exteral drives as Time Machine volume
+    type: bool
+    value: 'true'
+  - domain: com.apple.mail
+    key: ConversationViewSortDescending
+    name: Sort conversations in Mail by most recent on top
+    type: int
+    value: '1'
+  - domain: com.apple.Terminal
+    key: NewTabWorkingDirectoryBehavior
+    name: Open new Terminal tabs in the default directory
+    type: int
+    value: '1'
+  - domain: com.apple.TextEdit
+    key: RichText
+    name: Set TextEdit to use plain text mode as default
+    type: int
+    value: '0'
+  - domain: com.apple.print.PrintingPrefs
+    key: Quit When Finished
+    name: Quit printer app after print jobs complete
+    type: bool
+    value: 'true'
+  - domain: NSGlobalDomain
+    key: AppleShowAllExtensions
+    name: Show filename extensions by default
+    type: bool
+    value: 'true'
+  - domain: com.apple.desktopservices
+    key: DSDontWriteNetworkStores
+    name: Disable creation of .DS_Store files on network volumes
+    type: bool
+    value: 'true'
+  - domain: com.apple.finder
+    key: ShowExternalHardDrivesOnDesktop
+    name: Hide external hard drives on desktop
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: ShowHardDrivesOnDesktop
+    name: Hide hard drives on desktop
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: ShowRemovableMediaOnDesktop
+    name: Hide removable media on desktop
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: ShowMountedServersOnDesktop
+    name: Hide mounted servers on desktop
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: CreateDesktop
+    name: Hide icons on desktop
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: ShowStatusBar
+    name: Enable status bar in Finder
+    type: bool
+    value: 'true'
+  - domain: com.apple.finder
+    key: ShowPathbar
+    name: Enable breadcrumbs in Finder
+    type: bool
+    value: 'true'
+  - domain: com.apple.finder
+    key: WarnOnEmptyTrash
+    name: Disable Trash empty warning
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: FXEnableExtensionChangeWarning
+    name: Disable file extension change warning
+    type: bool
+    value: 'false'
+  - domain: com.apple.finder
+    key: FXPreferredViewStyle
+    name: Set default Finder view to list
+    type: string
+    value: Nlsv
+  - domain: com.apple.finder
+    key: NewWindowTarget
+    name: Set default Finder new window target
+    type: string
+    value: PfLo
+  - domain: com.apple.finder
+    key: NewWindowTargetPath
+    name: Set default Finder location to ~/Downloads
+    type: string
+    value: file://{{ ansible_user_dir }}/Downloads/
+  - domain: com.apple.finder
+    key: autohide
+    name: Auto-hide the Dock
+    type: bool
+    value: 'true'
+  - domain: com.apple.finder
+    key: no-bouncing
+    name: Disable icon bouncing in the Dock
+    type: bool
+    value: 'true'
+  - domain: com.apple.dock
+    key: tilesize
+    name: Set Dock size
+    type: int
+    value: '43'
+  - domain: com.apple.screencapture
+    key: location
+    name: Save screenshots to ~/Downloads
+    value: '{{ ansible_user_dir }}/Downloads'
+  - domain: com.apple.dock
+    key: wvous-bl-corner
+    name: Set expose hot corner bottom-left (application windows)
+    type: int
+    value: '3'
+  - domain: com.apple.dock
+    key: wvous-bl-modifier
+    name: Set expose hot corner bottom-left modifier
+    type: int
+    value: '0'
+  - domain: com.apple.dock
+    key: wvous-br-corner
+    name: Set expose hot corner bottom-right (screen saver)
+    type: int
+    value: '5'
+  - domain: com.apple.dock
+    key: wvous-br-modifier
+    name: Set expose hot corner bottom-right modifier
+    type: int
+    value: '0'
+  - domain: com.apple.dock
+    key: wvous-tl-corner
+    name: Set expose hot corner top-left (mission control)
+    type: int
+    value: '2'
+  - domain: com.apple.dock
+    key: wvous-tl-modifier
+    name: Set expose hot corner top-left modifier
+    type: int
+    value: '0'
+  - domain: com.apple.dock
+    key: wvous-tr-corner
+    name: Set expose hot corner top-right (launchpad)
+    type: int
+    value: '11'
+  - domain: com.apple.dock
+    key: wvous-tr-modifier
+    name: Set expose hot corner top-right modifier
+    type: int
+    value: '0'
+  - domain: com.apple.dock
+    key: mru-spaces
+    name: Disable automatically rearranging Spaces
+    type: bool
+    value: 'false'
+  - domain: com.apple.dock
+    key: expose-group-apps
+    name: Enable grouping windows by application
+    type: bool
+    value: 'true'
+  - domain: com.apple.screensaver
+    key: idleTime
+    name: Set screensaver timeout
+    type: int
+    value: '300'
+  - domain: com.apple.screensaver
+    key: askForPassword
+    name: Set screensaver password timeout
+    type: int
+    value: '1'
+  - domain: com.apple.screensaver
+    key: askForPasswordDelay
+    name: Set screensaver password delay
+    type: int
+    value: '5'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: Clicking
+    name: Configure bluetooth Apple trackpad - tap-to-click
+    type: int
+    value: '1'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadRightClick
+    name: Configure bluetooth Apple trackpad - 2 finger tap right-click
+    type: int
+    value: '1'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadPinch
+    name: Configure bluetooth Apple trackpad - pinch to zoom
+    type: int
+    value: '1'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadRotate
+    name: Configure bluetooth Apple trackpad - 2 finger rotate
+    type: int
+    value: '1'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: TrackpadThreeFingerHorizSwipeGesture
+    name: Configure bluetooth Apple trackpad - 3 finger swipe between pages
+    type: int
+    value: '1'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadTwoFingerDoubleTapGesture
+    name: Configure bluetooth Apple trackpad - smart zoom
+    type: int
+    value: '1'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: TrackpadTwoFingerFromRightEdgeSwipeGesture
+    name: Configure bluetooth Apple trackpad - Notification Center
+    type: int
+    value: '3'
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadThreeFingerTapGesture
+    name: Configure bluetooth Apple trackpad - perform look up
+    type: int
+    value: '2'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: Clicking
+    name: Configure builtin Apple trackpad - tap-to-click
+    type: int
+    value: '1'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadRightClick
+    name: Configure builtin Apple trackpad - 2 finger tap right-click
+    type: int
+    value: '1'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadPinch
+    name: Configure builtin Apple trackpad - pinch to zoom
+    type: int
+    value: '1'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadRotate
+    name: Configure builtin Apple trackpad - 2 finger rotate
+    type: int
+    value: '1'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: TrackpadThreeFingerHorizSwipeGesture
+    name: Configure builtin Apple trackpad - 3 finger swipe between pages
+    type: int
+    value: '1'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadTwoFingerDoubleTapGesture
+    name: Configure builtin Apple trackpad - smart zoom
+    type: int
+    value: '1'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: TrackpadTwoFingerFromRightEdgeSwipeGesture
+    name: Configure builtin Apple trackpad - Notification Center
+    type: int
+    value: '3'
+  - domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadThreeFingerTapGesture
+    name: Configure builtin Apple trackpad - perform look up
+    type: int
+    value: '2'
+  - domain: NSGlobalDomain
+    key: com.apple.mouse.tapBehavior
+    name: Enable tap-to-click on Apple mouse
+    type: int
+    value: '1'
+  - domain: NSGlobalDomain
+    key: AppleEnableSwipeNavigateWithScrolls
+    name: Set global two finger horizontal swipe between pages
+    type: bool
+    value: 'true'
+  - domain: NSGlobalDomain
+    key: InitialKeyRepeat
+    name: Set very low key repeat rates
+    type: int
+    value: '25'
+  - domain: NSGlobalDomain
+    key: KeyRepeat
+    name: Set very low key repeat rates
+    type: int
+    value: '1'
+  - domain: com.apple.SoftwareUpdate
+    key: ScheduleFrequency
+    name: Check for software updates daily
+    type: int
+    value: '1'
+  - domain: NSGlobalDomain
+    key: NSNavPanelExpandedStateForSaveMode
+    name: Expand save panel 1 by default
+    type: bool
+    value: 'true'
+  - domain: NSGlobalDomain
+    key: NSNavPanelExpandedStateForSaveMode2
+    name: Expand save panel 2 by default
+    type: bool
+    value: 'true'
+  - domain: NSGlobalDomain
+    key: PMPrintingExpandedStateForPrint
+    name: Expand print panel 1 by default
+    type: bool
+    value: 'true'
+  - domain: NSGlobalDomain
+    key: PMPrintingExpandedStateForPrint2
+    name: Expand print panel 2 by default
+    type: bool
+    value: 'true'
