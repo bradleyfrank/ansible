@@ -1,3 +1,2 @@
-.cache
-test.*
-inventory*
+./.cache
+./inventory.ini
