@@ -58,14 +58,3 @@
   become: true
   when: is_desktop
   tags: [packages, dnf]
-
-- name: Install Hyper
-  vars:
-    github_url: "https://github.com/vercel/hyper/releases/download"
-    filename: "hyper-{{ hyper_version['tag'] | replace('v','') }}.x86_64.rpm"
-  ansible.builtin.dnf:
-    name: "{{ github_url }}/{{ hyper_version['tag'] }}/{{ filename }}"
-    update_cache: true
-  become: true
-  when: is_desktop
-  tags: [packages, dnf]
