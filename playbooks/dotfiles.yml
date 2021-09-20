@@ -109,13 +109,13 @@
 
     - name: Install Starship
       ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
-      tags: [starship, zsh]
+      tags: [zsh, starship]
 
     - name: Generate 1Password-cli completions
       ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
       changed_when: false
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
-      tags: 1password
+      tags: [zsh, 1password]
 
     - name: Apply zshrc template
       vars:
