@@ -8,6 +8,7 @@
     backup: true
   register: _backup_hyperjs
   notify: Process backups
+  when: "'Darwin' in ansible_system"
 
 - name: Ensure ~/.config/alacritty directory exists
   ansible.builtin.file:
