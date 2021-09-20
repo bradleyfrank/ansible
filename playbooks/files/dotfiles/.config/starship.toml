@@ -8,16 +8,12 @@ $git_commit\
 $git_state\
 $git_metrics\
 $git_status\
-$cmd_duration\
 $line_break\
 $character
 """
 [character]
 success_symbol = "[%%](bold fg:64)" # see issue #2891
 error_symbol = "[%%](bold fg:160)"
-[cmd_duration]
-min_time = 1
-show_milliseconds = true
 [directory]
 truncation_length = 1
 style = "bold fg:33"

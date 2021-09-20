@@ -192,6 +192,7 @@ setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt rcexpandparam           # Array expension with parameters
 
+autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc vcs_info edit-command-line && compinit
 zle -N edit-command-line
 
