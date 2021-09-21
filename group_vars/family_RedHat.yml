@@ -1,6 +1,6 @@
 ---
 
-user_groups: [wheel, plugdev, cdrom]  # plugdev for open-razer
+sudo_group: wheel
 
 repos:
   - name: better_fonts
