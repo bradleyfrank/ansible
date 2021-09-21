@@ -60,5 +60,5 @@
     state: present
     update_cache: true
   become: true
-  when: system_type in item['system_type']
+  when: "'desktop' in system_type"
   tags: [packages, dnf]

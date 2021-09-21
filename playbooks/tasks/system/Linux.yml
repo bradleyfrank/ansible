@@ -7,7 +7,7 @@
 
 - name: Set user shell to zsh and add to groups
   vars:
-    plugdev: "{{ 'plugdev' if is_desktop else '' }}"  # plugdev for open-razer
+    plugdev: "{{ 'plugdev' if 'desktop' in system_type else '' }}"  # plugdev for open-razer
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     groups: "{{ [plugdev] + [sudo_group] + ['cdrom'] }}"
