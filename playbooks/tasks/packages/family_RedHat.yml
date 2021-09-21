@@ -7,6 +7,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
+  when: system_type in item['system_type']
   tags: repos
 
 - name: Install repositories via RPMs
@@ -34,6 +35,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
+  when: system_type in item['system_type']
   tags: repos
 
 - name: Upgrade all packages
@@ -58,5 +60,5 @@
     state: present
     update_cache: true
   become: true
-  when: is_desktop
+  when: system_type in item['system_type']
   tags: [packages, dnf]

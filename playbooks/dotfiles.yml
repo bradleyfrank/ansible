@@ -147,7 +147,7 @@
         src: fonts/
         dest: "{{ font_dir }}/"
         mode: 0644
-      when: is_desktop
+      when: "'desktop' in system_type"
       tags: fonts
 
     - name: Import GitHub tasks

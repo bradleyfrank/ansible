@@ -20,7 +20,7 @@
   loop: "{{ flatpaks['remotes'] }}"
   loop_control:
     label: "{{ item['name'] }}"
-  when: is_desktop
+  when: "'desktop' in system_type"
   tags: [packages, flatpak]
 
 - name: Install flatpak packages
@@ -30,5 +30,5 @@
     method: user
     remote: "{{ item['remote'] | default('flathub') }}"
   loop: "{{ flatpaks['packages'] }}"
-  when: is_desktop
+  when: "'desktop' in system_type"
   tags: [packages, flatpak]

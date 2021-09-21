@@ -13,7 +13,10 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  when: (distribution_version == ansible_distribution_version) and (distribution == ansible_distribution)
+  when:
+    - distribution_version == ansible_distribution_version
+    - distribution == ansible_distribution
+    - system_type in item['system_type']
   tags: repos
 
 - name: Install repositories
@@ -27,7 +30,10 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  when: (distribution_version == ansible_distribution_version) and (distribution == ansible_distribution)
+  when:
+    - distribution_version == ansible_distribution_version
+    - distribution == ansible_distribution
+    - system_type in item['system_type']
   tags: repos
 
 - name: Update system
@@ -85,5 +91,5 @@
          )
   retries: 10
   delay: 30
-  when: is_desktop
+  when: system_type in item['system_type']
   tags: [packages, apt]

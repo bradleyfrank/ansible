@@ -10,42 +10,52 @@ repos:
       https://packages.microsoft.com/repos/vscode stable main
     key: https://packages.microsoft.com/keys/microsoft.asc
     keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+    system_type: [desktop]
   - name: 1Password
     repo: >
       deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
       https://onepassword.s3.amazonaws.com/linux/debian edge main
     key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
     keyring: /usr/share/keyrings/1password.gpg
+    system_type: [desktop]
   - name: google-chrome
     repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
+    system_type: [desktop]
   - name: nextcloud
     repo: ppa:nextcloud-devs/client
     keyserver: keyserver.ubuntu.com
     id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
+    system_type: [desktop]
   - name: makemkv
     repo: ppa:heyarje/makemkv-beta
     keyserver: keyserver.ubuntu.com
     id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+    system_type: [desktop, server]
   - name: gh-cli
     repo: deb https://cli.github.com/packages groovy main
     key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+    system_type: [desktop, server]
   - name: kubernetes
     repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
     key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    system_type: [desktop, server]
   - name: shutter
     repo: ppa:shutter/ppa
     keyserver: keyserver.ubuntu.com
     id: 5017D4931D0ACADE295B68ADFC6D7D9D009ED615
+    system_type: [desktop]
   - name: alacritty
     repo: ppa:mmstick76/alacritty
     keyserver: keyserver.ubuntu.com
     id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
+    system_type: [desktop]
     ansible_distribution: Ubuntu
   - name: exa
     repo: ppa:spvkgn/exa
     keyserver: keyserver.ubuntu.com
     id: F2C37BD8BDF01321549242C9AEC82AC78B65E182
+    system_type: [desktop, server]
     ansible_distribution_version: 20.04
 
 packages:
