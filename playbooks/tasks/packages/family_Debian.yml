@@ -91,5 +91,5 @@
          )
   retries: 10
   delay: 30
-  when: system_type in item['system_type']
+  when: "'desktop' in system_type"
   tags: [packages, apt]
