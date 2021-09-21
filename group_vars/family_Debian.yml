@@ -57,18 +57,25 @@ repos:
     id: F2C37BD8BDF01321549242C9AEC82AC78B65E182
     system_type: [desktop, server]
     ansible_distribution_version: 20.04
+  - name: docker
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+      https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
+    key: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
 
 packages:
   cli:
     - abcde
     - apt-file
+    - apt-transport-https  # docker
     - bash-completion
     - bat
     - bcal
     - borgbackup
+    - ca-certificates  # docker
     - containerd.io
     - dictd
-    - docker-ce-cli
     - exa
     - fdupes
     - ffmpeg
@@ -78,6 +85,7 @@ packages:
     - gh
     - ghostscript
     - glances
+    - gnupg  # docker
     - gnupg2  # kubernetes
     - htop
     - httpie
