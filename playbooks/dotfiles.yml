@@ -147,6 +147,7 @@
         src: fonts/
         dest: "{{ font_dir }}/"
         mode: 0644
+      when: is_desktop
       tags: fonts
 
     - name: Import GitHub tasks
@@ -167,20 +168,13 @@
       ansible.builtin.import_tasks: tasks/dotfiles/terminals.yml
       tags: terminals
 
-    - name: Check if vscode is installed
-      ansible.builtin.stat:
-        path: "{{ vscode['bin'] }}"
-      register: vscode_bin
-      tags: vscode
-
     - name: Import VSCode tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
-      when: vscode_bin['stat']['exists']
       tags: vscode
 
     - name: Import BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
-      when: ansible_system == 'Darwin'
+      when: "'Darwin' in ansible_system"
       tags: bbedit
 
     - name: Update macOS app icons
