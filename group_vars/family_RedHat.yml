@@ -132,6 +132,7 @@ packages:
     - gedit-plugin-joinlines
     - gedit-plugin-multiedit
     - ghostwriter
+    - gnome-connections
     - gnome-extensions-app
     - gnome-shell-extension-gpaste
     - gnome-shell-extension-system-monitor-applet

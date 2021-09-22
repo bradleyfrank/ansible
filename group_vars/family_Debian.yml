@@ -159,6 +159,7 @@ packages:
     - gnote
     - google-chrome-stable
     - gpaste*
+    - gthumb
     - keepassxc
     - libreoffice
     - makemkv-bin

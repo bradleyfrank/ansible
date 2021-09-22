@@ -11,13 +11,20 @@ flatpaks:
     - name: flathub
       url: https://flathub.org/repo/flathub.flatpakrepo
   packages:
+    - name: com.github.fabiocolacio.marker
     - name: com.github.geigi.cozy
     - name: com.github.johnfactotum.Foliate
+    - name: com.github.junrrein.PDFSlicer
+    - name: com.github.PintaProject.Pinta
     - name: com.gitlab.newsflash
     - name: com.plexamp.Plexamp
     - name: com.spotify.Client
     - name: io.github.seadve.Kooha
+    - name: org.gabmus.hydrapaper
+    - name: org.gnome.Connections
     - name: org.gnome.Games
+    - name: org.gnome.gitlab.somas.Apostrophe
+    - name: org.gnome.gThumb
     - name: org.signal.Signal
     - name: us.zoom.Zoom
 
