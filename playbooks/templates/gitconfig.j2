@@ -52,3 +52,7 @@
 [user]
   name = {{ ansible_user_gecos }}
   email = {{ email }}
+{% if 'remmac06432' in ansible_hostname -%}
+[url "https://api:{{ github['infractl'] }}@github.com/"]
+  insteadOf = https://github.com/
+{% endif -%}
