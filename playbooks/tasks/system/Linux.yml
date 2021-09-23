@@ -8,11 +8,10 @@
 - name: Set user shell to zsh and add to groups
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups:
-      - "{{ sudo_group }}"
-      - cdrom
+    groups: "{{ sudo_group }}, cdrom"
     shell: /usr/bin/zsh
   become: true
+  tags: user, groups
 
 - name: Add user to plugdev group for open-razer
   ansible.builtin.user:
@@ -20,6 +19,7 @@
     groups: plugdev
   become: true
   when: "'desktop' in system_type"
+  tags: user, groups
 
 - name: Pull latest container images via Docker
   block:
