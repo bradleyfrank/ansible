@@ -15,7 +15,8 @@ declare -r fg_Default="#[fg=default]" \
            fg_Magenta="#[fg=colour125]"
 
 get_uptime() {
-  local uptime; uptime=$(uptime | grep -Po 'up(.*?),' | awk '$1=$1' | sed "s/up/${fg_Green}up${fg_Default}/")
+  local uptime
+  uptime=$(uptime | grep -Po 'up(.*?),' | awk '$1=$1' | sed "s/up/${fg_Green}up${fg_Default}/")
   printf "%s" "${uptime/,/}"
 }
 
@@ -55,18 +56,23 @@ battery() {
   elif [[ $percent -lt 25  && $percent -ge 0  ]]; then fg_Color=$fg_Red
   fi
 
-  printf "%s%s%%%s %s" "${fg_Color}" "${percent}" "${fg_Default}" "${status,,}"
+  percent="${fg_Color}${percent}%"
+  status="${fg_Default}${status,,}"
+
+  printf "%s %s" "${percent}" "${status}"
 }
 
 distribution() {
-  local system_info distro version
+  local distro version {%- if 'Darwin' in ansible_system %}system_info{% endif -%}
   {% if 'Darwin' in ansible_system -%}
   system_info="$(sw_vers | awk '{print $2}' | head -n 2 | xargs)"
-  {% elif 'Linux' in ansible_system -%}
-  system_info="$(lsb_release --short --description)"
-  {% endif -%}
   distro="${fg_Green}$(awk '{print $1}' <<< $system_info)"
   version="${fg_Default}$(awk '{print $2}' <<< $system_info)"
+  {% elif 'Linux' in ansible_system -%}
+  source /etc/os-release
+  distro="${fg_Green}${NAME}"
+  version="${fg_Default}${VERSION_ID}"
+  {% endif -%}
   printf "%s %s" "${distro}" "${version}"
 }
 

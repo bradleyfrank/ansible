@@ -8,9 +8,6 @@
 # Requires: ghostscript
 #
 
-
-# ----- functions ----- #
-
 usage() {
     echo "Usage: pdf-compress -h | -c [compression] -f [file]"
     echo "  -c  Compression level using one of the following options:"
@@ -58,8 +55,6 @@ main() {
     fi
 }
 
-
-# ----- begin ----- #
 
 if [[ "$#" -eq 0 ]]; then usage; exit 1; fi
 

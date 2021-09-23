@@ -8,10 +8,7 @@
 # Requires: keepassxc-cli
 #
 
-
-# ----- functions ----- #
-
-function main() {
+main() {
     local comment password keyfile
     keyfile="$HOME/.ssh/$1"
 
@@ -25,9 +22,6 @@ function main() {
     ssh-keygen -q -t rsa -b 4096 -N "$password" -C "$comment" -f "$keyfile"
     echo "$keyfile : $password"
 }
-
-
-# ----- begin ----- #
 
 if [[ -n "$1" ]]; then main "$1"
 else main "id_rsa"

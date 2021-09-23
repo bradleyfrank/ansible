@@ -5,7 +5,7 @@
 # Author: Brad Frank
 # Date: September 2021
 # Tested: zsh 5.8 (x86_64-apple-darwin19.6.0)
-# Requires: git, jq
+# Requires: git
 #
 
 repo_url=$1

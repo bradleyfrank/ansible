@@ -14,7 +14,7 @@
     shell: /usr/bin/zsh
   become: true
 
-- name: Pull latest Docker images
+- name: Pull latest container images via Docker
   block:
     - name: Add user to Docker group
       ansible.builtin.user:
@@ -30,17 +30,18 @@
       environment:
         PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
       community.docker.docker_image:
-        name: "{{ item }}"
+        name: "{{ item['name'] }}"
         source: pull
       loop: "{{ containers }}"
   become: true
   when: "'Debian' in ansible_os_family"
   tags: docker
 
-- name: Pull latest container images
+- name: Pull latest container images via Podman
   containers.podman.podman_image:
     name: "{{ item['repo'] | default('docker.io') }}/{{ item['name'] }}"
   loop: "{{ containers }}"
+  when: "'RedHat' in ansible_os_family"
   tags: podman
 
 - name: Import dconf settings

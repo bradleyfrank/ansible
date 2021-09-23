@@ -8,15 +8,12 @@
 # Requires: brew, gh
 #
 
-
-# ----- functions ----- #
-
 # $1 == description // $2 == filename
-function find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1.*/\1/p" ; }
-function push() { VISUAL='tee' gh gist edit "$1" < "$2" > /dev/null ; }
-function create() { gh gist create --public --desc "$1" "$2" ; }
+find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1.*/\1/p" ; }
+push() { VISUAL='tee' gh gist edit "$1" < "$2" > /dev/null ; }
+create() { gh gist create --public --desc "$1" "$2" ; }
 
-function push_or_create() {
+push_or_create() {
   local description="$1" filename="$2"
   gist_id="$(find_gist "$description")"
   if [[ -n "$gist_id" ]]; then push "$gist_id" "$filename"
@@ -24,7 +21,7 @@ function push_or_create() {
   fi
 }
 
-function gist_dotfiles() {
+gist_dotfiles() {
   local hostname dotfiles filename description
   hostname="$(uname -n | cut -d. -f1)"
   dotfiles=( "$HOME/.zshrc" "$HOME/.tmux.conf" "$HOME/.vimrc" "$HOME/.gitconfig" )
@@ -35,7 +32,7 @@ function gist_dotfiles() {
   done
 }
 
-function gist_misc() {
+gist_misc() {
   local tmpdir description
   tmpdir="$(mktemp -d)"
 
@@ -47,8 +44,6 @@ function gist_misc() {
   push_or_create "$description" "$tmpdir/Brewfile"
 }
 
-
-# ----- begin ----- #
 
 gist_dotfiles
 gist_misc

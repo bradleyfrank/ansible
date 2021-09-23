@@ -8,7 +8,7 @@
 # Requires: youtube-dl
 #
 
-function music() {
+music() {
   case $(uname -s) in
     Darwin)
       youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
@@ -18,7 +18,7 @@ function music() {
   esac
 }
 
-function video() {
+video() {
   youtube-dl \
     --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
     --merge-output-format mp4 \

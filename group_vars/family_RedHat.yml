@@ -103,6 +103,7 @@ packages:
     - ShellCheck
     - stow
     - strace
+    - tidy
     - tlp
     - tmux
     - toilet

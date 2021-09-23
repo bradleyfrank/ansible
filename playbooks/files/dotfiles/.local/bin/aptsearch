@@ -8,10 +8,7 @@
 # Requires: tidy, jq
 #
 
-
-# ----- functions ----- #
-
-function main() {
+main() {
     local blue='\033[0;34m' green='\033[0;32m' reset='\033[0m' output pkg desc
     output=$(mktemp)
 
@@ -32,9 +29,6 @@ function main() {
 
     rm "$output"
 }
-
-
-# ----- begin ----- #
 
 [[ -z "$1" ]] && echo "Usage: aptsearch <package>" >&2
 main "$1" "$2"
