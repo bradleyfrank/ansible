@@ -103,16 +103,20 @@ alias osupdate='sudo softwareupdate -ia'
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 alias readme='macdown README*'
 {% elif 'Linux' in ansible_system %}
-alias bat='batcat'
 alias free='free -g'
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
 alias lsports='lsof -i -P -n'
-alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
+{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) -%}
+alias bat='batcat'
+alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+{% elif 'Fedora' in ansible_distribution -%}
+alias osupdate='sudo dnf clean all && sudo dnf update -y'
+{% endif -%}
 
 alias -g _groot='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
 alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
