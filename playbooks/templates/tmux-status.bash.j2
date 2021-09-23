@@ -63,7 +63,8 @@ battery() {
 }
 
 distribution() {
-  local distro version {%- if 'Darwin' in ansible_system %}system_info{% endif -%}
+  local distro version {% if 'Darwin' in ansible_system %}system_info{% endif %}
+
   {% if 'Darwin' in ansible_system -%}
   system_info="$(sw_vers | awk '{print $2}' | head -n 2 | xargs)"
   distro="${fg_Green}$(awk '{print $1}' <<< $system_info)"
