@@ -8,32 +8,33 @@
 # Requires: tmux, git
 #
 
-repo=infractl
+repo_name=infractl
+repo_path="$HOME"/Development/Projects/"$repo_name"
 branch="$(id -un).$(date +%F_%T | tr -d ':-' | tr '_' '-')"
-open=window
+open_in=window
 
 while getopts ':hr:b:wp' flag; do
     case "${flag}" in
         h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
-        p) open=pane ; split=${OPTARG:-h} ;;
-        r) repo=$OPTARG ;;
+        p) open_in=pane ; split=${OPTARG:-h} ;;
+        r) repo_name=$OPTARG ;;
         b) branch=$OPTARG ;;
-        w) open=window ;;
+        w) open_in=window ;;
         *) echo "Invalid argument." >&2 ; exit 1 ;;
     esac
 done
 
-[[ ! -d ~/Development/Projects/$repo ]] && exit 1
+cd "$(find "$repo_path"/ -maxdepth 1 -mindepth 1 -type d -exec stat -c "%W %n" {} \; \
+  | sort -n | head -n1 | awk '{print $2}')" || exit 1
 
-case $open in
-  window) target="$(tmux new-window -n "$branch" -P)" ;;
+git worktree add ../"$branch"
+repo_branch="$repo_path"/"$branch"
+
+case $open_in in
+  window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
   pane)   case $split in
-            v) target="$(tmux split-window -v -P)" ;;
-            h) target="$(tmux split-window -h -P)" ;;
+            v) tmux split-window -v -c "$repo_branch" ;;
+            h) tmux split-window -h -c "$repo_branch" ;;
           esac
           ;;
 esac
-
-default_branch="$(find ~/Development/Projects/"$repo" -maxdepth 1 -mindepth 1 -type d -exec stat -c "%W %n" {} \; \
-  | sort -n | head -n1 | awk '{print $2}')"
-tmux send-keys -t "$target" "cd $default_branch && git worktree add ../$branch && cd ../$branch && clear" C-m
