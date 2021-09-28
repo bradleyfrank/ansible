@@ -54,3 +54,9 @@
   become: true
   when: "'desktop' in system_type"
   tags: [packages, dnf]
+
+- name: Remove 1Password beta repo
+  ansible.builtin.file:
+    path: /etc/yum.repos.d/1Password.repo
+    state: absent
+
