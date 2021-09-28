@@ -26,7 +26,7 @@ repos:
     system_type: [desktop]
   - name: 1Password
     description: 1Password
-    baseurl: https://downloads.1password.com/linux/rpm
+    baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
     gpgkey: https://downloads.1password.com/linux/keys/1password.asc
     system_type: [desktop]
   - name: gh-cli
