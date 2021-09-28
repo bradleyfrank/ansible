@@ -37,12 +37,13 @@ bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling spee
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
 bind '%' split-window -h -c "#{pane_current_path}"          # new pane opens to same directory
 bind '"' split-window -c "#{pane_current_path}"             # new pane opens to same directory
+bind 'C' new-window
 bind 'D' run-shell "tmux-dump-pane"
 {% if tmux_semver is version('3.2', operator='>=') %}
 bind 'N' display-popup -E "vim ~/Development/Scratch/Notes"
-bind 'O' display-popup -E "cd ~/Development/Scratch/; vim"
 bind 'P' display-popup -E "zsh"
 {% endif -%}
+bind 'c' new-window -c "~/Development/Projects"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
 bind 'r' rename-window "#{b:pane_current_path}"
