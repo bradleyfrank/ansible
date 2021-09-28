@@ -59,4 +59,7 @@
   ansible.builtin.file:
     path: /etc/yum.repos.d/1Password.repo
     state: absent
+  become: true
+  when: "'desktop' in system_type"
+  tags: [packages, dnf]
 
