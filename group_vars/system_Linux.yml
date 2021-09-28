@@ -66,7 +66,7 @@ dconf_common:
     'x-content/image-dcf',
     'x-content/unix-software']"
   /org/gnome/desktop/peripherals/keyboard/numlock-state: "true"
-  /org/gnome/desktop/peripherals/mouse/natural-scroll: "true"
+  /org/gnome/desktop/peripherals/mouse/natural-scroll: "false"
   /org/gnome/desktop/peripherals/touchpad/tap-to-click: "true"
   /org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled: "true"
   /org/gnome/desktop/privacy/remove-old-temp-files: "true"
