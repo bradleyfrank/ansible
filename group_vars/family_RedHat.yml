@@ -17,7 +17,7 @@ repos:
     description: negativo17 - Multimedia
     baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
     gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-    includepkgs: ['spotify*', 'makemkv*', 'ccextractor*']
+    includepkgs: ['spotify*', 'makemkv*', 'ccextractor*', '*nvidia*']  # https://negativo17.org/nvidia-driver
     system_type: [desktop, server]
   - name: vscode
     description: Visual Studio Code
@@ -44,14 +44,30 @@ repos:
     baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
     gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
     system_type: [desktop]
-
-rpms:
-  - name: rpmfusion-free
-    url: "https://download1.rpmfusion.org/free/fedora"
-    rpm: "rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
   - name: rpmfusion-nonfree
-    url: "https://download1.rpmfusion.org/nonfree/fedora"
-    rpm: "rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    description: RPM Fusion for Fedora - Nonfree
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: rpmfusion-nonfree-updates
+    description: RPM Fusion for Fedora - Nonfree - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: rpmfusion-free
+    description: RPM Fusion for Fedora - Free
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: rpmfusion-free-updates
+    description: RPM Fusion for Fedora - Free - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
 
 packages:
   cli:

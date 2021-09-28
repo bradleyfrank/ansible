@@ -3,6 +3,7 @@
 - name: Install gpg keys
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
+    state: present
   loop: "{{ repos }}"
   loop_control:
     label: "{{ item['name'] }}"
@@ -10,23 +11,14 @@
   when: system_type in item['system_type']
   tags: repos
 
-- name: Install repositories via RPMs
-  ansible.builtin.dnf:
-    name: "{{ item['url'] }}/{{ item['rpm'] }}"
-    disable_gpg_check: true
-    state: present
-  loop: "{{ rpms }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  tags: repos
-
 - name: Install repositories
   ansible.builtin.yum_repository:
     name: "{{ item['name'] }}"
     description: "{{ item['description'] }}"
-    baseurl: "{{ item['baseurl'] }}"
-    includepkgs: "{{ item['includepkgs'] | default('') }}"
+    baseurl: "{{ item['baseurl'] | default(omit) }}"
+    metalink: "{{ item['metalink'] | default(omit) }}"
+    includepkgs: "{{ item['includepkgs'] | default(omit) }}"
+    exclude: "{{ item['exclude'] | default(omit) }}"
     gpgcheck: "{{ item['gpgcheck'] | default(true) }}"
     gpgkey: "{{ item['gpgkey'] }}"
     repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
