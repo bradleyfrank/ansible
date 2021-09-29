@@ -1,4 +1,5 @@
 {
+    "editor.bracketPairColorization.enabled": true,
     "editor.cursorBlinking": "phase",
     "editor.fontFamily": "SauceCodePro Nerd Font",
     "editor.fontLigatures": true,
