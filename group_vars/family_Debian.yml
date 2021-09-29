@@ -1,8 +1,5 @@
 ---
 
-bat_cmd: batcat
-sudo_group: sudo
-
 repos:
   - name: vscode
     repo: >
@@ -175,7 +172,6 @@ packages:
     - shutter
     - solaar
     - timeshift
-    - thunderbird
     - torbrowser-launcher
     - transmission-gtk
     - vlc

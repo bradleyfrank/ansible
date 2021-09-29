@@ -1,7 +1,5 @@
 ---
 
-sudo_group: wheel
-
 repos:
   - name: better_fonts
     description: Better Fonts
@@ -172,7 +170,6 @@ packages:
     - seahorse
     - solaar
     - system-config-printer
-    - thunderbird
     - timeshift
     - torbrowser-launcher
     - transmission-gtk

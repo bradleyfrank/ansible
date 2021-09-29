@@ -19,6 +19,7 @@
       - .local/share/icons
       - .local/share/zshrc
       - .local/share/zsh-completion
+      - .local/opt/bbdm
 
     brew_packages:
       - diff-so-fancy

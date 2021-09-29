@@ -59,7 +59,9 @@
       tags: core
 
     - name: Install themes for bat
-      ansible.builtin.command: "{{ bat_cmd | default('bat') }} cache --build"
+      vars:
+        bat: "{{ 'batcat' if 'Debian' in ansible_os_family else 'bat' }}"
+      ansible.builtin.command: "{{ bat }} cache --build"
       changed_when: false
       tags: core
 
@@ -112,7 +114,7 @@
       tags: [zsh, starship]
 
     - name: Generate 1Password-cli completions
-      ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
+      ansible.builtin.shell: "op completion zsh > {{ zsh['completions'] }}/op"
       changed_when: false
       when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
       tags: [zsh, 1password]

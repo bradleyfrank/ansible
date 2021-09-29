@@ -39,5 +39,5 @@
     - name: Create inventory
       ansible.builtin.template:
         src: inventory.ini.j2
-        dest: "{{ ansible_env['PWD'] | dirname }}/inventory.ini"
+        dest: "{{ ansible_user_dir }}/.ansible/inventory.ini"
         mode: 0755

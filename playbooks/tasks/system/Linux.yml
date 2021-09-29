@@ -5,13 +5,12 @@
     name: "{{ hostname }}"
   become: true
 
-- name: Set user shell to zsh and add to groups
+- name: Set user shell to zsh
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups: "{{ sudo_group }}, cdrom"
     shell: /usr/bin/zsh
   become: true
-  tags: user, groups
+  tags: user
 
 - name: Add user to plugdev group for open-razer
   ansible.builtin.user:
