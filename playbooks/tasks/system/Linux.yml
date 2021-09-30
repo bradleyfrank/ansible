@@ -9,6 +9,7 @@
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/zsh
+    groups: cdrom
   become: true
   tags: user
 
@@ -25,7 +26,7 @@
     - name: Add user to Docker group
       ansible.builtin.user:
         name: "{{ ansible_user_id }}"
-        groups: [docker]
+        groups: docker
     - name: Ensure Docker is running
       ansible.builtin.systemd:
         name: docker
