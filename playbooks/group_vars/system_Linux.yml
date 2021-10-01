@@ -33,7 +33,6 @@ font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] }}/site-packages"
 root_home: /root
-system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"
 
 starship:
   tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
@@ -41,6 +40,7 @@ starship:
   download_path: /tmp/starship.tar.gz
 
 sudoers_d: /etc/sudoers.d
+system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"
 
 vscode:
   config: "{{ ansible_user_dir }}/.config/Code"

@@ -29,6 +29,7 @@ starship:
   tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-apple-darwin.tar.gz
 
 sudoers_d: /private/etc/sudoers.d
+system_type: desktop
 
 vscode:
   bin: /usr/local/bin/code
