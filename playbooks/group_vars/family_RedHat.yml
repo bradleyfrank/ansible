@@ -182,6 +182,7 @@ dconf_distro:
       'background-logo@fedorahosted.org',
       'system-monitor@paradoxxx.zero.gmail.com']"
     /org/gnome/shell/favorite-apps: "[\
+      'org.gnome.Terminal.desktop',
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
       'code.desktop',

@@ -15,6 +15,7 @@ flatpaks:
     - name: com.github.geigi.cozy
     - name: com.github.johnfactotum.Foliate
     - name: com.github.junrrein.PDFSlicer
+    - name: com.github.liferooter.textpieces
     - name: com.github.PintaProject.Pinta
     - name: com.gitlab.newsflash
     - name: com.plexamp.Plexamp

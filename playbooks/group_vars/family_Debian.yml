@@ -225,6 +225,7 @@ dconf_distro:
       'system-monitor@paradoxxx.zero.gmail.com',
       'ubuntu-dock@ubuntu.com']"
     /org/gnome/shell/favorite-apps: "[\
+      'org.gnome.Terminal.desktop',
       'firefox.desktop',
       'org.gnome.Nautilus.desktop',
       'code.desktop',
