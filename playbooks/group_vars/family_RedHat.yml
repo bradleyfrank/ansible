@@ -45,13 +45,13 @@ repos:
   - name: rpmfusion-nonfree
     description: RPM Fusion for Fedora - Nonfree
     metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
-    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
     exclude: ['*nvidia*']
     system_type: [desktop, server]
   - name: rpmfusion-nonfree-updates
     description: RPM Fusion for Fedora - Nonfree - Updates
     metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
-    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
     exclude: ['*nvidia*']
     system_type: [desktop, server]
   - name: rpmfusion-free
