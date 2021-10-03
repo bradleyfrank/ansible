@@ -63,7 +63,7 @@ git checkout "$ANSIBLE_REPO_BRANCH"
 
 ansible-galaxy collection install -r setup/requirements.yml
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml \
-  -e current_hostname="$(hostname -s)" -e current_email="$(id -un)@$(uname -n)"
+  --extra-vars current_hostname="$(hostname -s)" --extra-vars current_email="$(id -un)@$(uname -n)"
 
 case $ANSIBLE_REPO_PLAYBOOK in
   bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;

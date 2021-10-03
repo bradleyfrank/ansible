@@ -2,14 +2,15 @@
 
 Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfiles.
 
-**Supported systems:** *macOS, Ubuntu, Pop!_OS*
+**Supported systems:** *macOS, Fedora, Ubuntu, Pop!_OS*
 
-## Install & Run
+## Installing
 
 ```shell
-bbdm=https://bbdm.franklybrad.com/install && \
-case $(uname -s) in Darwin) curl -sO $bbdm ;; Linux) wget -q $bbdm ;; esac
+curl -sO https://bbdm.franklybrad.com/install
 ```
+
+***Note:*** *Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and thus will skip the setup prompts.*
 
 Usage:
 
@@ -19,13 +20,13 @@ sh install [-g git_branch] [-d]
   -d  Run the dotfiles playbook only
 ```
 
-* Prompts for:
-  * Ansible vault password (saved to `~/.ansible/vault`)
-  * Hostname
-  * System ownership (personal vs employer)
-  * Email address
-* Creates `inventory.json` with the above host-specific variables
-* Installs repository to `~/.local/opt/bbdm`
+1. Prompts for:
+    1. Ansible vault password (saved to `~/.ansible/vault`)
+    2. Hostname
+    3. Email address
+    4. Clone all personal GitHub repos (True|False)
+    5. Manage `~/.ssh/config` (True|False)
+2. Creates `~/.ansible/inventory.ini` from the above answers
 
 ### Notes
 
@@ -33,20 +34,11 @@ sh install [-g git_branch] [-d]
 * Only the `bootstrap` playbook requires sudo privileges
 * The `dotfiles` playbook assumes all dependencies are pre-installed
 * For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas` (skips if not authenticated)
-* If `work_system` is **true**, the following tasks are skipped:
-  * Managing `~/.ssh/config`
-  * Cloning personal GitHub repositories
 
-### Inventory
+## Inventory
 
-To regenerate `inventory.json` anytime, run the following Ansible command from the `bbdm` install directory, replacing `{{ hostname }}`, `{{ email_address }}` and `{{ work_system }}` placeholders.
+To regenerate `~/.ansible/inventory.ini`, run the following command from the top level of the repository:
 
 ```shell
-ansible localhost \
-  --module-name ansible.builtin.template \
-  --args "src=setup/templates/inventory.json.j2 dest=inventory.json" \
-  --extra-vars "ansible_system=$(uname -s)" \
-  --extra-vars "hostname={{ hostname }}" \
-  --extra-vars "email={{ email_address }}" \
-  --extra-vars "work_system={{ true|false }}"
+ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml -e "current_hostname=$(hostname -s)"
 ```
