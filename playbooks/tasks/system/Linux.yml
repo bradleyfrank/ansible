@@ -5,28 +5,31 @@
     name: "{{ hostname }}"
   become: true
 
-- name: Set user shell to zsh
+- name: Set user shell to zsh and add to group 'cdrom'
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/zsh
     groups: cdrom
+    append: true
   become: true
   tags: user
 
-- name: Add user to plugdev group for open-razer
+- name: Add user to 'plugdev' group for open-razer
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     groups: plugdev
+    append: true
   become: true
   when: "'desktop' in system_type"
   tags: user, groups
 
 - name: Pull latest container images via Docker
   block:
-    - name: Add user to Docker group
+    - name: Add user to 'docker' group
       ansible.builtin.user:
         name: "{{ ansible_user_id }}"
         groups: docker
+        append: true
     - name: Ensure Docker is running
       ansible.builtin.systemd:
         name: docker
