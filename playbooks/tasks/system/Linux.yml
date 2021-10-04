@@ -62,7 +62,7 @@
     group: root
     state: link
   become: true
-  when: ("'desktop' in system_type") or ("'RedHat' in ansible_os_family")
+  when: "('desktop' in system_type and 'RedHat' in ansible_os_family)"
   tags: fonts
 
 - name: Import dconf settings
