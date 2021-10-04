@@ -54,6 +54,17 @@
   when: "'RedHat' in ansible_os_family"
   tags: podman
 
+- name: Symlink lcddefault conf for fonts
+  ansible.builtin.file:
+    src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
+    dest: /etc/fonts/conf.d/11-lcdfilter-default.conf
+    owner: root
+    group: root
+    state: link
+  become: true
+  when: ("'desktop' in system_type") and ("'RedHat' in ansible_os_family")
+  tags: fonts
+
 - name: Import dconf settings
   community.general.dconf:
     key: "{{ item['key'] }}"
