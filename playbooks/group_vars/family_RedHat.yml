@@ -6,6 +6,11 @@ repos:
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/fedora-$releasever-$basearch/"
     gpgkey: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/pubkey.gpg"
     system_type: [desktop]
+  - name: glow
+    description: Copr repo for glow
+    baseurl: https://download.copr.fedorainfracloud.org/results/keefle/glow/fedora-$releasever-$basearch/
+    gpgkey: https://download.copr.fedorainfracloud.org/results/keefle/glow/pubkey.gpg
+    system_type: [desktop, server]
   - name: google-chrome
     description: Google Chrome
     baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
@@ -87,6 +92,7 @@ packages:
     - ghostscript
     - git-delta
     - glances
+    - glow
     - htop
     - httpie
     - iftop
