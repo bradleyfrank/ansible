@@ -21,6 +21,7 @@ flatpaks:
     - name: com.plexamp.Plexamp
     - name: com.spotify.Client
     - name: io.github.seadve.Kooha
+    - name: net.cozic.joplin_desktop
     - name: org.gabmus.hydrapaper
     - name: org.gnome.Connections
     - name: org.gnome.Games

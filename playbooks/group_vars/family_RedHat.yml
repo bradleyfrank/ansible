@@ -113,6 +113,7 @@ packages:
     - python3
     - python3-devel
     - reptyr
+    - ripgrep
     - ruby
     - ShellCheck
     - stow
@@ -125,6 +126,7 @@ packages:
     - tree
     - vim
     - wget
+    - xsel
     - xz
     - youtube-dl
     - zsh
