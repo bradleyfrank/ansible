@@ -66,6 +66,9 @@ alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inlin
 alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
 alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
+alias cdgcommon='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
+alias cdgroot='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
+alias cdgwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias df='df -h'
@@ -86,7 +89,6 @@ alias lS='ll --group-directories-first --sort size'
 alias ls='ls --color --classify --human-readable'
 alias lt='ll --sort time'
 alias mat='glow -s light'
-alias mp='multipass'
 alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
@@ -118,9 +120,7 @@ alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 alias osupdate='sudo dnf clean all && sudo dnf update -y'
 {% endif -%}
 
-alias -g _groot='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
-alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
-alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+alias -g mp='multipass'
 
 
 blackdiff() { black --line-length 100 --diff "$@"; }
