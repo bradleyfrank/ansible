@@ -93,6 +93,7 @@ packages:
     - inxi
     - jq
     - keychain
+    - keepassxc
     - kubectl
     - libmp4-info-perl
     - libvirt-clients
@@ -157,7 +158,6 @@ packages:
     - google-chrome-stable
     - gpaste*
     - gthumb
-    - keepassxc
     - libreoffice
     - makemkv-bin
     - makemkv-oss

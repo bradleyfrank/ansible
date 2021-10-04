@@ -76,7 +76,6 @@ alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
 alias glances='glances --theme-white'
 alias grep='grep -I'
-alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
 alias lc='ll --grid'
@@ -101,6 +100,7 @@ alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
 {% if 'Darwin' in ansible_system %}
+alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias osupdate='sudo softwareupdate -ia'
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 alias readme='macdown README*'
@@ -115,12 +115,15 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 {% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) -%}
 alias bat='batcat'
+alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 {% elif 'Fedora' in ansible_distribution -%}
+alias hadolint='podman run --rm -i ghcr.io/hadolint/hadolint <'
 alias osupdate='sudo dnf clean all && sudo dnf update -y'
 {% endif -%}
 
 alias -g mp='multipass'
+alias -g vbsnap='VBoxManage snapshot'
 
 
 blackdiff() { black --line-length 100 --diff "$@"; }
@@ -131,9 +134,8 @@ diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
 decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
 httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
-mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
+mkpasswd() { keepassxc-cli generate --length "${1:-16}" --lower --upper --numeric --exclude-similar; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-tnw() { tmux send-keys -t "$(tmux new-window -n "$1" -P)" "cd ~/Development/Projects/$1 && clear" C-m; }
 {% if 'Linux' in ansible_system %}
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
