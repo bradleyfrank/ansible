@@ -16,7 +16,7 @@
   when:
     - distribution_version == ansible_distribution_version
     - distribution == ansible_distribution
-    - item['system_type'] in system_type
+    - system_type in item['system_type']
   tags: repos
 
 - name: Install repositories
@@ -33,7 +33,7 @@
   when:
     - distribution_version == ansible_distribution_version
     - distribution == ansible_distribution
-    - item['system_type'] in system_type
+    - system_type in item['system_type']
   tags: repos
 
 - name: Update system
