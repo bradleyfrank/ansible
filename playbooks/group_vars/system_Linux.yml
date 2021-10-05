@@ -10,6 +10,8 @@ flatpaks:
   remotes:
     - name: flathub
       url: https://flathub.org/repo/flathub.flatpakrepo
+    - name: elementary
+      url: https://flatpak.elementary.io/repo.flatpakrepo
   packages:
     - name: com.github.fabiocolacio.marker
     - name: com.github.geigi.cozy
@@ -29,6 +31,8 @@ flatpaks:
     - name: org.gnome.gThumb
     - name: org.signal.Signal
     - name: us.zoom.Zoom
+    - name: com.github.phase1geo.annotator.flatpakref
+      remote: elementary
 
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 
