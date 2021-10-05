@@ -1,4 +1,7 @@
 [alias]
+  btrim = !git branch | grep --invert-match '*' | cut -c 3- \
+    | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' \
+    | xargs --no-run-if-empty git branch --delete --force
   co = checkout
   common = rev-parse --git-common-dir
   graph = log --oneline --decorate --graph --all
@@ -13,9 +16,6 @@
   stp = stash pop
   stu = stash --include-untracked
   top = rev-parse --show-toplevel
-  trim = !git branch | grep --invert-match '*' | cut -c 3- \
-    | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' \
-    | xargs --no-run-if-empty git branch --delete --force
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
   wipe = !git stash --include-untracked && git stash drop
@@ -53,6 +53,6 @@
   name = {{ ansible_user_gecos }}
   email = {{ email }}
 {% if 'remmac06432' in ansible_hostname -%}
-[url "https://api:{{ github['infractl'] }}@github.com/"]
+[url "https://api:{{ github['infractl'] | trim('\n') }}@github.com/"]
   insteadOf = https://github.com/
 {% endif -%}

@@ -27,6 +27,8 @@ disabled = false
 format = 'using [$symbol$context]($style) '
 style = "bold fg:61"
 symbol = "ﴱ "
+[kubernetes.context_aliases]
+"gke_.*_(?P<cluster>[\\w-]+)" = "$cluster"
 [python]
 detect_extensions = []
 detect_files = []

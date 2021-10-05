@@ -73,7 +73,7 @@
         backup: true
       register: _backup_gitconfig
       notify: Process backups
-      tags: core
+      tags: [core, git]
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
