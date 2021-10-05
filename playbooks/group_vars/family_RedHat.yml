@@ -101,7 +101,6 @@ packages:
     - jq
     - kernel-devel  # openrazer
     - keychain
-    - keepassxc
     - kubectl
     - libmp4v2
     - libvirt-client
@@ -118,6 +117,7 @@ packages:
     - par
     - perf
     - podman
+    - pwgen
     - python3
     - python3-devel
     - reptyr
@@ -165,6 +165,7 @@ packages:
     - google-chrome-stable
     - google-noto-emoji-color-fonts
     - gpaste*
+    - keepassxc
     - libgnome-keyring
     - libreoffice
     - makemkv

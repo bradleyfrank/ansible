@@ -91,6 +91,7 @@ packages:
     - p7zip
     - par
     - prettyping
+    - pwgen
     - qpdf
     - rename
     - ripgrep

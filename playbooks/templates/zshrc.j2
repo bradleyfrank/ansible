@@ -88,6 +88,7 @@ alias lS='ll --group-directories-first --sort size'
 alias ls='ls --color --classify --human-readable'
 alias lt='ll --sort time'
 alias mat='glow -s light'
+alias mkpasswd='pwgen'
 alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
@@ -134,7 +135,6 @@ diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
 decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
 httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
-mkpasswd() { keepassxc-cli generate --length "${1:-16}" --lower --upper --numeric --exclude-similar; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 {% if 'Linux' in ansible_system %}
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
