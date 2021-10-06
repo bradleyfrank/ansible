@@ -3,6 +3,7 @@
 alacritty:
   decorations: buttonless
   size: 14
+  fontFamily: SauceCodePro Nerd Font Mono
 
 bash_shell: /usr/local/bin/bash
 

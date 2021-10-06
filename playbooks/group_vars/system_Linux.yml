@@ -3,6 +3,7 @@
 alacritty:
   decorations: none
   size: 12.0
+  fontFamily: None
 
 bash_shell: /usr/bin/bash
 
