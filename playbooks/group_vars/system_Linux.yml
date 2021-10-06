@@ -3,7 +3,7 @@
 alacritty:
   decorations: none
   size: 12.0
-  fontFamily: None
+  fontFamily: SauceCodePro Nerd Font
 
 bash_shell: /usr/bin/bash
 
