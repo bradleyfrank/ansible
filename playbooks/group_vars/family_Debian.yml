@@ -61,17 +61,23 @@ repos:
     key: https://download.docker.com/linux/ubuntu/gpg
     keyring: /usr/share/keyrings/docker-archive-keyring.gpg
     system_type: [desktop, server]
+  - name: gcloud
+    repo: >
+      deb [signed-by=/usr/share/keyrings/cloud.google.gpg]
+      https://packages.cloud.google.com/apt cloud-sdk main
+    key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    system_type: [desktop, server]
 
 packages:
   cli:
     - abcde
     - apt-file
-    - apt-transport-https  # docker
+    - apt-transport-https  # docker, gcloud
     - bash-completion
     - bat
     - bcal
     - borgbackup
-    - ca-certificates  # docker
+    - ca-certificates  # docker, gcloud
     - containerd.io
     - dictd
     - docker-ce
@@ -85,8 +91,9 @@ packages:
     - gh
     - ghostscript
     - glances
-    - gnupg  # docker
+    - gnupg  # docker, gcloud
     - gnupg2  # kubernetes
+    - google-cloud-sdk
     - htop
     - httpie
     - iftop

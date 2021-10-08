@@ -66,8 +66,8 @@ alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inlin
 alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
 alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
-alias cdgcommon='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
-alias cdgroot='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
+alias cdgcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
+alias cdgroot='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
 alias cdgwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
@@ -129,9 +129,10 @@ alias -g vbsnap='VBoxManage snapshot'
 
 blackdiff() { black --line-length 100 --diff "$@"; }
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
+code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
 dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
-diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
+diceware() { shuf -n "${1:-5}" ~/.local/share/dict/words | xargs | tr " " "${2:--}"; }
 decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
 httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }

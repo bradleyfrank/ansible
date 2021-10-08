@@ -42,6 +42,11 @@ repos:
     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
     gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     system_type: [desktop, server]
+  - name: google-cloud-sdk
+    description: Google Cloud SDK
+    baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    system_type: [desktop, server]
   - name: hardware:razer
     description: packages for Razer hardware
     baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
@@ -94,6 +99,7 @@ packages:
     - git-delta
     - glances
     - glow
+    - google-cloud-sdk
     - htop
     - httpie
     - iftop

@@ -37,6 +37,7 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pylintUseMinimalCheckers": false,
     "redhat.telemetry.enabled": true,
+    "remote.SSH.remotePlatform": { "*": "linux" },
     "security.workspace.trust.enabled": false,
     "shellcheck.customArgs": [
         "-x"
