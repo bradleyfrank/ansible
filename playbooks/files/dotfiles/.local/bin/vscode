@@ -1,3 +1,4 @@
+# shellcheck disable=SC1071
 #!/usr/bin/env zsh
 
 #
@@ -12,9 +13,8 @@
 #     PasswordAuthentication no
 #     AuthenticationMethods publickey
 #     PubkeyAuthentication yes
-#   2. 
 # Local setup:
-#   1. Generate SSH keys
+#   1. Generate SSH keys & install on server
 #   2. Add to ~/.ssh/config:
 #     Host <my-server>
 #       HostName <ip-address>
@@ -49,7 +49,7 @@ get_socket() {
   echo "VSCode IPC socket not found." 1>&2
   exit 1
 }
-     
+
 get_bin
 get_socket
 
