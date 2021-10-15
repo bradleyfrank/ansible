@@ -26,6 +26,7 @@ sh install [-g git_branch] [-d]
     3. Email address
     4. Clone all personal GitHub repos (True|False)
     5. Manage `~/.ssh/config` (True|False)
+    6. Install employer settings and scripts (True|False)
 2. Creates `~/.ansible/inventory.ini` from the above answers
 
 ### Notes

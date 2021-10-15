@@ -28,6 +28,10 @@
       prompt: Use personal SSH config (True|False)
       private: false
       default: true
+    - name: work_system
+      prompt: Install employer settings and scripts (True|False)
+      private: false
+      default: false
 
   tasks:
     - name: Create vault file
