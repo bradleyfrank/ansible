@@ -46,22 +46,28 @@
 
 - name: Download and install Krew
   block:
-    - name: Download Krew installer
-      ansible.builtin.get_url:
-        url: "{{ krew['url'] }}"
-        dest: /tmp/krew.tar.gz
+    - name: Get latest version of Krew
+      community.general.github_release:
+        user: kubernetes-sigs
+        repo: krew
+        action: latest_release
+      register: latest_version
     - name: Make directory for extracting Krew installer
       ansible.builtin.file:
         path: /tmp/krew
         state: directory
         mode: 0755
+    - name: Download Krew installer
+      ansible.builtin.get_url:
+        url: "{{ krew['url'] }}/{{ latest_version['tag'] }}/{{ krew['filename'] }}.tar.gz"
+        dest: /tmp/krew.tar.gz
     - name: Extract Krew installer
       ansible.builtin.unarchive:
         src: /tmp/krew.tar.gz
         dest: /tmp/krew
     - name: Install Krew
       ansible.builtin.command:
-        cmd: "/tmp/krew/{{ krew['installer'] }} install krew"
+        cmd: "/tmp/krew/{{ krew['filename'] }} install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
   always:
     - name: Cleanup Krew temp files

@@ -23,7 +23,7 @@
   when: "'desktop' in system_type"
   tags: user, groups
 
-- name: Pull latest container images via Docker
+- name: Configure Docker prereqs and pull containers
   block:
     - name: Add user to 'docker' group
       ansible.builtin.user:
@@ -36,7 +36,7 @@
         daemon_reload: true
         enabled: true
         state: started
-    - name: Pull latest Docker images
+    - name: Pull latest container images via Docker
       environment:
         PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
       community.docker.docker_image:

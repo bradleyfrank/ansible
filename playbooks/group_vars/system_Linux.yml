@@ -32,7 +32,7 @@ flatpaks:
     - name: org.gnome.gThumb
     - name: org.signal.Signal
     - name: us.zoom.Zoom
-    - name: com.github.phase1geo.annotator.flatpakref
+    - name: com.github.phase1geo.annotator
       remote: elementary
 
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
