@@ -18,7 +18,7 @@
   top = rev-parse --show-toplevel
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
-  wipe = !git stash --include-untracked && git stash drop
+  wipe = !git stash --include-untracked && git stash clear
   wt = worktree
   wta = !git for-each-ref --format='%(refname:short)' refs/remotes \
     | grep -Ev '(HEAD|main|master)' \
@@ -52,7 +52,7 @@
 [user]
   name = {{ ansible_user_gecos }}
   email = {{ email }}
-{% if 'remmac06432' in ansible_hostname -%}
+{% if work_system -%}
 [url "https://api:{{ github['infractl'] | trim('\n') }}@github.com/"]
   insteadOf = https://github.com/
 {% endif -%}

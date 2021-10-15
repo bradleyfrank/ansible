@@ -67,6 +67,10 @@ repos:
       https://packages.cloud.google.com/apt cloud-sdk main
     key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     system_type: [desktop, server]
+  - name: hashicorp
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_lsb['codename'] }} main
+    key: https://apt.releases.hashicorp.com/gpg
+    system_type: [desktop, server]
 
 packages:
   cli:
@@ -131,6 +135,7 @@ packages:
     - toilet
     - trash-cli
     - tree
+    - vault
     - vim
     - wget
     - xdelta

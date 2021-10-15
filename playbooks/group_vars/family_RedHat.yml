@@ -76,6 +76,11 @@ repos:
     gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
     exclude: ['*nvidia*']
     system_type: [desktop, server]
+  - name: hashicorp
+    description: Hashicorp Stable
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+    system_type: [desktop, server]
 
 packages:
   cli:
@@ -138,6 +143,7 @@ packages:
     - toilet
     - trash-cli
     - tree
+    - vault
     - vim
     - wget
     - xsel

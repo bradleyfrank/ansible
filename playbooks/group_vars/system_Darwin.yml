@@ -108,6 +108,7 @@ packages:
     - tidy
     - tmux
     - tree
+    - vault
     - vim
     - watch
     - wget

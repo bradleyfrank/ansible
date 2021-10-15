@@ -65,34 +65,43 @@ eval "$(dircolors $HOME/.dir_colors)"
 alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
 alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
 alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
-alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
+
 alias cdgcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
 alias cdgroot='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
-alias cdgwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+alias cdgwt='cd $(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+
+alias pipi='python3 -m pip install --user'
+alias pipr='python3 -m pip uninstall'
+alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
+
+alias ls='ls --color --classify --human-readable'
+alias lsexa='exa --color always --classify'
+alias lsexala='lsexa --long --all'
+alias l='lsexa'
+alias ll='lsexala'
+alias la='lsexa --all'
+alias lc='lsexala --grid'
+alias ld='lsexala --only-dirs'
+alias lg='lsexala --git'
+alias lG='lsexala --group'
+alias lp='lsexala --no-permissions --octal-permissions'
+alias lS='lsexala --group-directories-first --sort size'
+alias lt='lsexala --sort time'
+
+alias dmux='tmux new -s "$(diceware 2)"'
+alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
+
+alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias df='df -h'
-alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
 alias glances='glances --theme-white'
 alias grep='grep -I'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
-alias lc='ll --grid'
-alias ld='ll --only-dirs'
-alias lg='ll --git'
-alias lG='ll --group'
-alias ll='exa --color always --classify --long --all'
-alias lp='ll --no-permissions --octal-permissions'
-alias lS='ll --group-directories-first --sort size'
-alias ls='ls --color --classify --human-readable'
-alias lt='ll --sort time'
 alias mat='glow -s light'
 alias mkpasswd='pwgen 12 5 -ABcny1'
-alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
-alias pipi='python3 -m pip install --user'
-alias pipr='python3 -m pip uninstall'
-alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync'
 alias show='whence -f'
@@ -135,7 +144,6 @@ dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O -
 diceware() { shuf -n "${1:-5}" ~/.local/share/dict/words | xargs | tr " " "${2:--}"; }
 decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
-httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 {% if 'Linux' in ansible_system %}
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
@@ -241,13 +249,13 @@ source /usr/share/fzf/shell/key-bindings.zsh
 {% for file in zsh_source_files -%}
 source {{ file['path'] }}
 {% endfor -%}
-{% if 'remmac06432' in ansible_hostname -%}
+{% if work_system -%}
 source ~/.infractl/orm
 source ~/.infractl/secrets
 {% endif -%}
 
 
-{% if 'remmac06432' in ansible_hostname %}
+{% if work_system %}
 complete -o nospace -C /usr/local/bin/terraform terraform
 {% endif %}
 complete -F __start_kubectl k
