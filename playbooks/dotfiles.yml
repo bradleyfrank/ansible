@@ -135,10 +135,6 @@
       ansible.builtin.import_tasks: tasks/dotfiles/terminals.yml
       tags: terminals
 
-    - name: Import VSCode tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
-      tags: vscode
-
     - name: Import BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
       when: "'Darwin' in ansible_system"

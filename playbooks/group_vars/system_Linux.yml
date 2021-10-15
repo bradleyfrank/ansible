@@ -49,10 +49,6 @@ starship:
 sudoers_d: /etc/sudoers.d
 system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"
 
-vscode:
-  config: "{{ ansible_user_dir }}/.config/Code"
-  bin: /usr/bin/code
-
 dconf_common:
   /org/gnome/calendar/follow-night-light: "false"
   /org/gnome/desktop/datetime/automatic-timezone: "true"

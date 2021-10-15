@@ -82,32 +82,6 @@ vim:
     - name: nerdtree
       repo: https://github.com/preservim/nerdtree.git
 
-vscode_extensions:
-  - adpyke.codesnap
-  - bungcip.better-toml
-  - chrmarti.regex
-  - DavidAnson.vscode-markdownlint
-  - donjayamanne.githistory
-  - eamodio.gitlens
-  - mhutchie.git-graph
-  - mikestead.dotenv
-  - ms-azuretools.vscode-docker
-  - ms-kubernetes-tools.vscode-kubernetes-tools
-  - ms-python.python
-  - ms-vscode-remote.remote-containers
-  - ms-vscode-remote.remote-ssh
-  - ms-vscode-remote.remote-ssh-edit
-  - naumovs.color-highlight
-  - njpwerner.autodocstring
-  - rogalmic.bash-debug
-  - samuelcolvin.jinjahtml
-  - shd101wyy.markdown-preview-enhanced
-  - timonwong.shellcheck
-  - Tyriar.sort-lines
-  - vortizhe.simple-ruby-erb
-  - zaaack.markdown-editor
-  - zbr.vscode-ansible
-
 zsh:
   completions: "{{ ansible_user_dir }}/.local/share/zsh/completions"
   functions: "{{ ansible_user_dir }}/.local/share/zsh/functions"

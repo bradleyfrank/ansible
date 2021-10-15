@@ -32,10 +32,6 @@ starship:
 sudoers_d: /private/etc/sudoers.d
 system_type: desktop
 
-vscode:
-  bin: /usr/local/bin/code
-  config: '{{ ansible_user_dir }}/Library/Application Support/Code'
-
 packages:
   taps:
     - homebrew/bundle
