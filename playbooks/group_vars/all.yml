@@ -16,6 +16,8 @@ git_reference_repos:
     name: pure-bash-bible
   - https_url: https://github.com/jlevy/the-art-of-command-line.git
     name: the-art-of-command-line
+  - https_url: https://github.com/majamin/oneliners.txt.git
+    name: oneliners
 
 github:
   username: bradleyfrank
