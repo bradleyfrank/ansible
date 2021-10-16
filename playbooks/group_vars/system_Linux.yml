@@ -30,6 +30,7 @@ flatpaks:
     - name: org.gnome.Games
     - name: org.gnome.gitlab.somas.Apostrophe
     - name: org.gnome.gThumb
+    - name: org.gnome.TextEditor
     - name: org.signal.Signal
     - name: us.zoom.Zoom
     - name: com.github.phase1geo.annotator
