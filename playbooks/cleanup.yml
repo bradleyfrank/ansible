@@ -7,7 +7,6 @@
     files:
       - .ansible_vault_password
       - .dotfiles
-      - .config/cmarks
       - .config/p10k.zsh
       - .local/bin/diff-so-fancy
       - .local/bin/lib
