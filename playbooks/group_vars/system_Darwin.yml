@@ -6,11 +6,6 @@ alacritty:
   fontFamily: SauceCodePro Nerd Font
 
 bash_shell: /usr/local/bin/bash
-
-bbedit:
-  application_support: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit"
-  color_schemes: "{{ ansible_user_dir }}/Library/Application Support/BBEdit/Color Schemes"
-
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 
 hyper:
