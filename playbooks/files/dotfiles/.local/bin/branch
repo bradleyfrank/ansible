@@ -9,7 +9,6 @@
 #
 
 repo_name=infractl
-repo_path="$HOME"/Development/Projects/"$repo_name"
 branch="$(id -un).$(date +%F_%T | tr -d ':-' | tr '_' '-')"
 open_in=window
 
@@ -23,6 +22,8 @@ while getopts ':hr:b:wp' flag; do
         *) echo "Invalid argument." >&2 ; exit 1 ;;
     esac
 done
+
+repo_path="$HOME"/Development/Projects/"$repo_name"
 
 cd "$(find "$repo_path"/ -maxdepth 1 -mindepth 1 -type d -exec stat -c "%W %n" {} \; \
   | sort -n | head -n1 | awk '{print $2}')" || exit 1
