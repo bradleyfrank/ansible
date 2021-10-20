@@ -1,15 +1,9 @@
 ---
 
-- name: Stop packagekit
-  ansible.builtin.systemd:
-    name: packagekit
-    state: stopped
-  become: true
-  tags: [packages, apt]
-
 - name: Install gpg keys
   vars:
-    distro: "{{ item['distro'] | default(ansible_distribution_version) }}"
+    distribution_version: "{{ item['ansible_distribution_version'] | default(ansible_distribution_version) }}"
+    distribution: "{{ item['ansible_distribution'] | default(ansible_distribution) }}"
   ansible.builtin.apt_key:
     url: "{{ item['key'] | default(omit) }}"
     keyring: "{{ item['keyring'] | default(omit) }}"
@@ -19,12 +13,16 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  when: distro == ansible_distribution_version
+  when:
+    - distribution_version == ansible_distribution_version
+    - distribution == ansible_distribution
+    - system_type in item['system_type']
   tags: repos
 
 - name: Install repositories
   vars:
-    distro: "{{ item['distro'] | default(ansible_distribution_version) }}"
+    distribution_version: "{{ item['ansible_distribution_version'] | default(ansible_distribution_version) }}"
+    distribution: "{{ item['ansible_distribution'] | default(ansible_distribution) }}"
   ansible.builtin.apt_repository:
     repo: "{{ item['repo'] }}"
     filename: "{{ item['name'] }}"
@@ -32,7 +30,10 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  when: distro == ansible_distribution_version
+  when:
+    - distribution_version == ansible_distribution_version
+    - distribution == ansible_distribution
+    - system_type in item['system_type']
   tags: repos
 
 - name: Update system
@@ -52,9 +53,8 @@
          )
   retries: 10
   delay: 30
-  tags: [upgrade, apt]
 
-- name: Install Ubuntu/Pop!_OS cli packages
+- name: Install cli packages
   ansible.builtin.apt:
     name: "{{ packages['cli'] }}"
     state: present
@@ -74,7 +74,7 @@
   delay: 30
   tags: [packages, apt]
 
-- name: Install Ubuntu/Pop!_OS gui packages
+- name: Install gui packages
   ansible.builtin.apt:
     name: "{{ packages['gui'] }}"
     state: present
@@ -91,58 +91,5 @@
          )
   retries: 10
   delay: 30
-  when: is_desktop
+  when: "'desktop' in system_type"
   tags: [packages, apt]
-
-- name: Install flatpak remotes
-  community.general.flatpak_remote:
-    name: "{{ item['name'] }}"
-    state: present
-    flatpakrepo_url: "{{ item['url'] }}"
-    method: user
-  loop: "{{ flatpak_remotes }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  when: is_desktop
-  tags: [packages, flatpak]
-
-- name: Install flatpak packages
-  community.general.flatpak:
-    name: "{{ item['value'] }}"
-    state: present
-    method: user
-    remote: "{{ item['key'] }}"
-  loop: "{{ flatpaks | dict2items }}"
-  when: is_desktop
-  tags: [packages, flatpak]
-
-- name: Get latest version of Hyper
-  community.general.github_release:
-    user: vercel
-    repo: hyper
-    action: latest_release
-  register: hyper_version
-  when: is_desktop
-  tags: [packages, deb]
-
-- name: Install Hyper
-  vars:
-    github_url: "https://github.com/vercel/hyper/releases/download"
-    filename: "hyper_{{ hyper_version['tag'] | replace('v','') }}_amd64.deb"
-  ansible.builtin.apt:
-    deb: "{{ github_url }}/{{ hyper_version['tag'] }}/{{ filename }}"
-    install_recommends: true
-    autoclean: true
-    autoremove: true
-    update_cache: true
-    cache_valid_time: 3600
-  become: true
-  register: deb_install
-  until: (deb_install is success) or (
-            'Failed to lock apt for exclusive operation' not in deb_install['msg'] and
-            '/var/lib/dpkg/lock' not in deb_install['msg']
-         )
-  retries: 10
-  delay: 30
-  when: is_desktop
-  tags: [packages, deb]

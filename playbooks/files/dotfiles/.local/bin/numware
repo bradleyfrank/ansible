@@ -8,10 +8,7 @@
 # Requires: keepassxc-cli
 #
 
-
-# ----- functions ----- #
-
-function generate() {
+generate() {
     local length dice word capital diceware=""
     length="$1"
 
@@ -25,9 +22,6 @@ function generate() {
 
     printf "%s%s\n" "$diceware" "$(keepassxc-cli generate -L "$length" -n)"
 }
-
-
-# ----- begin ----- #
 
 length=5
 

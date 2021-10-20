@@ -20,8 +20,8 @@
       become: true
       when: "'Linux' in ansible_system"
 
-    - name: Include OS-specific packages
-      ansible.builtin.include_tasks: "tasks/packages/{{ ansible_system }}.yml"
+    - name: Include system-specific package installations
+      ansible.builtin.include_tasks: "tasks/packages/system_{{ ansible_system }}.yml"
       tags: always
 
     - name: Make bash default for root
@@ -31,15 +31,7 @@
       become: true
       tags: [root, shell]
 
-    - name: Fix permissions for zsh
-      ansible.builtin.file:
-        path: "{{ item }}"
-        mode: 0755
-      loop: "{{ zsh_directories }}"
-      when: "'Darwin' in ansible_system"
-      tags: shell
-
-    - name: Clone dotfiles repo
+    - name: Clone dotfiles collections repo
       ansible.builtin.git:
         accept_hostkey: true
         depth: 1

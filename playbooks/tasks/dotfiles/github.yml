@@ -1,23 +1,21 @@
 ---
 
-- name: Query GitHub API for my repositories
-  ansible.builtin.uri:
-    url: "https://api.github.com/search/repositories?q=user:{{ github['username'] }}+archived:false"
-    headers:
-      Authorization: "token {{ github['token'] }}"
-  register: github_repos
-
-- name: Create Git project directories
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
-    state: directory
-    mode: 0755
-  loop: "{{ github_repos['json']['items'] }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-
 - name: Clone repositories
   block:
+    - name: Query GitHub API for my repositories
+      ansible.builtin.uri:
+        url: "https://api.github.com/search/repositories?q=user:{{ github['username'] }}+archived:false"
+        headers:
+          Authorization: "token {{ github['token'] }}"
+      register: github_repos
+    - name: Create Git project directories
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
+        state: directory
+        mode: 0755
+      loop: "{{ github_repos['json']['items'] }}"
+      loop_control:
+        label: "{{ item['name'] }}"
     - name: Copy GitHub SSH key
       ansible.builtin.copy:
         src: ssh/github.pem
@@ -39,6 +37,7 @@
       ansible.builtin.file:
         path: "{{ github['key_file'] }}"
         state: absent
+  when: clone_personal_repos
 
 - name: Clone reference Git repositories
   ansible.builtin.git:

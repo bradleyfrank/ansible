@@ -1,11 +1,9 @@
 ---
 
 collections:
-  - name: oasis_roles.system
-    source: https://galaxy.ansible.com
-  - name: devsec.hardening
-    source: https://galaxy.ansible.com
-  - name: community.general
-    source: https://galaxy.ansible.com
+  - name: ansible.posix
   - name: community.docker
-    source: https://galaxy.ansible.com
+  - name: community.general
+  - name: containers.podman
+  - name: devsec.hardening
+  - name: oasis_roles.system

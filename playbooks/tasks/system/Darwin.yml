@@ -20,6 +20,16 @@
   become: true
   tags: shell
 
+- name: Fix permissions for zsh
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: 0755
+  loop:
+    - /usr/local/share
+    - /usr/local/share/zsh
+    - /usr/local/share/zsh/site-functions
+  tags: shell
+
 - name: Set macOS default settings
   community.general.osx_defaults:
     domain: "{{ item['domain'] }}"

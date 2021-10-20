@@ -9,11 +9,5 @@
 - name: Install BBEdit color themes
   ansible.builtin.copy:
     src: apps/bbedit/
-    dest: "{{ bbedit['color_schemes'] }}/"
+    dest: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes/"
     mode: 0755
-
-- name: Ensure symlink exists to 'Application Support' directory
-  ansible.builtin.file:
-    src: "{{ ansible_user_dir }}/Library/Application Support/BBEdit"
-    dest: "{{ bbedit['application_support'] }}"
-    state: link

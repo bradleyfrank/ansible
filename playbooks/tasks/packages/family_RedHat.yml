@@ -1,0 +1,56 @@
+---
+
+- name: Install gpg keys
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: present
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: system_type in item['system_type']
+  tags: repos
+
+- name: Install repositories
+  ansible.builtin.yum_repository:
+    name: "{{ item['name'] }}"
+    description: "{{ item['description'] }}"
+    baseurl: "{{ item['baseurl'] | default(omit) }}"
+    metalink: "{{ item['metalink'] | default(omit) }}"
+    includepkgs: "{{ item['includepkgs'] | default(omit) }}"
+    exclude: "{{ item['exclude'] | default(omit) }}"
+    gpgcheck: "{{ item['gpgcheck'] | default(true) }}"
+    gpgkey: "{{ item['gpgkey'] }}"
+    repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
+    skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: system_type in item['system_type']
+  tags: repos
+
+- name: Upgrade all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+    install_weak_deps: true
+  become: true
+
+- name: Install cli packages
+  ansible.builtin.dnf:
+    name: "{{ packages['cli'] }}"
+    state: present
+    update_cache: true
+  become: true
+  tags: [packages, dnf]
+
+- name: Install gui packages
+  ansible.builtin.dnf:
+    name: "{{ packages['gui'] }}"
+    state: present
+    update_cache: true
+  become: true
+  when: "'desktop' in system_type"
+  tags: [packages, dnf]

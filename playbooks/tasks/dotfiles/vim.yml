@@ -1,17 +1,26 @@
 ---
 
+- name: Install vim config
+  ansible.builtin.template:
+    src: vimrc.j2
+    dest: "{{ ansible_user_dir }}/.vimrc"
+    mode: 0644
+    backup: true
+  register: _backup_vimrc
+  notify: Process backups
+
 - name: Create vim extensions directory path
   ansible.builtin.file:
-    path: "{{ vim_extensions_dest }}"
+    path: "{{ vim['extensions_dest'] }}"
     state: directory
     mode: 0755
 
 - name: Install vim extensions
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
-    dest: "{{ vim_extensions_dest }}/{{ item['name'] }}"
+    dest: "{{ vim['extensions_dest'] }}/{{ item['name'] }}"
     depth: '1'
     version: "{{ item['version'] | default(omit) }}"
-  loop: "{{ vim_extensions }}"
+  loop: "{{ vim['extensions'] }}"
   loop_control:
     label: "{{ item['name'] }}"

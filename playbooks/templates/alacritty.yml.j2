@@ -8,16 +8,16 @@ window:
   startup_mode: Maximized
 font:
   normal:
-    family: Source Code Pro
+    family: {{ alacritty['fontFamily'] }}
     style: Light
   bold:
-    family: Source Code Pro
+    family: {{ alacritty['fontFamily'] }}
     style: Semibold
   italic:
-    family: Source Code Pro
+    family: {{ alacritty['fontFamily'] }}
     style: Italic
   bold_italic:
-    family: Source Code Pro
+    family: {{ alacritty['fontFamily'] }}
     style: Bold Italic
   size: {{ alacritty['size'] }}
   use_thin_strokes: true

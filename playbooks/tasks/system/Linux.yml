@@ -5,39 +5,75 @@
     name: "{{ hostname }}"
   become: true
 
-- name: Set user shell to zsh and add to groups
+- name: Set user shell to zsh and add to group 'cdrom'
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
-    groups: sudo, docker, plugdev, cdrom  # plugdev for open-razer
     shell: /usr/bin/zsh
+    groups: cdrom
+    append: true
   become: true
+  tags: user
 
-- name: Ensure Docker is running
-  ansible.builtin.systemd:
-    name: docker
-    daemon_reload: true
-    enabled: true
-    state: started
+- name: Add user to 'plugdev' group for open-razer
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: plugdev
+    append: true
   become: true
+  when: "'desktop' in system_type"
+  tags: user, groups
+
+- name: Configure Docker prereqs and pull containers
+  block:
+    - name: Add user to 'docker' group
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: true
+    - name: Ensure Docker is running
+      ansible.builtin.systemd:
+        name: docker
+        daemon_reload: true
+        enabled: true
+        state: started
+    - name: Pull latest container images via Docker
+      environment:
+        PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
+      community.docker.docker_image:
+        name: "{{ item['name'] }}"
+        source: pull
+      loop: "{{ containers }}"
+  become: true
+  when: "'Debian' in ansible_os_family"
   tags: docker
 
-- name: Pull latest Docker images
-  environment:
-    PYTHONPATH: "{{ ansible_env['PYTHONPATH'] | default('') }}:{{ python_user_site }}"
-  community.docker.docker_image:
-    name: "{{ item }}"
-    source: pull
-  loop: "{{ docker_images }}"
+- name: Pull latest container images via Podman
+  containers.podman.podman_image:
+    name: "{{ item['repo'] | default('docker.io') }}/{{ item['name'] }}"
+  loop: "{{ containers }}"
+  when: "'RedHat' in ansible_os_family"
+  tags: podman
+
+- name: Symlink lcddefault conf for fonts
+  ansible.builtin.file:
+    src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
+    dest: /etc/fonts/conf.d/11-lcdfilter-default.conf
+    owner: root
+    group: root
+    state: link
   become: true
-  tags: docker
+  when: "('desktop' in system_type and 'RedHat' in ansible_os_family)"
+  tags: fonts
 
 - name: Import dconf settings
   community.general.dconf:
     key: "{{ item['key'] }}"
     value: "{{ item['value'] }}"
-  loop: "{{ dconf['common'] | combine(dconf[ansible_distribution]) | dict2items }}"
+  loop: "{{ dconf_common | combine(dconf_distro[ansible_distribution]) | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
+  when: "'desktop' in system_type"
   tags: dconf
-  when: is_desktop
 
 - name: Generate host keys
   ansible.builtin.command:

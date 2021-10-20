@@ -14,7 +14,6 @@ PATH="$PATH:/opt/X11/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
-
 MANPATH="$HOME/.local/share/man"
 {% if 'Darwin' in ansible_system %}
 MANPATH="$MANPATH:/usr/local/opt/coreutils/libexec/gnuman"
@@ -66,33 +65,43 @@ eval "$(dircolors $HOME/.dir_colors)"
 alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
 alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
 alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
+
+alias cdgcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
+alias cdgroot='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
+alias cdgwt='cd $(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+
+alias pipi='python3 -m pip install --user'
+alias pipr='python3 -m pip uninstall'
+alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
+
+alias l='lsexa'
+alias la='lsexa --all'
+alias lc='lsexala --grid'
+alias ld='lsexala --only-dirs'
+alias lg='lsexala --git'
+alias lG='lsexala --group'
+alias ll='lsexala'
+alias lp='lsexala --no-permissions --octal-permissions'
+alias ls='ls --color --classify --human-readable'
+alias lS='lsexala --group-directories-first --sort size'
+alias lsexa='exa --color always --classify'
+alias lsexala='lsexa --long --all'
+alias lt='lsexala --sort time'
+
+alias dmux='tmux new -s "$(diceware 2)"'
+alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
+
 alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias df='df -h'
-alias dmux='tmux new -s "$(diceware 2)"'
 alias e='extract'
 alias glances='glances --theme-white'
 alias grep='grep -I'
-alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias isodate='date --iso-8601=seconds'
 alias krew='kubectl krew'
-alias lc='ll --grid'
-alias ld='ll --only-dirs'
-alias lg='ll --git'
-alias lG='ll --group'
-alias ll='exa --color always --classify --long --all'
-alias lp='ll --no-permissions --octal-permissions'
-alias lS='ll --group-directories-first --sort size'
-alias ls='ls --color --classify --human-readable'
-alias lt='ll --sort time'
-alias lolo='echo {{ docker_images | join(' ') }} | xargs -P10 -n1 docker pull'
 alias mat='glow -s light'
-alias mp='multipass'
-alias mux='[[ -z "$TMUX" ]] && tmux new-session -A -s main || return 1'
-alias pipi='python3 -m pip install --user'
-alias pipr='python3 -m pip uninstall'
-alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
+alias mkpasswd='pwgen 12 5 -ABcny1'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync'
 alias show='whence -f'
@@ -101,37 +110,41 @@ alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
 {% if 'Darwin' in ansible_system %}
+alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
 alias osupdate='sudo softwareupdate -ia'
 alias pbb='macdown ~/Development/Reference/pure-bash-bible/README.md'
 alias readme='macdown README*'
 {% elif 'Linux' in ansible_system %}
-alias bat='batcat'
 alias free='free -g'
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
 alias lsports='lsof -i -P -n'
-alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
 alias pbb='ghostwriter ~/Development/Reference/pure-bash-bible/README.md'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
+{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) -%}
+alias bat='batcat'
+alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
+alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+{% elif 'Fedora' in ansible_distribution -%}
+alias hadolint='podman run --rm -i ghcr.io/hadolint/hadolint <'
+alias osupdate='sudo dnf clean all && sudo dnf update -y'
+{% endif -%}
 
-alias -g _groot='$(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
-alias -g _gtop='$(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
-alias -g _gwt='$(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+alias -g mp='multipass'
+alias -g vbsnap='VBoxManage snapshot'
 
 
 blackdiff() { black --line-length 100 --diff "$@"; }
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
+code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
 dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
-diceware() { keepassxc-cli diceware --words "${1:-5}" | tr " " "-"; }
+diceware() { shuf -n "${1:-5}" ~/.local/share/dict/words | xargs | tr " " "${2:--}"; }
 decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
-httptrace() { curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"; }
-mkpasswd() { keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-tnw() { tmux send-keys -t "$(tmux new-window -n "$1" -P)" "cd ~/Development/Projects/$1 && clear" C-m; }
 {% if 'Linux' in ansible_system %}
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
@@ -217,33 +230,35 @@ bindkey '^[[6~' history-beginning-search-forward   # Page down key
 bindkey '^X^E' edit-command-line
 
 
-{% if 'Darwin' in ansible_system %}
+{% if 'Darwin' in ansible_system -%}
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-source {{ shell_completions }}/op
-{% elif 'Linux' in ansible_system %}
-source /usr/share/doc/fzf/examples/completion.zsh
-source /usr/share/doc/fzf/examples/key-bindings.zsh
+{% elif 'Linux' in ansible_system -%}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% endif %}
-source {{ shell_completions }}/kubectl
-source {{ shell_completions }}/pipenv
-source {{ shell_conf }}/cmarks
-source {{ shell_conf }}/fubectl
-source {{ shell_conf }}/gcsh
-source {{ shell_conf }}/kubesh
-{% if 'remmac06432' in ansible_hostname %}
-source {{ shell_conf }}/orm
+{% endif -%}
+{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) -%}
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+{% elif 'Fedora' in ansible_distribution -%}
+source /usr/share/fzf/shell/key-bindings.zsh
+{% endif -%}
+{% for file in zsh_source_files -%}
+source {{ file['path'] }}
+{% endfor -%}
+{% if work_system -%}
+source ~/.infractl/orm
 source ~/.infractl/secrets
-{% endif %}
+{% endif -%}
 
-{% if 'remmac06432' in ansible_hostname %}
+
+{% if work_system %}
 complete -o nospace -C /usr/local/bin/terraform terraform
 {% endif %}
 complete -F __start_kubectl k
+
 
 eval "$(starship init zsh)"

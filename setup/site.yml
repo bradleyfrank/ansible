@@ -3,18 +3,35 @@
 - name: Bootstrap Ansible settings
   hosts: localhost
 
+  vars:
+    default_hostname: "{{ current_hostname if current_hostname is defined else '' }}"
+    default_email: "{{ current_email if current_email is defined else '' }}"
+
   vars_prompt:
     - name: vault_password
       prompt: Enter vault password
-    - name: email
-      prompt: Enter email address
-      private: false
-    - name: work_system
-      prompt: System belongs to employer (true|false)
-      private: false
+      unsafe: true
+      confirm: true
     - name: hostname
       prompt: Enter system hostname
       private: false
+      default: "{{ default_hostname }}"
+    - name: email
+      prompt: Enter email address
+      private: false
+      default: "{{ default_email }}"
+    - name: clone_personal_repos
+      prompt: Clone all personal GitHub repos (True|False)
+      private: false
+      default: true
+    - name: use_personal_ssh_config
+      prompt: Use personal SSH config (True|False)
+      private: false
+      default: true
+    - name: work_system
+      prompt: Install employer settings and scripts (True|False)
+      private: false
+      default: false
 
   tasks:
     - name: Create vault file
@@ -22,11 +39,9 @@
         content: "{{ vault_password }}"
         dest: "{{ ansible_user_dir }}/.ansible/vault"
         mode: 0600
-      tags: vault
 
     - name: Create inventory
       ansible.builtin.template:
-        src: inventory.json.j2
-        dest: "{{ ansible_env['PWD'] | dirname }}/inventory.json"
+        src: inventory.ini.j2
+        dest: "{{ ansible_user_dir }}/.ansible/inventory.ini"
         mode: 0755
-      tags: inventory

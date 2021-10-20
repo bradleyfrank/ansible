@@ -31,7 +31,7 @@
         url: "{{ starship['tarball'] }}"
         dest: "{{ starship['download_path'] }}"
         mode: 0644
-    - name: Extract Starship installer
+    - name: Extract Starship exectuable
       ansible.builtin.unarchive:
         src: "{{ starship['download_path'] }}"
         dest: "{{ starship['install_path'] }}/"

@@ -7,7 +7,6 @@
     files:
       - .ansible_vault_password
       - .dotfiles
-      - .config/cmarks
       - .config/p10k.zsh
       - .local/bin/diff-so-fancy
       - .local/bin/lib
@@ -17,9 +16,9 @@
       - .local/share/fubectl
       - .local/share/kubectl
       - .local/share/icons
-      - .local/share/zshrc/pipenv
-      - .local/share/zshrc/kubectl
-      - .local/share/zshrc/op
+      - .local/share/zshrc
+      - .local/share/zsh-completion
+      - .local/opt/bbdm
 
     brew_packages:
       - diff-so-fancy

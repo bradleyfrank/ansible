@@ -1,0 +1,213 @@
+---
+
+repos:
+  - name: better_fonts
+    description: Better Fonts
+    baseurl: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/fedora-$releasever-$basearch/"
+    gpgkey: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/pubkey.gpg"
+    system_type: [desktop]
+  - name: glow
+    description: Copr repo for glow
+    baseurl: https://download.copr.fedorainfracloud.org/results/keefle/glow/fedora-$releasever-$basearch/
+    gpgkey: https://download.copr.fedorainfracloud.org/results/keefle/glow/pubkey.gpg
+    system_type: [desktop, server]
+  - name: google-chrome
+    description: Google Chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+    system_type: [desktop]
+  - name: negativo17-multimedia
+    description: negativo17 - Multimedia
+    baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
+    gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+    includepkgs: ['spotify*', 'makemkv*', 'ccextractor*', '*nvidia*']  # https://negativo17.org/nvidia-driver
+    system_type: [desktop, server]
+  - name: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    system_type: [desktop]
+  - name: 1Password
+    description: 1Password
+    baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
+    gpgkey: https://downloads.1password.com/linux/keys/1password.asc
+    system_type: [desktop]
+  - name: gh-cli
+    description: packages for the GitHub CLI
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+    system_type: [desktop, server]
+  - name: kubernetes
+    description: Kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    system_type: [desktop, server]
+  - name: google-cloud-sdk
+    description: Google Cloud SDK
+    baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    system_type: [desktop, server]
+  - name: hardware:razer
+    description: packages for Razer hardware
+    baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
+    gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
+    system_type: [desktop]
+  - name: rpmfusion-nonfree
+    description: RPM Fusion for Fedora - Nonfree
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: rpmfusion-nonfree-updates
+    description: RPM Fusion for Fedora - Nonfree - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: rpmfusion-free
+    description: RPM Fusion for Fedora - Free
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: rpmfusion-free-updates
+    description: RPM Fusion for Fedora - Free - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+  - name: hashicorp
+    description: Hashicorp Stable
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+    system_type: [desktop, server]
+
+packages:
+  cli:
+    - abcde
+    - bash-completion
+    - bat
+    - bcal
+    - borgbackup
+    - dictd
+    - dnf-plugin-system-upgrade
+    - dnf-utils
+    - exa
+    - fdupes
+    - ffmpeg
+    - figlet
+    - fwupd
+    - fzf
+    - geary
+    - gh
+    - ghostscript
+    - git-delta
+    - glances
+    - glow
+    - google-cloud-sdk
+    - htop
+    - httpie
+    - iftop
+    - inxi
+    - jq
+    - kernel-devel  # openrazer
+    - keychain
+    - kubectl
+    - libmp4v2
+    - libvirt-client
+    - libxcrypt-compat
+    - mkvtoolnix
+    - most
+    - msmtp
+    - mtr
+    - ncdu
+    - neofetch
+    - nmap
+    - p7zip
+    - p7zip-plugins
+    - par
+    - perf
+    - podman
+    - pwgen
+    - python3
+    - python3-devel
+    - reptyr
+    - ripgrep
+    - ruby
+    - ShellCheck
+    - stow
+    - strace
+    - tidy
+    - tlp
+    - tmux
+    - toilet
+    - trash-cli
+    - tree
+    - vault
+    - vim
+    - wget
+    - xsel
+    - xz
+    - youtube-dl
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  gui:
+    - 1password
+    - alacritty
+    - asciinema
+    - audacious
+    - calibre
+    - celluloid
+    - code
+    - flatpak
+    - fontconfig-enhanced-defaults
+    - fontconfig-font-replacements
+    - gedit-plugin-codecomment
+    - gedit-plugin-colorpicker
+    - gedit-plugin-git
+    - gedit-plugin-joinlines
+    - gedit-plugin-multiedit
+    - ghostwriter
+    - gnome-connections
+    - gnome-extensions-app
+    - gnome-shell-extension-gpaste
+    - gnome-shell-extension-system-monitor-applet
+    - gnote
+    - google-chrome-stable
+    - google-noto-emoji-color-fonts
+    - gpaste*
+    - keepassxc
+    - libgnome-keyring
+    - libreoffice
+    - makemkv
+    - mediawriter
+    - meld
+    - mpv
+    - nextcloud-client
+    - nextcloud-client-nautilus
+    - openrazer-meta
+    - picard
+    - remmina
+    - seahorse
+    - solaar
+    - system-config-printer
+    - timeshift
+    - torbrowser-launcher
+    - transmission-gtk
+    - vlc
+
+dconf_distro:
+  Fedora:
+    /org/gnome/shell/enabled-extensions: "[\
+      'GPaste@gnome-shell-extensions.gnome.org',
+      'background-logo@fedorahosted.org',
+      'system-monitor@paradoxxx.zero.gmail.com']"
+    /org/gnome/shell/favorite-apps: "[\
+      'org.gnome.Terminal.desktop',
+      'firefox.desktop',
+      'org.gnome.Nautilus.desktop',
+      'code.desktop',
+      '1password.desktop',
+      'org.gnome.gedit.desktop',
+      'signal-desktop.desktop']"

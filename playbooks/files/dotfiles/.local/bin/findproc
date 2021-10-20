@@ -4,7 +4,7 @@
 # Helps find the parent process and displays the process tree.
 # Author: Brad Frank
 # Date: July 2021
-# Tested:
+# Tested: GNU bash, version 5.0.17(1)-release (x86_64-pc-linux-gnu)
 #
 
 if [[ "$(uname -s)" == "Darwin" ]] || [[ -z "$1" ]]; then

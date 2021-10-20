@@ -29,7 +29,7 @@
 #   account default : gmail
 #
 
-function main() {
+main() {
   local member user; user="$(gh config get --host github.com user)"
 
   while read -r member; do
@@ -37,7 +37,7 @@ function main() {
   done <<< "$(gh api orgs/"$_GH_ORG"/teams/"$_GH_TEAM"/members --jq '.[] | .login' | grep -v "$user")"
 }
 
-function get_team_member_prs() {
+get_team_member_prs() {
   local pr_metadata username name; username=$(tr -d '\n' <<< "$1")
 
   name="$(gh api users/"$username" --jq '.name')"
@@ -58,7 +58,7 @@ function get_team_member_prs() {
   )"
 }
 
-function process_open_prs() {
+process_open_prs() {
   local json now; json=$1 now=$(date +%s)
   local id title pr_url created repo_url repo created_ago
 

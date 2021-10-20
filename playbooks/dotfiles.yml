@@ -59,7 +59,9 @@
       tags: core
 
     - name: Install themes for bat
-      ansible.builtin.command: "{{ bat_cmd }} cache --build"
+      vars:
+        bat: "{{ 'batcat' if 'Debian' in ansible_os_family else 'bat' }}"
+      ansible.builtin.command: "{{ bat }} cache --build"
       changed_when: false
       tags: core
 
@@ -71,7 +73,7 @@
         backup: true
       register: _backup_gitconfig
       notify: Process backups
-      tags: core
+      tags: [core, git]
 
     - name: Ensure backup directory exists
       ansible.builtin.file:
@@ -104,30 +106,6 @@
       tags: kubectl
 
 # ============================================================================
-#  zsh & completions
-# ----------------------------------------------------------------------------
-
-    - name: Install Starship
-      ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
-      tags: starship
-
-    - name: Apply zshrc template
-      ansible.builtin.template:
-        src: zshrc.j2
-        dest: "{{ ansible_user_dir }}/.zshrc"
-        mode: 0644
-        backup: true
-      register: _backup_zshrc
-      notify: Process backups
-      tags: [zsh, core]
-
-    - name: Generate 1Password-cli completions
-      ansible.builtin.shell: "op completion zsh > {{ shell_completions }}/op"
-      changed_when: false
-      tags: 1password
-      when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
-
-# ============================================================================
 #  assets & modules
 # ----------------------------------------------------------------------------
 
@@ -136,16 +114,16 @@
         src: fonts/
         dest: "{{ font_dir }}/"
         mode: 0644
+      when: "'desktop' in system_type"
       tags: fonts
 
     - name: Import GitHub tasks
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      when: not work_system
       tags: github
 
     - name: Install Python packages
       ansible.builtin.pip:
-        name: "{{ python_packages }}"
+        name: "{{ python['packages'] }}"
         extra_args: --user
       tags: python
 
@@ -157,20 +135,9 @@
       ansible.builtin.import_tasks: tasks/dotfiles/terminals.yml
       tags: terminals
 
-    - name: Check if vscode is installed
-      ansible.builtin.stat:
-        path: "{{ vscode['bin'] }}"
-      register: vscode_bin
-      tags: vscode
-
-    - name: Import VSCode tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/vscode.yml
-      when: vscode_bin['stat']['exists']
-      tags: vscode
-
     - name: Import BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
-      when: ansible_system == 'Darwin'
+      when: "'Darwin' in ansible_system"
       tags: bbedit
 
     - name: Update macOS app icons
@@ -182,3 +149,38 @@
       loop_control:
         label: "{{ app }}"
       tags: icons
+
+# ============================================================================
+#  zsh & completions
+# ----------------------------------------------------------------------------
+
+    - name: Install Starship
+      ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
+      tags: [zsh, starship]
+
+    - name: Generate 1Password-cli completions
+      ansible.builtin.shell: "op completion zsh > {{ zsh['completions'] }}/op"
+      changed_when: false
+      when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
+      tags: [zsh, 1password]
+
+    - name: Find all zsh completions and sources  # run last to ensure files exist
+      ansible.builtin.find:
+        file_type: file
+        paths:
+          - "{{ zsh['completions'] }}"
+          - "{{ zsh['functions'] }}"
+      register: find_zsh_source_dirs
+      tags: [zsh, core]
+
+    - name: Apply zshrc template
+      vars:
+        zsh_source_files: "{{ find_zsh_source_dirs['files'] }}"
+      ansible.builtin.template:
+        src: zshrc.j2
+        dest: "{{ ansible_user_dir }}/.zshrc"
+        mode: 0644
+        backup: true
+      register: _backup_zshrc
+      notify: Process backups
+      tags: [zsh, core]
