@@ -149,35 +149,6 @@ tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
 
-pyenv() {
-  local pyname pyver=3.8 pyfunc
-
-  while getopts ':acdhn:v:' flag; do
-    case "$flag" in
-      a) pyfunc=activate ;;
-      c) pyfunc=create ;;
-      d) deactivate ; return $? ;;
-      h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
-      n) pyname=$OPTARG ;;
-      v) pyver=$OPTARG ;;
-      *) echo "Invalid argument." >&2 ; return 1 ;;
-    esac
-  done
-
-  case "$pyfunc" in
-    create)   [[ -z $pyname ]] && pyname=ve
-              virtualenv -p "$pyver" "$pyname"
-              ;;
-    activate) [[ -z $pyname ]] && pyname=$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")
-              source "$pyname"/bin/activate
-              ;;
-    *)        [[ -z $pyname ]] && pyname=ve
-              virtualenv -p "$pyver" "$pyname"
-              source "${pyname-ve}"/bin/activate
-              ;;
-  esac
-}
-
 
 function precmd() {
   local rc=$? eol=$'\n' _gitdir _kcxt _repo _prompt_color _prompt_line1 _prompt_line2
