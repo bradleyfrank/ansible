@@ -43,9 +43,9 @@ python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] 
 root_home: /root
 
 starship:
-  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
-  install_path: "{{ ansible_user_dir }}/.local/bin"
   download_path: /tmp/starship.tar.gz
+  install_path: "{{ ansible_user_dir }}/.local/bin"
+  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
 
 sudoers_d: /etc/sudoers.d
 system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"

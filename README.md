@@ -43,3 +43,7 @@ To regenerate `~/.ansible/inventory.ini`, run the following command from the top
 ```shell
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml -e "current_hostname=$(hostname -s)"
 ```
+
+### Optional Settings
+
+* `use_starship_prompt` (True|False): Enables Starship for the Zsh prompt; defaults to the custom `precmd` function
