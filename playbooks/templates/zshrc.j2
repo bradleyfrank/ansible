@@ -188,16 +188,16 @@ function precmd() {
 
   [[ -n $SSH_CONNECTION ]] && _HOSTNAME="${bold}${fg_Magenta}$(hostname -s)${fg_Reset} in "
   [[ -n $TMUX ]] && _CWD="${bold}${fg_Blue}%1~${fg_Reset} "
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="via ${bold}${fg_Cyan} $(python --version | awk '{print $2}')${fg_Reset} "
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="via ${fg_Cyan} ${bold}$(python --version | awk '{print $2}')${fg_Reset} "
 
   if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
     [[ $_kcxt =~ ^gke ]] && _kcxt="$(sed -rn 's|^gke_.*_.*_(.*)(-cluster)*$|\1|p' <<< $_kcxt)"
-    _KUBECTL="using ${bold}${fg_Violet}ﴱ ${_kcxt}${fg_Reset} "
+    _KUBECTL="using ${fg_Violet}ﴱ ${bold}${_kcxt}${fg_Reset} "
   fi
 
   if _gitdir="$(git rev-parse --git-common-dir 2> /dev/null)"; then
     _repo="$(basename $(git config --get remote.origin.url || git rev-parse --show-toplevel) | sed 's/\.git$//')"
-    vcs_info; _GIT="on ${bold}${fg_Green} ${_repo}/${fg_NoColor}${vcs_info_msg_0_}${nobold}"
+    vcs_info; _GIT="on ${fg_Green} ${bold}${_repo}/${fg_NoColor}${vcs_info_msg_0_}${nobold}"
   fi
 
   case "$rc" in
@@ -218,9 +218,9 @@ function +vi-extended-git() {
 }
 
 
-zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{160}%u%c%m%f|%F{136}%a%f'
+zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{136}%a%f'
 zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' formats '%F{64}%b%f %F{160}%u%c%m%f'
+zstyle ':vcs_info:git*' formats '%F{64}%b%f %F{136}%u%c%m%f'
 zstyle ':vcs_info:git*' stagedstr '+'
 zstyle ':vcs_info:git*' unstagedstr '*'
 zstyle ':vcs_info:git*+set-message:*' hooks extended-git
