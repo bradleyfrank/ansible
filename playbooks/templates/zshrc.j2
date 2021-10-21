@@ -150,6 +150,7 @@ gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
 
 
+{% if not use_starship_prompt | default(false) -%}
 function precmd() {
   local rc=$? eol=$'\n' _gitdir _kcxt _repo _prompt_color _prompt_line1 _prompt_line2
   local fg_Blue="%F{33}" fg_Cyan="%F{37}" fg_Violet="%F{61}" fg_Green="%F{64}" fg_Magenta="%F{125}" fg_Red="%F{160}"
@@ -188,13 +189,13 @@ function +vi-extended-git() {
   git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
 }
 
-
 zstyle ':vcs_info:git*' actionformats '%F{64}%b %F{136}%u%c%m%f|%F{136}%a%f'
 zstyle ':vcs_info:git*' check-for-changes true
 zstyle ':vcs_info:git*' formats '%F{64}%b%f %F{136}%u%c%m%f'
 zstyle ':vcs_info:git*' stagedstr '+'
 zstyle ':vcs_info:git*' unstagedstr '*'
 zstyle ':vcs_info:git*+set-message:*' hooks extended-git
+{% endif -%}
 
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
@@ -268,12 +269,17 @@ source /usr/share/fzf/shell/key-bindings.zsh
 source {{ file['path'] }}
 {% endfor -%}
 {% if work_system -%}
-source ~/.infractl/orm
-source ~/.infractl/secrets
-{% endif -%}
+source {{ ansible_user_dir }}/.infractl/orm
+source {{ ansible_user_dir }}/.infractl/secrets
+{% endif %}
 
 
 {% if work_system %}
 complete -o nospace -C /usr/local/bin/terraform terraform
+complete -o nospace -C /usr/local/bin/vault vault
 {% endif %}
 complete -F __start_kubectl k
+
+{% if use_starship_prompt | default(false) %}
+eval "$(starship init zsh)"
+{% endif -%}
