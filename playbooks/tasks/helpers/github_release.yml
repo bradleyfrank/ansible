@@ -1,0 +1,53 @@
+---
+
+- name: Install package from Github
+  vars:
+    name: starship
+    user: "{{ github_packages['starship']['user'] }}"
+    repo: "{{ github_packages['starship']['repo'] }}"
+    installed_version: "{{ github_package_versions['starship'] | default('v0.0.0') }}"
+  include_task: helpers/github_release.yml
+
+
+
+- name: Get latest version of {{ name }}
+  community.general.github_release:
+    user: "{{ user }}"
+    repo: "{{ repo }}"
+    action: latest_release
+  register: latest_version
+
+- name: Install {{ name }}
+  vars:
+    version_remote: "{{ latest_version['tag'] |  }}"
+    version_local: 
+    filename: ""
+  block:
+    - name: Download {{ name }} tarball
+      ansible.builtin.get_url:
+        url: "{{ stern['tarball'] }}"
+        dest: "{{ stern['download_path'] }}"
+        mode: 0644
+    - name: Extract {{ name }}
+      ansible.builtin.unarchive:
+        src: "{{ stern['download_path'] }}"
+        dest: "{{ stern['install_path'] }}/"
+    - name: Make {{ name }} executable
+      ansible.builtin.file:
+        path: "{{ stern['install_path'] }}/stern"
+        mode: 0755
+  always:
+    - name: Remove stern tarball
+      ansible.builtin.file:
+        path: "{{ stern['download_path'] }}"
+        state: absent
+  when: version_local != version_remote
+
+- name: Setting facts
+  vars:
+    name: "{{ item['item']['name'] }}"
+    version: "{{ item['tag'] }}"
+  set_fact:
+    github_pkgs: "{{ github_package_versions | default({}) | combine({name: version}) }}"
+    cacheable: yes
+  loop: "{{ latest_versions['results'] }}"

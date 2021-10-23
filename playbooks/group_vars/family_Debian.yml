@@ -188,6 +188,9 @@ packages:
     - torbrowser-launcher
     - transmission-gtk
     - vlc
+  github:
+    starship: "[tag]/starship-[arch]-unknown-linux-musl.tar.gz"
+    stern: "[tag]/stern_[version]_linux_[arch].tar.gz"
 
 dconf_distro:
   Pop!_OS:
