@@ -15,21 +15,18 @@ github_packages:
     filename:
       x86: "krew-darwin_amd64"
       arm: "krew-darwin_arm64"
-    system_type: [desktop, server]
   starship:
     user: starship
     repo: starship
     filename:
       x86: "starship-x86_64-apple-darwin"
       arm: "starship-aarch64-apple-darwin"
-    system_type: [desktop, server]
   stern:
     user: stern
     repo: stern
     filename:
       x86: "stern_[version]_darwin_amd64"
       arm: "stern_[version]_darwin_arm64"
-    system_type: [desktop, server]
 
 hyper:
   fontFamily: SauceCodeProNerdFontComplete-Regular

@@ -7,7 +7,7 @@
     - name: Process backups
       vars:
         backup_var: "{{ lookup('vars', item) }}"
-      ansible.builtin.include_tasks: tasks/helpers/backups.yml
+      ansible.builtin.include_tasks: helpers/backups.yml
       when: backup_var['backup_file'] is defined
       loop: "{{ query('varnames', '^_backup_.+$') }}"
       loop_control:
@@ -101,9 +101,12 @@
       ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
       tags: [vim, core]
 
-    - name: Import kubectl tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/kubectl.yml
-      tags: kubectl
+    - name: Include kubectl tasks
+      ansible.builtin.include_tasks:
+        file: tasks/dotfiles/kubectl.yml
+        apply:
+          tags: kubectl
+      tags: [kubectl, krew, stern]
 
 # ============================================================================
 #  assets & modules
@@ -155,7 +158,9 @@
 # ----------------------------------------------------------------------------
 
     - name: Install Starship
-      ansible.builtin.import_tasks: tasks/dotfiles/starship.yml
+      vars:
+        name: starship
+      ansible.builtin.import_tasks: helpers/github_release.yml
       tags: [zsh, starship]
 
     - name: Generate 1Password-cli completions

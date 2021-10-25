@@ -36,7 +36,11 @@
 - name: Install stern
   vars:
     name: stern
-  include_task: helpers/github_release.yml
+  ansible.builtin.include_tasks:
+    file: helpers/github_release.yml
+    apply:
+      tags: stern
+  tags: stern
 
 - name: Download fubectl
   ansible.builtin.get_url:
@@ -44,21 +48,33 @@
     dest: "{{ zsh['functions'] }}/fubectl"
     mode: 0644
 
-- name: Download and install Krew
+- name: Install Krew installer
+  vars:
+    name: krew
+  ansible.builtin.include_tasks:
+    file: helpers/github_release.yml
+    apply:
+      tags: krew
+  tags: krew
+
+- name: Install Krew
   block:
-    - name: Download Krew installer
-      vars:
-        name: stern
-      include_task: helpers/github_release.yml
+    - name: Check for installer
+      ansible.builtin.stat:
+        path: "{{ ansible_user_dir }}/.local/bin/krew"
+      register: krew_installer
     - name: Install Krew
       ansible.builtin.command:
         cmd: "{{ ansible_user_dir }}/.local/bin/krew install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
+      when:
+        krew_installer['stat']['exists']
   always:
     - name: Remove installer
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/.local/bin/krew"
         state: absent
+  tags: krew
 
 - name: Install Krew plugins
   environment:
@@ -66,3 +82,4 @@
   ansible.builtin.command: "kubectl krew install {{ krew['plugins'] | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install.stdout"
+  tags: krew

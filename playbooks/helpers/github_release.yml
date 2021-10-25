@@ -52,10 +52,9 @@
       set_fact:
         github_package_versions: "{{ github_package_versions | default({}) | combine({name: latest_release}) }}"
         cacheable: yes
-  always:
-    - name: Remove temp files
-      ansible.builtin.file:
-        path: "/tmp/{{ name }}"
-        state: absent
-        recurse: true
   when: latest_release != github_package_versions[name] | default('0.0.0')
+
+- name: Remove temp files
+  ansible.builtin.file:
+    path: "/tmp/{{ name }}"
+    state: absent
