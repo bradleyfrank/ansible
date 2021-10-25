@@ -41,20 +41,23 @@ github_packages:
   krew:
     user: kubernetes-sigs
     repo: krew
-    x86: "v[version]/krew-linux_amd64.tar.gz"
-    arm: "v[version]/krew-linux_arm64.tar.gz"
+    filename:
+      x86: "krew-linux_amd64"
+      arm: "krew-linux_arm64"
     system_type: [desktop, server]
   starship:
     user: starship
     repo: starship
-    x86: "v[version]/starship-x86_64-unknown-linux-musl.tar.gz"
-    arm: "v[version]/starship-aarch64-unknown-linux-musl.tar.gz"
+    filename:
+      x86: "starship-x86_64-unknown-linux-musl"
+      arm: "starship-aarch64-unknown-linux-musl"
     system_type: [desktop, server]
   stern:
     user: stern
     repo: stern
-    x86: "v[version]/stern_[version]_linux_amd64.tar.gz"
-    arm: "v[version]/stern_[version]_linux_arm64.tar.gz"
+    filename:
+      x86: "stern_[version]_linux_amd64"
+      arm: "stern_[version]_linux_arm64"
     system_type: [desktop, server]
 
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"

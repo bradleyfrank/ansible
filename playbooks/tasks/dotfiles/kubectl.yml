@@ -33,49 +33,32 @@
   ansible.builtin.shell: "kubectl completion zsh > {{ zsh['completions'] }}/kubectl"
   changed_when: false
 
+- name: Install stern
+  vars:
+    name: stern
+  include_task: helpers/github_release.yml
+
 - name: Download fubectl
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
     dest: "{{ zsh['functions'] }}/fubectl"
     mode: 0644
 
-- name: Check if Krew is installed
-  ansible.builtin.stat:
-    path: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
-  register: kubectl_krew
-
 - name: Download and install Krew
   block:
-    - name: Get latest version of Krew
-      community.general.github_release:
-        user: kubernetes-sigs
-        repo: krew
-        action: latest_release
-      register: latest_version
-    - name: Make directory for extracting Krew installer
-      ansible.builtin.file:
-        path: /tmp/krew
-        state: directory
-        mode: 0755
     - name: Download Krew installer
-      ansible.builtin.get_url:
-        url: "{{ krew['url'] }}/{{ latest_version['tag'] }}/{{ krew['filename'] }}.tar.gz"
-        dest: /tmp/krew.tar.gz
-    - name: Extract Krew installer
-      ansible.builtin.unarchive:
-        src: /tmp/krew.tar.gz
-        dest: /tmp/krew
+      vars:
+        name: stern
+      include_task: helpers/github_release.yml
     - name: Install Krew
       ansible.builtin.command:
-        cmd: "/tmp/krew/{{ krew['filename'] }} install krew"
+        cmd: "{{ ansible_user_dir }}/.local/bin/krew install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
   always:
-    - name: Cleanup Krew temp files
+    - name: Remove installer
       ansible.builtin.file:
-        path: "/tmp/{{ item }}"
+        path: "{{ ansible_user_dir }}/.local/bin/krew"
         state: absent
-      loop: ['krew.tar.gz', 'krew']
-  when: not kubectl_krew['stat']['exists']
 
 - name: Install Krew plugins
   environment:

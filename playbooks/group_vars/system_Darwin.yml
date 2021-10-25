@@ -12,20 +12,23 @@ github_packages:
   krew:
     user: kubernetes-sigs
     repo: krew
-    x86: "v[version]/krew-darwin_amd64.tar.gz"
-    arm: "v[version]/krew-darwin_arm64.tar.gz"
+    filename:
+      x86: "krew-darwin_amd64"
+      arm: "krew-darwin_arm64"
     system_type: [desktop, server]
   starship:
     user: starship
     repo: starship
-    x86: "v[version]/starship-x86_64-apple-darwin.tar.gz"
-    arm: "v[version]/starship-aarch64-apple-darwin.tar.gz"
+    filename:
+      x86: "starship-x86_64-apple-darwin"
+      arm: "starship-aarch64-apple-darwin"
     system_type: [desktop, server]
   stern:
     user: stern
     repo: stern
-    x86: "v[version]/stern_[version]_darwin_amd64.tar.gz"
-    arm: "v[version]/stern_[version]_darwin_arm64.tar.gz"
+    filename:
+      x86: "stern_[version]_darwin_amd64"
+      arm: "stern_[version]_darwin_arm64"
     system_type: [desktop, server]
 
 hyper:

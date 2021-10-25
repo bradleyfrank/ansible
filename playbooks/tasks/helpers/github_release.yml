@@ -1,53 +1,61 @@
 ---
 
-- name: Install package from Github
-  vars:
-    name: starship
-    user: "{{ github_packages['starship']['user'] }}"
-    repo: "{{ github_packages['starship']['repo'] }}"
-    installed_version: "{{ github_package_versions['starship'] | default('v0.0.0') }}"
-  include_task: helpers/github_release.yml
-
-
-
 - name: Get latest version of {{ name }}
   community.general.github_release:
-    user: "{{ user }}"
-    repo: "{{ repo }}"
+    user: "{{ github_packages[name]['user'] }}"
+    repo: "{{ github_packages[name]['repo'] }}"
     action: latest_release
-  register: latest_version
+    token: "{{ github['token'] }}"
+  register: github_release
 
 - name: Install {{ name }}
   vars:
-    version_remote: "{{ latest_version['tag'] |  }}"
-    version_local: 
-    filename: ""
+    latest_release: "{{ github_release['tag'] | replace('v', '') }}"
+    download_path: "/tmp/{{ name }}/{{ name }}.tar.gz"
+    install_path: "{{ ansible_user_dir }}/.local/bin"
+    arch: "{{ 'x86' if ansible_architecture == 'x86_64' else 'arm' }}"
+    url:
+      - "https://github.com/"
+      - "{{ github_packages[name]['user'] }}/{{ github_packages[name]['repo'] }}/"
+      - "releases/download/v{{ latest_release }}/"
+      - "{{ github_packages[name]['filename'][arch] | replace('[version]', latest_release) }}"
+      - "{{ github_packages[name]['ext'] | default('.tar.gz') }}"
   block:
-    - name: Download {{ name }} tarball
+    - name: Create temp download directory
+      ansible.builtin.file:
+        path: "/tmp/{{ name }}"
+        state: directory
+    - name: Download {{ name }} {{ latest_release }}
       ansible.builtin.get_url:
-        url: "{{ stern['tarball'] }}"
-        dest: "{{ stern['download_path'] }}"
+        url: "{{ url | join() }}"
+        dest: "{{ download_path }}"
         mode: 0644
-    - name: Extract {{ name }}
+    - name: Extract {{ name }} archive
       ansible.builtin.unarchive:
-        src: "{{ stern['download_path'] }}"
-        dest: "{{ stern['install_path'] }}/"
+        src: "{{ download_path }}"
+        dest: "/tmp/{{ name }}"
+        list_files: true
+      register: unarchive_list_files
+    - name: Install {{ name }}
+      ansible.builtin.copy:
+        src: "/tmp/{{ name }}/{{ file }}"
+        dest: "{{ install_path }}/{{ name }}"
+      loop: "{{ unarchive_list_files['files'] }}"
+      loop_control:
+        loop_var: file
+      when: name in file | basename
     - name: Make {{ name }} executable
       ansible.builtin.file:
-        path: "{{ stern['install_path'] }}/stern"
+        path: "{{ install_path }}/{{ name }}"
         mode: 0755
+    - name: Record new version of {{ name }}
+      set_fact:
+        github_package_versions: "{{ github_package_versions | default({}) | combine({name: latest_release}) }}"
+        cacheable: yes
   always:
-    - name: Remove stern tarball
+    - name: Remove temp files
       ansible.builtin.file:
-        path: "{{ stern['download_path'] }}"
+        path: "/tmp/{{ name }}"
         state: absent
-  when: version_local != version_remote
-
-- name: Setting facts
-  vars:
-    name: "{{ item['item']['name'] }}"
-    version: "{{ item['tag'] }}"
-  set_fact:
-    github_pkgs: "{{ github_package_versions | default({}) | combine({name: version}) }}"
-    cacheable: yes
-  loop: "{{ latest_versions['results'] }}"
+        recurse: true
+  when: latest_release != github_package_versions[name] | default('0.0.0')
