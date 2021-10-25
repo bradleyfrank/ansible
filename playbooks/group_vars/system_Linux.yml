@@ -6,6 +6,7 @@ alacritty:
   fontFamily: SauceCodePro Nerd Font
 
 bash_shell: /usr/bin/bash
+font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 
 flatpaks:
   remotes:
@@ -36,17 +37,29 @@ flatpaks:
     - name: com.github.phase1geo.annotator
       remote: elementary
 
-font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
+github_packages:
+  krew:
+    user: kubernetes-sigs
+    repo: krew
+    filename:
+      x86: "krew-linux_amd64"
+      arm: "krew-linux_arm64"
+  starship:
+    user: starship
+    repo: starship
+    filename:
+      x86: "starship-x86_64-unknown-linux-musl"
+      arm: "starship-aarch64-unknown-linux-musl"
+  stern:
+    user: stern
+    repo: stern
+    filename:
+      x86: "stern_[version]_linux_amd64"
+      arm: "stern_[version]_linux_arm64"
 
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] }}/site-packages"
 root_home: /root
-
-starship:
-  download_path: /tmp/starship.tar.gz
-  install_path: "{{ ansible_user_dir }}/.local/bin"
-  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz
-
 sudoers_d: /etc/sudoers.d
 system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"
 

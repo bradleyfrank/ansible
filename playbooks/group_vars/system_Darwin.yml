@@ -8,6 +8,26 @@ alacritty:
 bash_shell: /usr/local/bin/bash
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 
+github_packages:
+  krew:
+    user: kubernetes-sigs
+    repo: krew
+    filename:
+      x86: "krew-darwin_amd64"
+      arm: "krew-darwin_arm64"
+  starship:
+    user: starship
+    repo: starship
+    filename:
+      x86: "starship-x86_64-apple-darwin"
+      arm: "starship-aarch64-apple-darwin"
+  stern:
+    user: stern
+    repo: stern
+    filename:
+      x86: "stern_[version]_darwin_amd64"
+      arm: "stern_[version]_darwin_arm64"
+
 hyper:
   fontFamily: SauceCodeProNerdFontComplete-Regular
   fontSize: 14
@@ -18,12 +38,6 @@ python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}
 python_user_path: "{{ python_user_base }}/bin"
 python_user_site: "{{ python_user_base }}/lib/python/site-packages"
 root_home: /var/root
-
-starship:
-  download_path: /tmp/starship.tar.gz
-  install_path: "{{ ansible_user_dir }}/.local/bin"
-  tarball: https://github.com/starship/starship/releases/latest/download/starship-{{ ansible_architecture }}-apple-darwin.tar.gz
-
 sudoers_d: /private/etc/sudoers.d
 system_type: desktop
 
