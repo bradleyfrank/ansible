@@ -42,6 +42,11 @@
       tags: stern
   tags: stern
 
+- name: Generate stern completions
+  ansible.builtin.shell: "stern --completion=zsh > {{ zsh['completions'] }}/stern"
+  changed_when: false
+  tags: stern
+
 - name: Download fubectl
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
