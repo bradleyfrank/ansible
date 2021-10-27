@@ -1,5 +1,12 @@
 ---
 
+- name: Register SSH key with Github
+  community.general.github_key:
+    pubkey: "{{ lookup('file', ssh_keys['ed25519'] + '.pub') }}"
+    state: present
+    token: "{{ github['token'] }}"
+  tags: github
+
 - name: Clone repositories
   block:
     - name: Query GitHub API for my repositories
@@ -16,28 +23,19 @@
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
-    - name: Copy GitHub SSH key
-      ansible.builtin.copy:
-        src: ssh/github.pem
-        dest: "{{ github['key_file'] }}"
-        mode: 0600
     - name: Clone my GitHub repositories
       ansible.builtin.git:
         repo: "{{ item['ssh_url'] }}"
         version: "{{ item['default_branch'] }}"
         dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
         accept_hostkey: true
-        ssh_opts: "-i {{ github['key_file'] }}"
+        ssh_opts: "-i {{ ssh_keys['ed25519'] }}"
         update: false
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
-  always:
-    - name: Remove GitHub SSH key
-      ansible.builtin.file:
-        path: "{{ github['key_file'] }}"
-        state: absent
   when: clone_personal_repos
+  tags: github_repos
 
 - name: Clone reference Git repositories
   ansible.builtin.git:
@@ -48,3 +46,4 @@
   loop: "{{ git_reference_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
+  tags: [github_repos, git_ref_repos]
