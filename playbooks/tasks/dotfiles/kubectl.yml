@@ -43,7 +43,9 @@
   tags: stern
 
 - name: Generate stern completions
-  ansible.builtin.shell: "stern --completion=zsh > {{ zsh['completions'] }}/stern"
+  vars:
+    stern_bin: "{{ ansible_user_dir }}/.local/bin/stern"
+  ansible.builtin.shell: "{{ stern_bin }} --completion=zsh > {{ zsh['completions'] }}/stern"
   changed_when: false
   tags: stern
 
