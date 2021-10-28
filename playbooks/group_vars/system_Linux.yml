@@ -58,6 +58,7 @@ github_packages:
       arm: "stern_[version]_linux_arm64"
 
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
+python_executable: /usr/bin/python3
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] }}/site-packages"
 root_home: /root
 sudoers_d: /etc/sudoers.d

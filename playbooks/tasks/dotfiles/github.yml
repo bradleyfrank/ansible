@@ -2,6 +2,7 @@
 
 - name: Register SSH key with Github
   community.general.github_key:
+    name: "{{ ansible_user_gecos }} @ {{ ansible_hostname }}"
     pubkey: "{{ lookup('file', ssh_keys['ed25519'] + '.pub') }}"
     state: present
     token: "{{ github['token'] }}"

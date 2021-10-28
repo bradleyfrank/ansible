@@ -66,6 +66,7 @@ repos:
       deb [signed-by=/usr/share/keyrings/cloud.google.gpg]
       https://packages.cloud.google.com/apt cloud-sdk main
     key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /usr/share/keyrings/cloud.google.gpg
     system_type: [desktop, server]
   - name: hashicorp
     repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_lsb['codename'] }} main

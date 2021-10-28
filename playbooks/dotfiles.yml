@@ -126,6 +126,7 @@
 
     - name: Install Python packages
       ansible.builtin.pip:
+        executable: "{{ python_executable }}"
         name: "{{ python['packages'] }}"
         extra_args: --user
       tags: python

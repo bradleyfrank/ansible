@@ -62,10 +62,7 @@ krew:
 python:
   version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
   packages:
-    - ansible-lint
     - beets
-    - pipenv
-    - pre-commit
     - pydf
     - virtualenv
     - yq
