@@ -16,7 +16,7 @@
   community.crypto.openssh_keypair:
     path: "{{ item['value'] }}"
     passphrase: "{{ lookup('password', item['value'] + '.passphrase') }}"
-    type: ssh_keys['key']
+    type: "{{ item['key'] }}"
     size: 4096
     comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
   loop: "{{ ssh_keys | dict2items }}"
