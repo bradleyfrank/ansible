@@ -66,7 +66,7 @@ PATH="$PATH:$("$PYTHON" -m site --user-base)/bin"; export PATH
 virtualenv venv
 #shellcheck disable=SC1091
 . venv/bin/activate
-pip --requirement setup/requirements.txt
+pip install --requirement setup/requirements.txt
 
 ansible-galaxy collection install -r setup/requirements.yml
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml \
