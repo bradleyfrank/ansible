@@ -34,10 +34,10 @@ hyper:
   padding: 12px 14px
 
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
-python_executable: /usr/local/bin/python3
 python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}"
 python_user_path: "{{ python_user_base }}/bin"
 python_user_site: "{{ python_user_base }}/lib/python/site-packages"
+pip_executable: "{{ python_user_path }}/pip"
 root_home: /var/root
 sudoers_d: /private/etc/sudoers.d
 system_type: desktop
