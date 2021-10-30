@@ -20,6 +20,7 @@ git_reference_repos:
     name: oneliners
   - https_url: https://github.com/munki/macadmin-scripts.git
     name: macadmin-scripts
+    version: main
 
 github:
   username: bradleyfrank
