@@ -25,8 +25,10 @@
       loop_control:
         label: "{{ item['name'] }}"
     - name: Clone my GitHub repositories
+      vars:
+        base_url: "https://{{ github['token'] }}@github.com"
       ansible.builtin.git:
-        repo: "{{ item['clone_url'] | replace('github.com', github['token'] + '@github.com') }}"
+        repo: "{{ base_url }}/{{ github['username'] }}/{{ item['clone_url'] | basename }}"
         version: "{{ item['default_branch'] }}"
         dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
         accept_hostkey: true
