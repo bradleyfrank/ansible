@@ -1,6 +1,15 @@
 # Brad's Bootstrapping & dotfiles Manager
 
 ```shell
-bbdm=https://bbdm.franklybrad.com/install && \
-case $(uname -s) in Darwin) curl -fsSL $bbdm | sh ;; Linux) wget -qO- $bbdm | sh ;; esac
+curl -sO https://bbdm.franklybrad.com/install
+```
+
+***Note:*** *Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and thus will skip the setup prompts.*
+
+Usage:
+
+```text
+sh install [-g git_branch] [-d]
+  -g  Specify the git branch to run (default: main)
+  -d  Run the dotfiles playbook only
 ```

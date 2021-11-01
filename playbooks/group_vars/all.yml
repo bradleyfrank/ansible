@@ -42,11 +42,12 @@ github:
     6134336232653365383438643561373562316136633733656336
 
 keychain_keys:
-  - id_rsa
-  - id_home
-  - id_develop
-  - google_compute_engine
   - ansible
+  - google_compute_engine
+  - id_develop
+  - id_ed25519
+  - id_home
+  - id_rsa
 
 krew:
   url: https://github.com/kubernetes-sigs/krew/releases/download
