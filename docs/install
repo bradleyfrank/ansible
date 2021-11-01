@@ -11,6 +11,7 @@ bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   brew install python3 git
+  PYTHON="/usr/local/bin/python3"
 }
 
 bootstrap_linux() {
@@ -36,6 +37,8 @@ bootstrap_linux() {
       ;;
     *) exit 1 ;;
   esac
+
+  PYTHON="/usr/bin/python3"
 }
 
 while getopts ':dg:' opt; do
@@ -54,12 +57,16 @@ if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
   esac
 fi
 
-PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
-python3 -m pip install --user ansible docker github3.py
-
 git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
+
+"$PYTHON" -m pip install --user virtualenv
+PATH="$PATH:$("$PYTHON" -m site --user-base)/bin"; export PATH
+virtualenv venv
+#shellcheck disable=SC1091
+. venv/bin/activate
+pip install --requirement setup/requirements.txt
 
 ansible-galaxy collection install -r setup/requirements.yml
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml \

@@ -82,13 +82,6 @@
         mode: 0755
       tags: [always, backups]
 
-    - name: Ensure fonts directory exists
-      ansible.builtin.file:
-        path: "{{ font_dir }}"
-        state: directory
-        mode: 0700
-      tags: fonts
-
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
       tags: [ssh, core]
@@ -112,6 +105,13 @@
 #  assets & modules
 # ----------------------------------------------------------------------------
 
+    - name: Ensure fonts directory exists
+      ansible.builtin.file:
+        path: "{{ font_dir }}"
+        state: directory
+        mode: 0700
+      tags: fonts
+
     - name: Copy fonts
       ansible.builtin.copy:
         src: fonts/
@@ -126,6 +126,7 @@
 
     - name: Install Python packages
       ansible.builtin.pip:
+        executable: "{{ pip_executable }}"
         name: "{{ python['packages'] }}"
         extra_args: --user
       tags: python

@@ -18,10 +18,12 @@ git_reference_repos:
     name: the-art-of-command-line
   - https_url: https://github.com/majamin/oneliners.txt.git
     name: oneliners
+  - https_url: https://github.com/munki/macadmin-scripts.git
+    name: macadmin-scripts
+    version: main
 
 github:
   username: bradleyfrank
-  key_file: "{{ ansible_user_dir }}/.ssh/github"
   token: !vault |
     $ANSIBLE_VAULT;1.1;AES256
     65366337313362326366653735306131373939333030363031353862303537653033316462333663
@@ -39,6 +41,14 @@ github:
     37656362663361363931653731643862383730386133643139326134616133666263363431663230
     6134336232653365383438643561373562316136633733656336
 
+keychain_keys:
+  - ansible
+  - google_compute_engine
+  - id_develop
+  - id_ed25519
+  - id_home
+  - id_rsa
+
 krew:
   url: https://github.com/kubernetes-sigs/krew/releases/download
   filename: "krew-{{ ansible_system | lower }}_{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
@@ -54,10 +64,7 @@ krew:
 python:
   version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
   packages:
-    - ansible-lint
     - beets
-    - pipenv
-    - pre-commit
     - pydf
     - virtualenv
     - yq
@@ -65,11 +72,8 @@ python:
 root_dotfiles: minimal
 
 ssh_keys:
-  - id_rsa
-  - id_home
-  - id_develop
-  - google_compute_engine
-  - ansible
+  rsa: "{{ ansible_user_dir }}/.ssh/id_rsa"
+  ed25519: "{{ ansible_user_dir }}/.ssh/id_ed25519"
 
 vim:
   extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"

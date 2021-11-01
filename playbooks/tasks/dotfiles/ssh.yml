@@ -12,12 +12,33 @@
     state: touch
     mode: 0600
 
-- name: Install SSH config
-  ansible.builtin.copy:
-    src: ssh/config
-    dest: "{{ ansible_user_dir }}/.ssh/config"
-    mode: 0644
-    backup: true
-  register: _backup_ssh_config
-  notify: Process backups
+- name: Create SSH key
+  community.crypto.openssh_keypair:
+    path: "{{ item['value'] }}"
+    passphrase: "{{ lookup('password', item['value'] + '.passphrase') }}"
+    type: "{{ item['key'] }}"
+    size: 4096
+    comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
+  loop: "{{ ssh_keys | dict2items }}"
+
+- name: Install SSH keys and config
+  block:
+    - name: Copy SSH files
+      vars:
+        filename: item['src'] | basename
+        filemode: "{{ '0644' when 'pub' in filename else '0600' }}"
+      ansible.builtin.copy:
+        src: "{{ item['src'] }}"
+        dest: "{{ ansible_user_dir }}/.ssh"
+        mode: "{{ filemode }}"
+      loop: "{{ lookup('community.general.filetree', 'ssh/') }}"
+      when: "'id_' in filename"
+    - name: Copy SSH config
+      ansible.builtin.copy:
+        src: ssh/config
+        dest: "{{ ansible_user_dir }}/.ssh/config"
+        mode: 0644
+        backup: true
+      register: _backup_ssh_config
+      notify: Process backups
   when: use_personal_ssh_config

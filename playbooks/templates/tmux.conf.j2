@@ -37,7 +37,7 @@ bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {% endif -%}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
-bind -n C-a send-prefix                                     # controls nested tmux with C-a
+bind -n C-v send-prefix                                     # controls nested tmux
 bind '%' split-window -h -c "#{pane_current_path}"          # new pane opens to same directory
 bind '"' split-window -c "#{pane_current_path}"             # new pane opens to same directory
 bind 'C' new-window

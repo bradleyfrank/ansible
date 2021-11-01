@@ -59,6 +59,7 @@ github_packages:
 
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] }}/site-packages"
+pip_executable: /usr/bin/pip
 root_home: /root
 sudoers_d: /etc/sudoers.d
 system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"

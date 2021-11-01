@@ -55,9 +55,9 @@ export CLOUDSDK_PYTHON=/usr/bin/python3
 
 
 {% if 'Darwin' in ansible_system %}
-eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_keys | join(' ') }})"
+eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ keychain_keys | join(' ') }})"
 {% elif 'Linux' in ansible_system %}
-eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
+eval "$(keychain --eval --ignore-missing --quiet {{ keychain_keys | join(' ') }})"
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
 
