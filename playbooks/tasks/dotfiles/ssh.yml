@@ -15,7 +15,6 @@
 - name: Create SSH key
   community.crypto.openssh_keypair:
     path: "{{ item['value'] }}"
-    regenerate: partial_idempotence
     passphrase: "{{ lookup('password', item['value'] + '.passphrase') }}"
     type: "{{ item['key'] }}"
     size: 4096

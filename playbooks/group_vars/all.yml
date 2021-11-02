@@ -71,10 +71,6 @@ python:
 
 root_dotfiles: minimal
 
-ssh_keys:
-  rsa: "{{ ansible_user_dir }}/.ssh/id_rsa"
-  ed25519: "{{ ansible_user_dir }}/.ssh/id_ed25519"
-
 vim:
   extensions_dest: "{{ ansible_user_dir }}/.vim/pack/default/start"
   extensions:
