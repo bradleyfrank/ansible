@@ -6,6 +6,7 @@
   vars:
     default_hostname: "{{ current_hostname if current_hostname is defined else '' }}"
     default_email: "{{ current_email if current_email is defined else '' }}"
+    vault_password_file: "{{ ansible_user_dir }}/.ansible/vault"
 
   vars_prompt:
     - name: vault_password
@@ -28,6 +29,10 @@
       prompt: Use personal SSH config (True|False)
       private: false
       default: true
+    - name: ssh_key_types_to_generate
+      prompt: SSH key types to generate
+      private: false
+      default: "rsa,ed25519"
     - name: work_system
       prompt: Install employer settings and scripts (True|False)
       private: false
@@ -37,11 +42,24 @@
     - name: Create vault file
       ansible.builtin.copy:
         content: "{{ vault_password }}"
-        dest: "{{ ansible_user_dir }}/.ansible/vault"
+        dest: "{{ vault_password_file }}"
         mode: 0600
 
     - name: Create inventory
       ansible.builtin.template:
         src: inventory.ini.j2
         dest: "{{ ansible_user_dir }}/.ansible/inventory.ini"
+        mode: 0755
+
+    - name: Generate SSH key passphrases
+      vars:
+        passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
+      ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
+      loop: "{{ ssh_key_types_to_generate | split(',') }}"
+      register: ansible_vault
+
+    - name: Create SSH key passphrase vars file
+      ansible.builtin.template:
+        src: ssh_keys.yml.j2
+        dest: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
         mode: 0755

@@ -10,7 +10,9 @@ Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfile
 curl -sO https://bbdm.franklybrad.com/install
 ```
 
-***Note:*** *Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and thus will skip the setup prompts.*
+**Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and thus will skip the setup prompts.**
+
+## Running
 
 Usage:
 
@@ -26,17 +28,25 @@ sh install [-g git_branch] [-d]
     3. Email address
     4. Clone all personal GitHub repos (True|False)
     5. Manage `~/.ssh/config` (True|False)
-    6. Install employer settings and scripts (True|False)
+    6. SSH key types to generate (dsa,ecdsa,ed25519,rsa)
+    7. Install employer settings and scripts (True|False)
 2. Creates `~/.ansible/inventory.ini` from the above answers
 
-### Notes
+### Playbook Notes
 
 * Both playbooks run entirely local, no remote connections
 * Only the `bootstrap` playbook requires sudo privileges
 * The `dotfiles` playbook assumes all dependencies are pre-installed
 * For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas` (skips if not authenticated)
 
-## Inventory
+### SSH keys & Github
+
+* Setup will prompt for a list of SSH types to generate
+* Passphrases are generated, encrypted, and stored in a vars file (`~/.ansible/ssh_keys.yml`)
+* Unencrypted passphrases are saved to `~/.ssh/*.passphrases` and should be deleted once copied
+* If generated, `id_ed25519.pub` or `id_rsa.pub` are uploaded to Github
+
+## Managing Inventory
 
 To regenerate `~/.ansible/inventory.ini`, run the following command from the top level of the repository:
 

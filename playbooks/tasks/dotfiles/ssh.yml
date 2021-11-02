@@ -12,14 +12,27 @@
     state: touch
     mode: 0600
 
-- name: Create SSH key
-  community.crypto.openssh_keypair:
-    path: "{{ item['value'] }}"
-    passphrase: "{{ lookup('password', item['value'] + '.passphrase') }}"
-    type: "{{ item['key'] }}"
-    size: 4096
-    comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
-  loop: "{{ ssh_keys | dict2items }}"
+- name: Check for SSH keys vars file
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
+  register: ssh_keys_yml
+
+- name: Manage SSH keys
+  block:
+    - name: Import SSH key vars file
+      ansible.builtin.include_vars:
+        file: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
+    - name: Create SSH key
+      community.crypto.openssh_keypair:
+        path: "{{ ansible_user_dir }}/.ssh/id_{{ item['key'] }}"
+        passphrase: "{{ item['value'] }}"
+        type: "{{ item['key'] }}"
+        size: 4096
+        comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
+      loop: "{{ ssh_keys | dict2items }}"
+      loop_control:
+        label: "{{ item['key'] }}"
+  when: ssh_keys_yml['stat']['exists']
 
 - name: Install SSH keys and config
   block:
@@ -32,6 +45,8 @@
         dest: "{{ ansible_user_dir }}/.ssh"
         mode: "{{ filemode }}"
       loop: "{{ lookup('community.general.filetree', 'ssh/') }}"
+      loop_control:
+        label: "{{ item['src'] | basename }}"
       when: "'id_' in filename"
     - name: Copy SSH config
       ansible.builtin.copy:

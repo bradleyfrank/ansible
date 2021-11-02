@@ -1,11 +1,17 @@
 ---
 
 - name: Register SSH key with Github
+  vars:
+    github_keys:
+      - "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
+      - "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
+    pubkey: "{{ lookup('first_found', github_keys, errors='ignore') }}"
   community.general.github_key:
     name: "{{ ansible_user_id }}@{{ ansible_hostname }}"
-    pubkey: "{{ lookup('file', ssh_keys['ed25519'] + '.pub') }}"
+    pubkey: "{{ lookup('file', pubkey) }}"
     state: present
     token: "{{ github['token'] }}"
+  when: pubkey
   tags: github
 
 - name: Clone repositories
