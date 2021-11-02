@@ -12,20 +12,27 @@
     state: touch
     mode: 0600
 
-- name: Import SSH key vars file
-  ansible.builtin.include_vars:
-    file: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
+- name: Check for SSH keys vars file
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
+  register: ssh_keys_yml
 
-- name: Create SSH key
-  community.crypto.openssh_keypair:
-    path: "{{ ansible_user_dir }}/.ssh/id_{{ item['key'] }}"
-    passphrase: "{{ item['value'] }}"
-    type: "{{ item['key'] }}"
-    size: 4096
-    comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
-  loop: "{{ ssh_keys | dict2items }}"
-  loop_control:
-    label: "{{ item['key'] }}"
+- name: Manage SSH keys
+  block:
+    - name: Import SSH key vars file
+      ansible.builtin.include_vars:
+        file: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
+    - name: Create SSH key
+      community.crypto.openssh_keypair:
+        path: "{{ ansible_user_dir }}/.ssh/id_{{ item['key'] }}"
+        passphrase: "{{ item['value'] }}"
+        type: "{{ item['key'] }}"
+        size: 4096
+        comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
+      loop: "{{ ssh_keys | dict2items }}"
+      loop_control:
+        label: "{{ item['key'] }}"
+  when: ssh_keys_yml['stat']['exists']
 
 - name: Install SSH keys and config
   block:
