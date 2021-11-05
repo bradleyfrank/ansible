@@ -45,12 +45,6 @@
         dest: "{{ vault_password_file }}"
         mode: 0600
 
-    - name: Create inventory
-      ansible.builtin.template:
-        src: inventory.ini.j2
-        dest: "{{ ansible_user_dir }}/.ansible/inventory.ini"
-        mode: 0755
-
     - name: Generate SSH key passphrases
       vars:
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
@@ -58,8 +52,8 @@
       loop: "{{ ssh_key_types_to_generate | split(',') }}"
       register: ansible_vault
 
-    - name: Create SSH key passphrase vars file
+    - name: Create inventory
       ansible.builtin.template:
-        src: ssh_keys.yml.j2
-        dest: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
+        src: inventory.yml.j2
+        dest: "{{ ansible_user_dir }}/.ansible/inventory.ini"
         mode: 0755

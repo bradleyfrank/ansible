@@ -12,11 +12,6 @@
     state: touch
     mode: 0600
 
-- name: Check for SSH keys vars file
-  ansible.builtin.stat:
-    path: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
-  register: ssh_keys_yml
-
 - name: Manage SSH keys
   block:
     - name: Import SSH key vars file
@@ -32,7 +27,6 @@
       loop: "{{ ssh_keys | dict2items }}"
       loop_control:
         label: "{{ item['key'] }}"
-  when: ssh_keys_yml['stat']['exists']
 
 - name: Install SSH keys and config
   block:
