@@ -16,6 +16,6 @@ all:
     use_personal_ssh_config: {{ use_personal_ssh_config }}
     work_system: {{ work_system }}
     ssh_keys:
-{% for item in ansible_vault['results'] | default(omit) -%}
-{{ item['stdout'] | indent(4, True) }}
-{% endfor -%}
+      {% for item in ansible_vault['results'] | default(omit) -%}
+        {{ item['stdout'] }}
+      {% endfor -%}

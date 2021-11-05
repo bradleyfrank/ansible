@@ -26,9 +26,9 @@ sh install [-g git_branch] [-d]
     1. Ansible vault password (saved to `~/.ansible/vault`)
     2. Hostname
     3. Email address
-    4. Clone all personal GitHub repos (True|False)
-    5. Manage `~/.ssh/config` (True|False)
-    6. SSH key types to generate (dsa,ecdsa,ed25519,rsa)
+    4. SSH key types to generate (dsa,ecdsa,ed25519,rsa)
+    5. Clone all personal GitHub repos (True|False)
+    6. Manage `~/.ssh/config` (True|False)
     7. Install employer settings and scripts (True|False)
 2. Creates `~/.ansible/inventory.ini` from the above answers
 

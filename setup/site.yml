@@ -21,6 +21,10 @@
       prompt: Enter email address
       private: false
       default: "{{ default_email }}"
+    - name: ssh_key_types_to_generate
+      prompt: SSH key types to generate
+      private: false
+      default: "rsa,ed25519"
     - name: clone_personal_repos
       prompt: Clone all personal GitHub repos (True|False)
       private: false
@@ -29,10 +33,6 @@
       prompt: Use personal SSH config (True|False)
       private: false
       default: true
-    - name: ssh_key_types_to_generate
-      prompt: SSH key types to generate
-      private: false
-      default: "rsa,ed25519"
     - name: work_system
       prompt: Install employer settings and scripts (True|False)
       private: false
@@ -43,7 +43,7 @@
       ansible.builtin.copy:
         content: "{{ vault_password }}"
         dest: "{{ vault_password_file }}"
-        mode: 0600
+        mode: 0400
 
     - name: Generate SSH key passphrases
       vars:
@@ -55,5 +55,5 @@
     - name: Create inventory
       ansible.builtin.template:
         src: inventory.yml.j2
-        dest: "{{ ansible_user_dir }}/.ansible/inventory.ini"
+        dest: "{{ ansible_user_dir }}/.ansible/i2.yml"
         mode: 0755
