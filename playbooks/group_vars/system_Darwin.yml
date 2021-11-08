@@ -13,20 +13,20 @@ github_packages:
     user: kubernetes-sigs
     repo: krew
     filename:
-      x86: "krew-darwin_amd64"
-      arm: "krew-darwin_arm64"
+      x86: krew-darwin_amd64
+      arm: krew-darwin_arm64
   starship:
     user: starship
     repo: starship
     filename:
-      x86: "starship-x86_64-apple-darwin"
-      arm: "starship-aarch64-apple-darwin"
+      x86: starship-x86_64-apple-darwin
+      arm: starship-aarch64-apple-darwin
   stern:
     user: stern
     repo: stern
     filename:
-      x86: "stern_[version]_darwin_amd64"
-      arm: "stern_[version]_darwin_arm64"
+      x86: stern_[version]_darwin_amd64
+      arm: stern_[version]_darwin_arm64
   k9s:
     user: derailed
     repo: k9s
@@ -171,23 +171,19 @@ packages:
     - zoom
   virtualization:
     - multipass
+    - utm
     - vmware-fusion
   mas:
     - 407963104   # Pixelmator
-    - 408981434   # iMovie
-    - 409183694   # Keynote
-    - 409201541   # Pages
-    - 409203825   # Numbers
     - 425424353   # Unarchiver
     - 568494494   # Pocket
     - 924726344   # Deliveries
     - 1179623856  # Pastebot
-    - 1289378661  # Twitterrific
     - 1303222628  # Paprika Recipe Manager 3
     - 1320666476  # Wipr
     - 1516894961  # Codye
     - 1529448980  # Reeder
-    - 1555925018  # Arcade
+    - 1555925018  # Genki Arcade
 
 defaults:
   - domain: com.apple.TimeMachine

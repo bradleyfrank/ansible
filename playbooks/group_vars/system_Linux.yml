@@ -42,20 +42,20 @@ github_packages:
     user: kubernetes-sigs
     repo: krew
     filename:
-      x86: "krew-linux_amd64"
-      arm: "krew-linux_arm64"
+      x86: krew-linux_amd64
+      arm: krew-linux_arm64
   starship:
     user: starship
     repo: starship
     filename:
-      x86: "starship-x86_64-unknown-linux-musl"
-      arm: "starship-aarch64-unknown-linux-musl"
+      x86: starship-x86_64-unknown-linux-musl
+      arm: starship-aarch64-unknown-linux-musl
   stern:
     user: stern
     repo: stern
     filename:
-      x86: "stern_[version]_linux_amd64"
-      arm: "stern_[version]_linux_arm64"
+      x86: stern_[version]_linux_amd64
+      arm: stern_[version]_linux_arm64
   k9s:
     user: derailed
     repo: k9s
