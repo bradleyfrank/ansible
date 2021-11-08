@@ -94,12 +94,12 @@
       ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
       tags: [vim, core]
 
-    - name: Include kubectl tasks
+    - name: Include k8s tasks
       ansible.builtin.include_tasks:
-        file: tasks/dotfiles/kubectl.yml
+        file: tasks/dotfiles/k8s.yml
         apply:
-          tags: kubectl
-      tags: [kubectl, krew, stern]
+          tags: k8s
+      tags: [kubectl, krew, stern, k9s]
 
 # ============================================================================
 #  assets & modules

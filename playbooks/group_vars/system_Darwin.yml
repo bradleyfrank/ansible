@@ -27,12 +27,19 @@ github_packages:
     filename:
       x86: "stern_[version]_darwin_amd64"
       arm: "stern_[version]_darwin_arm64"
+  k9s:
+    user: derailed
+    repo: k9s
+    filename:
+      x86: k9s_Darwin_x86_64
+      arm: k9s_Darwin_arm64
 
 hyper:
   fontFamily: SauceCodeProNerdFontComplete-Regular
   fontSize: 14
   padding: 12px 14px
 
+k9s_config_path: "{{ ansible_user_dir }}/Library/Preferences"
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}"
 python_user_path: "{{ python_user_base }}/bin"
@@ -164,20 +171,23 @@ packages:
     - zoom
   virtualization:
     - multipass
-    - parallels
+    - vmware-fusion
   mas:
-    - 407963104
-    - 409183694
-    - 409201541
-    - 409203825
-    - 425424353
-    - 568494494
-    - 924726344
-    - 1179623856
-    - 1289378661
-    - 1320666476
-    - 1529448980
-    - 1555925018
+    - 407963104   # Pixelmator
+    - 408981434   # iMovie
+    - 409183694   # Keynote
+    - 409201541   # Pages
+    - 409203825   # Numbers
+    - 425424353   # Unarchiver
+    - 568494494   # Pocket
+    - 924726344   # Deliveries
+    - 1179623856  # Pastebot
+    - 1289378661  # Twitterrific
+    - 1303222628  # Paprika Recipe Manager 3
+    - 1320666476  # Wipr
+    - 1516894961  # Codye
+    - 1529448980  # Reeder
+    - 1555925018  # Arcade
 
 defaults:
   - domain: com.apple.TimeMachine

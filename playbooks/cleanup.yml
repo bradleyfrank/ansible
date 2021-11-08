@@ -8,6 +8,7 @@
       - .ansible_vault_password
       - .dotfiles
       - .config/p10k.zsh
+      - .k9s
       - .local/bin/diff-so-fancy
       - .local/bin/lib
       - .local/bin/gcp-kubeconfigs
@@ -37,6 +38,7 @@
       - stay
       - sublime-text
       - typora
+      - virtualbox
       - vivaldi
 
   tasks:

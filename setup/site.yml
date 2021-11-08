@@ -55,5 +55,5 @@
     - name: Create inventory
       ansible.builtin.template:
         src: inventory.yml.j2
-        dest: "{{ ansible_user_dir }}/.ansible/i2.yml"
+        dest: "{{ ansible_user_dir }}/.ansible/inventory.yml"
         mode: 0755

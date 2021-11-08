@@ -56,7 +56,14 @@ github_packages:
     filename:
       x86: "stern_[version]_linux_amd64"
       arm: "stern_[version]_linux_arm64"
+  k9s:
+    user: derailed
+    repo: k9s
+    filename:
+      x86: k9s_Linux_x86_64
+      arm: k9s_Linux_arm64
 
+k9s_config_path: "{{ ansible_user_dir }}/.config"
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] }}/site-packages"
 pip_executable: /usr/bin/pip
