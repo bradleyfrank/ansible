@@ -49,9 +49,11 @@
         path: "{{ install_path }}/{{ name }}"
         mode: 0755
     - name: Record new version of {{ name }}
+      vars:
+        existing_packages: "{{ github_package_versions | default({}) }}"
       set_fact:
-        github_package_versions: "{{ github_package_versions | default({}) | combine({name: latest_release}) }}"
-        cacheable: yes
+        github_package_versions: "{{ existing_packages | combine({name: latest_release}) }}"
+        cacheable: true
   when: latest_release != github_package_versions[name] | default('0.0.0')
 
 - name: Remove temp files

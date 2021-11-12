@@ -31,8 +31,8 @@ github_packages:
     user: derailed
     repo: k9s
     filename:
-      x86: k9s_Darwin_x86_64
-      arm: k9s_Darwin_arm64
+      x86: "k9s_Darwin_x86_64"
+      arm: "k9s_Darwin_arm64"
 
 hyper:
   fontFamily: SauceCodeProNerdFontComplete-Regular
