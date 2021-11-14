@@ -32,13 +32,3 @@
   loop: "{{ flatpaks['packages'] }}"
   when: "'desktop' in system_type"
   tags: [packages, flatpak]
-
-- name: Install packages from Github
-  vars:
-    name: "{{ item }}"
-  ansible.builtin.include_tasks:
-    file: helpers/github_release.yml
-    apply:
-      tags: "{{ item }}"
-  loop: [sysz]
-  tags: [packages, github]

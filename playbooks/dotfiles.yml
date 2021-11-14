@@ -102,7 +102,7 @@
       tags: [kubectl, krew, stern, k9s]
 
 # ============================================================================
-#  assets & modules
+#  assets, modules, and packages
 # ----------------------------------------------------------------------------
 
     - name: Ensure fonts directory exists
@@ -130,6 +130,17 @@
         name: "{{ python['packages'] }}"
         extra_args: --user
       tags: python
+
+    - name: Install packages from Github
+      vars:
+        name: "{{ item }}"
+      ansible.builtin.include_tasks:
+        file: helpers/github_release.yml
+        apply:
+          tags: "{{ item }}"
+      loop: [sysz]
+      when: "'Linux' in ansible_system"
+      tags: [packages, github]
 
 # ============================================================================
 #  gui apps configuration
