@@ -17,7 +17,7 @@
   tasks:
 
 # ============================================================================
-#  dotfiles & command line configuration
+#  dotfiles and command line configuration
 # ----------------------------------------------------------------------------
 
     - name: Create ~/Development folder structure
@@ -139,7 +139,6 @@
         apply:
           tags: "{{ item }}"
       loop: [sysz]
-      when: "'Linux' in ansible_system"
       tags: [packages, github]
 
 # ============================================================================
@@ -166,7 +165,7 @@
       tags: icons
 
 # ============================================================================
-#  zsh & completions
+#  zsh and completions
 # ----------------------------------------------------------------------------
 
     - name: Install Starship
