@@ -66,7 +66,7 @@ github_packages:
     user: joehillen
     repo: sysz
     filename:
-      x68: "[version]"
+      x86: "[version]"
       arm: "[version]"
 
 k9s_config_path: "{{ ansible_user_dir }}/.config"

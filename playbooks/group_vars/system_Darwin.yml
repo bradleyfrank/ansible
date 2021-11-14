@@ -49,7 +49,7 @@ root_home: /var/root
 sudoers_d: /private/etc/sudoers.d
 system_type: desktop
 
-packages:
+os_packages:
   taps:
     - homebrew/bundle
     - homebrew/cask

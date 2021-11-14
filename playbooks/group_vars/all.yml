@@ -60,7 +60,7 @@ python:
   version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
   packages:
     - beets
-    - click
+    - click  # https://github.com/tmux-python/tmuxp/pull/679
     - pydf
     - tmuxp
     - virtualenv

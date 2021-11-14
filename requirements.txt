@@ -5,3 +5,4 @@ cryptography>=35.0.0
 docker
 github3.py
 pre-commit
+psutil

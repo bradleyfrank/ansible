@@ -82,7 +82,7 @@ repos:
     gpgkey: https://rpm.releases.hashicorp.com/gpg
     system_type: [desktop, server]
 
-packages:
+os_packages:
   cli:
     - abcde
     - bash-completion
