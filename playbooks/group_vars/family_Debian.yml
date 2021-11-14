@@ -99,6 +99,7 @@ os_packages:
     - gnupg  # docker, gcloud
     - gnupg2  # kubernetes
     - google-cloud-sdk
+    - gron
     - htop
     - httpie
     - iftop

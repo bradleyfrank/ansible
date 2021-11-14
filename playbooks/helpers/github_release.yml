@@ -15,11 +15,10 @@
     install_path: "{{ ansible_user_dir }}/.local/bin"
     arch: "{{ 'x86' if ansible_architecture == 'x86_64' else 'arm' }}"
     url:
-      - "https://github.com/"
-      - "{{ github_packages[name]['user'] }}/{{ github_packages[name]['repo'] }}/"
-      - "releases/download/v{{ latest_release }}/"
+      - "https://github.com"
+      - "{{ github_packages[name]['user'] }}/{{ github_packages[name]['repo'] }}"
+      - "releases/download/v{{ latest_release }}"
       - "{{ github_packages[name]['filename'][arch] | replace('[version]', latest_release) }}"
-      - "{{ github_packages[name]['ext'] | default('.tar.gz') }}"
   block:
     - name: Create temp download directory
       ansible.builtin.file:
@@ -27,7 +26,7 @@
         state: directory
     - name: Download {{ name }} {{ latest_release }}
       ansible.builtin.get_url:
-        url: "{{ url | join() }}"
+        url: "{{ url | join('/') }}"
         dest: "{{ download_path }}"
         mode: 0644
     - name: Extract {{ name }} archive

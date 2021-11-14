@@ -105,6 +105,7 @@ os_packages:
     - glances
     - glow
     - google-cloud-sdk
+    - gron
     - htop
     - httpie
     - iftop

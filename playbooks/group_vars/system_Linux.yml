@@ -42,42 +42,39 @@ github_packages:
     user: kubernetes-sigs
     repo: krew
     filename:
-      x86: "krew-linux_amd64"
-      arm: "krew-linux_arm64"
+      x86: "krew-linux_amd64.tar.gz"
+      arm: "krew-linux_arm64.tar.gz"
   starship:
     user: starship
     repo: starship
     filename:
-      x86: "starship-x86_64-unknown-linux-musl"
-      arm: "starship-aarch64-unknown-linux-musl"
+      x86: "starship-x86_64-unknown-linux-musl.tar.gz"
+      arm: "starship-aarch64-unknown-linux-musl.tar.gz"
   stern:
     user: stern
     repo: stern
     filename:
-      x86: "stern_[version]_linux_amd64"
-      arm: "stern_[version]_linux_arm64"
+      x86: "stern_[version]_linux_amd64.tar.gz"
+      arm: "stern_[version]_linux_arm64.tar.gz"
   k9s:
     user: derailed
     repo: k9s
     filename:
-      x86: "k9s_Linux_x86_64"
-      arm: "k9s_Linux_arm64"
-  sysz:
-    user: joehillen
-    repo: sysz
-    filename:
-      x86: "[version]"
-      arm: "[version]"
+      x86: "k9s_Linux_x86_64.tar.gz"
+      arm: "k9s_Linux_arm64.tar.gz"
+  # https://github.com/joehillen/sysz/issues/16
+  # sysz:
+  #   user: joehillen
+  #   repo: sysz
+  #   filename:
+  #     x86: ""
+  #     arm: ""
 
 k9s_config_path: "{{ ansible_user_dir }}/.config"
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_site: "{{ ansible_user_dir }}/.local/lib/python{{ python['version'] }}/site-packages"
 pip_executable: /usr/bin/pip
 root_home: /root
-
-scripts:
-#  - sysz  # https://github.com/joehillen/sysz/issues/16
-
 sudoers_d: /etc/sudoers.d
 system_type: "{{ 'desktop' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'server' }}"
 

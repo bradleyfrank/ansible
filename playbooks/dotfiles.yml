@@ -131,16 +131,6 @@
         extra_args: --user
       tags: python
 
-    - name: Install various scripts from Github
-      vars:
-        name: "{{ item }}"
-      ansible.builtin.include_tasks:
-        file: helpers/github_release.yml
-        apply:
-          tags: "{{ item }}"
-      loop: "{{ scripts | default([]) }}"
-      tags: [packages, github]
-
 # ============================================================================
 #  gui apps configuration
 # ----------------------------------------------------------------------------

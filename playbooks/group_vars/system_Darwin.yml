@@ -13,26 +13,26 @@ github_packages:
     user: kubernetes-sigs
     repo: krew
     filename:
-      x86: "krew-darwin_amd64"
-      arm: "krew-darwin_arm64"
+      x86: "krew-darwin_amd64.tar.gz"
+      arm: "krew-darwin_arm64.tar.gz"
   starship:
     user: starship
     repo: starship
     filename:
-      x86: "starship-x86_64-apple-darwin"
-      arm: "starship-aarch64-apple-darwin"
+      x86: "starship-x86_64-apple-darwin.tar.gz"
+      arm: "starship-aarch64-apple-darwin.tar.gz"
   stern:
     user: stern
     repo: stern
     filename:
-      x86: "stern_[version]_darwin_amd64"
-      arm: "stern_[version]_darwin_arm64"
+      x86: "stern_[version]_darwin_amd64.tar.gz"
+      arm: "stern_[version]_darwin_arm64.tar.gz"
   k9s:
     user: derailed
     repo: k9s
     filename:
-      x86: "k9s_Darwin_x86_64"
-      arm: "k9s_Darwin_arm64"
+      x86: "k9s_Darwin_x86_64.tar.gz"
+      arm: "k9s_Darwin_arm64.tar.gz"
 
 hyper:
   fontFamily: SauceCodeProNerdFontComplete-Regular
