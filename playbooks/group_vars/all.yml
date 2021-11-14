@@ -60,7 +60,9 @@ python:
   version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
   packages:
     - beets
+    - click
     - pydf
+    - tmuxp
     - virtualenv
     - yq
 

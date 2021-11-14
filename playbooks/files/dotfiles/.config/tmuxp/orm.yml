@@ -1,0 +1,33 @@
+---
+
+session_name: main
+windows:
+  - window_name: Reference
+    start_directory: ~/Development/Reference
+    layout: even-horizontal
+    panes:
+      - start_directory: .
+      - start_directory: ../Scratch
+  - window_name: infractl
+    start_directory: ~/Development/Projects/infractl/main
+    layout: even-horizontal
+    panes:
+      - start_directory: .
+        focus: true
+        shell_command: '[[ -d ve ]] && pyenv -a || orm-infractl-setup ; clear'
+      - start_directory: ../
+  - window_name: devdocs
+    start_directory: ~/Development/Projects/devdocs/main
+    layout: even-horizontal
+    panes:
+      - start_directory: .
+        focus: true
+        shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
+      - start_directory: ../
+  - window_name: orm-cli
+    start_directory: ~/Development/Projects/orm-cli/main
+    layout: even-horizontal
+    panes:
+      - start_directory: .
+        focus: true
+        shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
