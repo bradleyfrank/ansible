@@ -1,6 +1,0 @@
----
-
-ssh_keys:
-{% for item in ansible_vault['results'] | default(omit) -%}
-{{ item['stdout'] | indent(4, True) }}
-{% endfor -%}

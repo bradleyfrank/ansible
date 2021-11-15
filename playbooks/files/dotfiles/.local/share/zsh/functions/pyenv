@@ -22,7 +22,7 @@ pyenv() {
               ;;
     *)        [[ -z $pyname ]] && pyname=ve
               virtualenv -p "$pyver" "$pyname"
-              source "${pyname-ve}"/bin/activate
+              source "$pyname"/bin/activate
               ;;
   esac
 }

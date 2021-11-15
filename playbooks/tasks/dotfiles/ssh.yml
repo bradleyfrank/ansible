@@ -12,48 +12,33 @@
     state: touch
     mode: 0600
 
-- name: Check for SSH keys vars file
-  ansible.builtin.stat:
-    path: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
-  register: ssh_keys_yml
+- name: Create SSH key
+  community.crypto.openssh_keypair:
+    path: "{{ ansible_user_dir }}/.ssh/id_{{ item['key'] }}"
+    passphrase: "{{ item['value'] }}"
+    type: "{{ item['key'] }}"
+    size: 4096
+    comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
+  loop: "{{ ssh_keys | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
 
-- name: Manage SSH keys
-  block:
-    - name: Import SSH key vars file
-      ansible.builtin.include_vars:
-        file: "{{ ansible_user_dir }}/.ansible/ssh_keys.yml"
-    - name: Create SSH key
-      community.crypto.openssh_keypair:
-        path: "{{ ansible_user_dir }}/.ssh/id_{{ item['key'] }}"
-        passphrase: "{{ item['value'] }}"
-        type: "{{ item['key'] }}"
-        size: 4096
-        comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
-      loop: "{{ ssh_keys | dict2items }}"
-      loop_control:
-        label: "{{ item['key'] }}"
-  when: ssh_keys_yml['stat']['exists']
+- name: Copy SSH keys
+  ansible.builtin.copy:
+    src: "{{ item['src'] }}"
+    dest: "{{ ansible_user_dir }}/.ssh"
+    mode: "{{ '0644' if 'pub' in item['src'] | basename else '0600' }}"
+  loop: "{{ lookup('community.general.filetree', 'ssh/') }}"
+  loop_control:
+    label: "{{ item['src'] | basename }}"
+  when: use_personal_ssh_config and (item['src'] | basename != 'config')
 
-- name: Install SSH keys and config
-  block:
-    - name: Copy SSH files
-      vars:
-        filename: item['src'] | basename
-        filemode: "{{ '0644' when 'pub' in filename else '0600' }}"
-      ansible.builtin.copy:
-        src: "{{ item['src'] }}"
-        dest: "{{ ansible_user_dir }}/.ssh"
-        mode: "{{ filemode }}"
-      loop: "{{ lookup('community.general.filetree', 'ssh/') }}"
-      loop_control:
-        label: "{{ item['src'] | basename }}"
-      when: "'id_' in filename"
-    - name: Copy SSH config
-      ansible.builtin.copy:
-        src: ssh/config
-        dest: "{{ ansible_user_dir }}/.ssh/config"
-        mode: 0644
-        backup: true
-      register: _backup_ssh_config
-      notify: Process backups
+- name: Copy SSH config
+  ansible.builtin.copy:
+    src: ssh/config
+    dest: "{{ ansible_user_dir }}/.ssh/config"
+    mode: 0644
+    backup: true
+  register: _backup_ssh_config
+  notify: Process backups
   when: use_personal_ssh_config

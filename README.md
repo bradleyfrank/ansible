@@ -26,11 +26,11 @@ sh install [-g git_branch] [-d]
     1. Ansible vault password (saved to `~/.ansible/vault`)
     2. Hostname
     3. Email address
-    4. Clone all personal GitHub repos (True|False)
-    5. Manage `~/.ssh/config` (True|False)
-    6. SSH key types to generate (dsa,ecdsa,ed25519,rsa)
+    4. SSH key types to generate (dsa,ecdsa,ed25519,rsa)
+    5. Clone all personal GitHub repos (True|False)
+    6. Manage `~/.ssh/config` (True|False)
     7. Install employer settings and scripts (True|False)
-2. Creates `~/.ansible/inventory.ini` from the above answers
+2. Creates `~/.ansible/inventory.yml` from the above answers
 
 ### Playbook Notes
 
@@ -42,13 +42,13 @@ sh install [-g git_branch] [-d]
 ### SSH keys & Github
 
 * Setup will prompt for a list of SSH types to generate
-* Passphrases are generated, encrypted, and stored in a vars file (`~/.ansible/ssh_keys.yml`)
+* Passphrases are generated, encrypted, and stored in the inventory file
 * Unencrypted passphrases are saved to `~/.ssh/*.passphrases` and should be deleted once copied
-* If generated, `id_ed25519.pub` or `id_rsa.pub` are uploaded to Github
+* If generated, one of `id_ed25519.pub` or `id_rsa.pub` (in that order) are added to Github
 
 ## Managing Inventory
 
-To regenerate `~/.ansible/inventory.ini`, run the following command from the top level of the repository:
+To regenerate `~/.ansible/inventory.yml`, run the following command from the top level of the repository:
 
 ```shell
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml -e "current_hostname=$(hostname -s)"

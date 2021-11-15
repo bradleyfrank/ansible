@@ -73,7 +73,7 @@ repos:
     key: https://apt.releases.hashicorp.com/gpg
     system_type: [desktop, server]
 
-packages:
+os_packages:
   cli:
     - abcde
     - apt-file
@@ -99,6 +99,7 @@ packages:
     - gnupg  # docker, gcloud
     - gnupg2  # kubernetes
     - google-cloud-sdk
+    - gron
     - htop
     - httpie
     - iftop

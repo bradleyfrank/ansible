@@ -1,0 +1,20 @@
+---
+
+session_name: main
+windows:
+  - window_name: Reference
+    start_directory: ~/Development/Reference
+    layout: even-horizontal
+    panes:
+      - start_directory: .
+      - start_directory: ../Scratch
+  - window_name: ansible
+    start_directory: ~/Development/Projects/ansible/main
+    layout: even-horizontal
+    panes:
+      - start_directory: .
+        focus: true
+        shell_command: '[[ -d ve ]] && pyenv -a || pyenv -v 3.9 ; clear'
+      - start_directory: ../
+  - window_name: home-server
+    start_directory: ~/Development/Projects/home-server/main

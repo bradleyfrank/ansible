@@ -1,35 +1,41 @@
 #!/usr/bin/env bash
 
 #
-# Branches a Git repo in a new tmux window.
+# Branches a Git repo as a worktree within tmux.
 # Author: Brad Frank
 # Date: May 2021
 # Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
 # Requires: tmux, git
 #
 
-repo_name=infractl
-branch="$(id -un).$(date +%F_%T | tr -d ':-' | tr '_' '-')"
+projects_dir="$HOME/Development/Projects"
 open_in=window
 
-while getopts ':hr:b:wp' flag; do
+while getopts ':hfr:b:wp' flag; do
     case "${flag}" in
-        h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
+        h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
+        f) branch_from=$OPTARG ;;
         p) open_in=pane ; split=${OPTARG:-h} ;;
         r) repo_name=$OPTARG ;;
-        b) branch=$OPTARG ;;
+        b) new_branch=$OPTARG ;;
         w) open_in=window ;;
         *) echo "Invalid argument." >&2 ; exit 1 ;;
     esac
 done
 
-repo_path="$HOME"/Development/Projects/"$repo_name"
+find_dir_fzf() {
+  find "$1" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; \
+    | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border
+}
 
-cd "$(find "$repo_path"/ -maxdepth 1 -mindepth 1 -type d -exec stat -c "%W %n" {} \; \
-  | sort -n | head -n1 | awk '{print $2}')" || exit 1
-
-git worktree add ../"$branch"
-repo_branch="$repo_path"/"$branch"
+[[ -z $repo_name ]] && repo_name="$(find_dir_fzf "$projects_dir")"
+repo_path="$projects_dir/$repo_name"
+[[ -z $branch_from ]] && branch_from="$(find_dir_fzf "$repo_path")"
+branch_path="$repo_path/$branch_from"
+cd "$branch_path" || exit 1
+[[ -z $new_branch ]] && new_branch="$branch_from-$(date +%F.%T | tr -d ':-')"
+git worktree add "$repo_path/$new_branch"
+repo_branch="$repo_path/$new_branch"
 
 case $open_in in
   window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;

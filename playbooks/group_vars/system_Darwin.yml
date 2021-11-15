@@ -13,26 +13,33 @@ github_packages:
     user: kubernetes-sigs
     repo: krew
     filename:
-      x86: "krew-darwin_amd64"
-      arm: "krew-darwin_arm64"
+      x86: "krew-darwin_amd64.tar.gz"
+      arm: "krew-darwin_arm64.tar.gz"
   starship:
     user: starship
     repo: starship
     filename:
-      x86: "starship-x86_64-apple-darwin"
-      arm: "starship-aarch64-apple-darwin"
+      x86: "starship-x86_64-apple-darwin.tar.gz"
+      arm: "starship-aarch64-apple-darwin.tar.gz"
   stern:
     user: stern
     repo: stern
     filename:
-      x86: "stern_[version]_darwin_amd64"
-      arm: "stern_[version]_darwin_arm64"
+      x86: "stern_[version]_darwin_amd64.tar.gz"
+      arm: "stern_[version]_darwin_arm64.tar.gz"
+  k9s:
+    user: derailed
+    repo: k9s
+    filename:
+      x86: "k9s_Darwin_x86_64.tar.gz"
+      arm: "k9s_Darwin_arm64.tar.gz"
 
 hyper:
   fontFamily: SauceCodeProNerdFontComplete-Regular
   fontSize: 14
   padding: 12px 14px
 
+k9s_config_path: "{{ ansible_user_dir }}/Library/Preferences"
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
 python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}"
 python_user_path: "{{ python_user_base }}/bin"
@@ -42,7 +49,7 @@ root_home: /var/root
 sudoers_d: /private/etc/sudoers.d
 system_type: desktop
 
-packages:
+os_packages:
   taps:
     - homebrew/bundle
     - homebrew/cask
@@ -164,20 +171,19 @@ packages:
     - zoom
   virtualization:
     - multipass
-    - parallels
+    - utm
+    - vmware-fusion
   mas:
-    - 407963104
-    - 409183694
-    - 409201541
-    - 409203825
-    - 425424353
-    - 568494494
-    - 924726344
-    - 1179623856
-    - 1289378661
-    - 1320666476
-    - 1529448980
-    - 1555925018
+    - 407963104   # Pixelmator
+    - 425424353   # Unarchiver
+    - 568494494   # Pocket
+    - 924726344   # Deliveries
+    - 1179623856  # Pastebot
+    - 1303222628  # Paprika Recipe Manager 3
+    - 1320666476  # Wipr
+    - 1516894961  # Codye
+    - 1529448980  # Reeder
+    - 1555925018  # Genki Arcade
 
 defaults:
   - domain: com.apple.TimeMachine

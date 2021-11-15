@@ -40,7 +40,7 @@
 
 - name: Install cli packages
   ansible.builtin.dnf:
-    name: "{{ packages['cli'] }}"
+    name: "{{ os_packages['cli'] }}"
     state: present
     update_cache: true
   become: true
@@ -48,7 +48,7 @@
 
 - name: Install gui packages
   ansible.builtin.dnf:
-    name: "{{ packages['gui'] }}"
+    name: "{{ os_packages['gui'] }}"
     state: present
     update_cache: true
   become: true

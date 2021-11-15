@@ -42,30 +42,27 @@ github:
     6134336232653365383438643561373562316136633733656336
 
 keychain_keys:
-  - ansible
   - google_compute_engine
-  - id_develop
   - id_ed25519
   - id_home
   - id_rsa
 
-krew:
-  url: https://github.com/kubernetes-sigs/krew/releases/download
-  filename: "krew-{{ ansible_system | lower }}_{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
-  plugins:
-    - cert-manager
-    - config-cleanup
-    - deprecations
-    - doctor
-    - get-all
-    - neat
-    - tree
+krew_plugins:
+  - cert-manager
+  - config-cleanup
+  - deprecations
+  - doctor
+  - get-all
+  - neat
+  - tree
 
 python:
   version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
   packages:
     - beets
+    - click  # https://github.com/tmux-python/tmuxp/pull/679
     - pydf
+    - tmuxp
     - virtualenv
     - yq
 

@@ -82,7 +82,7 @@ repos:
     gpgkey: https://rpm.releases.hashicorp.com/gpg
     system_type: [desktop, server]
 
-packages:
+os_packages:
   cli:
     - abcde
     - bash-completion
@@ -105,6 +105,7 @@ packages:
     - glances
     - glow
     - google-cloud-sdk
+    - gron
     - htop
     - httpie
     - iftop
@@ -162,7 +163,8 @@ packages:
     - code
     - flatpak
     - fontconfig-enhanced-defaults
-    - fontconfig-font-replacements
+#   - fontconfig-font-replacements  # until `archivo-black-fonts` are built
+                                    # https://copr.fedorainfracloud.org/coprs/dawid/better_fonts/monitor/
     - gedit-plugin-codecomment
     - gedit-plugin-colorpicker
     - gedit-plugin-git

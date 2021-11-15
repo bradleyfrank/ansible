@@ -1,0 +1,11 @@
+mux() {
+  mux_help() { echo "Usage: mux -d(iceware) | -t(arget) <session_name> | -p <tmuxp_profile>" ; }
+  while getopts ':hdtp:' flag; do case "$flag" in
+    h) mux_help ; return 0 ;;
+    d) tmux new -s "$(diceware 2)" ; return 0 ;;
+    t) [[ -z "$TMUX" ]] && tmux new-session -A -s "$OPTARG" || return 1 ;;
+    p) tmuxp load "$OPTARG" -y ; return 0 ;;
+    *) mux_help ; return 1 ;;
+  esac; done
+  mux_help ; return 1
+}

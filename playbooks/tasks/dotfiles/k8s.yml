@@ -6,6 +6,7 @@
     patterns: kubectl
     file_type: any
   register: find_kubectl
+  tags: kubectl
 
 - name: Install kubectl
   vars:
@@ -17,12 +18,14 @@
     dest: "{{ ansible_user_dir }}/.local/bin/"
     mode: 0755
   when: find_kubectl['matched'] == 0
+  tags: kubectl
 
 - name: Generate kubectl completions
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
   ansible.builtin.shell: "kubectl completion zsh > {{ zsh['completions'] }}/kubectl"
   changed_when: false
+  tags: kubectl
 
 - name: Install stern
   vars:
@@ -40,11 +43,35 @@
   changed_when: false
   tags: stern
 
+- name: Install k9s
+  vars:
+    name: k9s
+  ansible.builtin.include_tasks:
+    file: helpers/github_release.yml
+    apply:
+      tags: k9s
+  tags: k9s
+
+- name: Generate k9s completions
+  vars:
+    k9s_bin: "{{ ansible_user_dir }}/.local/bin/k9s"
+  ansible.builtin.shell: "{{ k9s_bin }} completion zsh > {{ zsh['completions'] }}/k9s"
+  changed_when: false
+  tags: k9s
+
+- name: Install k9s configs
+  ansible.builtin.copy:
+    src: apps/k9s
+    dest: "{{ k9s_config_path }}/"
+    mode: 0644
+  tags: k9s
+
 - name: Download fubectl
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
     dest: "{{ zsh['functions'] }}/fubectl"
     mode: 0644
+  tags: fubectl
 
 - name: Install Krew installer
   vars:
@@ -76,8 +103,8 @@
 
 - name: Install Krew plugins
   environment:
-    PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.krew/bin"
-  ansible.builtin.command: "kubectl krew install {{ krew['plugins'] | join(' ') }}"
+    PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
+  ansible.builtin.command: "kubectl krew install {{ krew_plugins | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install.stdout"
   tags: krew

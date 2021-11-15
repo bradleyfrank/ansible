@@ -56,7 +56,7 @@
 
 - name: Install cli packages
   ansible.builtin.apt:
-    name: "{{ packages['cli'] }}"
+    name: "{{ os_packages['cli'] }}"
     state: present
     autoclean: true
     autoremove: true
@@ -76,7 +76,7 @@
 
 - name: Install gui packages
   ansible.builtin.apt:
-    name: "{{ packages['gui'] }}"
+    name: "{{ os_packages['gui'] }}"
     state: present
     autoclean: true
     autoremove: true

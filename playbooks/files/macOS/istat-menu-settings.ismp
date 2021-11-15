@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>build</key>
-	<string>1157</string>
+	<string>1177</string>
 	<key>license</key>
 	<dict>
 		<key>email</key>
@@ -13,6 +13,25 @@
 	</dict>
 	<key>preferences</key>
 	<dict>
+		<key>Battery_MenubarMode</key>
+		<array>
+			<dict>
+				<key>key</key>
+				<string>2</string>
+				<key>uuid</key>
+				<string>73EEF6AB-83C0-4FC7-99ED-D807C105A831</string>
+			</dict>
+			<dict>
+				<key>key</key>
+				<string>0</string>
+				<key>uuid</key>
+				<string>DE9B192C-0781-407C-9D49-893D9B396579</string>
+			</dict>
+		</array>
+		<key>Battery_MenubarModeAirpods</key>
+		<array/>
+		<key>Battery_MenubarModeBluetooth</key>
+		<array/>
 		<key>CPU_AppFormat</key>
 		<integer>1</integer>
 		<key>CPU_MenubarGraphOverall</key>
@@ -141,7 +160,7 @@
 		<key>Memory_UFShowLabel</key>
 		<integer>0</integer>
 		<key>Menubar-DetectedColor</key>
-		<string>1.00 1.00 1.00 0.90</string>
+		<string>0.00 0.00 0.00 0.85</string>
 		<key>MenubarGraphSize</key>
 		<integer>0</integer>
 		<key>Migrated_6.0</key>
@@ -149,6 +168,8 @@
 		<key>Migrated_6.22</key>
 		<true/>
 		<key>Migrated_6.5</key>
+		<true/>
+		<key>Migrated_6.52</key>
 		<true/>
 		<key>Network_GraphDownload</key>
 		<string>1.00 1.00 1.00 1.00</string>
@@ -254,9 +275,11 @@
 		<dict>
 			<key>1157</key>
 			<string>1</string>
+			<key>1176</key>
+			<string>1</string>
 		</dict>
 	</dict>
 	<key>version</key>
-	<string>6.51</string>
+	<string>6.60</string>
 </dict>
 </plist>
