@@ -1,6 +1,6 @@
 ---
 
-session_name: main
+session_name: orm
 windows:
   - window_name: Reference
     start_directory: ~/Development/Reference
@@ -31,3 +31,4 @@ windows:
       - start_directory: .
         focus: true
         shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
+

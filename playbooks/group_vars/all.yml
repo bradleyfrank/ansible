@@ -54,7 +54,7 @@ krew_plugins:
   - doctor
   - get-all
   - neat
-  - tree
+  - score
 
 python:
   version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"

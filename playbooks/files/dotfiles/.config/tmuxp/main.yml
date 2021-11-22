@@ -18,3 +18,4 @@ windows:
       - start_directory: ../
   - window_name: home-server
     start_directory: ~/Development/Projects/home-server/main
+
