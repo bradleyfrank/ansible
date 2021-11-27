@@ -81,6 +81,11 @@ repos:
     baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
     gpgkey: https://rpm.releases.hashicorp.com/gpg
     system_type: [desktop, server]
+  - name: joplin
+    description: Joplin
+    baseurl: "https://copr-be.cloud.fedoraproject.org/results/taw/joplin/fedora-$releasever-$basearch/"
+    gpgkey: "https://copr-be.cloud.fedoraproject.org/results/taw/joplin/pubkey.gpg"
+    system_type: [desktop]
 
 os_packages:
   cli:
@@ -171,6 +176,7 @@ os_packages:
     - gedit-plugin-joinlines
     - gedit-plugin-multiedit
     - ghostwriter
+    - gnome-characters
     - gnome-connections
     - gnome-extensions-app
     - gnome-shell-extension-gpaste
@@ -179,6 +185,7 @@ os_packages:
     - google-chrome-stable
     - google-noto-emoji-color-fonts
     - gpaste*
+    - joplin
     - keepassxc
     - libgnome-keyring
     - libreoffice

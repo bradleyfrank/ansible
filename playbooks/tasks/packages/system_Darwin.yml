@@ -10,13 +10,13 @@
     name: "{{ os_packages['formulas'] }}"
   tags: [packages, homebrew_formulas]
 
-- name: Install Homebrew casks for all system types
+- name: Install Homebrew casks
   community.general.homebrew_cask:
     name: "{{ os_packages['casks'] }}"
     accept_external_apps: true
   tags: [packages, homebrew_casks]
 
-- name: Install Homebrew casks for bare metal
+- name: Install Homebrew casks for virtualization
   community.general.homebrew_cask:
     name: "{{ os_packages['virtualization'] }}"
     accept_external_apps: true

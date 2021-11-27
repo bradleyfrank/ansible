@@ -131,7 +131,7 @@ os_packages:
     - stow
     - strace
     - system-config-printer
-    - tidy
+    - tidy-html5
     - tlp
     - tmux
     - toilet
@@ -164,6 +164,7 @@ os_packages:
     - gedit-plugin-join-lines
     - gedit-plugin-multi-edit
     - ghostwriter
+    - gnome-characters
     - gnome-shell-extension-system-monitor
     - gnome-shell-extensions
     - gnome-shell-extensions-gpaste

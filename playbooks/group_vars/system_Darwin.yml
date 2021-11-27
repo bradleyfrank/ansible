@@ -118,7 +118,7 @@ os_packages:
     - ssh-copy-id
     - stern
     - stow
-    - tidy
+    - tidy-html5
     - tmux
     - tree
     - vault

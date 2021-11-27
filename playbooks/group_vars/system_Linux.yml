@@ -25,7 +25,6 @@ flatpaks:
     - name: com.plexamp.Plexamp
     - name: com.spotify.Client
     - name: io.github.seadve.Kooha
-    - name: net.cozic.joplin_desktop
     - name: org.gabmus.hydrapaper
     - name: org.gnome.Connections
     - name: org.gnome.Games
@@ -36,6 +35,8 @@ flatpaks:
     - name: us.zoom.Zoom
     - name: com.github.phase1geo.annotator
       remote: elementary
+    - name: re.sonny.Junction
+    - name: re.sonny.Tangram
 
 github_packages:
   krew:

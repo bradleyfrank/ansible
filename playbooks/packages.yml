@@ -1,0 +1,24 @@
+---
+
+- name: Install system packages
+  hosts: localhost
+  tasks:
+    - name: Stop packagekit
+      ansible.builtin.systemd:
+        name: packagekit
+        state: stopped
+      become: true
+      when: "'Linux' in ansible_system"
+      notify: Start packagekit
+      tags: always
+
+    - name: Include system-specific package installations
+      ansible.builtin.include_tasks: "tasks/packages/system_{{ ansible_system }}.yml"
+      tags: always
+
+  handlers:
+    - name: Start packagekit
+      ansible.builtin.systemd:
+        name: packagekit
+        state: started
+      become: true
