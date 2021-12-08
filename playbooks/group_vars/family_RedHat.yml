@@ -2,7 +2,7 @@
 
 repos:
   - name: better_fonts
-    description: Better Fonts
+    description: Copr repo for alternative fonts
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/fedora-$releasever-$basearch/"
     gpgkey: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/pubkey.gpg"
     system_type: [desktop]
@@ -82,7 +82,7 @@ repos:
     gpgkey: https://rpm.releases.hashicorp.com/gpg
     system_type: [desktop, server]
   - name: joplin
-    description: Joplin
+    description: Copr repo for Joplin
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/taw/joplin/fedora-$releasever-$basearch/"
     gpgkey: "https://copr-be.cloud.fedoraproject.org/results/taw/joplin/pubkey.gpg"
     system_type: [desktop]
@@ -159,52 +159,60 @@ os_packages:
     - zsh-autosuggestions
     - zsh-syntax-highlighting
   gui:
-    - 1password
-    - alacritty
-    - asciinema
-    - audacious
-    - calibre
-    - celluloid
-    - code
-    - flatpak
-    - fontconfig-enhanced-defaults
-#   - fontconfig-font-replacements  # until `archivo-black-fonts` are built
-                                    # https://copr.fedorainfracloud.org/coprs/dawid/better_fonts/monitor/
-    - gedit-plugin-codecomment
-    - gedit-plugin-colorpicker
-    - gedit-plugin-git
-    - gedit-plugin-joinlines
-    - gedit-plugin-multiedit
-    - ghostwriter
-    - gnome-characters
-    - gnome-connections
-    - gnome-extensions-app
-    - gnome-shell-extension-gpaste
-    - gnome-shell-extension-system-monitor-applet
-    - gnote
-    - google-chrome-stable
-    - google-noto-emoji-color-fonts
-    - gpaste*
-    - joplin
-    - keepassxc
-    - libgnome-keyring
-    - libreoffice
-    - makemkv
-    - mediawriter
-    - meld
-    - mpv
-    - nextcloud-client
-    - nextcloud-client-nautilus
-    - openrazer-meta
-    - picard
-    - remmina
-    - seahorse
-    - solaar
-    - system-config-printer
-    - timeshift
-    - torbrowser-launcher
-    - transmission-gtk
-    - vlc
+    common:
+      - 1password
+      - alacritty
+      - asciinema
+      - audacious
+      - calibre
+      - code
+      - flatpak
+      - ghostwriter
+      - google-chrome-stable
+      - google-noto-emoji-color-fonts
+      - joplin
+      - keepassxc
+      - libreoffice
+      - mediawriter
+      - nextcloud-client
+      - nextcloud-client-nautilus
+      - openrazer-meta
+      - picard
+      - remmina
+      - seahorse
+      - solaar
+      - system-config-printer
+      - timeshift
+      - torbrowser-launcher
+      - vlc
+    gnome:
+      - apostrophe
+      - celluloid
+      - cozy
+      - foliate
+      - gedit-plugin-codecomment
+      - gedit-plugin-colorpicker
+      - gedit-plugin-git
+      - gedit-plugin-joinlines
+      - gedit-plugin-multiedit
+      - gnome-characters
+      - gnome-connections
+      - gnome-extensions-app
+      - gnome-games
+      - gnome-shell-extension-gpaste
+      - gnome-shell-extension-system-monitor-applet
+      - gnote
+      - gpaste*
+      - gthumb
+      - hydrapaper
+      - libgnome-keyring
+      - marker
+      - meld
+      - mpv
+      - newsflash
+      - transmission-gtk
+    kde:
+      - transmission-qt
 
 dconf_distro:
   Fedora:

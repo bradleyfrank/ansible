@@ -21,7 +21,7 @@
     append: true
   become: true
   when: "'desktop' in system_type"
-  tags: user, groups
+  tags: [user, groups]
 
 - name: Configure Docker prereqs and pull containers
   block:
@@ -62,7 +62,9 @@
     group: root
     state: link
   become: true
-  when: "('desktop' in system_type and 'RedHat' in ansible_os_family)"
+  when:
+    - "'desktop' in system_type"
+    - "'RedHat' in ansible_os_family"
   tags: fonts
 
 - name: Import dconf settings
@@ -72,8 +74,35 @@
   loop: "{{ dconf_common | combine(dconf_distro[ansible_distribution]) | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
-  when: "'desktop' in system_type"
+  when:
+    - "'desktop' in system_type"
+    - "'gnome' in desktop_env"
   tags: dconf
+
+- name: Apply default KDE desktop settings
+  ansible.builtin.copy:
+    src: kde/plasma-org.kde.plasma.desktop-appletsrc
+    dest: "{{ ansible_user_dir }}/.config/"
+    mode: 0644
+    backup: true
+  when:
+    - "'desktop' in system_type"
+    - "'kde' in desktop_env"
+  tags: plasma
+
+- name: Import KDE settings
+  vars:
+    default_path: "{{ ansible_user_dir }}/.config"
+  ansible.builtin.blockinfile:
+    path: "{{ item['path'] | default(default_path) }}/{{ item['file'] }}"
+    block: "{{ item['block'] }}"
+  loop: "{{ kde_configs }}"
+  loop_control:
+    label: "{{ item['file'] }}"
+  when:
+    - "'desktop' in system_type"
+    - "'kde' in desktop_env"
+  tags: plasma
 
 - name: Generate host keys
   ansible.builtin.command:

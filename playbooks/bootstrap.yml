@@ -1,6 +1,6 @@
 ---
 
-- name: Prep system
+- name: Bootstrap localhost
   hosts: localhost
   tasks:
     - name: Add temporary passwordless sudo permissions
@@ -20,12 +20,10 @@
       become: true
       when: "'Linux' in ansible_system"
 
-- name: Import packages playbook
-  ansible.builtin.import_playbook: packages.yml
+    - name: Include system-specific package installations
+      ansible.builtin.include_tasks: "tasks/packages/system_{{ ansible_system }}.yml"
+      tags: always
 
-- name: Bootstrap localhost system
-  hosts: localhost
-  tasks:
     - name: Make bash default for root
       ansible.builtin.user:
         name: root

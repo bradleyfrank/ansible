@@ -1,5 +1,13 @@
 ---
 
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  notify: Start packagekit
+  tags: always
+
 - name: Include os-family-specific package installations
   ansible.builtin.include_tasks: "tasks/packages/family_{{ ansible_os_family }}.yml"
   tags: always

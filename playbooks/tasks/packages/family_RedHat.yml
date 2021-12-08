@@ -48,9 +48,8 @@
 
 - name: Install gui packages
   ansible.builtin.dnf:
-    name: "{{ os_packages['gui'] }}"
+    name: "{{ os_packages['gui']['common'] + os_packages['gui'][desktop_env] }}"
     state: present
     update_cache: true
   become: true
-  when: "'desktop' in system_type"
   tags: [packages, dnf]

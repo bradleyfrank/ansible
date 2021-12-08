@@ -12,10 +12,18 @@ all:
     ansible_connection: local
     email: {{ email }}
     hostname: {{ hostname }}
+    work_system: {{ work_system }}
     clone_personal_repos: {{ clone_personal_repos }}
     use_personal_ssh_config: {{ use_personal_ssh_config }}
-    work_system: {{ work_system }}
+    {%- if 'Linux' in ansible_system %}
+
+    desktop_env: {%- if 'gnome' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} gnome
+                 {%- elif 'kde' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} kde
+                 {%- endif %}
+    {%- endif %}
+    {%- if ssh_keys is defined %}
     ssh_keys:
-      {% for item in ansible_vault['results'] | default(omit) -%}
+      {%- for item in ssh_keys['results'] %}
         {{ item['stdout'] }}
-      {% endfor -%}
+      {%- endfor %}
+    {%- endif %}

@@ -50,7 +50,7 @@
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
       loop: "{{ ssh_key_types_to_generate | split(',') }}"
-      register: ansible_vault
+      register: ssh_keys
 
     - name: Create inventory
       ansible.builtin.template:

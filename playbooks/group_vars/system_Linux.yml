@@ -15,28 +15,17 @@ flatpaks:
     - name: elementary
       url: https://flatpak.elementary.io/repo.flatpakrepo
   packages:
-    - name: com.github.fabiocolacio.marker
-    - name: com.github.geigi.cozy
-    - name: com.github.johnfactotum.Foliate
+    - name: com.github.phase1geo.annotator
+      remote: elementary
     - name: com.github.junrrein.PDFSlicer
     - name: com.github.liferooter.textpieces
-    - name: com.github.PintaProject.Pinta
-    - name: com.gitlab.newsflash
     - name: com.plexamp.Plexamp
     - name: com.spotify.Client
     - name: io.github.seadve.Kooha
-    - name: org.gabmus.hydrapaper
-    - name: org.gnome.Connections
-    - name: org.gnome.Games
-    - name: org.gnome.gitlab.somas.Apostrophe
-    - name: org.gnome.gThumb
-    - name: org.gnome.TextEditor
     - name: org.signal.Signal
-    - name: us.zoom.Zoom
-    - name: com.github.phase1geo.annotator
-      remote: elementary
     - name: re.sonny.Junction
     - name: re.sonny.Tangram
+    - name: us.zoom.Zoom
 
 github_packages:
   krew:
@@ -63,13 +52,6 @@ github_packages:
     filename:
       x86: "k9s_Linux_x86_64.tar.gz"
       arm: "k9s_Linux_arm64.tar.gz"
-  # https://github.com/joehillen/sysz/issues/16
-  # sysz:
-  #   user: joehillen
-  #   repo: sysz
-  #   filename:
-  #     x86: ""
-  #     arm: ""
 
 k9s_config_path: "{{ ansible_user_dir }}/.config"
 nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
@@ -165,3 +147,13 @@ dconf_common:
   /org/gnome/terminal/legacy/profiles:/default: "'57ec47b4-dd6d-4fa3-9434-f65de25dd9ed'"
   /org/gnome/terminal/legacy/profiles:/list: "['57ec47b4-dd6d-4fa3-9434-f65de25dd9ed']"
   /org/gnome/terminal/legacy/theme-variant: "'system'"
+
+kde_configs:
+  - file: konsolerc
+    block: |
+      StatusBar=Disabled
+      ToolBarsMovable=Disabled
+  - file: kwinrc
+    block: |
+      [TabBox]
+      LayoutName=thumbnail_grid
