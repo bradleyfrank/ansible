@@ -20,7 +20,6 @@ flatpaks:
     - name: com.github.junrrein.PDFSlicer
     - name: com.github.liferooter.textpieces
     - name: com.plexamp.Plexamp
-    - name: com.spotify.Client
     - name: io.github.seadve.Kooha
     - name: org.signal.Signal
     - name: re.sonny.Junction
@@ -148,12 +147,36 @@ dconf_common:
   /org/gnome/terminal/legacy/profiles:/list: "['57ec47b4-dd6d-4fa3-9434-f65de25dd9ed']"
   /org/gnome/terminal/legacy/theme-variant: "'system'"
 
-kde_configs:
+kde_ini_settings:
   - file: konsolerc
-    block: |
-      StatusBar=Disabled
-      ToolBarsMovable=Disabled
+    section: Desktop Entry
+    option: DefaultProfile
+    value: Solarized_Light.profile
+  - file: konsolerc
+    section: MainWindow
+    option: StatusBar
+    value: Disabled
+  - file: konsolerc
+    section: MainWindow
+    option: ToolBarsMovable
+    value: Disabled
   - file: kwinrc
-    block: |
-      [TabBox]
-      LayoutName=thumbnail_grid
+    section: TabBox
+    option: LayoutName
+    value: thumbnail_grid
+  - file: kwinrc
+    section: Desktops
+    option: Id_1
+    value: 5286c351-2eec-48fe-8699-d7c627072c00
+  - file: kwinrc
+    section: Desktops
+    option: Id_2
+    value: d16ffc92-17a7-4bdd-b309-aca26a290c18
+  - file: kwinrc
+    section: Desktops
+    option: Number
+    value: 2
+  - file: kwinrc
+    section: Desktops
+    option: Rows
+    value: 1

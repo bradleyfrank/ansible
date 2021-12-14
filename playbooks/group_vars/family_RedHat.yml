@@ -1,11 +1,6 @@
 ---
 
 repos:
-  - name: better_fonts
-    description: Copr repo for alternative fonts
-    baseurl: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/fedora-$releasever-$basearch/"
-    gpgkey: "https://copr-be.cloud.fedoraproject.org/results/dawid/better_fonts/pubkey.gpg"
-    system_type: [desktop]
   - name: glow
     description: Copr repo for glow
     baseurl: https://download.copr.fedorainfracloud.org/results/keefle/glow/fedora-$releasever-$basearch/
@@ -42,11 +37,6 @@ repos:
     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
     gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     system_type: [desktop, server]
-  - name: google-cloud-sdk
-    description: Google Cloud SDK
-    baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
-    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-    system_type: [desktop, server]
   - name: hardware:razer
     description: packages for Razer hardware
     baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
@@ -76,11 +66,6 @@ repos:
     gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
     exclude: ['*nvidia*']
     system_type: [desktop, server]
-  - name: hashicorp
-    description: Hashicorp Stable
-    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
-    gpgkey: https://rpm.releases.hashicorp.com/gpg
-    system_type: [desktop, server]
   - name: joplin
     description: Copr repo for Joplin
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/taw/joplin/fedora-$releasever-$basearch/"
@@ -109,7 +94,6 @@ os_packages:
     - git-delta
     - glances
     - glow
-    - google-cloud-sdk
     - gron
     - htop
     - httpie
@@ -149,7 +133,6 @@ os_packages:
     - toilet
     - trash-cli
     - tree
-    - vault
     - vim
     - wget
     - xsel

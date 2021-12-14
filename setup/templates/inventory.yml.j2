@@ -23,7 +23,7 @@ all:
     {%- endif %}
     {%- if ssh_keys is defined %}
     ssh_keys:
-      {%- for item in ssh_keys['results'] %}
+      {% for item in ssh_keys['results'] %}
         {{ item['stdout'] }}
-      {%- endfor %}
+      {% endfor %}
     {%- endif %}

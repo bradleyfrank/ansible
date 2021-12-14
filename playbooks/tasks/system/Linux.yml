@@ -93,10 +93,13 @@
 - name: Import KDE settings
   vars:
     default_path: "{{ ansible_user_dir }}/.config"
-  ansible.builtin.blockinfile:
+  community.general.ini_file:
     path: "{{ item['path'] | default(default_path) }}/{{ item['file'] }}"
-    block: "{{ item['block'] }}"
-  loop: "{{ kde_configs }}"
+    section: "{{ item['section'] }}"
+    option: "{{ item['option'] }}"
+    value: "{{ item['value'] }}"
+    no_extra_spaces: true
+  loop: "{{ kde_ini_settings }}"
   loop_control:
     label: "{{ item['file'] }}"
   when:
