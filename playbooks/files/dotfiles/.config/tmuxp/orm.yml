@@ -31,4 +31,3 @@ windows:
       - start_directory: .
         focus: true
         shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
-
