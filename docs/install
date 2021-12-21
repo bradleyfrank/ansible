@@ -2,43 +2,26 @@
 
 set -o errexit
 
+TMPDIR="$HOME"  # Use TMPDIR for macOS compatibility.
+ANSIBLE_REPO_PATH="$(mktemp -d)"
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
-ANSIBLE_REPO_PATH="$(mktemp -d)"
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   brew install python3 git
-  PYTHON="/usr/local/bin/python3"
+  PATH="/usr/local/bin:$(/usr/local/bin/python3 -m site --user-base)/bin:$PATH"
+  export PATH
 }
 
 bootstrap_linux() {
-  if env | grep -q XDG_SESSION_DESKTOP; then
-    dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
-    dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
-  fi
-
+  sudo systemd-inhibit --what idle:sleep --why "Bootstrapping system" sleep infinity &
   sudo systemctl stop packagekit
-  # shellcheck disable=SC1091
-  . /etc/os-release
-
-  case "$NAME" in
-    Fedora*)
-      sudo dnf clean all
-      sudo dnf makecache
-      sudo dnf install -y python3 python3-pip python3-devel python-wheel git redhat-lsb-core
-      ;;
-    Ubuntu|Pop)
-      sudo apt-get clean
-      sudo apt-get update
-      sudo apt-get install -y python3 python3-pip git lsb-release
-      ;;
-    *) exit 1 ;;
-  esac
-
-  PYTHON="/usr/bin/python3"
+  dnf clean all
+  dnf makecache
+  dnf install -y python3 python3-pip python3-devel python-wheel git redhat-lsb-core
 }
 
 while getopts ':dg:' opt; do
@@ -61,8 +44,7 @@ git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
 
-"$PYTHON" -m pip install --user virtualenv
-PATH="$PATH:$("$PYTHON" -m site --user-base)/bin"; export PATH
+python3 -m pip install --user virtualenv
 virtualenv venv
 #shellcheck disable=SC1091
 . venv/bin/activate
@@ -76,5 +58,3 @@ case $ANSIBLE_REPO_PLAYBOOK in
   bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
   dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
 esac
-
-rm -rf "$ANSIBLE_REPO_PATH"

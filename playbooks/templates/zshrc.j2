@@ -1,6 +1,6 @@
 PATH="$HOME/.local/bin"
 PATH="$PATH:$HOME/.krew/bin"
-{% if 'Darwin' in ansible_system %}
+{% if 'MacOSX' in ansible_distribution %}
 PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/findutils/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/gawk/libexec/gnubin"
@@ -10,14 +10,14 @@ PATH="$PATH:/usr/local/opt/gnu-which/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/grep/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/gsed/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/libtool/libexec/gnubin"
-PATH="$PATH:{{ python_user_path }}"
+PATH="$PATH:{{ python['user_path'][ansible_distribution] }}"
 PATH="$PATH:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 PATH="$PATH:/opt/X11/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 MANPATH="$HOME/.local/share/man"
-{% if 'Darwin' in ansible_system %}
+{% if 'MacOSX' in ansible_distribution %}
 MANPATH="$MANPATH:/usr/local/opt/coreutils/libexec/gnuman"
 MANPATH="$MANPATH:/usr/local/opt/findutils/libexec/gnuman"
 MANPATH="$MANPATH:/usr/local/opt/gawk/libexec/gnuman"
@@ -47,7 +47,7 @@ export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
 export PRE_COMMIT_COLOR=never           # pre-commit colors incompatible with solarized-light
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
-{% if 'Darwin' in ansible_system %}
+{% if 'MacOSX' in ansible_distribution %}
 export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
 export CLICOLOR=1
 export HOMEBREW_PREFIX=/usr/local
@@ -58,10 +58,10 @@ export CLOUDSDK_PYTHON=/usr/bin/python3
 {% endif %}
 
 
-{% if 'Darwin' in ansible_system %}
-eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ keychain_keys | join(' ') }})"
-{% elif 'Linux' in ansible_system %}
-eval "$(keychain --eval --ignore-missing --quiet {{ keychain_keys | join(' ') }})"
+{% if 'MacOSX' in ansible_distribution %}
+eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_keys | join(' ') }})"
+{% elif 'Fedora' in ansible_distribution %}
+eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
 
@@ -78,77 +78,59 @@ alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
 alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
 
-alias l='lsexa'
-alias la='lsexa --all'
-alias lc='lsexala --grid'
-alias ld='lsexala --only-dirs'
-alias lg='lsexala --git'
-alias lG='lsexala --group'
-alias ll='lsexala'
-alias lp='lsexala --no-permissions --octal-permissions'
+alias l='exa --color always --classify'
+alias la='exa --color always --classify --all'
+alias lc='exa --color always --classify --long --all --grid'
+alias ld='exa --color always --classify --long --all --only-dirs'
+alias lg='exa --color always --classify --long --all --git'
+alias lG='exa --color always --classify --long --all --group'
+alias ll='exa --color always --classify --long --all'
+alias lp='exa --color always --classify --long --all --no-permissions --octal-permissions'
+alias lS='exa --color always --classify --long --all --group-directories-first --sort size'
 alias ls='ls --color --classify --human-readable'
-alias lS='lsexala --group-directories-first --sort size'
-alias lsexa='exa --color always --classify'
-alias lsexala='lsexa --long --all'
-alias lt='lsexala --sort time'
+alias lt='exa --color always --classify --long --all --sort time'
 
-alias archivebox='docker run -v $PWD:/data -it archivebox/archivebox'
+alias all='which -a'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
-alias df='df -h'
 alias e='extract'
 alias glances='glances --theme-white'
 alias grep='grep -I'
 alias isodate='date --iso-8601=seconds'
-alias krew='kubectl krew'
 alias mat='glow -s light'
 alias mkpasswd='pwgen 12 5 -ABcny1'
 alias mp='multipass'
 alias pbb='code ~/Development/Reference/pure-bash-bible/README.md'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
-alias scp='rsync'
+alias scp='rsync -va'
 alias show='whence -f'
 alias sync='rsync -a --info=progress2'
 alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
-{% if 'Darwin' in ansible_system %}
-alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
-alias osupdate='sudo softwareupdate -ia'
-alias readme='macdown README*'
-{% elif 'Linux' in ansible_system %}
-alias free='free -g'
+{% if 'Fedora' in ansible_distribution %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
 alias lsports='lsof -i -P -n'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
-{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) -%}
-alias bat='batcat'
-alias hadolint='docker run --rm -i ghcr.io/hadolint/hadolint <'
-alias osupdate='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-{% elif 'Fedora' in ansible_distribution -%}
-alias hadolint='podman run --rm -i ghcr.io/hadolint/hadolint <'
-alias osupdate='sudo dnf clean all && sudo dnf update -y'
-{% endif -%}
 
 
 blackdiff() { black --line-length 100 --diff "$@"; }
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
-dtags() { wget -q https://registry.hub.docker.com/v1/repositories/"$1"/tags -O - | jq -r '.[].name'; }
+dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 diceware() { shuf -n "${1:-5}" ~/.local/share/dict/words | xargs | tr " " "${2:--}"; }
 decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
 encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-{% if 'Linux' in ansible_system %}
+{% if 'Fedora' in ansible_distribution and 'gnome' in desktop_env %}
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
 {% endif %}
 
 
-{% if not use_starship_prompt | default(false) -%}
 precmd() {
   local rc=$? eol=$'\n' _gitdir _kcxt _repo _prompt_color _prompt_line1 _prompt_line2
   local _git_icon=$'\uf407' _py_icon=$'\uf81f' _k8s_icon=$'\ufd31'
@@ -194,8 +176,6 @@ zstyle ':vcs_info:git*' formats '%F{64}%b%f %F{136}%u%c%m%f'
 zstyle ':vcs_info:git*' stagedstr '+'
 zstyle ':vcs_info:git*' unstagedstr '*'
 zstyle ':vcs_info:git*+set-message:*' hooks extended-git
-{% endif -%}
-
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
@@ -248,20 +228,15 @@ bindkey '^[[6~' history-beginning-search-forward   # Page down key
 bindkey '^X^E' edit-command-line
 
 
-{% if 'Darwin' in ansible_system -%}
+{% if 'MacOSX' in ansible_distribution -%}
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-{% elif 'Linux' in ansible_system -%}
+{% elif 'Fedora' in ansible_distribution -%}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-{% endif -%}
-{% if ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) -%}
-source /usr/share/doc/fzf/examples/completion.zsh
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-{% elif 'Fedora' in ansible_distribution -%}
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif -%}
 {% for file in zsh_source_files -%}
@@ -276,6 +251,3 @@ complete -o nospace -C /usr/local/bin/vault vault
 {% endif %}
 
 complete -F __start_kubectl k
-{% if use_starship_prompt | default(false) %}
-eval "$(starship init zsh)"
-{% endif -%}

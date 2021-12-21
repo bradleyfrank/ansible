@@ -1,29 +1,29 @@
 ---
 
-system_{{ ansible_system }}:
+local:
   hosts:
     localhost
-family_{{ ansible_os_family }}:
-  hosts:
-    localhost
-
-all:
   vars:
     ansible_connection: local
     email: {{ email }}
     hostname: {{ hostname }}
     work_system: {{ work_system }}
     clone_personal_repos: {{ clone_personal_repos }}
-    use_personal_ssh_config: {{ use_personal_ssh_config }}
-    {%- if 'Linux' in ansible_system %}
+    manage_ssh_config: {{ manage_ssh_config }}
+    upload_ssh_key_github: {{ upload_ssh_key_github }}
+    {%- if 'Fedora' in ansible_distribution %}
 
     desktop_env: {%- if 'gnome' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} gnome
                  {%- elif 'kde' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} kde
                  {%- endif %}
+    {%- elif 'MacOSX' in ansible_distribution %}
+
+    desktop_env: macos
     {%- endif %}
-    {%- if ssh_keys is defined %}
+    {%- if ssh_key_types_to_generate != 'None' %}
+
     ssh_keys:
-      {% for item in ssh_keys['results'] %}
-        {{ item['stdout'] }}
-      {% endfor %}
+  {% for item in ssh_keys['results'] %}
+  {{ item['stdout'] | indent(width=2, first=True) }}
+  {% endfor %}
     {%- endif %}

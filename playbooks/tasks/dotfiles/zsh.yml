@@ -1,0 +1,49 @@
+---
+
+- name: Generate kubectl completions
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.shell: "kubectl completion zsh > {{ zsh['completions'] }}/kubectl"
+  changed_when: false
+  tags: kubectl
+
+- name: Generate stern completions
+  vars:
+    stern_bin: "{{ ansible_user_dir }}/.local/bin/stern"
+  ansible.builtin.shell: "{{ stern_bin }} --completion=zsh > {{ zsh['completions'] }}/stern"
+  changed_when: false
+  tags: stern
+
+- name: Generate k9s completions
+  vars:
+    k9s_bin: "{{ ansible_user_dir }}/.local/bin/k9s"
+  ansible.builtin.shell: "{{ k9s_bin }} completion zsh > {{ zsh['completions'] }}/k9s"
+  changed_when: false
+  tags: k9s
+
+- name: Generate 1Password-cli completions
+  ansible.builtin.shell: "op completion zsh > {{ zsh['completions'] }}/op"
+  changed_when: false
+  when: "'MacOSX' in ansible_distribution"  # until 1password-cli is added to a repo
+  tags: 1password
+
+- name: Find all zsh completions and sources  # run last to ensure files exist
+  ansible.builtin.find:
+    file_type: file
+    paths:
+      - "{{ zsh['completions'] }}"
+      - "{{ zsh['functions'] }}"
+  register: find_zsh_source_dirs
+  tags: always
+
+- name: Apply zshrc template
+  vars:
+    zsh_source_files: "{{ find_zsh_source_dirs['files'] | default([]) }}"
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    mode: 0644
+    backup: true
+  register: _backup_zshrc
+  notify: Process backups
+  tags: always

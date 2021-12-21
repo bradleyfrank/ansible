@@ -1,0 +1,42 @@
+---
+
+git_reference_repos:
+  - https_url: https://github.com/dylanaraps/pure-bash-bible.git
+    name: pure-bash-bible
+  - https_url: https://github.com/jlevy/the-art-of-command-line.git
+    name: the-art-of-command-line
+  - https_url: https://github.com/majamin/oneliners.txt.git
+    name: oneliners
+  - https_url: https://github.com/munki/macadmin-scripts.git
+    name: macadmin-scripts
+    version: main
+
+krew_plugins:
+  - cert-manager
+  - config-cleanup
+  - deprecations
+  - doctor
+  - get-all
+  - neat
+  - score
+  - stern
+
+pypi_packages:
+  - archivebox
+  - beets
+  - click  # https://github.com/tmux-python/tmuxp/pull/679
+  - tmuxp
+  - virtualenv
+  - yq
+  - yt-dlp
+
+vim_extensions:
+  - name: vim-airline
+    repo: https://github.com/vim-airline/vim-airline.git
+    version: v0.11
+  - name: vim-airline-themes
+    repo: https://github.com/vim-airline/vim-airline-themes.git
+  - name: vim-gitgutter
+    repo: https://github.com/airblade/vim-gitgutter.git
+  - name: nerdtree
+    repo: https://github.com/preservim/nerdtree.git

@@ -4,12 +4,6 @@
   ansible.builtin.command: tmux -V
   register: tmux_version
   changed_when: false
-
-- name: Check for battery
-  ansible.builtin.stat:
-    path: /sys/class/power_supply/BAT0
-  register: battery
-  when: "'Linux' in ansible_system"
   tags: [tmux, core]
 
 - name: Install tmux config
@@ -22,6 +16,13 @@
     backup: true
   register: _backup_tmux_conf
   notify: Process backups
+  tags: [tmux, core]
+
+- name: Check for battery
+  ansible.builtin.stat:
+    path: /sys/class/power_supply/BAT0
+  register: battery
+  when: "'Fedora' in ansible_distribution"
   tags: [tmux, core]
 
 - name: Install tmux script

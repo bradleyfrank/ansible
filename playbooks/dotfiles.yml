@@ -7,7 +7,7 @@
     - name: Process backups
       vars:
         backup_var: "{{ lookup('vars', item) }}"
-      ansible.builtin.include_tasks: helpers/backups.yml
+      ansible.builtin.include_tasks: handlers/backups.yml
       when: backup_var['backup_file'] is defined
       loop: "{{ query('varnames', '^_backup_.+$') }}"
       loop_control:
@@ -59,9 +59,7 @@
       tags: core
 
     - name: Install themes for bat
-      vars:
-        bat: "{{ 'batcat' if 'Debian' in ansible_os_family else 'bat' }}"
-      ansible.builtin.command: "{{ bat }} cache --build"
+      ansible.builtin.command: "bat cache --build"
       changed_when: false
       tags: core
 
@@ -80,7 +78,7 @@
         path: "{{ backups_dir }}"
         state: directory
         mode: 0755
-      tags: [always, backups]
+      tags: always
 
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
@@ -107,7 +105,7 @@
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
-        path: "{{ font_dir }}"
+        path: "{{ font_dir[ansible_distribution] }}"
         state: directory
         mode: 0700
       tags: fonts
@@ -115,7 +113,7 @@
     - name: Copy fonts
       ansible.builtin.copy:
         src: fonts/
-        dest: "{{ font_dir }}/"
+        dest: "{{ font_dir[ansible_distribution] }}/"
         mode: 0644
       when: "'desktop' in system_type"
       tags: fonts
@@ -127,7 +125,7 @@
     - name: Install Python packages
       ansible.builtin.pip:
         executable: "{{ pip_executable }}"
-        name: "{{ python['packages'] }}"
+        name: "{{ pypi_packages }}"
         extra_args: --user
       tags: python
 
@@ -141,14 +139,14 @@
 
     - name: Import BBEdit tasks
       ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
-      when: "'Darwin' in ansible_system"
+      when: "'MacOSX' in ansible_distribution"
       tags: bbedit
 
     - name: Update macOS app icons
       vars:
         app: "/Applications/{{ item['path'] | splitext | first }}.app"
       ansible.builtin.include_tasks: tasks/dotfiles/mac_icons.yml
-      when: "'Darwin' in ansible_system"
+      when: "'MacOSX' in ansible_distribution"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:
         label: "{{ app }}"
@@ -158,35 +156,6 @@
 #  zsh and completions
 # ----------------------------------------------------------------------------
 
-    - name: Install Starship
-      vars:
-        name: starship
-      ansible.builtin.import_tasks: helpers/github_release.yml
-      tags: [zsh, starship]
-
-    - name: Generate 1Password-cli completions
-      ansible.builtin.shell: "op completion zsh > {{ zsh['completions'] }}/op"
-      changed_when: false
-      when: "'Darwin' in ansible_system"  # until 1password-cli is added to a repo
-      tags: [zsh, 1password]
-
-    - name: Find all zsh completions and sources  # run last to ensure files exist
-      ansible.builtin.find:
-        file_type: file
-        paths:
-          - "{{ zsh['completions'] }}"
-          - "{{ zsh['functions'] }}"
-      register: find_zsh_source_dirs
-      tags: [zsh, core]
-
-    - name: Apply zshrc template
-      vars:
-        zsh_source_files: "{{ find_zsh_source_dirs['files'] }}"
-      ansible.builtin.template:
-        src: zshrc.j2
-        dest: "{{ ansible_user_dir }}/.zshrc"
-        mode: 0644
-        backup: true
-      register: _backup_zshrc
-      notify: Process backups
-      tags: [zsh, core]
+    - name: Import Zsh tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
+      tags: zsh

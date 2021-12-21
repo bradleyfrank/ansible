@@ -1,61 +1,89 @@
 ---
 
-- name: Cleanup old settings and files
+- name: Remove files, folder, and packages
   hosts: localhost
 
   vars:
-    files:
+    dotfiles:
       - .ansible_vault_password
-      - .dotfiles
       - .config/p10k.zsh
+      - .dotfiles
       - .k9s
       - .local/bin/diff-so-fancy
-      - .local/bin/lib
       - .local/bin/gcp-kubeconfigs
       - .local/bin/gcpkonfig
+      - .local/bin/lib
       - .local/bin/orm
-      - .local/share/fubectl
-      - .local/share/kubectl
-      - .local/share/icons
-      - .local/share/zshrc
-      - .local/share/zsh-completion
       - .local/opt/bbdm
+      - .local/share/fubectl
+      - .local/share/icons
+      - .local/share/kubectl
+      - .local/share/zsh-completion
+      - .local/share/zshrc
 
-    brew_packages:
-      - diff-so-fancy
-      - ffsend
-      - hstr
-      - tmux-mem-cpu-load
-      - yq
+    homebrew:
+      formulas:
+        - diff-so-fancy
+        - ffsend
+        - hstr
+        - tmux-mem-cpu-load
+        - yq
+        - youtube-dl
+      casks:
+        - anylist
+        - firefox-developer-edition
+        - firefox-nightly
+        - qownnotes
+        - openshot-video-editor
+        - parallels
+        - raindropio
+        - starship
+        - stay
+        - sublime-text
+        - typora
+        - virtualbox
+        - vivaldi
+        - xquartz
 
-    brew_casks:
-      - anylist
-      - firefox-nightly
-      - qownnotes
-      - openshot-video-editor
-      - raindropio
-      - starship
-      - stay
-      - sublime-text
-      - typora
-      - virtualbox
-      - vivaldi
+    flatpaks:
+      - name: com.github.fabiocolacio.marker
+      - name: com.github.geigi.cozy
+      - name: com.github.johnfactotum.Foliate
+      - name: com.github.PintaProject.Pinta
+      - name: com.gitlab.newsflash
+      - name: com.spotify.Client
+      - name: net.cozic.joplin_desktop
+      - name: org.gabmus.hydrapaper
+      - name: org.gnome.Connections
+      - name: org.gnome.Games
+      - name: org.gnome.gitlab.somas.Apostrophe
+      - name: org.gnome.gThumb
+      - name: org.gnome.TextEditor
 
   tasks:
     - name: Remove files
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/{{ item }}"
         state: absent
-      loop: "{{ files }}"
+      loop: "{{ dotfiles }}"
 
-    - name: Uninstall Homebrew packages
+    - name: Uninstall Homebrew formulas
       community.general.homebrew:
-        name: "{{ brew_packages }}"
+        name: "{{ homebrew['formulas'] }}"
         state: absent
-      when: ansible_system == 'Darwin'
+      when: "'MacOSX' in ansible_distribution"
 
     - name: Uninstall Homebrew casks
       community.general.homebrew_cask:
-        name: "{{ brew_casks }}"
+        name: "{{ homebrew['casks'] }}"
         state: absent
-      when: ansible_system == 'Darwin'
+      when: "'MacOSX' in ansible_distribution"
+
+    - name: Remove flatpak packages
+      community.general.flatpak:
+        name: "{{ item['name'] }}"
+        state: absent
+        method: user
+        remote: "{{ item['remote'] | default('flathub') }}"
+      loop: "{{ flatpaks }}"
+      when: "'Fedora' in ansible_distribution"

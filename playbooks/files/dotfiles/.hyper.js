@@ -1,8 +1,8 @@
 module.exports = {
   config: {
     updateChannel: "stable",
-    fontSize: "{{ hyper['fontSize'] }}",
-    fontFamily: "{{ hyper['fontFamily'] }}",
+    fontSize: "14",
+    fontFamily: "SauceCodeProNerdFontComplete-Regular",
     fontWeight: "normal",
     fontWeightBold: "bold",
     lineHeight: 1,
@@ -19,7 +19,7 @@ module.exports = {
     termCSS: "",
     showHamburgerMenu: false,
     showWindowControls: false,
-    padding: "{{ hyper['padding'] }}",
+    padding: "12px 14px",
     colors: {
       black: "#073642",
       red: "#dc322f",

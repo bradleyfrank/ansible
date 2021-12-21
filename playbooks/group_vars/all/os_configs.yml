@@ -1,190 +1,5 @@
 ---
 
-alacritty:
-  decorations: buttonless
-  size: 14
-  fontFamily: SauceCodePro Nerd Font
-
-bash_shell: /usr/local/bin/bash
-font_dir: "{{ ansible_user_dir }}/Library/Fonts"
-
-github_packages:
-  krew:
-    user: kubernetes-sigs
-    repo: krew
-    filename:
-      x86: "krew-darwin_amd64.tar.gz"
-      arm: "krew-darwin_arm64.tar.gz"
-  starship:
-    user: starship
-    repo: starship
-    filename:
-      x86: "starship-x86_64-apple-darwin.tar.gz"
-      arm: "starship-aarch64-apple-darwin.tar.gz"
-  stern:
-    user: stern
-    repo: stern
-    filename:
-      x86: "stern_[version]_darwin_amd64.tar.gz"
-      arm: "stern_[version]_darwin_arm64.tar.gz"
-  k9s:
-    user: derailed
-    repo: k9s
-    filename:
-      x86: "k9s_Darwin_x86_64.tar.gz"
-      arm: "k9s_Darwin_arm64.tar.gz"
-
-hyper:
-  fontFamily: SauceCodeProNerdFontComplete-Regular
-  fontSize: 14
-  padding: 12px 14px
-
-k9s_config_path: "{{ ansible_user_dir }}/Library/Preferences"
-nopasswd_sudo: "{{ sudoers_d }}/bbdm_bootstrap"
-python_user_base: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}"
-python_user_path: "{{ python_user_base }}/bin"
-python_user_site: "{{ python_user_base }}/lib/python/site-packages"
-pip_executable: "{{ python_user_path }}/pip"
-root_home: /var/root
-sudoers_d: /private/etc/sudoers.d
-system_type: desktop
-
-os_packages:
-  taps:
-    - homebrew/bundle
-    - homebrew/cask
-    - homebrew/cask-drivers
-    - homebrew/cask-fonts
-    - homebrew/core
-  formulas:
-    - asciinema
-    - awscli
-    - bash
-    - bash-completion@2
-    - bat
-    - bcal
-    - cabextract
-    - coreutils
-    - dict
-    - eye-d3
-    - exa
-    - fdupes
-    - ffmpeg
-    - fileicon
-    - findutils
-    - flac
-    - fzf
-    - gawk
-    - gh
-    - ghostscript
-    - git-delta
-    - glances
-    - glow
-    - gnu-sed
-    - gnu-tar
-    - gnu-which
-    - grep
-    - gron
-    - gzip
-    - helm
-    - httpie
-    - iftop
-    - jq
-    - keychain
-    - kpcli
-    - kubectl
-    - kube-linter
-    - lame
-    - less
-    - markdown
-    - mas
-    - mtr
-    - ncdu
-    - neofetch
-    - nmap
-    - p7zip
-    - par
-    - prettyping
-    - pwgen
-    - qpdf
-    - rename
-    - ripgrep
-    - rpm2cpio
-    - rsync
-    - shellcheck
-    - shellharden
-    - shfmt
-    - slides
-    - ssh-copy-id
-    - stern
-    - stow
-    - tidy-html5
-    - tmux
-    - tree
-    - vault
-    - vim
-    - watch
-    - wget
-    - yamllint
-    - youtube-dl
-    - zsh
-    - zsh-autosuggestions
-    - zsh-syntax-highlighting
-  casks:
-    - 1password
-    - 1password-cli
-    - alacritty
-    - appcleaner
-    - balenaetcher
-    - bbedit
-    - calibre
-    - chromium
-    - dozer
-    - expressions
-    - fantastical
-    - firefox
-    - firefox-developer-edition
-    - google-cloud-sdk
-    - iina
-    - istat-menus
-    - jumpcut
-    - keepassxc
-    - keepingyouawake
-    - kindle
-    - logitech-options
-    - macdown
-    - menumeters
-    - microsoft-auto-update
-    - microsoft-office
-    - musicbrainz-picard
-    - plexamp
-    - rectangle
-    - signal
-    - sony-ps-remote-play
-    - spotify
-    - transmission
-    - transmit
-    - visual-studio-code
-    - vivaldi
-    - vlc
-    - xquartz
-    - zoom
-  virtualization:
-    - multipass
-    - utm
-    - vmware-fusion
-  mas:
-    - 407963104   # Pixelmator
-    - 425424353   # Unarchiver
-    - 568494494   # Pocket
-    - 924726344   # Deliveries
-    - 1179623856  # Pastebot
-    - 1303222628  # Paprika Recipe Manager 3
-    - 1320666476  # Wipr
-    - 1516894961  # Codye
-    - 1529448980  # Reeder
-    - 1555925018  # Genki Arcade
-
 defaults:
   - domain: com.apple.TimeMachine
     key: DoNotOfferNewDisksForBackup
@@ -490,3 +305,136 @@ defaults:
     name: Expand print panel 2 by default
     type: bool
     value: 'true'
+
+dconf:
+  /org/gnome/calendar/follow-night-light: "false"
+  /org/gnome/desktop/datetime/automatic-timezone: "true"
+  /org/gnome/desktop/input-sources/current: "uint32 0"
+  /org/gnome/desktop/input-sources/sources: "[('xkb', 'us')]"
+  /org/gnome/desktop/input-sources/xkb-options: "['ctrl:nocaps']"
+  /org/gnome/desktop/interface/clock-format: "'12h'"
+  /org/gnome/desktop/interface/clock-show-date: "true"
+  /org/gnome/desktop/interface/clock-show-seconds: "false"
+  /org/gnome/desktop/interface/clock-show-weekday: "true"
+  /org/gnome/desktop/interface/enable-animations: "false"
+  /org/gnome/desktop/interface/show-battery-percentage: "false"
+  /org/gnome/desktop/media-handling/autorun-never: "true"
+  /org/gnome/desktop/media-handling/autorun-x-content-ignore: "[\
+    'x-content/audio-cdda',
+    'x-content/video-dvd',
+    'x-content/audio-player',
+    'x-content/image-dcf',
+    'x-content/unix-software']"
+  /org/gnome/desktop/peripherals/keyboard/numlock-state: "true"
+  /org/gnome/desktop/peripherals/mouse/natural-scroll: "false"
+  /org/gnome/desktop/peripherals/touchpad/tap-to-click: "true"
+  /org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled: "true"
+  /org/gnome/desktop/privacy/remove-old-temp-files: "true"
+  /org/gnome/desktop/privacy/remove-old-trash-files: "true"
+  /org/gnome/gedit/preferences/editor/auto-indent: "true"
+  /org/gnome/gedit/preferences/editor/auto-save: "true"
+  /org/gnome/gedit/preferences/editor/background-pattern: "'none'"
+  /org/gnome/gedit/preferences/editor/bracket-matching: "true"
+  /org/gnome/gedit/preferences/editor/display-line-numbers: "true"
+  /org/gnome/gedit/preferences/editor/display-overview-map: "true"
+  /org/gnome/gedit/preferences/editor/display-right-margin: "true"
+  /org/gnome/gedit/preferences/editor/editor-font: "'SauceCodePro Nerd Font 11'"
+  /org/gnome/gedit/preferences/editor/highlight-current-line: "true"
+  /org/gnome/gedit/preferences/editor/insert-spaces: "true"
+  /org/gnome/gedit/preferences/editor/right-margin-position: "uint32 100"
+  /org/gnome/gedit/preferences/editor/scheme: "'solarized-light'"
+  /org/gnome/gedit/preferences/editor/tabs-size: "uint32 2"
+  /org/gnome/gedit/preferences/editor/use-default-font: "false"
+  /org/gnome/gedit/preferences/editor/wrap-last-split-mode: "'word'"
+  /org/gnome/gedit/preferences/ui/show-tabs-mode: "'auto'"
+  /org/gnome/gedit/preferences/ui/side-panel-visible: "false"
+  /org/gnome/nautilus/list-view/default-visible-columns: "['name', 'size', 'type', 'date_modified', 'starred']"
+  /org/gnome/nautilus/list-view/default-zoom-level: "'small'"
+  /org/gnome/nautilus/list-view/use-tree-view: "true"
+  /org/gnome/nautilus/preferences/default-folder-viewer: "'list-view'"
+  /org/gnome/nautilus/preferences/search-filter-time-type: "'last_modified'"
+  /org/gnome/nautilus/preferences/show-create-link: "true"
+  /org/gnome/nautilus/preferences/show-delete-permanently: "true"
+  /org/gnome/settings-daemon/plugins/color/night-light-enabled: "true"
+  /org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic: "true"
+  /org/gnome/shell/disable-user-extensions: "false"
+  /org/gnome/shell/extensions/system-monitor/battery-display: "false"
+  /org/gnome/shell/extensions/system-monitor/cpu-graph-width: "25"
+  /org/gnome/shell/extensions/system-monitor/cpu-show-text: "false"
+  /org/gnome/shell/extensions/system-monitor/cpu-style: "'both'"
+  /org/gnome/shell/extensions/system-monitor/icon-display: "false"
+  /org/gnome/shell/extensions/system-monitor/memory-graph-width: "25"
+  /org/gnome/shell/extensions/system-monitor/memory-show-text: "false"
+  /org/gnome/shell/extensions/system-monitor/memory-style: "'both'"
+  /org/gnome/shell/extensions/system-monitor/net-display: "false"
+  /org/gnome/shell/extensions/system-monitor/swap-display: "true"
+  /org/gnome/shell/extensions/system-monitor/swap-graph-width: "25"
+  /org/gnome/shell/extensions/system-monitor/swap-show-text: "false"
+  /org/gnome/shell/extensions/system-monitor/swap-style: "'both'"
+  /org/gnome/system/location/enabled: "true"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/audible-bell: "false"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/background-color: "'rgb(253,246,227)'"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/bold-is-bright: "false"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/cursor-colors-set: "false"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/font: "'SauceCodePro Nerd Font 12'"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/foreground-color: "'rgb(101,123,131)'"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/highlight-colors-set: "false"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/palette: "\
+    ['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)',
+    'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)',
+    'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)',
+    'rgb(147,161,161)', 'rgb(253,246,227)']"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/scroll-on-output: "true"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/scrollback-unlimited: "true"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/use-system-font: "false"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/use-theme-colors: "false"
+  /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/visible-name: "'Brads-Profile'"
+  /org/gnome/terminal/legacy/profiles:/default: "'57ec47b4-dd6d-4fa3-9434-f65de25dd9ed'"
+  /org/gnome/terminal/legacy/profiles:/list: "['57ec47b4-dd6d-4fa3-9434-f65de25dd9ed']"
+  /org/gnome/terminal/legacy/theme-variant: "'system'"
+  /org/gnome/shell/enabled-extensions: "[\
+    'GPaste@gnome-shell-extensions.gnome.org',
+    'background-logo@fedorahosted.org',
+    'system-monitor@paradoxxx.zero.gmail.com']"
+  /org/gnome/shell/favorite-apps: "[\
+    'org.gnome.Terminal.desktop',
+    'firefox.desktop',
+    'org.gnome.Nautilus.desktop',
+    'code.desktop',
+    '1password.desktop',
+    'org.gnome.gedit.desktop',
+    'signal-desktop.desktop']"
+
+kde_ini_settings:
+  - file: konsolerc
+    section: Desktop Entry
+    option: DefaultProfile
+    value: Solarized_Light.profile
+  - file: konsolerc
+    section: MainWindow
+    option: StatusBar
+    value: Disabled
+  - file: konsolerc
+    section: MainWindow
+    option: ToolBarsMovable
+    value: Disabled
+  - file: kwinrc
+    section: TabBox
+    option: LayoutName
+    value: thumbnail_grid
+  - file: kwinrc
+    section: Desktops
+    option: Id_1
+    value: 5286c351-2eec-48fe-8699-d7c627072c00
+  - file: kwinrc
+    section: Desktops
+    option: Id_2
+    value: d16ffc92-17a7-4bdd-b309-aca26a290c18
+  - file: kwinrc
+    section: Desktops
+    option: Number
+    value: 2
+  - file: kwinrc
+    section: Desktops
+    option: Rows
+    value: 1

@@ -1,5 +1,12 @@
 ---
 
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  tags: always
+
 - name: Install gpg keys
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
@@ -30,17 +37,18 @@
   when: system_type in item['system_type']
   tags: repos
 
-- name: Upgrade all packages
+- name: Update all packages
   ansible.builtin.dnf:
     name: "*"
     state: latest
     update_cache: true
     install_weak_deps: true
   become: true
+  tags: update
 
 - name: Install cli packages
   ansible.builtin.dnf:
-    name: "{{ os_packages['cli'] }}"
+    name: "{{ rpms['cli'] }}"
     state: present
     update_cache: true
   become: true
@@ -48,8 +56,37 @@
 
 - name: Install gui packages
   ansible.builtin.dnf:
-    name: "{{ os_packages['gui']['common'] + os_packages['gui'][desktop_env] }}"
+    name: "{{ rpms['gui']['common'] + rpms['gui'][desktop_env] }}"
     state: present
     update_cache: true
   become: true
+  when: "'desktop' in system_type"
   tags: [packages, dnf]
+
+- name: Install flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item['name'] }}"
+    state: present
+    flatpakrepo_url: "{{ item['url'] }}"
+    method: user
+  loop: "{{ flatpaks['remotes'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: [packages, flatpak]
+
+- name: Install flatpak packages
+  community.general.flatpak:
+    name: "{{ item['name'] }}"
+    state: present
+    method: user
+    remote: "{{ item['remote'] | default('flathub') }}"
+  loop: "{{ flatpaks['packages'] }}"
+  when: "'desktop' in system_type"
+  tags: [packages, flatpak]
+
+- name: Start packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: running
+  become: true
+  tags: always
