@@ -41,4 +41,4 @@
     backup: true
   register: _backup_ssh_config
   notify: Process backups
-  when: use_personal_ssh_config
+  when: manage_ssh_config

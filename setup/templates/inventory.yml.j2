@@ -13,11 +13,15 @@ local:
     upload_ssh_key_github: {{ upload_ssh_key_github }}
     {%- if 'Fedora' in ansible_distribution %}
 
+    system_type: {%- if ansible_env['XDG_SESSION_DESKTOP'] is defined %} desktop
+                 {%- else %} server
+                 {%- endif %}
     desktop_env: {%- if 'gnome' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} gnome
                  {%- elif 'kde' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} kde
                  {%- endif %}
     {%- elif 'MacOSX' in ansible_distribution %}
 
+    system_type: desktop
     desktop_env: macos
     {%- endif %}
     {%- if ssh_key_types_to_generate != 'None' %}

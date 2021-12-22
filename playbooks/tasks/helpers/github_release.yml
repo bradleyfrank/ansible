@@ -5,7 +5,7 @@
     user: "{{ user }}"
     repo: "{{ repo }}"
     action: latest_release
-    token: "{{ github['token'] }}"
+    token: "{{ github['personal_token'] }}"
   register: github_release
 
 - name: Install {{ name }}

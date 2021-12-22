@@ -19,9 +19,9 @@ bootstrap_mac() {
 bootstrap_linux() {
   sudo systemd-inhibit --what idle:sleep --why "Bootstrapping system" sleep infinity &
   sudo systemctl stop packagekit
-  dnf clean all
-  dnf makecache
-  dnf install -y python3 python3-pip python3-devel python-wheel git redhat-lsb-core
+  sudo dnf clean all
+  sudo dnf makecache
+  sudo dnf install -y python3 python3-pip python3-devel python-wheel git redhat-lsb-core
 }
 
 while getopts ':dg:' opt; do

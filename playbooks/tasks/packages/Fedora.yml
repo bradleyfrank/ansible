@@ -87,6 +87,6 @@
 - name: Start packagekit
   ansible.builtin.systemd:
     name: packagekit
-    state: running
+    state: started
   become: true
   tags: always

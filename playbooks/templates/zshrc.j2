@@ -10,7 +10,7 @@ PATH="$PATH:/usr/local/opt/gnu-which/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/grep/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/gsed/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/libtool/libexec/gnubin"
-PATH="$PATH:{{ python['user_path'][ansible_distribution] }}"
+PATH="$PATH:{{ python_user_path['MacOSX'] }}"
 PATH="$PATH:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 PATH="$PATH:/opt/X11/bin"
 {% endif %}
@@ -59,9 +59,9 @@ export CLOUDSDK_PYTHON=/usr/bin/python3
 
 
 {% if 'MacOSX' in ansible_distribution %}
-eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_keys | join(' ') }})"
+eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_private_keys | join(' ') }})"
 {% elif 'Fedora' in ansible_distribution %}
-eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
+eval "$(keychain --eval --ignore-missing --quiet {{ ssh_private_keys | join(' ') }})"
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
 

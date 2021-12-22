@@ -14,14 +14,13 @@ k9s_config_path:
   Fedora: "{{ ansible_user_dir }}/.config"
   MacOSX: "{{ ansible_user_dir }}/Library/Preferences"
 
-python:
-  version: "{{ ansible_python['version']['major'] }}.{{ ansible_python['version']['minor'] }}"
-  user_path:
-    Fedora: "{{ ansible_user_dir }}/.local/bin"
-    MacOSX: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}/bin"
-  pip:
-    Fedora: /usr/bin/pip3
-    MacOSX: "{{ ansible_user_dir }}/Library/Python/{{ python['version'] }}/bin/pip3"
+python_user_path:
+  Fedora: "{{ ansible_user_dir }}/.local/bin"
+  MacOSX: "{{ ansible_user_dir }}/Library/Python/3.{{ ansible_python['version']['minor'] }}/bin"
+
+pip:
+  Fedora: /usr/bin/pip3
+  MacOSX: "{{ ansible_user_dir }}/Library/Python/3.{{ ansible_python['version']['minor'] }}/bin/pip3"
 
 root_home:
   Fedora: /root
