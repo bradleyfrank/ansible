@@ -16,6 +16,7 @@ local:
     system_type: {%- if ansible_env['XDG_SESSION_DESKTOP'] is defined %} desktop
                  {%- else %} server
                  {%- endif %}
+
     desktop_env: {%- if 'gnome' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} gnome
                  {%- elif 'kde' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} kde
                  {%- endif %}
