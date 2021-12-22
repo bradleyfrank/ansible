@@ -14,14 +14,11 @@ All workstations are unique in a way that cannot be fully captured in configs or
 
 It was designed to be run *completely local* on a brand-new installed system, even with a bare amount of packages. There is no concept of remote connections for these playbooks. To that end, there are multiple stages of bootstrapping handled by the `install` script:
 
-1. **Bootstrapping the OS**
-   Installs the necessary packages to check out the repository and run Ansible. On macOS this includes Homebrew (which also installs the Command Line Tools). For both, it includes Python and Pip.
+1. **Bootstrapping the OS:** Installs the necessary packages to check out the repository and run Ansible. On macOS this includes Homebrew (which also installs the Command Line Tools). For both, it includes Python and Pip.
 
-2. **Bootstrapping Ansible**
-   A separate playbook in the `setup` directory runs with its own Ansible configuration, prompting for the vault password and host settings, creating the inventory file for the main playbooks to use.
+2. **Bootstrapping Ansible:** A separate playbook in the `setup` directory runs with its own Ansible configuration, prompting for the vault password and host settings, creating the inventory file for the main playbooks to use.
 
-3. **Bootstrapping the system**
-   The `bootstrap` playbook is run to pull in additional software, configure the OS and applications, and setup the user environment (e.g. terminal, desktop, etc).
+3. **Bootstrapping the system:** The `bootstrap` playbook is run to pull in additional software, configure the OS and applications, and setup the user environment (e.g. terminal, desktop, etc).
 
 The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it's own periodically as user preferences and settings grow, adjust, or change. It can be run without `bootstrap`, for example on a shared server, but it assumes all prequisite packages are installed.
 
