@@ -31,7 +31,7 @@
   loop: "{{ lookup('community.general.filetree', 'ssh/') }}"
   loop_control:
     label: "{{ item['src'] | basename }}"
-  when: use_personal_ssh_config and (item['src'] | basename != 'config')
+  when: manage_ssh_config and (item['src'] | basename != 'config')
 
 - name: Copy SSH config
   ansible.builtin.copy:
