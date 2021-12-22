@@ -1,8 +1,8 @@
 ---
 
 repos:
-  - name: 1Password
-    description: 1Password
+  - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
+    description: 1Password GUI
     baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
     gpgkey: https://downloads.1password.com/linux/keys/1password.asc
     system_type: [desktop]

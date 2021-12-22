@@ -84,6 +84,14 @@
   when: "'desktop' in system_type"
   tags: [packages, flatpak]
 
+- name: Remove repositories added by packages
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  become: true
+  loop:
+    - /etc/yum.repos.d/1password.repo  # See /opt/1Password/after-install.sh
+
 - name: Start packagekit
   ansible.builtin.systemd:
     name: packagekit

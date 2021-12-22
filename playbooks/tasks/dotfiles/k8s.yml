@@ -34,31 +34,23 @@
     mode: 0644
   tags: fubectl
 
-- name: Install Krew installer
-  vars:
-    name: krew
-    user: kubernetes-sigs
-    repo: krew
-    arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
-    filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
-  ansible.builtin.include_tasks:
-    file: tasks/helpers/github_release.yml
-    apply:
-      tags: krew
-  tags: krew
-
 - name: Install Krew
   block:
-    - name: Check for installer
-      ansible.builtin.stat:
-        path: "{{ ansible_user_dir }}/.local/bin/krew"
-      register: krew_installer
+    - name: Download Krew installer
+      vars:
+        name: krew
+        user: kubernetes-sigs
+        repo: krew
+        arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+        filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
+      ansible.builtin.include_tasks:
+        file: tasks/helpers/github_release.yml
+        apply:
+          tags: krew
     - name: Install Krew
       ansible.builtin.command:
         cmd: "{{ ansible_user_dir }}/.local/bin/krew install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
-      when:
-        krew_installer['stat']['exists']
   always:
     - name: Remove installer
       ansible.builtin.file:

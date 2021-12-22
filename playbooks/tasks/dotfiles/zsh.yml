@@ -8,16 +8,16 @@
   tags: kubectl
 
 - name: Generate stern completions
-  vars:
-    stern_bin: "{{ ansible_user_dir }}/.local/bin/stern"
-  ansible.builtin.shell: "{{ stern_bin }} --completion=zsh > {{ zsh['completions'] }}/stern"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
+  ansible.builtin.shell: "kubectl stern --completion=zsh > {{ zsh['completions'] }}/stern"
   changed_when: false
   tags: stern
 
 - name: Generate k9s completions
-  vars:
-    k9s_bin: "{{ ansible_user_dir }}/.local/bin/k9s"
-  ansible.builtin.shell: "{{ k9s_bin }} completion zsh > {{ zsh['completions'] }}/k9s"
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.shell: "k9s completion zsh > {{ zsh['completions'] }}/k9s"
   changed_when: false
   tags: k9s
 
