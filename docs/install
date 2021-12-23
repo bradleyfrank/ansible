@@ -2,14 +2,14 @@
 
 set -o errexit
 
-TMPDIR="$HOME"  # Use TMPDIR for macOS compatibility.
-ANSIBLE_REPO_PATH="$(mktemp -d)"
+ANSIBLE_REPO_PATH="$(mkdir "$HOME/ansible.$(date +%H%M%S)")"
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
+  sudo --validate  # Reset `sudo` timeout to use Homebrew install in noninteractive mode.
   CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   brew install python3 git
   PATH="/usr/local/bin:$(/usr/local/bin/python3 -m site --user-base)/bin:$PATH"
@@ -17,7 +17,7 @@ bootstrap_mac() {
 }
 
 bootstrap_linux() {
-  sudo systemd-inhibit --what idle:sleep --why "Bootstrapping system" sleep infinity &
+  sudo systemd-inhibit --why "Bootstrapping system" sleep infinity &
   sudo systemctl stop packagekit
   sudo dnf clean all
   sudo dnf makecache
