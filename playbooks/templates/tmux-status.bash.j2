@@ -11,8 +11,7 @@ declare -r fg_Default="#[fg=default]" \
            fg_Yellow="#[fg=colour136]" \
            fg_Green="#[fg=colour64]" \
            fg_Orange="#[fg=colour166]" \
-           fg_Red="#[fg=colour160]" \
-           fg_Magenta="#[fg=colour125]"
+           fg_Red="#[fg=colour160]"
 
 get_uptime() {
   local uptime
@@ -29,14 +28,14 @@ load_average() {
     elif [[ $load -ge 300 && $load -lt 500 ]]; then fg_Color=$fg_Orange
     elif [[ $load -ge 500                  ]]; then fg_Color=$fg_Red
     fi
-    output+="${fg_Color}${avg}${fg_Default};"
+    output+=" ${fg_Color}${avg}${fg_Default}"
   {% if 'MacOSX' in ansible_distribution -%}
   done <<< "$(sysctl -n vm.loadavg | grep -oP '\d+\.\d+')"
   {% elif 'Fedora' in ansible_distribution -%}
   done <<< "$(grep -Po '\d+\.\d+' /proc/loadavg)"
   {% endif -%}
 
-  echo "${output%"${output##*[![:space:]]}"}"  # trim trailing space
+  printf "%s" "${output:1}"  # substring removes extra space
 }
 
 battery() {
@@ -44,7 +43,7 @@ battery() {
   {% if 'MacOSX' in ansible_distribution -%}
   IFS=';' read -ra battery <<< "$(pmset -g batt | grep -Eo '[0-9]+%;.*;')"
   percent="${battery[0]//%/}"
-  status="${battery[1]}"
+  status="${battery[1]:1}"  # substring removes extra space
   {% elif 'Fedora' in ansible_distribution -%}
   percent="$(sed 's|%||' /sys/class/power_supply/BAT0/capacity)"
   status="$(cat /sys/class/power_supply/BAT0/status)"
