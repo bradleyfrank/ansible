@@ -20,13 +20,6 @@
   when: find_kubectl['matched'] == 0
   tags: kubectl
 
-- name: Install k9s configs
-  ansible.builtin.copy:
-    src: apps/k9s
-    dest: "{{ k9s_config_path[ansible_distribution] }}/"
-    mode: 0644
-  tags: k9s
-
 - name: Download fubectl
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
@@ -63,5 +56,12 @@
     PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
   ansible.builtin.command: "kubectl krew install {{ krew_plugins | join(' ') }}"
   register: kubectl_krew_install
-  changed_when: "'Installed plugin' in kubectl_krew_install.stdout"
+  changed_when: "'Installed plugin' in kubectl_krew_install['stdout']"
   tags: krew
+
+- name: Install k9s configs
+  ansible.builtin.copy:
+    src: apps/k9s
+    dest: "{{ k9s_config_path[ansible_distribution] }}/"
+    mode: 0644
+  tags: k9s

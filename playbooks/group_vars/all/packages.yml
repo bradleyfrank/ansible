@@ -83,6 +83,9 @@ rpms:
       - ghostwriter
       - google-chrome-stable
       - google-noto-emoji-color-fonts
+      - google-noto-sans-fonts
+      - google-noto-sans-mono-fonts
+      - google-noto-serif-fonts
       - joplin
       - keepassxc
       - libreoffice
@@ -112,8 +115,10 @@ rpms:
       - gnome-connections
       - gnome-extensions-app
       - gnome-games
+      - gnome-shell-extension-dash-to-dock
       - gnome-shell-extension-gpaste
       - gnome-shell-extension-system-monitor-applet
+      - gnome-tweaks
       - gnote
       - gpaste*
       - gthumb

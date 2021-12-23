@@ -358,6 +358,21 @@ dconf:
   /org/gnome/settings-daemon/plugins/color/night-light-enabled: "true"
   /org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic: "true"
   /org/gnome/shell/disable-user-extensions: "false"
+  /org/gnome/shell/extensions/dash-to-dock/background-opacity: "0.8"
+  /org/gnome/shell/extensions/dash-to-dock/custom-theme-shrink: "true"
+  /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size: "32"
+  /org/gnome/shell/extensions/dash-to-dock/dock-fixed: "false"
+  /org/gnome/shell/extensions/dash-to-dock/dock-position: "'BOTTOM'"
+  /org/gnome/shell/extensions/dash-to-dock/extend-height: "true"
+  /org/gnome/shell/extensions/dash-to-dock/height-fraction: "0.9"
+  /org/gnome/shell/extensions/dash-to-dock/intellihide: "false"
+  /org/gnome/shell/extensions/dash-to-dock/intellihide-mode: "'FOCUS_APPLICATION_WINDOWS'"
+  /org/gnome/shell/extensions/dash-to-dock/multi-monitor: "true"
+  /org/gnome/shell/extensions/dash-to-dock/preferred-monitor: "0"
+  /org/gnome/shell/extensions/dash-to-dock/running-indicator-style: "'DOTS'"
+  /org/gnome/shell/extensions/dash-to-dock/scroll-action: "'switch-workspace'"
+  /org/gnome/shell/extensions/dash-to-dock/show-apps-at-top: "true"
+  /org/gnome/shell/extensions/dash-to-dock/transparency-mode: "'DYNAMIC'"
   /org/gnome/shell/extensions/system-monitor/battery-display: "false"
   /org/gnome/shell/extensions/system-monitor/cpu-graph-width: "25"
   /org/gnome/shell/extensions/system-monitor/cpu-show-text: "false"
@@ -395,7 +410,8 @@ dconf:
   /org/gnome/shell/enabled-extensions: "[\
     'GPaste@gnome-shell-extensions.gnome.org',
     'background-logo@fedorahosted.org',
-    'system-monitor@paradoxxx.zero.gmail.com']"
+    'system-monitor@paradoxxx.zero.gmail.com',
+    'dash-to-dock@micxgx.gmail.com']"
   /org/gnome/shell/favorite-apps: "[\
     'org.gnome.Terminal.desktop',
     'firefox.desktop',
