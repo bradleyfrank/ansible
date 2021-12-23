@@ -65,8 +65,12 @@
   tags: locate_db
 
 - name: Unhide ~/Library
-  ansible.builtin.shell: "chflags nohidden {{ ansible_user_dir }}/Library &&\
-    xattr -d com.apple.FinderInfo {{ ansible_user_dir }}/Library"
+  ansible.builtin.shell: "chflags nohidden {{ ansible_user_dir }}/Library"
+  changed_when: false
+  tags: unhide_dirs
+
+- name: Remove extended attributes on ~/Library
+  ansible.builtin.shell: "xattr -c {{ ansible_user_dir }}/Library"
   changed_when: false
   tags: unhide_dirs
 
