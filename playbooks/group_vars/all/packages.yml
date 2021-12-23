@@ -63,11 +63,12 @@ rpms:
     - toilet
     - trash-cli
     - tree
+    - vagrant
     - vim
     - wget
     - xsel
     - xz
-    - youtube-dl
+    - zoxide
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
@@ -210,6 +211,7 @@ homebrew:
     - watch
     - wget
     - yamllint
+    - zoxide
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
@@ -253,6 +255,8 @@ homebrew:
   virtualization_casks:
     - multipass
     - utm
+    - vagrant
+    - vagrant-vmware-utility
     - vmware-fusion
   mas:
     - 407963104   # Pixelmator

@@ -3,7 +3,6 @@
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ hostname }}"
-    use: redhat
   become: true
   tags: hostname
 

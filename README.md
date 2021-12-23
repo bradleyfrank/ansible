@@ -61,7 +61,7 @@ sh install [-g git_branch] [-d]
   -d  Run the dotfiles playbook only
 ```
 
-*The script prevents sleep/hibernation/idle with `caffeinate` for macOS and `systemd-inhibit` for Fedora Linux.*
+*On macOS, the system is prevented from sleeping.*
 
 1. Prompts for:
     1. Ansible vault password (saved to `~/.ansible/vault`)

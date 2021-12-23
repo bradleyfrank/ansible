@@ -250,4 +250,5 @@ complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 {% endif %}
 
+eval "$(zoxide init zsh --hook pwd)"
 complete -F __start_kubectl k
