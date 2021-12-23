@@ -20,7 +20,7 @@ python_user_path:
 
 pip:
   Fedora: /usr/bin/pip3
-  MacOSX: "{{ ansible_user_dir }}/Library/Python/3.{{ ansible_python['version']['minor'] }}/bin/pip3"
+  MacOSX: "/usr/local/bin/pip3.{{ ansible_python['version']['minor'] }}"
 
 root_home:
   Fedora: /root

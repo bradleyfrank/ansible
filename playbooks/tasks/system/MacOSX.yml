@@ -4,6 +4,7 @@
   ansible.builtin.hostname:
     name: "{{ hostname }}"
     use: macos
+  become: true
 
 - name: Configure shells
   block:
