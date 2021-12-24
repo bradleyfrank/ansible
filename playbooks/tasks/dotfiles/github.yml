@@ -10,8 +10,10 @@
     name: "{{ ansible_user_id }}@{{ ansible_hostname }}"
     pubkey: "{{ lookup('file', pubkey) }}"
     state: present
-    token: "{{ github['token'] }}"
-  when: pubkey
+    token: "{{ github['personal_token'] }}"
+  when:
+    - pubkey
+    - upload_ssh_key_github
   tags: github
 
 - name: Clone repositories
@@ -20,7 +22,7 @@
       ansible.builtin.uri:
         url: "https://api.github.com/search/repositories?q=user:{{ github['username'] }}+archived:false"
         headers:
-          Authorization: "token {{ github['token'] }}"
+          Authorization: "token {{ github['personal_token'] }}"
       register: github_repos
     - name: Create Git project directories
       ansible.builtin.file:
@@ -32,7 +34,7 @@
         label: "{{ item['name'] }}"
     - name: Clone my GitHub repositories
       vars:
-        base_url: "https://{{ github['token'] }}@github.com"
+        base_url: "https://{{ github['personal_token'] }}@github.com"
       ansible.builtin.git:
         repo: "{{ base_url }}/{{ github['username'] }}/{{ item['clone_url'] | basename }}"
         version: "{{ item['default_branch'] }}"

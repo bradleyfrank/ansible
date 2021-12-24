@@ -1,5 +1,5 @@
-# [_kc] interactive kubectl context select
-alias -g _kc='--context $(_kc_helper)'
+# [kcxt] interactive kubectl context select
+alias -g kcxt='--context $(_kc_helper)'
 _kc_helper() { printf "%s" "$(kubectl config get-contexts | tr -d '\*' | tail -n+2 | awk '{print $1}' | _inline_fzf_nh_single)"; }
 
 # [kapi] show api-resources (i.e. shortnames)
@@ -7,6 +7,12 @@ alias kapi='kubectl api-resources'
 
 # [kcu] kubectl context unset
 alias kcu='kubectl config unset current-context'
+
+# [krew] alias for 'kubectl krew'
+alias krew='kubectl krew'
+
+# [stern] alias for 'kubectl stern'
+alias krew='kubectl stern'
 
 # [krename] rename all contexts with shorter names
 krename() {

@@ -1,0 +1,292 @@
+---
+
+rpms:
+  cli:
+    - abcde
+    - bash-completion
+    - bat
+    - bcal
+    - borgbackup
+    - dictd
+    - dnf-plugin-system-upgrade
+    - dnf-utils
+    - exa
+    - fdupes
+    - ffmpeg
+    - figlet
+    - fwupd
+    - fzf
+    - geary
+    - gh
+    - ghostscript
+    - git-delta
+    - glances
+    - glow
+    - gron
+    - hadolint
+    - htop
+    - httpie
+    - iftop
+    - inxi
+    - jq
+    - k9s
+    - kernel-devel  # openrazer
+    - keychain
+    - kubectl
+    - libmp4v2
+    - libvirt-client
+    - libxcrypt-compat
+    - mkvtoolnix
+    - most
+    - msmtp
+    - mtr
+    - ncdu
+    - neofetch
+    - nmap
+    - p7zip
+    - p7zip-plugins
+    - par
+    - perf
+    - podman
+    - pwgen
+    - python3
+    - python3-devel
+    - reptyr
+    - ripgrep
+    - ruby
+    - ShellCheck
+    - stow
+    - strace
+    - tidy
+    - tlp
+    - tmux
+    - toilet
+    - trash-cli
+    - tree
+    - vagrant
+    - vim
+    - wget
+    - xsel
+    - xz
+    - zoxide
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  gui:
+    common:
+      - 1password
+      - alacritty
+      - asciinema
+      - audacious
+      - calibre
+      - code
+      - flatpak
+      - ghostwriter
+      - google-chrome-stable
+      - google-noto-emoji-color-fonts
+      - google-noto-sans-fonts
+      - google-noto-sans-mono-fonts
+      - google-noto-serif-fonts
+      - joplin
+      - keepassxc
+      - libreoffice
+      - mediawriter
+      - nextcloud-client
+      - nextcloud-client-nautilus
+      - openrazer-meta
+      - picard
+      - remmina
+      - seahorse
+      - solaar
+      - system-config-printer
+      - timeshift
+      - torbrowser-launcher
+      - vlc
+    gnome:
+      - apostrophe
+      - celluloid
+      - cozy
+      - foliate
+      - gedit-plugin-codecomment
+      - gedit-plugin-colorpicker
+      - gedit-plugin-git
+      - gedit-plugin-joinlines
+      - gedit-plugin-multiedit
+      - gnome-characters
+      - gnome-connections
+      - gnome-extensions-app
+      - gnome-games
+      - gnome-shell-extension-dash-to-dock
+      - gnome-shell-extension-gpaste
+      - gnome-shell-extension-system-monitor-applet
+      - gnome-tweaks
+      - gnote
+      - gpaste*
+      - gthumb
+      - hydrapaper
+      - libgnome-keyring
+      - marker
+      - meld
+      - mpv
+      - newsflash
+      - transmission-gtk
+    kde:
+      - transmission-qt
+
+homebrew:
+  taps:
+    - homebrew/bundle
+    - homebrew/cask
+    - homebrew/cask-drivers
+    - homebrew/cask-fonts
+    - homebrew/core
+  formulas:
+    - asciinema
+    - awscli
+    - bash
+    - bash-completion@2
+    - bat
+    - bcal
+    - cabextract
+    - coreutils
+    - dict
+    - eye-d3
+    - exa
+    - fdupes
+    - ffmpeg
+    - fileicon
+    - findutils
+    - flac
+    - fzf
+    - gawk
+    - gh
+    - ghostscript
+    - git-delta
+    - glances
+    - glow
+    - gnu-sed
+    - gnu-tar
+    - gnu-which
+    - grep
+    - gron
+    - gzip
+    - hadolint
+    - helm
+    - httpie
+    - iftop
+    - jq
+    - k9s
+    - keychain
+    - kpcli
+    - kubectl
+    - kube-linter
+    - lame
+    - less
+    - markdown
+    - mas
+    - mtr
+    - ncdu
+    - neofetch
+    - nmap
+    - p7zip
+    - par
+    - prettyping
+    - pwgen
+    - qpdf
+    - rename
+    - ripgrep
+    - rpm2cpio
+    - rsync
+    - shellcheck
+    - shellharden
+    - shfmt
+    - slides
+    - ssh-copy-id
+    - stow
+    - tidy-html5
+    - tmux
+    - tree
+    - vault
+    - vim
+    - watch
+    - wget
+    - yamllint
+    - zoxide
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  casks:
+    - 1password
+    - 1password-cli
+    - alacritty
+    - appcleaner
+    - balenaetcher
+    - bbedit
+    - calibre
+    - chromium
+    - dozer
+    - expressions
+    - fantastical
+    - firefox
+    - google-cloud-sdk
+    - iina
+    - istat-menus
+    - joplin
+    - jumpcut
+    - keepassxc
+    - keepingyouawake
+    - kindle
+    - logitech-options
+    - macdown
+    - menumeters
+    - microsoft-auto-update
+    - microsoft-office
+    - musicbrainz-picard
+    - plexamp
+    - rectangle
+    - signal
+    - sony-ps-remote-play
+    - spotify
+    - transmission
+    - transmit
+    - visual-studio-code
+    - vlc
+    - zoom
+  virtualization_casks:
+    - multipass
+    - utm
+    - vagrant
+    - vagrant-vmware-utility
+    - vmware-fusion
+  mas:
+    - 407963104   # Pixelmator
+    - 425424353   # Unarchiver
+    - 568494494   # Pocket
+    - 924726344   # Deliveries
+    - 1179623856  # Pastebot
+    - 1303222628  # Paprika Recipe Manager 3
+    - 1320666476  # Wipr
+    - 1516894961  # Codye
+    - 1529448980  # Reeder
+    - 1555925018  # Genki Arcade
+
+flatpaks:
+  remotes:
+    - name: flathub
+      url: https://flathub.org/repo/flathub.flatpakrepo
+    - name: elementary
+      url: https://flatpak.elementary.io/repo.flatpakrepo
+  packages:
+    - name: com.github.phase1geo.annotator
+      remote: elementary
+    - name: com.github.junrrein.PDFSlicer
+    - name: com.github.liferooter.textpieces
+    - name: com.plexamp.Plexamp
+    - name: io.github.seadve.Kooha
+    - name: org.signal.Signal
+    - name: re.sonny.Junction
+    - name: re.sonny.Tangram
+    - name: us.zoom.Zoom
+
+containers:
+  - name: ubuntu:latest

@@ -2,23 +2,23 @@
 
 - name: Install Homebrew taps
   community.general.homebrew_tap:
-    name: "{{ os_packages['taps'] }}"
+    name: "{{ homebrew['taps'] }}"
   tags: [packages, homebrew_taps]
 
 - name: Install Homebrew formulas
   community.general.homebrew:
-    name: "{{ os_packages['formulas'] }}"
+    name: "{{ homebrew['formulas'] }}"
   tags: [packages, homebrew_formulas]
 
-- name: Install Homebrew casks for all system types
+- name: Install Homebrew casks
   community.general.homebrew_cask:
-    name: "{{ os_packages['casks'] }}"
+    name: "{{ homebrew['casks'] }}"
     accept_external_apps: true
   tags: [packages, homebrew_casks]
 
-- name: Install Homebrew casks for bare metal
+- name: Install Homebrew casks for virtualization
   community.general.homebrew_cask:
-    name: "{{ os_packages['virtualization'] }}"
+    name: "{{ homebrew['virtualization_casks'] }}"
     accept_external_apps: true
   when: ansible_model is match('Mac')  # skips installing casks in a virtual machine
   tags: [packages, homebrew_casks]
@@ -32,6 +32,6 @@
 
 - name: Install apps
   ansible.builtin.command: "mas install {{ item }}"
-  loop: "{{ os_packages['mas'] }}"
+  loop: "{{ homebrew['mas'] }}"
   when: mas_account['rc'] == 0
   tags: [packages, mac_app_store]

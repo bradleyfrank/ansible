@@ -1,0 +1,91 @@
+---
+
+repos:
+  - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
+    description: 1Password GUI
+    baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
+    gpgkey: https://downloads.1password.com/linux/keys/1password.asc
+    system_type: [desktop]
+
+  - name: gh-cli
+    description: packages for the GitHub CLI
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+    system_type: [desktop, server]
+
+  - name: glow
+    description: Copr repo for glow
+    baseurl: https://download.copr.fedorainfracloud.org/results/keefle/glow/fedora-$releasever-$basearch/
+    gpgkey: https://download.copr.fedorainfracloud.org/results/keefle/glow/pubkey.gpg
+    system_type: [desktop, server]
+
+  - name: google-chrome
+    description: Google Chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+    system_type: [desktop]
+
+  - name: hardware:razer
+    description: packages for Razer hardware
+    baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
+    gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
+    system_type: [desktop]
+
+  - name: joplin
+    description: Copr repo for Joplin
+    baseurl: https://copr-be.cloud.fedoraproject.org/results/taw/joplin/fedora-$releasever-$basearch/
+    gpgkey: https://copr-be.cloud.fedoraproject.org/results/taw/joplin/pubkey.gpg
+    system_type: [desktop]
+
+  - name: k9s
+    description: Copr repo for k9s
+    baseurl: https://copr-be.cloud.fedoraproject.org/results/luminoso/k9s/fedora-$releasever-$basearch/
+    gpgkey: https://copr-be.cloud.fedoraproject.org/results/luminoso/k9s/pubkey.gpg
+    system_type: [desktop, server]
+
+  - name: kubernetes
+    description: Kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    system_type: [desktop, server]
+
+  - name: negativo17-multimedia
+    description: negativo17 - Multimedia
+    baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
+    gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+    includepkgs: ['spotify*', 'makemkv*', 'ccextractor*', '*nvidia*']  # https://negativo17.org/nvidia-driver
+    system_type: [desktop, server]
+
+  - name: rpmfusion-free
+    description: RPM Fusion for Fedora - Free
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+
+  - name: rpmfusion-free-updates
+    description: RPM Fusion for Fedora - Free - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+
+  - name: rpmfusion-nonfree
+    description: RPM Fusion for Fedora - Nonfree
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+
+  - name: rpmfusion-nonfree-updates
+    description: RPM Fusion for Fedora - Nonfree - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    exclude: ['*nvidia*']
+    system_type: [desktop, server]
+
+  - name: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    system_type: [desktop]

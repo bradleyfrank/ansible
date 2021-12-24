@@ -4,22 +4,24 @@ window:
   padding:
     x: 15
     y: 15
-  decorations: {{ alacritty['decorations'] }}
+  decorations: {%- if 'MacOSX' in ansible_distribution %} buttonless
+               {%- elif 'Fedora' in ansible_distribution %} none
+               {%- endif %}
   startup_mode: Maximized
 font:
   normal:
-    family: {{ alacritty['fontFamily'] }}
+    family: SauceCodePro Nerd Font
     style: Light
   bold:
-    family: {{ alacritty['fontFamily'] }}
+    family: SauceCodePro Nerd Font
     style: Semibold
   italic:
-    family: {{ alacritty['fontFamily'] }}
+    family: SauceCodePro Nerd Font
     style: Italic
   bold_italic:
-    family: {{ alacritty['fontFamily'] }}
+    family: SauceCodePro Nerd Font
     style: Bold Italic
-  size: {{ alacritty['size'] }}
+  size: 14
   use_thin_strokes: true
 colors:
   primary:

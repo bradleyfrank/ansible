@@ -22,15 +22,19 @@
       private: false
       default: "{{ default_email }}"
     - name: ssh_key_types_to_generate
-      prompt: SSH key types to generate
+      prompt: SSH key types to generate (dsa,ecdsa,ed25519,rsa|None)
       private: false
       default: "rsa,ed25519"
     - name: clone_personal_repos
       prompt: Clone all personal GitHub repos (True|False)
       private: false
       default: true
-    - name: use_personal_ssh_config
-      prompt: Use personal SSH config (True|False)
+    - name: manage_ssh_config
+      prompt: Manage SSH config (True|False)
+      private: false
+      default: true
+    - name: upload_ssh_key_github
+      prompt: Upload SSH key to Github (True|False)
       private: false
       default: true
     - name: work_system
@@ -50,7 +54,8 @@
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
       loop: "{{ ssh_key_types_to_generate | split(',') }}"
-      register: ansible_vault
+      when: "ssh_key_types_to_generate != 'None'"
+      register: ssh_keys
 
     - name: Create inventory
       ansible.builtin.template:
