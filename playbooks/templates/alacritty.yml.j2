@@ -7,6 +7,7 @@ window:
   decorations: {%- if 'MacOSX' in ansible_distribution %} buttonless
                {%- elif 'Fedora' in ansible_distribution %} none
                {%- endif %}
+
   startup_mode: Maximized
 font:
   normal:
@@ -21,7 +22,10 @@ font:
   bold_italic:
     family: SauceCodePro Nerd Font
     style: Bold Italic
-  size: 14
+  size: {%- if 'MacOSX' in ansible_distribution %} 14
+        {%- elif 'Fedora' in ansible_distribution %} 12
+        {%- endif %}
+
   use_thin_strokes: true
 colors:
   primary:

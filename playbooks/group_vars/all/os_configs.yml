@@ -363,7 +363,7 @@ dconf:
   /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size: "32"
   /org/gnome/shell/extensions/dash-to-dock/dock-fixed: "false"
   /org/gnome/shell/extensions/dash-to-dock/dock-position: "'BOTTOM'"
-  /org/gnome/shell/extensions/dash-to-dock/extend-height: "true"
+  /org/gnome/shell/extensions/dash-to-dock/extend-height: "false"
   /org/gnome/shell/extensions/dash-to-dock/height-fraction: "0.9"
   /org/gnome/shell/extensions/dash-to-dock/intellihide: "false"
   /org/gnome/shell/extensions/dash-to-dock/intellihide-mode: "'FOCUS_APPLICATION_WINDOWS'"
