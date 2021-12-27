@@ -14,7 +14,7 @@ gcpkonfig() {
             gcloud --project "$_project" container clusters get-credentials \
                 "$(cut -d, -f2 <<< "$cluster")" --region="$(cut -d, -f1 <<< "$cluster")"
         done <<< "$(gcloud --project "$_project" container clusters list --format="value[separator=','](zone,name)")"
-    done <<< "$1"
+    done
 }
 
 # [gc] alias for gcloud
