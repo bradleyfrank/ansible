@@ -1,6 +1,6 @@
 ---
 
-session_name: main
+session_name: home
 windows:
   - window_name: Reference
     start_directory: ~/Development/Reference
