@@ -1,28 +1,32 @@
 pyenv() {
-  local pyname pyver=3.8 pyfunc
+  local ve version mode
 
   while getopts ':acdhn:v:' flag; do
     case "$flag" in
-      a) pyfunc=activate ;;
-      c) pyfunc=create ;;
+      a) mode=activate ;;
+      c) mode=create ;;
       d) deactivate ; return $? ;;
       h) echo "Usage: pyenv [-a(ctivate) | -c(reate)] [-n <name> -v <version>] | -d(eactivate)" ; return 0 ;;
-      n) pyname=$OPTARG ;;
-      v) pyver=$OPTARG ;;
+      n) ve="$OPTARG" ;;
+      v) version="$OPTARG" ;;
       *) echo "Invalid argument." >&2 ; return 1 ;;
     esac
   done
 
-  case "$pyfunc" in
-    create)   [[ -z $pyname ]] && pyname=ve
-              virtualenv -p "$pyver" "$pyname"
-              ;;
-    activate) [[ -z $pyname ]] && pyname=$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")
-              source "$pyname"/bin/activate
-              ;;
-    *)        [[ -z $pyname ]] && pyname=ve
-              virtualenv -p "$pyver" "$pyname"
-              source "$pyname"/bin/activate
-              ;;
+  _create() {
+    [[ -z $ve ]] && ve="ve"
+    [[ -z $version ]] && version=$(python3 --version | grep -Po '3\.\d+')
+    virtualenv -p "$version" "$ve"
+  }
+
+  _activate() {
+    [[ -z $ve ]] && ve="$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")"
+    source "$ve/bin/activate"
+  }
+
+  case "$mode" in
+    create)   _create   ;;
+    activate) _activate ;;
+    *)        _create; _activate ;;
   esac
 }
