@@ -11,7 +11,7 @@
 projects_dir="$HOME/Development/Projects"
 open_in="window"
 
-while getopts ':hfr:b:wp' flag; do
+while getopts ':hf:r:b:wp' flag; do
     case "$flag" in
         h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]" ; exit 0 ;;
         f) branch_from="$OPTARG" ;;
