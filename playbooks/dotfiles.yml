@@ -73,6 +73,20 @@
       notify: Process backups
       tags: [core, git]
 
+    - name: Ensure glow config directory exists
+      ansible.builtin.file:
+        path: "{{ glow_config_path[ansible_distribution] }}"
+        state: directory
+        mode: 0755
+      tags: [core, glow]
+
+    - name: Install glow configs
+      ansible.builtin.copy:
+        src: apps/glow
+        dest: "{{ glow_config_path[ansible_distribution] }}/"
+        mode: 0644
+      tags: [core, glow]
+
     - name: Ensure backup directory exists
       ansible.builtin.file:
         path: "{{ backups_dir }}"
