@@ -1,9 +1,9 @@
 # [gcpkonfig] generate kubectl credentials, usage: gcpkconfig <project1,project2,projectN>
 gcpkonfig() {
-    [[ -z $1 ]] && exit 1
-
     local projects project cluster _project
-    readarray -t -d ',' projects <<< "$1"
+
+    [[ -z $1 ]] && return 1
+    projects=("${(@s/,/)1}")
 
     mv ~/.kube/config ~/.kube/config."$(date --iso-8601=seconds | tr -d ':-')"
 

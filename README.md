@@ -24,7 +24,7 @@ The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it
 
 ### Reusability
 
-The playbooks themselves are opinionated: I don't rely on external roles so they are heavily personalized and customized to my needs. In theory, they can meet the needs of others, i.e. by forking this repository and modifying the `group_vars` variables and various configs in `files` and `templates` to suit your needs.
+The playbooks are heavily personalized and customized to my needs, but in theory they can meet the needs of others through forking this repository and modifying the `group_vars` variables and various configs in `files` and `templates` to suit your needs.
 
 ## Installing
 

@@ -4,21 +4,21 @@
 # Branches a Git repo as a worktree within tmux.
 # Author: Brad Frank
 # Date: May 2021
-# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
-# Requires: tmux, git
+# Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
+# Requires: tmux, git, fzf
 #
 
 projects_dir="$HOME/Development/Projects"
-open_in=window
+open_in="window"
 
 while getopts ':hfr:b:wp' flag; do
-    case "${flag}" in
-        h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane) [h*|v]]" ; exit 0 ;;
-        f) branch_from=$OPTARG ;;
-        p) open_in=pane ; split=${OPTARG:-h} ;;
-        r) repo_name=$OPTARG ;;
-        b) new_branch=$OPTARG ;;
-        w) open_in=window ;;
+    case "$flag" in
+        h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]" ; exit 0 ;;
+        f) branch_from="$OPTARG" ;;
+        p) open_in="pane" ;;
+        r) repo_name="$OPTARG" ;;
+        b) new_branch="$OPTARG" ;;
+        w) open_in="window" ;;
         *) echo "Invalid argument." >&2 ; exit 1 ;;
     esac
 done
@@ -30,18 +30,17 @@ find_dir_fzf() {
 
 [[ -z $repo_name ]] && repo_name="$(find_dir_fzf "$projects_dir")"
 repo_path="$projects_dir/$repo_name"
+
 [[ -z $branch_from ]] && branch_from="$(find_dir_fzf "$repo_path")"
 branch_path="$repo_path/$branch_from"
-cd "$branch_path" || exit 1
+
 [[ -z $new_branch ]] && new_branch="$branch_from-$(date +%F.%T | tr -d ':-')"
-git worktree add "$repo_path/$new_branch"
 repo_branch="$repo_path/$new_branch"
+
+cd "$branch_path" || exit 1
+git worktree add "$repo_branch"
 
 case $open_in in
   window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
-  pane)   case $split in
-            v) tmux split-window -v -c "$repo_branch" ;;
-            h) tmux split-window -h -c "$repo_branch" ;;
-          esac
-          ;;
+  pane)   tmux split-window -h -c "$repo_branch" ;;
 esac

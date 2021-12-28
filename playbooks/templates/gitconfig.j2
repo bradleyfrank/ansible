@@ -15,6 +15,7 @@
   std = stash drop
   stp = stash pop
   stu = stash --include-untracked
+  tags = tag -l --sort=v:refname
   top = rev-parse --show-toplevel
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
