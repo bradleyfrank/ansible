@@ -2,19 +2,15 @@
 
 session_name: home
 windows:
-  - window_name: Reference
-    start_directory: ~/Development/Reference
+  - window_name: notes-etc
+    start_directory: ~/Development/Projects/notes-etc/main
     layout: even-horizontal
     panes:
       - start_directory: .
-      - start_directory: ../Scratch
+      - start_directory: ~/Development/Reference
   - window_name: ansible
     start_directory: ~/Development/Projects/ansible/main
-    layout: even-horizontal
-    panes:
-      - start_directory: .
-        focus: true
-        shell_command: '[[ -d ve ]] && pyenv -a || pyenv -v 3.9 ; clear'
-      - start_directory: ../
+    focus: true
+    shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
   - window_name: home-server
     start_directory: ~/Development/Projects/home-server/main

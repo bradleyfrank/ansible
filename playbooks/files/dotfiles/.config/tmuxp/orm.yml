@@ -2,12 +2,12 @@
 
 session_name: orm
 windows:
-  - window_name: Reference
-    start_directory: ~/Development/Reference
+  - window_name: notes-etc
+    start_directory: ~/Development/Projects/notes-etc/main
     layout: even-horizontal
     panes:
       - start_directory: .
-      - start_directory: ../Scratch
+      - start_directory: ~/Development/Reference
   - window_name: infractl
     start_directory: ~/Development/Projects/infractl/main
     layout: even-horizontal
@@ -22,7 +22,7 @@ windows:
     panes:
       - start_directory: .
         focus: true
-        shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
+        shell_command: '[[ -d ve ]] && pyenv -a || pyenv -c -n ve -v 3.8 ; clear'
       - start_directory: ../
   - window_name: orm-cli
     start_directory: ~/Development/Projects/orm-cli/main
@@ -30,4 +30,4 @@ windows:
     panes:
       - start_directory: .
         focus: true
-        shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
+        shell_command: '[[ -d ve ]] && pyenv -a || pyenv -c -n ve -v 3.8 ; clear'
