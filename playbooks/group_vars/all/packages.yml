@@ -230,7 +230,6 @@ homebrew:
     - firefox
     - google-cloud-sdk
     - iina
-    - istat-menus
     - joplin
     - jumpcut
     - keepassxc
@@ -247,6 +246,7 @@ homebrew:
     - signal
     - sony-ps-remote-play
     - spotify
+    - stats
     - transmission
     - transmit
     - visual-studio-code
