@@ -31,12 +31,6 @@ repos:
     gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
     system_type: [desktop]
 
-  - name: joplin
-    description: Copr repo for Joplin
-    baseurl: https://copr-be.cloud.fedoraproject.org/results/taw/joplin/fedora-$releasever-$basearch/
-    gpgkey: https://copr-be.cloud.fedoraproject.org/results/taw/joplin/pubkey.gpg
-    system_type: [desktop]
-
   - name: k9s
     description: Copr repo for k9s
     baseurl: https://copr-be.cloud.fedoraproject.org/results/luminoso/k9s/fedora-$releasever-$basearch/
