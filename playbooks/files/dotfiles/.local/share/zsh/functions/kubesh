@@ -12,7 +12,7 @@ alias kcu='kubectl config unset current-context'
 alias krew='kubectl krew'
 
 # [stern] alias for 'kubectl stern'
-alias krew='kubectl stern'
+alias stern='kubectl stern'
 
 # [krename] rename all contexts with shorter names
 krename() {

@@ -107,6 +107,11 @@ defaults:
     type: bool
     value: 'true'
   - domain: com.apple.dock
+    key: appswitcher-all-displays
+    name: Show app switcher on all displays
+    type: bool
+    value: 'true'
+  - domain: com.apple.dock
     key: tilesize
     name: Set Dock size
     type: int

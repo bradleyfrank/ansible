@@ -87,7 +87,6 @@ rpms:
       - google-noto-sans-fonts
       - google-noto-sans-mono-fonts
       - google-noto-serif-fonts
-      - joplin
       - keepassxc
       - libreoffice
       - mediawriter
@@ -230,8 +229,6 @@ homebrew:
     - firefox
     - google-cloud-sdk
     - iina
-    - istat-menus
-    - joplin
     - jumpcut
     - keepassxc
     - keepingyouawake
@@ -247,6 +244,7 @@ homebrew:
     - signal
     - sony-ps-remote-play
     - spotify
+    - stats
     - transmission
     - transmit
     - visual-studio-code
