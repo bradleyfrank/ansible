@@ -57,6 +57,7 @@
         default_path: "{{ ansible_user_dir }}/.config"
       community.general.ini_file:
         path: "{{ item['path'] | default(default_path) }}/{{ item['file'] }}"
+        mode: 0644
         section: "{{ item['section'] }}"
         option: "{{ item['option'] }}"
         value: "{{ item['value'] }}"
