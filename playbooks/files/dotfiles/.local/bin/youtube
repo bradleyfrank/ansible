@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+#
+# A youtube-dl wrapper to making downloading music and video easier.
+# Author: Brad Frank
+# Date: Jan 2022
+# Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
+# Requires: yt-dlp
+#
+
+music() {
+  case $(uname -s) in
+    Darwin)
+      yt-dlp --format bestaudio --extract-audio --audio-format mp3 \
+        --postprocessor-args "-strict experimental" "$1" ;;
+    Linux)
+      yt-dlp --format bestaudio --extract-audio --audio-format mp3 "$1" ;;
+  esac
+}
+
+video() {
+  yt-dlp \
+    --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
+    --merge-output-format mp4 \
+    -o "%(title)s.%(ext)s" "$1"
+}
+
+while getopts ':hm:v:' flag; do
+  case "$flag" in
+    h) echo "Usage: youtube [-m(usic) <url> | -v(ideo) <url>]" ; exit 0 ;;
+    m) music "$OPTARG" ;;
+    v) video "$OPTARG" ;;
+    *) echo "Invalid argument." >&2 ; exit 1 ;;
+  esac
+done

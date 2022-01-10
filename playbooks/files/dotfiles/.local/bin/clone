@@ -8,21 +8,25 @@
 # Requires: git
 #
 
-repo_url=$1
-repo_name="$(basename "$repo_url")"
-repo_name="${repo_name%%.*}"
-repo_path="$HOME/Development/Projects/$repo_name"
+_clone() {
+  repo_url="$1"
+  repo_name="$(basename "$repo_url")"
+  repo_name="${repo_name%%.*}"
+  repo_path="$HOME/Development/Projects/$repo_name"
 
-[[ -d "$repo_path" ]] && exit 1
+  [[ -d "$repo_path" ]] && exit 1
 
-tmp_repo=$(mktemp -d)
-git clone "$repo_url" "$tmp_repo/$repo_name"
-cd "$tmp_repo/$repo_name" || exit 1
-default_branch="$(git remote show origin | grep 'HEAD branch' | awk '{print $3}')"
-repo_branch="$repo_path/$default_branch"
+  tmp_repo=$(mktemp -d)
+  git clone "$repo_url" "$tmp_repo/$repo_name"
+  cd "$tmp_repo/$repo_name" || exit 1
+  default_branch="$(git remote show origin | grep 'HEAD branch' | awk '{print $3}')"
+  repo_branch="$repo_path/$default_branch"
 
-[[ -d "$repo_branch" ]] && exit 1
+  [[ -d "$repo_branch" ]] && exit 1
 
-mkdir -p "$repo_path"
-mv -T "$tmp_repo/$repo_name" "$repo_branch"
-tmux new-window -n "$repo_name" -c "$repo_branch"
+  mkdir -p "$repo_path"
+  mv -T "$tmp_repo/$repo_name" "$repo_branch"
+  tmux new-window -n "$repo_name" -c "$repo_branch"
+}
+
+_clone "$1"

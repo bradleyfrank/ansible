@@ -25,62 +25,58 @@ error() {
   exit 1
 }
 
-main() {
-    local input file dir compression output
-    input="$1" compression="$2"
+_pdf_compress() {
+  local input file dir compression output
+  input="$1" compression="$2"
 
-    #
-    # input: /path/to/file.pdf
-    # file: file.pdf
-    # dir: /path/to
-    # output: /path/to/file.{{ compression level }}.pdf
-    #
-    file="$(basename "$input")"
-    dir="$(dirname "$input")"
-    output="$dir/${file%.*}.$compression.pdf"
+  #
+  # input: /path/to/file.pdf
+  # file: file.pdf
+  # dir: /path/to
+  # output: /path/to/file.{{ compression level }}.pdf
+  #
 
-    if gs \
-        -sDEVICE=pdfwrite \
-        -dCompatibilityLevel=1.4 \
-        -dPDFSETTINGS=/"$COMPRESS_LEVEL" \
-        -dNOPAUSE \
-        -dQUIET \
-        -dBATCH \
-        -sOutputFile="$output" \
-        "$input" >/dev/null; then
-      echo "Wrote: $output"
-      return 0
-    else
-      return 1
-    fi
+  file="$(basename "$input")"
+  dir="$(dirname "$input")"
+  output="$dir/${file%.*}.$compression.pdf"
+
+  if gs \
+      -sDEVICE=pdfwrite \
+      -dCompatibilityLevel=1.4 \
+      -dPDFSETTINGS=/"$COMPRESS_LEVEL" \
+      -dNOPAUSE \
+      -dQUIET \
+      -dBATCH \
+      -sOutputFile="$output" \
+      "$input" >/dev/null; then
+    echo "Wrote: $output"
+    return 0
+  else
+    return 1
+  fi
 }
-
 
 if [[ "$#" -eq 0 ]]; then usage; exit 1; fi
 
 while getopts ':hc:f:' flag; do
-    case "${flag}" in
-      h ) usage ; exit 0 ;;
-      c ) compression="$OPTARG" ;;
-      f ) input="$OPTARG" ;;
-      : ) error "$0: Must supply an argument to -$OPTARG." ;;
-      \?) error "Invalid option: $OPTARG" ;;
-    esac
+  case "$flag" in
+    h) usage; exit 0 ;;
+    c) compression="$OPTARG" ;;
+    f) input="$OPTARG" ;;
+    :) error "$0: Must supply an argument to -$OPTARG." ;;
+   \?) error "Invalid option: $OPTARG" ;;
+  esac
 done
 
 if [[ ! -f "$input" ]]; then
-    echo "Error: file does not exist, skipping." >&2
-    exit 1
+  echo "Error: file does not exist, skipping." >&2
+  exit 1
 fi
 
 if [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]]; then
-    echo "Error: invalid compression option." >&2
-    usage
-    exit 1
+  echo "Error: invalid compression option." >&2
+  usage
+  exit 1
 fi
 
-if [[ -z "$compression" ]]; then main "$input" "ebook"
-else main "$input" "$compression"
-fi
-
-exit $?
+_pdf_compress "$input" "${compression:-ebook}"
