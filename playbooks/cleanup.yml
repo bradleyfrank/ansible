@@ -13,6 +13,7 @@
       - .local/bin/gcp-kubeconfigs
       - .local/bin/gcpkonfig
       - .local/bin/lib
+      - .local/bin/numware
       - .local/bin/orm
       - .local/opt/bbdm
       - .local/share/fubectl
