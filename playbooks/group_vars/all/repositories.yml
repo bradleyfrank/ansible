@@ -7,6 +7,12 @@ repos:
     gpgkey: https://downloads.1password.com/linux/keys/1password.asc
     system_type: [desktop]
 
+  - name: bottom
+    description: Copr repo for bottom
+    baseurl: https://download.copr.fedorainfracloud.org/results/atim/bottom/fedora-$releasever-$basearch/
+    gpgkey: https://download.copr.fedorainfracloud.org/results/atim/bottom/pubkey.gpg
+    system_type: [desktop, server]
+
   - name: gh-cli
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm

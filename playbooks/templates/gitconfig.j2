@@ -3,7 +3,7 @@
     | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' \
     | xargs --no-run-if-empty git branch --delete --force
   co = checkout
-  common = rev-parse --git-common-dir
+  common = !git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .
   graph = log --oneline --decorate --graph --all
   history = log --full-history --
   last = log -1 HEAD --stat
@@ -11,12 +11,9 @@
   s = switch
   sb = status -sb
   search = !git rev-list --all | xargs git grep -F
-  sta = stash apply
-  std = stash drop
-  stp = stash pop
-  stu = stash --include-untracked
+  stash = stash --include-untracked
   tags = tag -l --sort=v:refname
-  top = rev-parse --show-toplevel
+  top = !git rev-parse --show-toplevel | xargs realpath --relative-to .
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
   wipe = !git stash --include-untracked && git stash clear
@@ -30,6 +27,8 @@
     | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' --delimiter / --with-nth -1 \
     | xargs -I{} --no-run-if-empty git worktree remove {}
   wtl = worktree list
+  wts = !git worktree list --porcelain | grep -E "^worktree" | awk '{print $2}' \
+    | fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' --delimiter / --with-nth -1 \
 [core]
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim

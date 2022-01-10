@@ -7,6 +7,7 @@ rpms:
     - bat
     - bcal
     - borgbackup
+    - bottom
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
@@ -146,6 +147,7 @@ homebrew:
     - bash-completion@2
     - bat
     - bcal
+    - bottom
     - cabextract
     - coreutils
     - dict
