@@ -19,22 +19,9 @@ usage() {
     echo "  -f  PDF file to compress."
 }
 
-error() {
-  printf "%s\n" "$1" >&2
-  usage
-  exit 1
-}
-
 compress() {
   local input file dir compression output
   input="$1" compression="$2"
-
-  #
-  # input: /path/to/file.pdf
-  # file: file.pdf
-  # dir: /path/to
-  # output: /path/to/file.{{ compression level }}.pdf
-  #
 
   file="$(basename "$input")"
   dir="$(dirname "$input")"
@@ -57,30 +44,20 @@ compress() {
 }
 
 main() {
-  local OPTIND compression input
+  local OPTIND compression input; compression="ebook"
+
+  while getopts ':hc:f:' flag; do
+    case "$flag" in
+      h) usage; exit 0 ;;
+      c) compression="$OPTARG" ;;
+      f) input="$OPTARG" ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; usage; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; usage; exit 1 ;;
+    esac
+  done
+
+  [[ ! -f "$input" ]] && { echo "Error: file does not exist, skipping." >&2; exit 1; }
+  [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]] && \
+    { echo "Error: invalid compression option." >&2; exit 1; }
+  compress "$input" "$compression"
 }
-
-if [[ "$#" -eq 0 ]]; then usage; exit 1; fi
-
-while getopts ':hc:f:' flag; do
-  case "$flag" in
-    h) usage; exit 0 ;;
-    c) compression="$OPTARG" ;;
-    f) input="$OPTARG" ;;
-    :) error "Must supply an argument to -$OPTARG." ;;
-   \?) error "Invalid option: $OPTARG" ;;
-  esac
-done
-
-if [[ ! -f "$input" ]]; then
-  echo "Error: file does not exist, skipping." >&2
-  exit 1
-fi
-
-if [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]]; then
-  echo "Error: invalid compression option." >&2
-  usage
-  exit 1
-fi
-
-compress "$input" "${compression:-ebook}"

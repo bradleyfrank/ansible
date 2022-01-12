@@ -14,10 +14,8 @@ find_dir_fzf() {
 }
 
 usage() {
-  echo "Usage: branch [-i(nteractive)] [-r <repo>] [-n <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]"
+  echo "Usage: branch [-i(nteractive) | -r <repo> -f <branch_from>] [-n <branch_name>] [-w(indow) | -p(ane)*]"
 }
-
-error() { echo "$1" >&2; usage; exit 1; }
 
 main() {
   local OPTIND projects_dir open_in interactive in_git_repo gitdir
@@ -36,8 +34,8 @@ main() {
       p) open_in="pane" ;;
       r) repo_name="$OPTARG" ;;
       w) open_in="window" ;;
-      :) echo "Must supply an argument to -$OPTARG." >&2; exit 1 ;;
-     \?) echo "Invalid option: $OPTARG" >&2; exit 1 ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; usage; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; usage; exit 1 ;;
     esac
   done
 
