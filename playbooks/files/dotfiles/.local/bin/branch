@@ -19,13 +19,13 @@ _branch() {
   projects_dir="$HOME/Development/Projects"
   open_in="window"
 
-  while getopts ':hf:r:b:wp' flag; do
+  while getopts ':hf:r:n:wp' flag; do
     case "$flag" in
-      h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]" ; exit 0 ;;
+      h) echo "Usage: branch [-r <repo>] [-n <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]" ; exit 0 ;;
       f) branch_from="$OPTARG" ;;
+      n) new_branch="$OPTARG" ;;
       p) open_in="pane" ;;
       r) repo_name="$OPTARG" ;;
-      b) new_branch="$OPTARG" ;;
       w) open_in="window" ;;
       *) echo "Invalid argument." >&2; exit 1 ;;
     esac
@@ -37,7 +37,7 @@ _branch() {
   [[ -z $branch_from ]] && branch_from="$(find_dir_fzf "$repo_path")"
   branch_path="$repo_path/$branch_from"
 
-  [[ -z $new_branch ]] && new_branch="$branch_from-$(date +%F.%T | tr -d ':-')"
+  [[ -z $new_branch ]] && new_branch="${branch_from}_$(date +%Y%m%d-%H%M)"
   repo_branch="$repo_path/$new_branch"
 
   cd "$branch_path" || exit 1
