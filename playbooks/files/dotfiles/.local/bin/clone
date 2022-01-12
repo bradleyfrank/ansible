@@ -8,7 +8,7 @@
 # Requires: git
 #
 
-_clone() {
+main() {
   repo_url="$1"
   repo_name="$(basename "$repo_url")"
   repo_name="${repo_name%%.*}"
@@ -29,4 +29,4 @@ _clone() {
   tmux new-window -n "$repo_name" -c "$repo_branch"
 }
 
-_clone "$1"
+main "$1"

@@ -13,28 +13,50 @@ find_dir_fzf() {
     | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border
 }
 
-_branch() {
-  local OPTIND projects_dir open_in
+usage() {
+  echo "Usage: branch [-i(nteractive)] [-r <repo>] [-n <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]"
+}
+
+error() { echo "$1" >&2; usage; exit 1; }
+
+main() {
+  local OPTIND projects_dir open_in interactive in_git_repo gitdir
 
   projects_dir="$HOME/Development/Projects"
   open_in="window"
+  interactive=0
+  in_git_repo=0
 
-  while getopts ':hf:r:n:wp' flag; do
+  while getopts ':hf:ir:n:wp' flag; do
     case "$flag" in
-      h) echo "Usage: branch [-r <repo>] [-n <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]" ; exit 0 ;;
+      h) usage ; exit 0 ;;
       f) branch_from="$OPTARG" ;;
+      i) interactive=1 ;;
       n) new_branch="$OPTARG" ;;
       p) open_in="pane" ;;
       r) repo_name="$OPTARG" ;;
       w) open_in="window" ;;
-      *) echo "Invalid argument." >&2; exit 1 ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; exit 1 ;;
     esac
   done
 
-  [[ -z $repo_name ]] && repo_name="$(find_dir_fzf "$projects_dir")"
+  gitdir="$(git rev-parse --show-toplevel &> /dev/null)" && in_git_repo=1
+
+  if [[ -z $repo_name && ( $interactive -eq 1 || $in_git_repo -eq 0 ) ]]; then
+    repo_name="$(find_dir_fzf "$projects_dir")"
+  elif [[ -z $repo_name && $in_git_repo -eq 1 ]]; then
+    repo_name="$(basename "$(dirname "$gitdir")")"
+  fi
+
   repo_path="$projects_dir/$repo_name"
 
-  [[ -z $branch_from ]] && branch_from="$(find_dir_fzf "$repo_path")"
+  if [[ -z $branch_from && ( $interactive -eq 1 || $in_git_repo -eq 0 ) ]]; then
+    branch_from="$(find_dir_fzf "$repo_path")"
+  elif [[ -z $branch_from && $in_git_repo -eq 1 ]]; then
+    branch_from="$(basename "$gitdir")"
+  fi
+
   branch_path="$repo_path/$branch_from"
 
   [[ -z $new_branch ]] && new_branch="${branch_from}_$(date +%Y%m%d-%H%M)"
@@ -49,4 +71,4 @@ _branch() {
   esac
 }
 
-_branch "$@"
+main "$@"

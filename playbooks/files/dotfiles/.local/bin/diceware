@@ -7,7 +7,7 @@
 # Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
 #
 
-_diceware() {
+main() {
   local OPTIND dice length numware; length=5 numware=0
 
   while getopts ':hl:n' flag; do
@@ -31,4 +31,4 @@ _diceware() {
   echo "$dice"
 }
 
-_diceware "$@"
+main "$@"

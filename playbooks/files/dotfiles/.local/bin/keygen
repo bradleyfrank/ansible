@@ -7,7 +7,7 @@
 # Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
 #
 
-_keygen() {
+main() {
   local key comment password
   key="$HOME/.ssh/${1:-id_rsa}"
   while [[ -e "$key" ]]; do key="$HOME"/.ssh/id_"$(shuf -n 1 ~/.local/share/dict/words)"; done
@@ -17,4 +17,4 @@ _keygen() {
   echo "$key : $password"
 }
 
-_keygen "$1"
+main "$1"

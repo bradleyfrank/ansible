@@ -29,7 +29,7 @@ extract_cpio() {
   mv "$dir/$cpio" .
 }
 
-_extract() {
+main() {
   local file="$1"
   if [[ ! -f "$file" ]]; then echo "File $file does not exist, skipping." >&2; return 1; fi
 
@@ -53,4 +53,4 @@ _extract() {
 }
 
 if [[ "$#" -eq 0 ]]; then echo "Usage: extract <file1> [file2] ... [fileN]" >&2; exit 1; fi
-for compressed_file in "$@"; do _extract "$compressed_file"; done
+for compressed_file in "$@"; do main "$compressed_file"; done

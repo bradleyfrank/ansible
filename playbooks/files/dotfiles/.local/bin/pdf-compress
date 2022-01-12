@@ -25,7 +25,7 @@ error() {
   exit 1
 }
 
-_pdf_compress() {
+compress() {
   local input file dir compression output
   input="$1" compression="$2"
 
@@ -56,6 +56,10 @@ _pdf_compress() {
   fi
 }
 
+main() {
+  local OPTIND compression input
+}
+
 if [[ "$#" -eq 0 ]]; then usage; exit 1; fi
 
 while getopts ':hc:f:' flag; do
@@ -63,7 +67,7 @@ while getopts ':hc:f:' flag; do
     h) usage; exit 0 ;;
     c) compression="$OPTARG" ;;
     f) input="$OPTARG" ;;
-    :) error "$0: Must supply an argument to -$OPTARG." ;;
+    :) error "Must supply an argument to -$OPTARG." ;;
    \?) error "Invalid option: $OPTARG" ;;
   esac
 done
@@ -79,4 +83,4 @@ if [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]]; then
   exit 1
 fi
 
-_pdf_compress "$input" "${compression:-ebook}"
+compress "$input" "${compression:-ebook}"
