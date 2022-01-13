@@ -31,7 +31,7 @@ extract_cpio() {
 
 main() {
   local file="$1"
-  if [[ ! -f "$file" ]]; then echo "File $file does not exist, skipping." >&2; return 1; fi
+  [[ ! -f "$file" ]] && { echo "File $file does not exist, skipping." >&2; return 1; }
 
   case "${file%,}" in
     *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
@@ -52,5 +52,5 @@ main() {
   esac
 }
 
-if [[ "$#" -eq 0 ]]; then echo "Usage: extract <file1> [file2] ... [fileN]" >&2; exit 1; fi
+[[ "$#" -eq 0 ]] && { echo "Usage: extract <file1> [file2] ... [fileN]" >&2; exit 1; }
 for compressed_file in "$@"; do main "$compressed_file"; done

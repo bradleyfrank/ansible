@@ -58,6 +58,8 @@ main() {
 
   [[ ! -f "$input" ]] && { echo "Error: file does not exist, skipping." >&2; exit 1; }
   [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]] && \
-    { echo "Error: invalid compression option." >&2; exit 1; }
+    { echo "Error: invalid compression option." >&2; usage; exit 1; }
   compress "$input" "$compression"
 }
+
+main "$@"

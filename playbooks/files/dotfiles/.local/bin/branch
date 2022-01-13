@@ -39,7 +39,7 @@ main() {
     esac
   done
 
-  gitdir="$(git rev-parse --show-toplevel &> /dev/null)" && in_git_repo=1
+  gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" && in_git_repo=1
 
   if [[ -z $repo_name && ( $interactive -eq 1 || $in_git_repo -eq 0 ) ]]; then
     repo_name="$(find_dir_fzf "$projects_dir")"
