@@ -18,6 +18,7 @@
       - .local/bin/lib
       - .local/bin/numware
       - .local/bin/orm
+      - .local/bin/ytdl
       - .local/opt/bbdm
       - .local/share/fubectl
       - .local/share/icons
