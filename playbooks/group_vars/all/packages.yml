@@ -52,6 +52,7 @@ rpms:
     - pwgen
     - python3
     - python3-devel
+    - rdfind
     - reptyr
     - ripgrep
     - ruby
@@ -194,6 +195,7 @@ homebrew:
     - prettyping
     - pwgen
     - qpdf
+    - rdfind
     - rename
     - ripgrep
     - rpm2cpio
