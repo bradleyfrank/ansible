@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+gh api -X GET search/issues \
+  -f q="author:hilyas author:gabe-rivera author:davidfic author:thefunkyjazz author:caedus41 is:open created:>$(date -d "90 days ago" +%Y-%m-%d)" \
+  | jq -jr 'def cls: {
+      "black": "\u001b[30m",
+      "yellow": "\u001b[33m",
+      "blue": "\u001b[34m",
+      "green": "\u001b[32m",
+      "bold": "\u001b[1m",
+      "reset": "\u001b[0m",
+    }; .items[] | "\n" +
+      cls.blue + cls.bold + .title + cls.reset + "\n" +
+      cls.green + cls.bold + ">> " + cls.reset + "Created on: ", cls.yellow + (.created_at|fromdate|strftime("%Y-%m-%d")) + cls.reset + "\n" +
+      cls.green + cls.bold + ">> " + cls.reset + "Created by: ", cls.green + .user.login + cls.reset + "\n" +
+      cls.green + cls.bold + ">> " + cls.reset + .pull_request.html_url + "\n\n"'

@@ -8,39 +8,65 @@
 # Requires: tmux, git, fzf
 #
 
-projects_dir="$HOME/Development/Projects"
-open_in="window"
-
-while getopts ':hf:r:b:wp' flag; do
-    case "$flag" in
-        h) echo "Usage: branch [-r <repo>] [-b <branch_name>] [-f <branch_from>] [-w(indow)* | -p(ane)]" ; exit 0 ;;
-        f) branch_from="$OPTARG" ;;
-        p) open_in="pane" ;;
-        r) repo_name="$OPTARG" ;;
-        b) new_branch="$OPTARG" ;;
-        w) open_in="window" ;;
-        *) echo "Invalid argument." >&2 ; exit 1 ;;
-    esac
-done
-
 find_dir_fzf() {
   find "$1" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; \
     | fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border
 }
 
-[[ -z $repo_name ]] && repo_name="$(find_dir_fzf "$projects_dir")"
-repo_path="$projects_dir/$repo_name"
+usage() {
+  echo "Usage: branch [-i(nteractive) | -r <repo> -f <branch_from>] [-n <branch_name>] [-w(indow) | -p(ane)*]"
+}
 
-[[ -z $branch_from ]] && branch_from="$(find_dir_fzf "$repo_path")"
-branch_path="$repo_path/$branch_from"
+main() {
+  local OPTIND projects_dir open_in interactive in_git_repo gitdir
 
-[[ -z $new_branch ]] && new_branch="$branch_from-$(date +%F.%T | tr -d ':-')"
-repo_branch="$repo_path/$new_branch"
+  projects_dir="$HOME/Development/Projects"
+  open_in="window"
+  interactive=0
+  in_git_repo=0
 
-cd "$branch_path" || exit 1
-git worktree add "$repo_branch"
+  while getopts ':hf:ir:n:wp' flag; do
+    case "$flag" in
+      h) usage ; exit 0 ;;
+      f) branch_from="$OPTARG" ;;
+      i) interactive=1 ;;
+      n) new_branch="$OPTARG" ;;
+      p) open_in="pane" ;;
+      r) repo_name="$OPTARG" ;;
+      w) open_in="window" ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; usage; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; usage; exit 1 ;;
+    esac
+  done
 
-case $open_in in
-  window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
-  pane)   tmux split-window -h -c "$repo_branch" ;;
-esac
+  gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" && in_git_repo=1
+
+  if [[ -z $repo_name && ( $interactive -eq 1 || $in_git_repo -eq 0 ) ]]; then
+    repo_name="$(find_dir_fzf "$projects_dir")"
+  elif [[ -z $repo_name && $in_git_repo -eq 1 ]]; then
+    repo_name="$(basename "$(dirname "$gitdir")")"
+  fi
+
+  repo_path="$projects_dir/$repo_name"
+
+  if [[ -z $branch_from && ( $interactive -eq 1 || $in_git_repo -eq 0 ) ]]; then
+    branch_from="$(find_dir_fzf "$repo_path")"
+  elif [[ -z $branch_from && $in_git_repo -eq 1 ]]; then
+    branch_from="$(basename "$gitdir")"
+  fi
+
+  branch_path="$repo_path/$branch_from"
+
+  [[ -z $new_branch ]] && new_branch="${branch_from}_$(date +%Y%m%d-%H%M)"
+  repo_branch="$repo_path/$new_branch"
+
+  cd "$branch_path" || exit 1
+  git worktree add "$repo_branch"
+
+  case $open_in in
+    window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
+    pane)   tmux split-window -h -c "$repo_branch" ;;
+  esac
+}
+
+main "$@"

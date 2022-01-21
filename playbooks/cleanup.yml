@@ -9,11 +9,16 @@
       - .config/p10k.zsh
       - .dotfiles
       - .k9s
+      - .local/bin/aptsearch
       - .local/bin/diff-so-fancy
       - .local/bin/gcp-kubeconfigs
       - .local/bin/gcpkonfig
+      - .local/bin/ghpr
+      - .local/bin/keygen
       - .local/bin/lib
+      - .local/bin/numware
       - .local/bin/orm
+      - .local/bin/ytdl
       - .local/opt/bbdm
       - .local/share/fubectl
       - .local/share/icons

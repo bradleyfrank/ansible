@@ -8,11 +8,13 @@
 # Requires: tmux
 #
 
-log_dir="$HOME/Development/Logs"
-filename="$(tmux display-message -p 'tmux-%Y%m%d%I%M-#{session_name}-w#{window_index}p#{pane_index}.out')"
+main() {
+  local log_dir filename; log_dir="$HOME/Development/Logs"
+  filename="$(tmux display-message -p 'tmux-%Y%m%d%I%M-#{session_name}-w#{window_index}p#{pane_index}.out')"
+  [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
+  tmux capture-pane -S -
+  tmux save-buffer "$log_dir"/"$filename"
+  code "$log_dir"/"$filename"
+}
 
-[[ -d "$log_dir" ]] || mkdir -p "$log_dir"
-
-tmux capture-pane -S -
-tmux save-buffer "$log_dir"/"$filename"
-code "$log_dir"/"$filename"
+main

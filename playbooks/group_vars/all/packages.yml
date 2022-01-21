@@ -7,6 +7,7 @@ rpms:
     - bat
     - bcal
     - borgbackup
+    - bottom
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
@@ -51,6 +52,7 @@ rpms:
     - pwgen
     - python3
     - python3-devel
+    - rdfind
     - reptyr
     - ripgrep
     - ruby
@@ -146,6 +148,7 @@ homebrew:
     - bash-completion@2
     - bat
     - bcal
+    - bottom
     - cabextract
     - coreutils
     - dict
@@ -192,6 +195,7 @@ homebrew:
     - prettyping
     - pwgen
     - qpdf
+    - rdfind
     - rename
     - ripgrep
     - rpm2cpio

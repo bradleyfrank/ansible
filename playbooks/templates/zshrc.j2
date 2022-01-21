@@ -66,13 +66,9 @@ eval "$(keychain --eval --ignore-missing --quiet {{ ssh_private_keys | join(' ')
 eval "$(dircolors $HOME/.dir_colors)"
 
 
-alias _inline_fzf_nh='fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
-alias _inline_fzf_nh_single='fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded'
-alias _inline_fzf='fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border rounded'
-
-alias cdgcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
-alias cdgroot='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
-alias cdgwt='cd $(git worktree list --porcelain | sed -rn "s/^worktree\s(.+)$/\1/p" | _inline_fzf_nh_single --delimiter / --with-nth -1)'
+alias gcommon='cd $(git common)'
+alias gtop='cd $(git top)'
+alias gbranch='cd $(git wts)'
 
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
@@ -93,17 +89,17 @@ alias lt='exa --color always --classify --long --all --sort time'
 alias all='which -a'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
+alias dw='diceware'
 alias e='extract'
 alias glances='glances --theme-white'
-alias grep='grep -I'
 alias isodate='date --iso-8601=seconds'
-alias mkpasswd='pwgen 12 5 -ABcny1'
+alias lower='tr "[:upper:]" "[:lower:]"'
+alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
-alias pbb='code ~/Development/Reference/pure-bash-bible/README.md'
+alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
 alias show='whence -f'
-alias sync='rsync -a --info=progress2'
 alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
@@ -116,14 +112,9 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
 
-blackdiff() { black --line-length 100 --diff "$@"; }
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
-crackpdf() { qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
-diceware() { shuf -n "${1:-5}" ~/.local/share/dict/words | xargs | tr " " "${2:--}"; }
-decrypt() { openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"; }
-encrypt() { openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 {% if 'Fedora' in ansible_distribution and 'gnome' in desktop_env %}
 gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }

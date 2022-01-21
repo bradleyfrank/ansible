@@ -41,3 +41,5 @@ vim_extensions:
     repo: https://github.com/airblade/vim-gitgutter.git
   - name: nerdtree
     repo: https://github.com/preservim/nerdtree.git
+  - name: indentLine
+    repo: https://github.com/Yggdroot/indentLine.git

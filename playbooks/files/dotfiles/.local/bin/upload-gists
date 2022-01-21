@@ -9,9 +9,9 @@
 #
 
 # $1 == description // $2 == filename
-find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1.*/\1/p" ; }
-push() { VISUAL='tee' gh gist edit "$1" < "$2" > /dev/null ; }
-create() { gh gist create --public --desc "$1" "$2" ; }
+find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1.*/\1/p"; }
+push() { VISUAL='tee' gh gist edit "$1" < "$2" > /dev/null; }
+create() { gh gist create --public --desc "$1" "$2"; }
 
 push_or_create() {
   local description="$1" filename="$2"
@@ -22,29 +22,20 @@ push_or_create() {
 }
 
 gist_dotfiles() {
-  local hostname dotfiles filename description
-  hostname="$(uname -n | cut -d. -f1)"
+  local dotfiles filename description
   dotfiles=( "$HOME/.zshrc" "$HOME/.tmux.conf" "$HOME/.vimrc" "$HOME/.gitconfig" )
 
   for filename in "${dotfiles[@]}"; do
-    description="$hostname-$(basename "$filename")"
+    description="$(hostname -s)-$(basename "$filename")"
     push_or_create "$description" "$filename"
   done
 }
 
-gist_misc() {
-  local tmpdir description
-  tmpdir="$(mktemp -d)"
-
-  pushd "$tmpdir" > /dev/null || return
+gist_brewfile() {
+  cd "$(mktemp -d)" > /dev/null || return
   brew bundle dump > /dev/null
-  popd > /dev/null || return
-
-  description="$(uname -n | cut -d. -f1)-Brewfile"
-  push_or_create "$description" "$tmpdir/Brewfile"
+  push_or_create "$(hostname -s)-Brewfile" Brewfile
 }
 
-
 gist_dotfiles
-gist_misc
-exit 0
+gist_brewfile

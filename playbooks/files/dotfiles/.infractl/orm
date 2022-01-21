@@ -1,4 +1,4 @@
-export ORM_GCP_PROJECTS="binderhub-dev,binderhub-prod,common-build,dataeng-dev-273349,dataeng-prod-308999,kc-core-dev,kc-core-prod,platform-dev-788014,platform-prod-399563,strong-keyword-184513"
+export ORM_GCP_PROJECTS="common-build,dataeng-dev-273349,dataeng-prod-308999,kc-core-dev,kc-core-prod,platform-dev-788014,platform-prod-399563,strong-keyword-184513"
 
 # [okonfig] generate kubectl config from GCP projects
 okonfig() { gcpkonfig "$ORM_GCP_PROJECTS"; }
@@ -8,9 +8,6 @@ ogpl() { gpf "$ORM_GCP_PROJECTS"; }
 
 # [otags] list container image tags
 otags() { gtags common-build "$1"; }
-
-# [oghpr] print all open PRs by team members
-oghpr() { ghpr -o oreillymedia -t platform-engineering -e bfrank@oreilly.com; }
 
 # [ois] creates python environment for infractl
 alias ois='orm-infractl-setup'
@@ -34,7 +31,7 @@ okclean() {
 }
 
 # [_ogp] interactive gcloud project select
-alias -g _ogp='--project $(echo -e ${ORM_GCP_PROJECTS//,/\\n} | _inline_fzf_nh_single)'
+alias -g _ogp='--project $(echo -e ${ORM_GCP_PROJECTS//,/\\n} | fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border rounded)'
 
 # [_okc] interactive kubectl context select
 alias -g _okc='_kc'
