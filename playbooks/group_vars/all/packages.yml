@@ -279,6 +279,8 @@ flatpaks:
     - name: elementary
       url: https://flatpak.elementary.io/repo.flatpakrepo
   packages:
+    - name: com.github.avojak.warble
+      remote: elementary
     - name: com.github.phase1geo.annotator
       remote: elementary
     - name: com.github.junrrein.PDFSlicer

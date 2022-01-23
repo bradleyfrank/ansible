@@ -31,6 +31,7 @@
         - diff-so-fancy
         - ffsend
         - hstr
+        - lazydocker
         - tmux-mem-cpu-load
         - yq
         - youtube-dl
