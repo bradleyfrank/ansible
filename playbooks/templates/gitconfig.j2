@@ -19,7 +19,7 @@
   wipe = !git stash --include-untracked && git stash clear
   wt = worktree
   wta = !git for-each-ref --format='%(refname:short)' refs/remotes \
-    | grep -Ev '(HEAD|main|master)' \
+    | grep -Ev '\b(HEAD|main|master)\b' \
     | cut -d/ -f2 \
     | fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview='git log {} --' \
     | xargs -I{} --no-run-if-empty git worktree add ../{}

@@ -23,6 +23,15 @@
   register: find_zsh_source_dirs
   tags: always
 
+- name: Get zsh version
+  ansible.builtin.shell: |
+    case $(uname -s) in
+      Darwin) brew info zsh --json | jq -r '.[].installed[0].version' ;;
+      Linux)  rpm --query --queryformat '%{VERSION}' zsh ;;
+    esac
+  register: zsh_version
+  tags: always
+
 - name: Apply zshrc template
   vars:
     zsh_source_files: "{{ find_zsh_source_dirs['files'] | default([]) }}"
