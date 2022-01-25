@@ -11,6 +11,7 @@ $git_status\
 $line_break\
 $character
 """
+command_timeout = 2000
 [character]
 success_symbol = "[%%](bold fg:64)"
 error_symbol = "[%%](bold fg:160)"

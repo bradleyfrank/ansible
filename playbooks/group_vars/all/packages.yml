@@ -57,6 +57,7 @@ rpms:
     - ripgrep
     - ruby
     - ShellCheck
+    - starship
     - stow
     - strace
     - tidy
@@ -205,6 +206,7 @@ homebrew:
     - shfmt
     - slides
     - ssh-copy-id
+    - starship
     - stow
     - tidy-html5
     - tmux

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 gh api -X GET search/issues \
-  -f q="author:hilyas author:gabe-rivera author:davidfic author:thefunkyjazz author:caedus41 is:open created:>$(date -d "90 days ago" +%Y-%m-%d)" \
+  -f q="author:hilyas author:gabe-rivera author:davidfic author:thefunkyjazz author:caedus41 is:open draft:false created:>$(date -d "90 days ago" +%Y-%m-%d)" \
   | jq -jr 'def cls: {
       "black": "\u001b[30m",
       "yellow": "\u001b[33m",

@@ -1,4 +1,4 @@
-export ORM_GCP_PROJECTS="common-build,dataeng-dev-273349,dataeng-prod-308999,kc-core-dev,kc-core-prod,platform-dev-788014,platform-prod-399563,strong-keyword-184513"
+export ORM_GCP_PROJECTS="common-build,kc-core-dev,kc-core-prod,platform-dev-788014,platform-prod-399563,strong-keyword-184513"
 
 # [okonfig] generate kubectl config from GCP projects
 okonfig() { gcpkonfig "$ORM_GCP_PROJECTS"; }
@@ -48,18 +48,6 @@ alias gc-platdatadev='gcloud --project platform-data-dev-301120'
 alias gc-platformdev='gcloud --project platform-dev-788014'
 alias gc-platformprod='gcloud --project platform-prod-399563'
 alias gc-playground='gcloud --project strong-keyword-184513'
-
-# [k-] kubectl aliases
-alias k-bhdev='kubectl --context binderhub-dev-cluster'
-alias k-bhprod='kubectl --context binderhub-prod-cluster'
-alias k-commonbuild='kubectl --context common-build-cluster'
-alias k-kcdev='kubectl --context kc-dev'
-alias k-kcprod='kubectl --context kc-prod'
-alias k-kfdev='kubectl --context kubeflow-dev'
-alias k-kfprod='kubectl --context kubeflow-prod'
-alias k-platformdev='kubectl --context platform-dev-cluster'
-alias k-platformprod='kubectl --context platform-prod-cluster'
-alias k-playground='kubectl --context playground-cluster'
 
 # [ohelp] show this help message
 ohelp() {

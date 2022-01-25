@@ -14,6 +14,17 @@
       command: k9s completion zsh
   tags: [kubectl, stern, k9s]
 
+# - name: Install cmarks
+#   vars:
+#     name: cmarks
+#     user: bradleyfrank
+#     repo: cmarks
+#     filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
+#   ansible.builtin.include_tasks:
+#     file: tasks/helpers/github_release.yml
+#     apply:
+#       tags: krew
+
 - name: Find all zsh completions and sources  # run last to ensure files exist
   ansible.builtin.find:
     file_type: file

@@ -2,7 +2,7 @@ mux() {
   mux_help() { echo "Usage: mux -a(ttach) <session> | -d(iceware) | -l(ist) | -p <profile1,profile2...>"; }
   while getopts ':a:dhlp:' flag; do case "$flag" in
     a) tmux new-session -A -s "$OPTARG" ;;
-    d) tmux new-session -s "$(diceware 2)" ;;
+    d) tmux new-session -s "$(diceware -l 2)" ;;
     h) mux_help ;;
     l) tmuxp ls ;;
     p) tmuxp load "${OPTARG/,/ }" -y ;;
