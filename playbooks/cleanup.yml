@@ -25,6 +25,7 @@
       - .local/share/kubectl
       - .local/share/zsh-completion
       - .local/share/zshrc
+      - .tmux.conf
 
     homebrew:
       formulas:

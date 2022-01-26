@@ -9,27 +9,32 @@ set -g mouse on
 set -g renumber-windows on
 set -g status-interval 1
 
+{% if "tmux" in item -%}
+set -g pane-active-border-style "bold,bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour166}}"
+set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour136}"
+set -g status-format[1] "#[align=right]#(tmux-status)"
+set -g status-right "#[fg=colour61,bold]#{session_name} #[fg=default]@ #[fg=colour64]#h#[nobold]"
+set -g window-status-current-format "#[fg=colour231,bg=colour33,bold] #I: #W #[nobold]"
+set -g window-status-format "#[fg=colour33,bg=colour254,bold] #I: #W #[nobold]"
+{% elif "minimal" in item -%}
+set -g pane-active-border-style "fg=colour230,#{?window_zoomed_flag,bg=colour160,#{?pane_synchronized,bg=colour37,bg=colour166}}"
+set -g pane-border-style "fg=colour230,#{?pane_synchronized,bg=colour37,bg=colour136}"
+set -g status-format[1] ""
+set -g status-right "#[fg=colour61,bold]#{session_name} "
+set -g window-status-current-format "#[fg=colour33,bold][#I]#[nobold]"
+set -g window-status-format "#[fg=colour244,bold][#I]#[nobold]"
+{% endif -%}
 set -g aggressive-resize off
 set -g mode-style "bg=colour24,fg=colour231"
 set -g pane-border-format " #P: #{s|{{ ansible_user_dir }}|~|:pane_current_path} #[align=right] #{pane_current_command} "
 set -g pane-border-status top
-{% if tmux_semver is version('3.2', operator='>=') %}
-set -g pane-active-border-style "bold,bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour166}}"
 set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour136}"
-{% else %}
-set -g pane-active-border-style "bold,bg=default,fg=colour166"
-set -g pane-border-style "bg=default,fg=colour136"
-{% endif -%}
 set -g status 2
-set -g status-format[1] "#[align=right]#(tmux-status)"
 set -g status-left ""
 set -g status-position top
-set -g status-right "#[fg=colour61,bold]#{session_name} #[fg=default]@ #[fg=colour64]#h#[nobold]"
 set -g status-style "bg=default"
 set -g window-status-activity-style "fg=colour33,bg=default"
-set -g window-status-current-format "#[fg=colour231,bg=colour33,bold] #I: #W #[nobold]"
 set -g window-status-current-style "fg=colour231,bg=default"
-set -g window-status-format "#[fg=colour33,bg=colour254,bold] #I: #W #[nobold]"
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {%- if 'MacOSX' in ansible_distribution %} "pbcopy"
@@ -42,10 +47,7 @@ bind '%' split-window -h -c "#{pane_current_path}"          # new pane opens to 
 bind '"' split-window -c "#{pane_current_path}"             # new pane opens to same directory
 bind 'C' new-window
 bind 'D' run-shell "tmux-dump-pane"
-{% if tmux_semver is version('3.2', operator='>=') %}
-bind 'N' display-popup -E "vim ~/Development/Scratch/Notes"
 bind 'P' display-popup -E "zsh"
-{% endif -%}
 bind 'c' new-window -c "~/Development/Projects"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
