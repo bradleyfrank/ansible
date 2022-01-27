@@ -63,13 +63,15 @@ export HELPDIR=/usr/share/zsh/{{ zsh_version['stdout'] }}/help
 
 unalias run-help
 
-alias gcommon='cd $(git common)'
-alias gtop='cd $(git top)'
-alias gbranch='cd $(git wts)'
+alias gcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
+alias gtop='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
+alias gbranch='cd $(git worktree list --porcelain | grep -E "^worktree" | cut -d" " -f2 \
+  | fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview="git log {} --" -d / --with-nth -1)'
 
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
-alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" | xargs python3 -m pip install --user --upgrade'
+alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
+  | xargs python3 -m pip install --user --upgrade'
 
 alias l='exa --color always --classify'
 alias la='exa --color always --classify --all'

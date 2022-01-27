@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+
+#
+# Branches a Git repo as a worktree within tmux.
+# Author: Brad Frank
+# Date: May 2021
+# Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
+# Requires: tmux, git, fzf
+#
+
+_fzf() {
+  fzf --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
+}
+
+find_dir_fzf() {
+  find "$1" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | _fzf --multi -1
+}
+
+get_repo_path() {
+  gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" && in_git_repo=$true
+
+  if [[ -z $repo_name && ( $interactive -eq $true || $in_git_repo -eq $false ) ]]; then
+    repo_name="$(find_dir_fzf "$projects_dir")"
+  elif [[ -z $repo_name && $in_git_repo -eq $true ]]; then
+    repo_name="$(basename "$(dirname "$gitdir")")"
+  fi
+
+  repo_path="$projects_dir/$repo_name"
+}
+
+create_worktree_new() {
+  if [[ -z $branch_from && ( $interactive -eq $true || $in_git_repo -eq $false ) ]]; then
+    branch_from="$(find_dir_fzf "$repo_path")"
+  elif [[ -z $branch_from && $in_git_repo -eq $true ]]; then
+    branch_from="$(basename "$gitdir")"
+  fi
+
+  branch_path="$repo_path/$branch_from"
+  [[ -z $new_branch ]] && new_branch="${branch_from}_$(date +%y%b%d-%H%M)"
+  repo_branch="$repo_path/$new_branch"
+  cd "$branch_path" || exit 1
+  git worktree add "$repo_branch"
+}
+
+create_worktree_from_origin() {
+  git fetch origin --prune
+  new_branch="$(
+    git for-each-ref --format='%(refname:short)' refs/remotes \
+    | cut --delimiter / --fields 2 \
+    | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
+    | _fzf --no-multi --preview='git log --pretty=reference origin/{}'
+  )"
+  repo_branch="$repo_path/$new_branch"
+  git worktree add "$repo_branch"
+  cd "$repo_branch" || exit 1
+  git branch --set-upstream-to origin/"$new_branch" "$new_branch"
+  git pull
+  git reset --hard origin/"$new_branch"
+}
+
+open_in_tmux() {
+  case $open_in in
+    window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
+    pane)   tmux split-window -h -c "$repo_branch" ;;
+  esac
+}
+
+usage() {
+  usage_create; echo
+  usage_pull; echo
+  usage_delete
+}
+
+usage_create() {
+  echo "branch create [-h] | [-r <repo> -f <name>|-i] [-n <name>] [-p|-w]"
+  echo "-f <name>   Branch to branch from"
+  echo "-i          Force interactive selection of repo and/or branch"
+  echo "-n          Name of the new branch"
+  echo "-r <repo>   Repository to branch from"
+  echo "-p          Opens the branch in a tmux pane in the same window (default)"
+  echo "-w          Opens the branch in a new tmux window"
+}
+
+usage_pull() {
+  echo "branch pull [-h] | [-r <repo>|-i] [-p|-w]"
+  echo "-i          Force interactive selection of repo"
+  echo "-r <repo>   Repository to branch from"
+  echo "-p          Opens the branch in a tmux pane in the same window (default)"
+  echo "-w          Opens the branch in a new tmux window"
+}
+
+usage_delete() {
+  echo "branch delete"
+}
+
+main() {
+  local OPTIND subcommand
+  local projects_dir open_in interactive in_git_repo gitdir worktree
+  declare -r true=0 false=1
+
+  projects_dir="$HOME/Development/Projects"
+  open_in="pane"
+  interactive=$false
+  in_git_repo=$false
+
+  while getopts "h" opt; do
+    case "$opt" in
+      h) usage; exit 0 ;;
+      *) echo "Invalid option: $OPTARG" >&2; usage; exit 1 ;;
+    esac
+  done
+
+  shift $((OPTIND-1))
+  subcommand=$1; shift
+
+  case "$subcommand" in
+
+    create)
+      while getopts ':f:inpr:w' flag; do
+        case "$flag" in
+          f) branch_from="$OPTARG" ;;
+          i) interactive=$true ;;
+          n) new_branch="$OPTARG" ;;
+          p) open_in="pane" ;;
+          r) repo_name="$OPTARG" ;;
+          w) open_in="window" ;;
+          :) echo "Must supply an argument to -$OPTARG." >&2; usage_create; exit 1 ;;
+         \?) echo "Invalid option: $OPTARG" >&2; usage_create; exit 1 ;;
+        esac
+      done
+      get_repo_path
+      create_worktree_new
+      open_in_tmux
+      ;;
+
+    pull)
+      while getopts ':ipr:w' flag; do
+        case "$flag" in
+          i) interactive=$true ;;
+          p) open_in="pane" ;;
+          r) repo_name="$OPTARG" ;;
+          w) open_in="window" ;;
+          :) echo "Must supply an argument to -$OPTARG." >&2; usage_pull; exit 1 ;;
+         \?) echo "Invalid option: $OPTARG" >&2; usage_pull; exit 1 ;;
+        esac
+      done
+      get_repo_path
+      create_worktree_from_origin
+      open_in_tmux
+      ;;
+
+    delete)
+      gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" || return 1
+      while read -r worktree; do
+        if [[ -n "$worktree" ]]; then
+          git worktree remove "$worktree"
+          git branch --delete --force "$(basename "$worktree")"
+        fi
+      done <<< "$(
+        git worktree list --porcelain \
+          | grep -E '^worktree' \
+          | tail -n+2 \
+          | awk '{print $2}' \
+          | _fzf --multi --preview='git log {} --' --delimiter / --with-nth -1
+      )"
+      ;;
+
+  esac
+}
+
+main "$@"

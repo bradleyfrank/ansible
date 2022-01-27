@@ -1,11 +1,12 @@
 mux() {
-  mux_help() { echo "Usage: mux -a(ttach) <session> | -d(iceware) | -l(ist) | -p <profile1,profile2...>"; }
-  while getopts ':a:dhlp:' flag; do case "$flag" in
+  mux_help() { echo "Usage: mux -a(ttach) <session> | -d(iceware) | -l(ist) | -p <profile1,profile2...> | -v(scode)"; }
+  while getopts ':a:dhlp:v' flag; do case "$flag" in
     a) tmux new-session -A -s "$OPTARG" ;;
     d) tmux new-session -s "$(diceware -l 2)" ;;
     h) mux_help ;;
     l) tmuxp ls ;;
     p) tmuxp load "${OPTARG/,/ }" -y ;;
+    v) tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -s vscode ;;
     *) mux_help; return 1 ;;
   esac; done
 }
