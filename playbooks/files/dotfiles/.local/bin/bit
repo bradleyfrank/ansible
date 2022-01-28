@@ -72,7 +72,7 @@ usage() {
 }
 
 usage_create() {
-  echo "branch create [-h] | [-r <repo> -f <name>|-i] [-n <name>] [-p|-w]"
+  echo "bit create [-h] | [-r <repo> -f <name>|-i] [-n <name>] [-p|-w]"
   echo "-f <name>   Branch to branch from"
   echo "-i          Force interactive selection of repo and/or branch"
   echo "-n          Name of the new branch"
@@ -82,7 +82,7 @@ usage_create() {
 }
 
 usage_pull() {
-  echo "branch pull [-h] | [-r <repo>|-i] [-p|-w]"
+  echo "bit pull [-h] | [-r <repo>|-i] [-p|-w]"
   echo "-i          Force interactive selection of repo"
   echo "-r <repo>   Repository to branch from"
   echo "-p          Opens the branch in a tmux pane in the same window (default)"
@@ -90,7 +90,7 @@ usage_pull() {
 }
 
 usage_delete() {
-  echo "branch delete"
+  echo "bit delete"
 }
 
 main() {
