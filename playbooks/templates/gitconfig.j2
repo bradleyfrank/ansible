@@ -2,12 +2,12 @@
   co = checkout
   graph = log --oneline --decorate --graph --all
   history = log --full-history --
+  keep = stash --include-untracked
   last = log -1 HEAD --stat
   ll = log --oneline
   s = switch
   sb = status -sb
   search = !git rev-list --all | xargs git grep -F
-  stash = stash --include-untracked
   tags = tag -l --sort=v:refname
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
