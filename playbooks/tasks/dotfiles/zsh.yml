@@ -19,7 +19,6 @@
     url: https://raw.githubusercontent.com/bradleyfrank/cmarks/main/cmarks
     dest: "{{ zsh['functions'] }}/"
     mode: 0644
-  tags: core
 
 - name: Find all zsh completions and sources  # run last to ensure files exist
   ansible.builtin.find:
@@ -28,7 +27,6 @@
       - "{{ zsh['completions'] }}"
       - "{{ zsh['functions'] }}"
   register: find_zsh_source_dirs
-  tags: always
 
 - name: Get zsh version
   ansible.builtin.shell: |
@@ -36,8 +34,8 @@
       Darwin) brew info zsh --json | jq -r '.[].installed[0].version' ;;
       Linux)  rpm --query --queryformat '%{VERSION}' zsh ;;
     esac
+  changed_when: false
   register: zsh_version
-  tags: always
 
 - name: Apply zshrc template
   vars:
@@ -49,4 +47,3 @@
     backup: true
   register: _backup_zshrc
   notify: Process backups
-  tags: always

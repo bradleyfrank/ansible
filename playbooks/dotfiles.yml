@@ -28,35 +28,14 @@
       loop: ['Projects', 'Build', 'Scratch', 'Reference', 'Logs']
       tags: core
 
-    - name: Create dotfile directory structure
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        state: directory
-        mode: 0755
-      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
-      loop_control:
-        label: "{{ item['path'] }}"
-      when: item['state'] == 'directory'
-      tags: core
-
     - name: Install dotfiles
-      ansible.builtin.copy:
-        src: "{{ item['src'] }}"
-        dest: "{{ ansible_user_dir }}/{{ item['path'] }}"
-        mode: 0644
-      loop: "{{ lookup('community.general.filetree', 'dotfiles/') }}"
-      loop_control:
-        label: "{{ item['path'] }}"
-      when: item['state'] == 'file'
-      tags: core
-
-    - name: Make scripts executable
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin"
-        state: directory
-        mode: 0755
-        recurse: true
-      tags: core
+      ansible.posix.synchronize:
+        src: dotfiles/
+        dest: "{{ ansible_user_dir }}/"
+        compress: false
+        owner: false
+        group: false
+      tags: [core, dotfiles]
 
     - name: Install themes for bat
       ansible.builtin.command: "bat cache --build"
@@ -185,4 +164,4 @@
 
     - name: Import Zsh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
-      tags: zsh
+      tags: [core, zsh, dotfiles]

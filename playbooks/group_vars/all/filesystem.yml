@@ -14,6 +14,10 @@ glow_config_path:
   Fedora: "{{ ansible_user_dir }}/.config"
   MacOSX: "{{ ansible_user_dir }}/Library/Preferences/glow"
 
+guid:
+  Fedora: "{{ ansible_user_id }}"
+  MacOSX: "staff"
+
 k9s_config_path:
   Fedora: "{{ ansible_user_dir }}/.config"
   MacOSX: "{{ ansible_user_dir }}/Library/Preferences"
