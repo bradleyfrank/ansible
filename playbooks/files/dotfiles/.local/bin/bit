@@ -106,15 +106,12 @@ usage_delete() {
 }
 
 usage_clone() {
-  echo "bit clone [-h] | [-o <org>|-u <url>]"
-  echo "-o          Specify org or user"
-  echo "-u          URL of Git repo (https or ssh)"
+  echo "bit clone [-h] | [<url>]"
 }
 
 main() {
   local OPTIND subcommand
-  local projects_dir open_in interactive in_git_repo gitdir \
-        worktree gh_repo org_name user repo_path
+  local projects_dir open_in interactive in_git_repo gitdir worktree gh_repo org_name repo_path
   declare -r true=0 false=1
 
   projects_dir="$HOME/Development/Projects"
@@ -138,7 +135,7 @@ main() {
       while getopts ':f:hinpr:w' flag; do
         case "$flag" in
           f) branch_from="$OPTARG" ;;
-          h) usage_create ;;
+          h) usage_create; exit 0 ;;
           i) interactive=$true ;;
           n) new_branch="$OPTARG" ;;
           p) open_in="pane" ;;
@@ -148,6 +145,7 @@ main() {
          \?) echo "Invalid option: $OPTARG" >&2; usage_create; exit 1 ;;
         esac
       done
+
       get_repo_path
       create_worktree_new
       open_in_tmux
@@ -156,7 +154,7 @@ main() {
     pull)
       while getopts ':hipr:w' flag; do
         case "$flag" in
-          h) usage_pull ;;
+          h) usage_pull; exit 0 ;;
           i) interactive=$true ;;
           p) open_in="pane" ;;
           r) repo_name="$OPTARG" ;;
@@ -165,6 +163,7 @@ main() {
          \?) echo "Invalid option: $OPTARG" >&2; usage_pull; exit 1 ;;
         esac
       done
+
       get_repo_path
       create_worktree_from_origin
       open_in_tmux
@@ -173,11 +172,13 @@ main() {
     delete)
       while getopts 'h' flag; do
         case "$flag" in
-          h) usage_delete ;;
+          h) usage_delete; exit 0 ;;
           *) echo "Invalid option" >&2; usage_delete; exit 1 ;;
         esac
       done
+
       gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" || return 1
+
       while read -r worktree; do
         if [[ -n "$worktree" ]]; then
           git worktree remove "$worktree"
@@ -193,24 +194,18 @@ main() {
       ;;
 
     clone)
-      while getopts ':ho:u:' flag; do
+      while getopts 'h' flag; do
         case "$flag" in
-          h) usage_clone ;;
-          o) org_name="$OPTARG" ;;
-          u) repo_url="$OPTARG" ;;
-          :) echo "Must supply an argument to -$OPTARG." >&2; usage_clone; exit 1 ;;
-         \?) echo "Invalid option: $OPTARG" >&2; usage_clone; exit 1 ;;
+          h) usage_clone; exit 0 ;;
+          *) echo "Invalid option" >&2; usage_clone; exit 1 ;;
         esac
       done
 
-      if [[ -n "$repo_url" ]]; then
-        repo_name="$(basename "$repo_url")"
-        repo_name="${repo_name%%.*}"
-      else
-        user="$(gh api user --jq '.login')"
+      if [[ -z $1 ]]; then
+        org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | _fzf --no-multi)"
         #shellcheck disable=SC2016
         gh_repo="$(
-          gh api graphql --paginate --field owner="${org_name:-$user}" --raw-field query='
+          gh api graphql --paginate --field owner="$org_name" --raw-field query='
             query ($owner: String!, $endCursor: String) {
               repositoryOwner(login: $owner) {
                 repositories(first: 30, after: $endCursor) {
@@ -219,12 +214,19 @@ main() {
                 }
               }
             }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-            | fzf --no-multi --preview='git log --pretty=reference origin/{}'
+            | _fzf --no-multi --preview='git log --pretty=reference origin/{}'
         )"
         [[ -z $gh_repo ]] && exit 1
         repo_url="git@github.com:${gh_repo}.git"
         repo_name="$(basename "$gh_repo")"
+      elif git ls-remote --quiet "$1" 2> /dev/null; then
+        repo_url="$1"
+        repo_name="$(basename "$repo_url")"
+        repo_name="${repo_name%%.*}"
+      else
+        exit 1
       fi
+
       clone_repo
       open_in="window"
       open_in_tmux
