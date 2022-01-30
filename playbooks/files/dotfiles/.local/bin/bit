@@ -5,7 +5,7 @@
 # Author: Brad Frank
 # Date: May 2021
 # Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
-# Requires: tmux, git, fzf
+# Requires: tmux, git, fzf, gh
 #
 
 _fzf() {
@@ -58,6 +58,17 @@ create_worktree_from_origin() {
   git reset --hard origin/"$new_branch"
 }
 
+clone_repo() {
+  local tmp_repo
+  repo_path="$projects_dir/$repo_name"
+  mkdir --parents "$repo_path" || exit 1
+  tmp_repo="$(mktemp --directory)"
+  git clone "$repo_url" "$tmp_repo/$repo_name"
+  cd "$tmp_repo/$repo_name" || exit 1
+  repo_branch="$repo_path/$(git branch --show-current)"
+  mv --no-target-directory "$tmp_repo/$repo_name" "$repo_branch"
+}
+
 open_in_tmux() {
   case $open_in in
     window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
@@ -68,7 +79,8 @@ open_in_tmux() {
 usage() {
   usage_create; echo
   usage_pull; echo
-  usage_delete
+  usage_delete; echo
+  usage_clone
 }
 
 usage_create() {
@@ -90,12 +102,19 @@ usage_pull() {
 }
 
 usage_delete() {
-  echo "bit delete"
+  echo "bit delete [-h]"
+}
+
+usage_clone() {
+  echo "bit clone [-h] | [-o <org>|-u <url>]"
+  echo "-o          Specify org or user"
+  echo "-u          URL of Git repo (https or ssh)"
 }
 
 main() {
   local OPTIND subcommand
-  local projects_dir open_in interactive in_git_repo gitdir worktree
+  local projects_dir open_in interactive in_git_repo gitdir \
+        worktree gh_repo org_name user repo_path
   declare -r true=0 false=1
 
   projects_dir="$HOME/Development/Projects"
@@ -116,9 +135,10 @@ main() {
   case "$subcommand" in
 
     create)
-      while getopts ':f:inpr:w' flag; do
+      while getopts ':f:hinpr:w' flag; do
         case "$flag" in
           f) branch_from="$OPTARG" ;;
+          h) usage_create ;;
           i) interactive=$true ;;
           n) new_branch="$OPTARG" ;;
           p) open_in="pane" ;;
@@ -134,8 +154,9 @@ main() {
       ;;
 
     pull)
-      while getopts ':ipr:w' flag; do
+      while getopts ':hipr:w' flag; do
         case "$flag" in
+          h) usage_pull ;;
           i) interactive=$true ;;
           p) open_in="pane" ;;
           r) repo_name="$OPTARG" ;;
@@ -150,6 +171,12 @@ main() {
       ;;
 
     delete)
+      while getopts 'h' flag; do
+        case "$flag" in
+          h) usage_delete ;;
+          *) echo "Invalid option" >&2; usage_delete; exit 1 ;;
+        esac
+      done
       gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" || return 1
       while read -r worktree; do
         if [[ -n "$worktree" ]]; then
@@ -163,6 +190,44 @@ main() {
           | awk '{print $2}' \
           | _fzf --multi --preview='git log {} --' --delimiter / --with-nth -1
       )"
+      ;;
+
+    clone)
+      while getopts ':ho:u:' flag; do
+        case "$flag" in
+          h) usage_clone ;;
+          o) org_name="$OPTARG" ;;
+          u) repo_url="$OPTARG" ;;
+          :) echo "Must supply an argument to -$OPTARG." >&2; usage_clone; exit 1 ;;
+         \?) echo "Invalid option: $OPTARG" >&2; usage_clone; exit 1 ;;
+        esac
+      done
+
+      if [[ -n "$repo_url" ]]; then
+        repo_name="$(basename "$repo_url")"
+        repo_name="${repo_name%%.*}"
+      else
+        user="$(gh api user --jq '.login')"
+        #shellcheck disable=SC2016
+        gh_repo="$(
+          gh api graphql --paginate --field owner="${org_name:-$user}" --raw-field query='
+            query ($owner: String!, $endCursor: String) {
+              repositoryOwner(login: $owner) {
+                repositories(first: 30, after: $endCursor) {
+                  pageInfo { hasNextPage, endCursor }
+                  nodes { nameWithOwner }
+                }
+              }
+            }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
+            | fzf --no-multi --preview='git log --pretty=reference origin/{}'
+        )"
+        [[ -z $gh_repo ]] && exit 1
+        repo_url="git@github.com:${gh_repo}.git"
+        repo_name="$(basename "$gh_repo")"
+      fi
+      clone_repo
+      open_in="window"
+      open_in_tmux
       ;;
 
   esac

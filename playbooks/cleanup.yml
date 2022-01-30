@@ -11,6 +11,7 @@
       - .k9s
       - .local/bin/aptsearch
       - .local/bin/branch
+      - .local/bin/clone
       - .local/bin/diff-so-fancy
       - .local/bin/gcp-kubeconfigs
       - .local/bin/gcpkonfig
