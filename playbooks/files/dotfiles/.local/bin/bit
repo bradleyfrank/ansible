@@ -111,7 +111,7 @@ usage_clone() {
 
 main() {
   local OPTIND subcommand
-  local projects_dir open_in interactive in_git_repo gitdir worktree gh_repo org_name repo_path
+  local projects_dir open_in interactive in_git_repo gitdir worktree gh_repo org_name repo_path repo_branch
   declare -r true=0 false=1
 
   projects_dir="$HOME/Development/Projects"
@@ -132,7 +132,7 @@ main() {
   case "$subcommand" in
 
     create)
-      while getopts ':f:hinpr:w' flag; do
+      while getopts ':f:hin:pr:w' flag; do
         case "$flag" in
           f) branch_from="$OPTARG" ;;
           h) usage_create; exit 0 ;;
