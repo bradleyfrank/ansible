@@ -20,13 +20,6 @@
   when: find_kubectl['matched'] == 0
   tags: kubectl
 
-- name: Download fubectl
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/kubermatic/fubectl/master/fubectl.source
-    dest: "{{ zsh['functions'] }}/fubectl"
-    mode: 0644
-  tags: fubectl
-
 - name: Install Krew
   block:
     - name: Download Krew installer

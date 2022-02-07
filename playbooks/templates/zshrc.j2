@@ -111,7 +111,6 @@ alias lsports='lsof -i -P -n'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
-
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
@@ -187,12 +186,10 @@ source /usr/share/fzf/shell/key-bindings.zsh
 source {{ file['path'] }}
 {% endfor %}
 {% if work_system %}
-source {{ ansible_user_dir }}/.infractl/orm
 source {{ ansible_user_dir }}/.infractl/secrets
 {% endif %}
 
 
-complete -F __start_kubectl k
 {% if work_system %}
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault

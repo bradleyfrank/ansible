@@ -9,6 +9,7 @@
       - .config/p10k.zsh
       - .dotfiles
       - .k9s
+      - .infractl/orm
       - .local/bin/aptsearch
       - .local/bin/branch
       - .local/bin/clone
@@ -25,6 +26,7 @@
       - .local/share/fubectl
       - .local/share/icons
       - .local/share/kubectl
+      - .local/share/zsh/functions/fubectl
       - .local/share/zsh-completion
       - .local/share/zshrc
       - .tmux.conf
