@@ -8,9 +8,9 @@
 # Requires: fzf
 #
 
-_fzf_g() { fzf --select-1 --exit-0 --ansi -i --height=50% --reverse --inline-info --border "$*"; }
-_fzf_g_multi() { _fzf_g --multi "$*"; }
-_fzf_g_no_multi() { _fzf_g --no-multi "$*"; }
+_fzf_g() { fzf --select-1 --exit-0 --ansi -i --height=50% --reverse --inline-info --border "$@"; }
+_fzf_g_multi() { _fzf_g --multi "$@"; }
+_fzf_g_no_multi() { _fzf_g --no-multi "$@"; }
 
 _gc_project() {
     gcloud projects list --format="value(name,projectId)" | grep "${1:-}" \
@@ -21,12 +21,18 @@ _gc_container() {
     gcloud --project "$1" container images list 2> /dev/null | grep -E "${2:-}" | _fzf_g_no_multi
 }
 
+_save_and_exec() {
+    local cmd; cmd="$(tr -s ' ' <<< "$1")"
+    fc -R =(echo "$cmd")
+    eval "$cmd"
+}
+
 # [gc] wrapper for gcloud; usage: gc [-p|--project]
 gc() {
     local project _project
     zparseopts -D -E -- p:=project -project:=project
     _project="$(_gc_project "${project[2]}")"
-    gcloud --project "$_project" "$*"
+    _save_and_exec "gcloud --project $_project $*"
 }
 
 # [gpu] gcloud project unset
@@ -77,6 +83,7 @@ gtags() {
 }
 
 # [gssh] allows you to ssh into a GCS instance
+#   - forked from: https://github.com/caedus41/fubectl
 gssh() {
     local project _project
     zparseopts -E -D -- p:=project -project:=project
