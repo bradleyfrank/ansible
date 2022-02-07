@@ -1,29 +1,27 @@
 ---
 
-- name: Get tmux version
-  ansible.builtin.command: tmux -V
-  register: tmux_version
-  changed_when: false
-  tags: [tmux, core]
+- name: Ensure ~/.config/tmux directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/tmux"
+    state: directory
+    mode: 0755
 
 - name: Install tmux config
-  vars:
-    tmux_semver: "{{ tmux_version['stdout'].split(' ') | last }}"
   ansible.builtin.template:
     src: tmux.conf.j2
-    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    dest: "{{ ansible_user_dir }}/.config/tmux/{{ item }}.conf"
     mode: 0644
     backup: true
-  register: _backup_tmux_conf
   notify: Process backups
-  tags: [tmux, core]
+  loop:
+    - tmux
+    - minimal
 
 - name: Check for battery
   ansible.builtin.stat:
     path: /sys/class/power_supply/BAT0
   register: battery
   when: "'Fedora' in ansible_distribution"
-  tags: [tmux, core]
 
 - name: Install tmux script
   vars:
@@ -35,4 +33,3 @@
     backup: true
   register: _backup_tmux_status
   notify: Process backups
-  tags: [tmux, core]

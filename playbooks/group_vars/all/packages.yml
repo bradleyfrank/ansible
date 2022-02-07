@@ -57,6 +57,7 @@ rpms:
     - ripgrep
     - ruby
     - ShellCheck
+    - starship
     - stow
     - strace
     - tidy
@@ -205,6 +206,7 @@ homebrew:
     - shfmt
     - slides
     - ssh-copy-id
+    - starship
     - stow
     - tidy-html5
     - tmux
@@ -279,6 +281,8 @@ flatpaks:
     - name: elementary
       url: https://flatpak.elementary.io/repo.flatpakrepo
   packages:
+    - name: com.github.avojak.warble
+      remote: elementary
     - name: com.github.phase1geo.annotator
       remote: elementary
     - name: com.github.junrrein.PDFSlicer
