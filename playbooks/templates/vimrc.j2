@@ -7,8 +7,11 @@ highlight! link SignColumn LineNr
 
 let g:airline_skip_empty_sections = 1
 let g:airline_theme='sol'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 let g:indentLine_char = '│'
 let g:indentLine_color_term = 254
+let g:netrw_winsize = 30
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
