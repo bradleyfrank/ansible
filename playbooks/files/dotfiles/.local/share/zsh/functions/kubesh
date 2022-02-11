@@ -19,7 +19,7 @@ _k_ctx() {
     kubectl config get-contexts --output name | grep "${1:-}" | _fzf_k_no_multi
 }
 
-_k_ns() {
+_k_namespace() {
     kubectl --context "$1" get namespaces --output name | grep "${2:-}" \
         | awk --field-separator '/' '{print $2}' | _fzf_k_no_multi
 }
@@ -64,13 +64,24 @@ alias krew="kubectl krew"
 # [stern] alias for "kubectl stern"
 alias stern="kubectl stern"
 
-# [k] wrapper for kubectl; usage: k [-x|--context] [-n|--namespace]
+# [k] wrapper for kubectl; usage: k [-x|--context] [-n|--namespace] [-A|--all-namespaces]
 k() {
-    local context namespace ctx ns
-    zparseopts -D -E -- x:=context -context:=context n:=namespace -namespace:=namespace
+    local context namespace all_namespaces ctx ns
+    zparseopts -D -E -- \
+        x:=context -context:=context \
+        n:=namespace -namespace:=namespace \
+        A=all_namespaces -all-namespaces=all_namespaces
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
-    _save_and_exec "kubectl --context $ctx --namespace $ns $*"
+    if [[ -n $all_namespace && -n $namespace ]]; then
+        return 1
+    elif [[ -n $all_namespaces ]]; then
+        _save_and_exec "kubectl --context $ctx --all-namespaces $*"
+    elif [[ -n $namespace ]]; then
+        ns="$(_k_namespace "$ctx" "${namespace[2]}")"
+        _save_and_exec "kubectl --context $ctx --namespace $ns $*"
+    else
+        _save_and_exec "kubectl --context $ctx $*"
+    fi
 }
 
 # [kcm] show configmaps; usage: kcm [-x|--context] [-n|--namespace] [configmap]
@@ -79,7 +90,7 @@ kcm() {
     local green='\033[0;32m' yellow='\033[0;33m' nc='\033[0m'
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     configmap="$(kubectl --context "$ctx" --namespace "$ns" get configmaps --output name \
         | grep "${1:-}" | _fzf_k_no_multi --delimiter '/' --with-nth 2)"
     while read -r key; do
@@ -106,7 +117,7 @@ kdebug() {
     local context namespace ctx ns
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     _save_and_exec "kubectl run --context $ctx --namespace $ns $(id -un)-debug --rm \
         --restart='Never' --stdin --tty --image=ubuntu:rolling -- bash"
 }
@@ -116,7 +127,7 @@ kdes() {
     local context namespace ctx ns kind resource
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     [[ -n "$1" ]] && kind="$1" || kind="$(_k_apis "$ctx" "$ns")"
     [[ -n "$2" ]] && resource="$2" || resource="$(_k_resource "$ctx" "$ns" "$kind")"
     _save_and_exec "kubectl --context $ctx --namespace $ns describe $resource"
@@ -127,7 +138,7 @@ kex() {
     local context namespace ctx ns pod container
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     pod="$(_k_resource "$ctx" "$ns" pods)"
     container="$(_k_container "$ctx" "$ns" "$pod")"
     _save_and_exec "kubectl --context $ctx --namespace $ns exec --stdin --tty $pod --container $container -- $*"
@@ -138,7 +149,7 @@ kfor() {
     local context namespace ctx ns pod container
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     pod="$(_k_resource "$ctx" "$ns" pods)"
     _save_and_exec "kubectl --context $ctx --namespace $ns "$pod" port-forward $1"
 }
@@ -151,7 +162,7 @@ kget() {
         n:=namespace -namespace:=namespace \
         o:=output -output:=output
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     format="${output[2]:-yaml}"; [[ $format =~ (json|yaml) ]] || return 1
     [[ -n "$1" ]] && kind="$1" || kind="$(_k_apis "$ctx" "$ns")"
     [[ -n "$2" ]] && resource="$2" || resource="$(_k_resource "$ctx" "$ns" "$kind")"
@@ -163,7 +174,7 @@ klog() {
     local context namespace ctx ns pod container
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     pod="$(_k_resource "$ctx" "$ns" pods)"
     container="$(_k_container "$ctx" "$ns" "$pod")"
     _save_and_exec "kubectl --context $ctx --namespace $ns logs $pod --container $container"
@@ -175,7 +186,7 @@ ksecret() {
     local green='\033[0;32m' yellow='\033[0;33m' nc='\033[0m'
     zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     secret=$(kubectl --context="$ctx" --namespace="$ns" get secrets | grep "$1" | _fzf_k_no_multi | awk '{print $1}')
     while read -r key; do
         cmd="kubectl --context $ctx --namespace=$ns get secret $secret --output json \
@@ -195,7 +206,7 @@ kwatch() {
         n:=namespace -namespace:=namespace \
         i:=interval -interval:=interval
     ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_ns "$ctx" "${namespace[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
     [[ -n "$1" ]] && kind="$1" || kind="$(_k_apis "$ctx" "$ns")"
     _save_and_exec "watch kubectl --context $ctx --namespace $ns get $kind"
 }
