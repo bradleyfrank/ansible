@@ -182,15 +182,12 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
-{% for file in zsh_source_files %}
-source {{ file['path'] }}
-{% endfor %}
+for completion in {{ zsh['completions'] }}/*; do source "$completion"; done
+for function in {{ zsh['functions'] }}/*; do source "$function"; done
+
+
 {% if work_system %}
 source {{ ansible_user_dir }}/.infractl/secrets
-{% endif %}
-
-
-{% if work_system %}
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 {% endif %}
