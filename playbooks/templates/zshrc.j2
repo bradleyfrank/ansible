@@ -12,7 +12,6 @@ PATH="$PATH:/usr/local/opt/gsed/libexec/gnubin"
 PATH="$PATH:/usr/local/opt/libtool/libexec/gnubin"
 PATH="$PATH:{{ python_user_path['MacOSX'] }}"
 PATH="$PATH:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
-PATH="$PATH:/opt/X11/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
@@ -71,7 +70,7 @@ alias gbranch='cd $(git worktree list --porcelain | grep -E "^worktree" | cut -d
 alias pipi='python3 -m pip install --user'
 alias pipr='python3 -m pip uninstall'
 alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
-  | xargs python3 -m pip install --user --upgrade'
+  | xargs --no-run-if-empty python3 -m pip install --user --upgrade'
 
 alias l='exa --color always --classify'
 alias la='exa --color always --classify --all'
@@ -129,7 +128,7 @@ zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
 zstyle ':completion:*' use-cache on                # "
 zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 
-WORDCHARS=${WORDCHARS//\/[&.;]}                    # Don't consider these part of the word
+WORDCHARS=${WORDCHARS//\/[&;]}                    # Don't consider these part of the word
 CORRECT_IGNORE_FILE='[_|.]*'                       # Skip correcting commands matching pattern
 HISTFILE=~/.zsh_history
 HISTSIZE=2000
@@ -182,22 +181,19 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
-{% for file in zsh_source_files %}
-source {{ file['path'] }}
-{% endfor %}
-{% if work_system %}
+for completion in {{ zsh['completions'] }}/*; do source "$completion"; done
+for function in {{ zsh['functions'] }}/*; do source "$function"; done
+
+
+{% if work_system -%}
 source {{ ansible_user_dir }}/.infractl/secrets
-{% endif %}
-
-
-{% if work_system %}
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 {% endif %}
 
 
 eval "$(dircolors $HOME/.dir_colors)"
-eval "$(zoxide init zsh --hook pwd)"
+eval "$(zoxide init zsh --hook pwd --cmd cd)"
 eval "$(starship init zsh)"
 {% if 'MacOSX' in ansible_distribution %}
 eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_private_keys | join(' ') }})"

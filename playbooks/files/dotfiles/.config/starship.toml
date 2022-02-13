@@ -37,3 +37,5 @@ format = 'via [${symbol}${pyenv_prefix}${version}]($style) '
 style = "bold fg:37"
 symbol = " "
 version_format = "${raw}"
+[git_status]
+style = "bold yellow"

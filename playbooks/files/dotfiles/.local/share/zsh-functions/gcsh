@@ -41,7 +41,7 @@ alias gpu='gcloud config unset project'
 # [gpl] list all GCP projects (table format)
 alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 
-# [gkube] generate kubectl credentials, usage: gkube <project1,project2,projectN>
+# [gkube] generate kubectl credentials
 gkube() {
     local projects project cluster format; format="value[separator=' '](zone,name)"
 
@@ -66,10 +66,11 @@ gkube() {
     done
 }
 
-# [gcreds] sets GCP project credentials via environment variables
+# [gcreds] sets GCP project credentials via environment variables; usage: gcreds [environment]
 gcreds() {
     local service_account
-    service_account="$(find "$HOME"/.infractl/ -type f -name '*.json' -exec basename {} .json \; | _fzf_g_no_multi)"
+    service_account="$(find "$HOME"/.infractl/ -type f -name '*.json' -exec basename {} .json \; \
+        grep "$1" | _fzf_g_no_multi)"
     export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.infractl/${service_account}.json"
 }
 

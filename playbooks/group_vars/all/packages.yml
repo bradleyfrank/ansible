@@ -30,6 +30,7 @@ rpms:
     - iftop
     - inxi
     - jq
+    - jo
     - k9s
     - kernel-devel  # openrazer
     - keychain
@@ -84,6 +85,7 @@ rpms:
       - calibre
       - code
       - flatpak
+      - fragments
       - ghostwriter
       - google-chrome-stable
       - google-noto-emoji-color-fonts
@@ -178,6 +180,7 @@ homebrew:
     - httpie
     - iftop
     - jq
+    - jo
     - k9s
     - keychain
     - kpcli
@@ -287,6 +290,7 @@ flatpaks:
       remote: elementary
     - name: com.github.junrrein.PDFSlicer
     - name: com.github.liferooter.textpieces
+    - name: com.github.rajsolai.textsnatcher
     - name: com.plexamp.Plexamp
     - name: io.github.seadve.Kooha
     - name: org.signal.Signal
