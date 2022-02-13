@@ -1,0 +1,44 @@
+pyenv() {
+  local ve version mode pip; pip=1
+
+  while getopts ':acdhn:pv:' flag; do
+    case "$flag" in
+      a) mode=activate ;;
+      c) mode=create ;;
+      d) deactivate ; return $? ;;
+      h) echo "Usage: pyenv [-a(ctivate) [-n <name> -v <version> -p(ip)] | -c(reate)] | -d(eactivate)"
+         return 0
+         ;;
+      n) ve="$OPTARG" ;;
+      p) pip=0 ;;
+      v) version="$OPTARG" ;;
+      *) echo "Invalid argument." >&2 ; return 1 ;;
+    esac
+  done
+
+  _create() {
+    local ve_version; ve_version=0
+    [[ -z $ve ]] && ve="ve"
+    [[ -z $version ]] && version=$(python3 --version | grep -Po '3\.\d+')
+    [[ -d "$ve" ]] && ve_version="$(sed -rn 's/^version_info = (3\.[0-9]+).*$/\1/p' "$ve"/pyvenv.cfg)"
+    if [[ "$ve_version" -ne "$version" ]]; then
+      [[ -n $VIRTUAL_ENV ]] && deactivate
+      rm -rf "$ve"
+      virtualenv -p "$version" "$ve"
+    else
+      return 0
+    fi
+  }
+
+  _activate() {
+    ve="$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")"
+    source "$ve/bin/activate"
+    [[ $pip -eq 0 && -f requirements.txt ]] && "$ve/bin/pip" install -r requirements.txt
+  }
+
+  case "$mode" in
+    create)   _create   ;;
+    activate) _activate ;;
+    *)        _create && _activate ;;
+  esac
+}

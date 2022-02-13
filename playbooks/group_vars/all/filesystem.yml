@@ -35,5 +35,5 @@ sudoers:
   MacOSX: /private/etc/sudoers.d/99_ansible
 
 zsh:
-  completions: "{{ ansible_user_dir }}/.local/share/zsh/completions"
-  functions: "{{ ansible_user_dir }}/.local/share/zsh/functions"
+  completions: "{{ ansible_user_dir }}/.local/share/zsh-completions"
+  functions: "{{ ansible_user_dir }}/.local/share/zsh-functions"

@@ -1,5 +1,11 @@
 ---
 
+- name: Create completions directory
+  ansible.builtin.file:
+    path: "{{ zsh['completions'] }}"
+    state: directory
+    mode: 0755
+
 - name: Generate Zsh completions
   environment:
     PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
@@ -19,14 +25,6 @@
     url: https://raw.githubusercontent.com/bradleyfrank/cmarks/main/cmarks
     dest: "{{ zsh['functions'] }}/"
     mode: 0644
-
-- name: Find all zsh completions and sources  # run last to ensure files exist
-  ansible.builtin.find:
-    file_type: file
-    paths:
-      - "{{ zsh['completions'] }}"
-      - "{{ zsh['functions'] }}"
-  register: find_zsh_source_dirs
 
 - name: Get zsh version
   ansible.builtin.shell: |
