@@ -2,12 +2,14 @@
   co = checkout
   graph = log --oneline --decorate --graph --all
   history = log --full-history --
-  keep = stash --include-untracked
   last = log -1 HEAD --stat
   ll = log --oneline
   s = switch
   sb = status -sb
   search = !git rev-list --all | xargs git grep -F
+  std = stash drop
+  stp = stash pop
+  stu = stash --include-untracked
   tags = tag -l --sort=v:refname
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
@@ -36,6 +38,7 @@
   name = {{ ansible_user_gecos }}
   email = {{ email }}
 {% if work_system -%}
+  signingkey = 83AF816D0036A817
 [url "https://api:{{ github['work_token'] | trim('\n') }}@github.com/"]
   insteadOf = https://github.com/
 {% endif -%}

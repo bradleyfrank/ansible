@@ -1,0 +1,17 @@
+#
+# Creates a SSH tunnel to the bastion host to run psql commands.
+# Author: Brad Frank
+# Date: Feb 2022
+# Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
+# Requires: postgresql, kubectl, fzf
+#
+
+psqldb() {
+  [[ -z $DB_HOST || -z $DB_PASSWORD || -z $DB_USER ]] && { echo "Run \`kdb\` first." >&2; return 1; }
+  proxy="$(sed -rn 's/^(\t|\s)+ProxyJump\s(bastion.+)$/\2/p' "$HOME"/.ssh/config \
+    | fzf --select-1 --exit-0 --no-multi -i --ansi --height=50% --reverse --border)"
+  ssht create --remote "$DB_HOST" --proxy "$proxy" --port 5432
+  PGPASSWORD="${DB_PASSWORD}" psql -h localhost -U "$DB_USER"
+  ssht exit
+  while read -r db_env; do echo unset "$db_env"; done <<< "$(env | grep -Eo '^DB_[A-Z]+')"
+}

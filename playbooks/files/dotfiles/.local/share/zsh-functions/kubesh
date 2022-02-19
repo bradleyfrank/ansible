@@ -180,6 +180,17 @@ klog() {
     _save_and_exec "kubectl --context $ctx --namespace $ns logs $pod --container $container"
 }
 
+# [kdb] export DB_* environment variables from K8s secrets; usage: kdb [-x|--context] [-n|--namespace]
+kdb() {
+    local context namespace ctx ns secret
+    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
+    ctx="$(_k_ctx "${context[2]}")"
+    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
+    while read -r secret; do export "$secret"; done <<< "$(
+        kubectl --context="$ctx" --namespace="$ns" get secrets --output json \
+        | jq -jr '.items[1].data|with_entries(select(.key|match("DB_";"i")))|to_entries[]|"\(.key)=\(.value|@base64d)\n"')"
+}
+
 # [ksecret] base64 decrypt secrets; usage: ksecret [-x|--context] [-n|--namespace] [secret]
 ksecret() {
     local context namespace ctx ns secret key cmd cmds; cmds=$(mktemp)
@@ -215,7 +226,7 @@ kwatch() {
 khelp() {
     echo "helper aliases and functions for kubectl"
     echo
-    grep -E '^# \[.+\]' "${(%):-%x}"
+    grep --extended-regexp '^# \[.+\]' "${(%):-%x}"
 }
 
 complete -F __start_kubectl k
