@@ -1,3 +1,10 @@
+#
+# Manages virtualenvs and can install pip requirements.
+# Author: Brad Frank
+# Date: Oct 2021
+# Tested: zsh 5.8 (x86_64-apple-darwin19.6.0)
+#
+
 pyenv() {
   local ve version mode pip; pip=1
 
