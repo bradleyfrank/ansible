@@ -114,7 +114,7 @@ main() {
   declare -r true=0 false=1
 
   projects_dir="$HOME/Development/Projects"
-  open_in="pane"
+  open_in="window"
   interactive=$false
   in_git_repo=$false
 
