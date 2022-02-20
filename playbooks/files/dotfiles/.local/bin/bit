@@ -35,7 +35,7 @@ create_worktree_new() {
   fi
 
   branch_path="$repo_path/$branch_from"
-  [[ -z $new_branch ]] && new_branch="${branch_from}_$(date +%y%b%d-%H%M)"
+  [[ -z $new_branch ]] && new_branch="$(date +%y%b%d-%H%M)-${branch_from}"
   repo_branch="$repo_path/$new_branch"
   cd "$branch_path" || exit 1
   git worktree add "$repo_branch"
@@ -114,7 +114,7 @@ main() {
   declare -r true=0 false=1
 
   projects_dir="$HOME/Development/Projects"
-  open_in="pane"
+  open_in="window"
   interactive=$false
   in_git_repo=$false
 
