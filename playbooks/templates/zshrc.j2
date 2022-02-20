@@ -84,21 +84,17 @@ alias lS='exa --color always --classify --long --all --group-directories-first -
 alias ls='ls --color --classify --human-readable'
 alias lt='exa --color always --classify --long --all --sort time'
 
-alias all='which -a'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
-alias dw='diceware'
 alias e='extract'
 alias glances='glances --theme-white'
 alias help='run-help'
 alias isodate='date --iso-8601=seconds'
-alias lower='tr "[:upper:]" "[:lower:]"'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
-alias show='whence -f'
 alias tf='terraform'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
@@ -113,10 +109,10 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
+dw() { diceware -d - -n "${1:-5}"; }
+numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
+show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-{% if 'Fedora' in ansible_distribution and 'gnome' in desktop_env %}
-gedit() { nohup /usr/bin/gedit "$@" &> /dev/null &; }
-{% endif %}
 
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
@@ -135,7 +131,7 @@ HISTSIZE=2000
 SAVEHIST=5000
 
 setopt appendhistory           # Immediately append history instead of overwriting
-setopt autocd                  # If only directory path is entered, cd there.
+setopt autocd                  # Change directory without `cd`
 setopt correct                 # Auto correct mistakes
 setopt extended_history        # Save each command’s beginning timestamp and the duration
 setopt extendedglob            # Extended globbing. Allows using regular expressions with *

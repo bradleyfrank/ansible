@@ -25,6 +25,7 @@ pypi_packages:
   - archivebox
   - beets
   - click  # https://github.com/tmux-python/tmuxp/pull/679
+  - diceware
   - Jinja2
   - tmuxp
   - virtualenv
