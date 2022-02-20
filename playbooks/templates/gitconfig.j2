@@ -4,9 +4,11 @@
   history = log --full-history --
   last = log -1 HEAD --stat
   ll = log --oneline
+  maketag = !git describe --tags --abbrev=0 | awk -vFS=. -vOFS=. '{$NF++;print}' | xargs -I{} git tag {}
   s = switch
   sb = status -sb
   search = !git rev-list --all | xargs git grep -F
+  showtag = describe --tags --abbrev=0
   std = stash drop
   stp = stash pop
   stu = stash --include-untracked
