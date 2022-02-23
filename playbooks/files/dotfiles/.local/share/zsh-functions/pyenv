@@ -13,7 +13,7 @@ pyenv() {
       a) mode=activate ;;
       c) mode=create ;;
       d) deactivate ; return $? ;;
-      h) echo "Usage: pyenv [-a(ctivate) [-n <name> -v <version> -p(ip)] | -c(reate)] | -d(eactivate)"
+      h) echo "Usage: pyenv [-c(reate) [-n <name> -v <version>] | -a(ctivate)] | -d(eactivate)"
          return 0
          ;;
       n) ve="$OPTARG" ;;
@@ -39,8 +39,9 @@ pyenv() {
 
   _activate() {
     ve="$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")"
+    #shellcheck disable=SC1091
     source "$ve/bin/activate"
-    [[ $pip -eq 0 && -f requirements.txt ]] && "$ve/bin/pip" install -r requirements.txt
+    if [[ $pip -eq 0 && -f requirements.txt ]]; then "$ve/bin/pip" install -r requirements.txt; fi
   }
 
   case "$mode" in
