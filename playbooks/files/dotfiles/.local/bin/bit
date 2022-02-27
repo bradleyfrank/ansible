@@ -35,7 +35,7 @@ create_worktree_new() {
   fi
 
   branch_path="$repo_path/$branch_from"
-  [[ -z $new_branch ]] && new_branch="$(date +%y%b%d-%H%M)-${branch_from}"
+  [[ -z $new_branch ]] && new_branch="$(date +%Y-%b-%d-%H%M)-${branch_from}"
   repo_branch="$repo_path/$new_branch"
   cd "$branch_path" || exit 1
   git worktree add "$repo_branch"
@@ -70,7 +70,7 @@ clone_repo() {
 
 open_in_tmux() {
   case $open_in in
-    window) tmux new-window -n "$repo_name" -c "$repo_branch" ;;
+    window) tmux new-window -n "$(basename "$repo_branch")" -c "$repo_branch" ;;
     pane)   tmux split-window -h -c "$repo_branch" ;;
   esac
 }

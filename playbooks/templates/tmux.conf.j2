@@ -51,7 +51,7 @@ bind 'P' display-popup -E "zsh"
 bind 'c' new-window -c "~/"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
-bind 'r' run-shell "tmux rename-window $(git branch --show-current 2> /dev/null || #{b:pane_current_path})"
+bind 'r' run-shell "tmux rename-window $(git branch --show-current 2> /dev/null || echo #{b:pane_current_path})"
 bind 'u' source-file "~/.config/tmux/tmux.conf"
 bind 'v' select-layout even-horizontal
 bind 'y' set synchronize-panes
