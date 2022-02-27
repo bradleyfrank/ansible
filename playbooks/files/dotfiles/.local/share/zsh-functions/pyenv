@@ -13,7 +13,7 @@ pyenv() {
       a) mode=activate ;;
       c) mode=create ;;
       d) deactivate ; return $? ;;
-      h) echo "Usage: pyenv [-c(reate) [-n <name> -v <version>] | -a(ctivate)] | -d(eactivate)"
+      h) echo "Usage: pyenv [-c(reate) [-n <name> -v <version>] | -a(ctivate) -p(ip)] | -d(eactivate)"
          return 0
          ;;
       n) ve="$OPTARG" ;;
