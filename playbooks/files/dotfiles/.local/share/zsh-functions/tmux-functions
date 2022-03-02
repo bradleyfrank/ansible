@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+tmux_rename_window() {
+  cwd="$1"
+  dir="$(basename "$cwd")"
+  repo="$(basename "$(dirname "$cwd")")"
+
+  cd "$cwd" || return 1
+
+  if branch_name="$(git branch --show-current 2>/dev/null)"; then
+    window_name=" ${repo} (${branch_name})"
+  else
+    window_name=" $dir"
+  fi
+
+  tmux rename-window "$window_name"
+  cd - || return 1
+}
+
+tmux_open_project() {
+  find ~/Development/Projects -mindepth 2 -maxdepth 2 -type d \
+    | fzf --ansi -i --height=50% --reverse -0 --inline-info --border --no-multi --preview='exa --color always --classify --long --all --git {} --' --delimiter / --with-nth -2,-1 \
+    | xargs -I{} tmux new-window -c {}
+}

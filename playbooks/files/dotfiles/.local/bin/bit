@@ -8,32 +8,53 @@
 # Requires: tmux, git, fzf, gh
 #
 
-_fzf_b_multi() { fzf --multi --ansi -i --height=50% --reverse -0 --inline-info --border "$@"; }
-_fzf_b_no_multi() { fzf --no-multi --ansi -i --height=50% --reverse -0 --inline-info --border "$@"; }
+usage() {
+  if [[ "$1" =~ (create|all) ]]; then
+    echo "bit create [-h] | [-r <repo> -f <name>] [-n <name>] [-p|-w]"
+    echo "-f <name>   Branch to branch from"
+    echo "-n          Name of the new branch"
+    echo "-r <repo>   Repository to branch from"
+    echo "-p          Opens the branch in a tmux pane in the same window (default)"
+    echo "-w          Opens the branch in a new tmux window"
+  fi
 
-find_dir_fzf() {
-  find "$1" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | _fzf_b_multi -1
+  if [[ "$1" =~ (pull|all) ]]; then
+    echo "bit pull [-h] | [-r <repo>] [-p|-w]"
+    echo "-r <repo>   Repository to branch from"
+    echo "-p          Opens the branch in a tmux pane in the same window (default)"
+    echo "-w          Opens the branch in a new tmux window"
+  fi
+
+  if [[ "$1" =~ (delete|all) ]]; then
+    echo "bit delete [-h]"
+  fi
+
+  if [[ "$1" =~ (clone|all) ]]; then
+    echo "bit clone [-h] | [<url>]"
+  fi
 }
 
-get_repo_path() {
-  gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" && in_git_repo=$true
+_fzf_b() { fzf --ansi -i --height=50% --reverse -0 --inline-info --border "$@"; }
+_fzf_b_multi() { _fzf_b --multi "$@"; }
+_fzf_b_no_multi() { _fzf_b --no-multi "$@"; }
 
-  if [[ -z $repo_name && ( $interactive -eq $true || $in_git_repo -eq $false ) ]]; then
+find_dir_fzf() { find "$1" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | _fzf_b_multi -1; }
+
+get_repo_path() {
+  if [[ -z $repo_name && $in_git_repo -eq $false ]]; then
     repo_name="$(find_dir_fzf "$projects_dir")"
   elif [[ -z $repo_name && $in_git_repo -eq $true ]]; then
     repo_name="$(basename "$(dirname "$gitdir")")"
   fi
-
   repo_path="$projects_dir/$repo_name"
 }
 
 create_worktree_new() {
-  if [[ -z $branch_from && ( $interactive -eq $true || $in_git_repo -eq $false ) ]]; then
+  if [[ -z $branch_from && $in_git_repo -eq $false ]]; then
     branch_from="$(find_dir_fzf "$repo_path")"
   elif [[ -z $branch_from && $in_git_repo -eq $true ]]; then
     branch_from="$(basename "$gitdir")"
   fi
-
   branch_path="$repo_path/$branch_from"
   [[ -z $new_branch ]] && new_branch="$(date +%Y-%b-%d-%H%M)-${branch_from}"
   repo_branch="$repo_path/$new_branch"
@@ -45,9 +66,9 @@ create_worktree_from_origin() {
   git fetch origin --prune
   new_branch="$(
     git for-each-ref --format='%(refname:short)' refs/remotes \
-    | cut --delimiter / --fields 2 \
-    | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
-    | _fzf_b_no_multi --preview='git log --pretty=reference origin/{}'
+      | cut --delimiter / --fields 2 \
+      | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
+      | _fzf_b_no_multi --preview='git log --pretty=reference origin/{}'
   )"
   repo_branch="$repo_path/$new_branch"
   git worktree add "$repo_branch"
@@ -55,6 +76,57 @@ create_worktree_from_origin() {
   git branch --set-upstream-to origin/"$new_branch" "$new_branch"
   git pull
   git reset --hard origin/"$new_branch"
+}
+
+delete_worktrees() {
+  local worktree
+
+  if [[ in_git_repo -eq $false ]]; then
+    echo "Must be in a git repository." >&2
+    exit 1
+  fi
+
+  while read -r worktree; do
+    [[ -z "$worktree" ]] && { echo "No worktree selected." >&2; exit 1; }
+    [[ "$worktree" == "$gitdir" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
+    git worktree remove --force "$worktree"
+    git branch --delete --force "$(basename "$worktree")"
+  done <<< "$(
+    git worktree list --porcelain \
+      | grep --extended-regexp '^worktree' \
+      | awk '{print $2}' \
+      | _fzf_b_multi --preview='git log {} --' --delimiter / --with-nth -1
+  )"
+}
+
+get_repo_to_clone() {
+  if [[ -z $1 ]]; then
+    org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | _fzf_b_no_multi)"
+    local gh_repo
+    #shellcheck disable=SC2016
+    gh_repo="$(
+      gh api graphql --paginate --field owner="$org_name" --raw-field query='
+        query ($owner: String!, $endCursor: String) {
+          repositoryOwner(login: $owner) {
+            repositories(first: 30, after: $endCursor) {
+              pageInfo { hasNextPage, endCursor }
+              nodes { nameWithOwner }
+            }
+          }
+        }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
+        | _fzf_b_no_multi --preview='git log --pretty=reference origin/{}'
+    )"
+    [[ -z $gh_repo ]] && { echo "No valid repository url provided." >&2; exit 1; }
+    repo_url="git@github.com:${gh_repo}.git"
+    repo_name="$(basename "$gh_repo")"
+  elif git ls-remote --quiet "$1" 2> /dev/null; then
+    repo_url="$1"
+    repo_name="$(basename "$repo_url")"
+    repo_name="${repo_name%%.*}"
+  else
+    echo "No valid repository url provided." >&2
+    exit 1
+  fi
 }
 
 clone_repo() {
@@ -70,78 +142,47 @@ clone_repo() {
 
 open_in_tmux() {
   case $open_in in
-    window) tmux new-window -n "$(basename "$repo_branch")" -c "$repo_branch" ;;
+    window) tmux new-window -n "${repo_name} ($(basename "$repo_branch"))" -c "$repo_branch" ;;
     pane)   tmux split-window -h -c "$repo_branch" ;;
   esac
 }
 
-usage() {
-  usage_create; echo
-  usage_pull; echo
-  usage_delete; echo
-  usage_clone
-}
-
-usage_create() {
-  echo "bit create [-h] | [-r <repo> -f <name>|-i] [-n <name>] [-p|-w]"
-  echo "-f <name>   Branch to branch from"
-  echo "-i          Force interactive selection of repo and/or branch"
-  echo "-n          Name of the new branch"
-  echo "-r <repo>   Repository to branch from"
-  echo "-p          Opens the branch in a tmux pane in the same window (default)"
-  echo "-w          Opens the branch in a new tmux window"
-}
-
-usage_pull() {
-  echo "bit pull [-h] | [-r <repo>|-i] [-p|-w]"
-  echo "-i          Force interactive selection of repo"
-  echo "-r <repo>   Repository to branch from"
-  echo "-p          Opens the branch in a tmux pane in the same window (default)"
-  echo "-w          Opens the branch in a new tmux window"
-}
-
-usage_delete() {
-  echo "bit delete [-h]"
-}
-
-usage_clone() {
-  echo "bit clone [-h] | [<url>]"
-}
-
 main() {
   local OPTIND subcommand
-  local projects_dir open_in interactive in_git_repo gitdir worktree gh_repo org_name repo_path repo_branch
+  local projects_dir open_in in_git_repo gitdir worktree org_name repo_path repo_branch
   declare -r true=0 false=1
-
-  projects_dir="$HOME/Development/Projects"
-  open_in="window"
-  interactive=$false
-  in_git_repo=$false
 
   while getopts "h" opt; do
     case "$opt" in
-      h) usage; exit 0 ;;
-      *) echo "Invalid option: $OPTARG" >&2; usage; exit 1 ;;
+      h) usage "all"; exit 0 ;;
+      *) echo "Invalid option: $OPTARG" >&2; usage "all"; exit 1 ;;
     esac
   done
 
-  shift $((OPTIND-1))
-  subcommand=$1; shift
+  projects_dir="$HOME/Development/Projects"
+  open_in="window"
+
+  if gitdir="$(git rev-parse --show-toplevel 2> /dev/null)"; then
+    in_git_repo=$true
+  else
+    in_git_repo=$false
+  fi
+
+  shift $((OPTIND-1)); subcommand="$1"; shift
 
   case "$subcommand" in
 
     create)
-      while getopts ':f:hin:pr:w' flag; do
+      while getopts ':f:hn:pr:w' flag; do
         case "$flag" in
           f) branch_from="$OPTARG" ;;
-          h) usage_create; exit 0 ;;
-          i) interactive=$true ;;
+          h) usage "create"; exit 0 ;;
           n) new_branch="$OPTARG" ;;
           p) open_in="pane" ;;
           r) repo_name="$OPTARG" ;;
           w) open_in="window" ;;
-          :) echo "Must supply an argument to -$OPTARG." >&2; usage_create; exit 1 ;;
-         \?) echo "Invalid option: $OPTARG" >&2; usage_create; exit 1 ;;
+          :) echo "Must supply an argument to -$OPTARG." >&2; usage "create"; exit 1 ;;
+         \?) echo "Invalid option: $OPTARG" >&2; usage "create"; exit 1 ;;
         esac
       done
 
@@ -151,15 +192,14 @@ main() {
       ;;
 
     pull)
-      while getopts ':hipr:w' flag; do
+      while getopts ':hpr:w' flag; do
         case "$flag" in
-          h) usage_pull; exit 0 ;;
-          i) interactive=$true ;;
+          h) usage "pull"; exit 0 ;;
           p) open_in="pane" ;;
           r) repo_name="$OPTARG" ;;
           w) open_in="window" ;;
-          :) echo "Must supply an argument to -$OPTARG." >&2; usage_pull; exit 1 ;;
-         \?) echo "Invalid option: $OPTARG" >&2; usage_pull; exit 1 ;;
+          :) echo "Must supply an argument to -$OPTARG." >&2; usage "pull"; exit 1 ;;
+         \?) echo "Invalid option: $OPTARG" >&2; usage "pull"; exit 1 ;;
         esac
       done
 
@@ -171,61 +211,23 @@ main() {
     delete)
       while getopts 'h' flag; do
         case "$flag" in
-          h) usage_delete; exit 0 ;;
-          *) echo "Invalid option" >&2; usage_delete; exit 1 ;;
+          h) usage "delete"; exit 0 ;;
+          *) echo "Invalid option" >&2; usage "delete"; exit 1 ;;
         esac
       done
 
-      gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" || return 1
-
-      while read -r worktree; do
-        if [[ -n "$worktree" ]]; then
-          git worktree remove "$worktree"
-          git branch --delete --force "$(basename "$worktree")"
-        fi
-      done <<< "$(
-        git worktree list --porcelain \
-          | grep -E '^worktree' \
-          | tail -n+2 \
-          | awk '{print $2}' \
-          | _fzf_b_multi --preview='git log {} --' --delimiter / --with-nth -1
-      )"
+      delete_worktrees
       ;;
 
     clone)
       while getopts 'h' flag; do
         case "$flag" in
-          h) usage_clone; exit 0 ;;
-          *) echo "Invalid option" >&2; usage_clone; exit 1 ;;
+          h) usage "clone"; exit 0 ;;
+          *) echo "Invalid option" >&2; usage "clone"; exit 1 ;;
         esac
       done
 
-      if [[ -z $1 ]]; then
-        org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | _fzf_b_no_multi)"
-        #shellcheck disable=SC2016
-        gh_repo="$(
-          gh api graphql --paginate --field owner="$org_name" --raw-field query='
-            query ($owner: String!, $endCursor: String) {
-              repositoryOwner(login: $owner) {
-                repositories(first: 30, after: $endCursor) {
-                  pageInfo { hasNextPage, endCursor }
-                  nodes { nameWithOwner }
-                }
-              }
-            }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-            | _fzf_b_no_multi --preview='git log --pretty=reference origin/{}'
-        )"
-        [[ -z $gh_repo ]] && exit 1
-        repo_url="git@github.com:${gh_repo}.git"
-        repo_name="$(basename "$gh_repo")"
-      elif git ls-remote --quiet "$1" 2> /dev/null; then
-        repo_url="$1"
-        repo_name="$(basename "$repo_url")"
-        repo_name="${repo_name%%.*}"
-      else
-        exit 1
-      fi
-
+      get_repo_to_clone "$1"
       clone_repo
       open_in="window"
       open_in_tmux
