@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _get_window_name() {
-  local working_dir dir_name repo window_name
+  local working_dir dir_name repo window_name username
   working_dir="$1"
   dir_name="$(basename "$working_dir")"
   repo="$(basename "$(dirname "$working_dir")")"
@@ -10,44 +10,53 @@ _get_window_name() {
   if branch_name="$(git branch --show-current 2>/dev/null)"; then
     window_name=" ${repo} (${branch_name})"
   else
-    window_name=" $dir_name"
+    username="$(id --user --name)"
+    if [[ "$dir_name" == "$username" ]]; then
+      window_name=" ${username}"
+    else
+      window_name=" ${dir_name}"
+    fi
   fi
   popd &> /dev/null || exit 1
 
   echo "$window_name"
 }
 
+_get_project_dir() {
+  find "${HOME}/Development/Projects" -mindepth 2 -maxdepth 2 -type d \
+    | fzf-tmux --ansi -i --height=50% --reverse -0 --inline-info --border --no-multi \
+      --delimiter / --with-nth -2,-1 \
+      --preview="exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --"
+}
+
 rename_window() {
-  tmux rename-window "$(_get_window_name "$PWD")"
+  [[ -z "$1" ]] && { echo "No directory provided." >&2; exit 1; }
+  tmux rename-window "$(_get_window_name "$1")"
 }
 
 open_project() {
-  local project_dir; project_dir="$(
-    find ~/Development/Projects -mindepth 2 -maxdepth 2 -type d \
-      | fzf --ansi -i --height=50% --reverse -0 --inline-info --border --no-multi \
-        --delimiter / --with-nth -2,-1 \
-        --preview='exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --'
-    )"
+  local project_dir; project_dir="$(_get_project_dir)"
   tmux new-window -n "$(_get_window_name "$project_dir")" -c "$project_dir"
 }
 
 dump_pane(){
-  local log_dir filename; log_dir="$HOME/Development/Logs"
+  local log_dir filename
+  log_dir="$HOME/Development/Logs"
   filename="$(tmux display-message -p 'tmux-+%Y-%b-%d-%H%M-#{session_name}-w#{window_index}p#{pane_index}.out')"
   [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
   tmux capture-pane -S -
-  tmux save-buffer "$log_dir"/"$filename"
-  code "$log_dir"/"$filename"
+  tmux save-buffer "${log_dir}/${filename}"
+  tmux new-window -n "$(_get_window_name "$log_dir")" -c "$log_dir" "vim ${log_dir}/${filename}"
 }
 
 main() {
-  local subcommand; subcommand="${1/-/_}"
-  if [[ "$(type -t "$subcommand")" == "function" ]]; then
-    $subcommand
-  else
-    echo "${subcommand} not found" >&2
-    exit 1
-  fi
+  case "$1" in
+    rename-window) rename_window "$2" ;;
+    open-project)  open_project ;;
+    dump-pane)     dump_pane ;;
+    *)             echo "$1 not found" >&2; exit 1 ;;
+  esac
 }
 
 main "$@"
+exit 0
