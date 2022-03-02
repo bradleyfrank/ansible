@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+_get_window_name() {
+  local working_dir dir_name repo window_name
+  working_dir="$1"
+  dir_name="$(basename "$working_dir")"
+  repo="$(basename "$(dirname "$working_dir")")"
+
+  pushd "$working_dir" &> /dev/null || exit 1
+  if branch_name="$(git branch --show-current 2>/dev/null)"; then
+    window_name=" ${repo} (${branch_name})"
+  else
+    window_name=" $dir_name"
+  fi
+  popd &> /dev/null || exit 1
+
+  echo "$window_name"
+}
+
+rename_window() {
+  tmux rename-window "$(_get_window_name "$PWD")"
+}
+
+open_project() {
+  local project_dir; project_dir="$(
+    find ~/Development/Projects -mindepth 2 -maxdepth 2 -type d \
+      | fzf --ansi -i --height=50% --reverse -0 --inline-info --border --no-multi \
+        --delimiter / --with-nth -2,-1 \
+        --preview='exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --'
+    )"
+  tmux new-window -n "$(_get_window_name "$project_dir")" -c "$project_dir"
+}
+
+dump_pane(){
+  local log_dir filename; log_dir="$HOME/Development/Logs"
+  filename="$(tmux display-message -p 'tmux-+%Y-%b-%d-%H%M-#{session_name}-w#{window_index}p#{pane_index}.out')"
+  [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
+  tmux capture-pane -S -
+  tmux save-buffer "$log_dir"/"$filename"
+  code "$log_dir"/"$filename"
+}
+
+main() {
+  local subcommand; subcommand="${1/-/_}"
+  if [[ "$(type -t "$subcommand")" == "function" ]]; then
+    $subcommand
+  else
+    echo "${subcommand} not found" >&2
+    exit 1
+  fi
+}
+
+main "$@"
