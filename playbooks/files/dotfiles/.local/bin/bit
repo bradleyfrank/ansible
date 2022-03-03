@@ -142,7 +142,7 @@ clone_repo() {
 
 open_in_tmux() {
   case $open_in in
-    window) tmux new-window -n "${repo_name} ($(basename "$repo_branch"))" -c "$repo_branch" ;;
+    window) tmux-utils open-project -d "$repo_branch" ;;
     pane)   tmux split-window -h -c "$repo_branch" ;;
   esac
 }
@@ -161,12 +161,7 @@ main() {
 
   projects_dir="$HOME/Development/Projects"
   open_in="window"
-
-  if gitdir="$(git rev-parse --show-toplevel 2> /dev/null)"; then
-    in_git_repo=$true
-  else
-    in_git_repo=$false
-  fi
+  gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" && in_git_repo=$true || in_git_repo=$false
 
   shift $((OPTIND-1)); subcommand="$1"; shift
 
