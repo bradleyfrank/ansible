@@ -55,13 +55,13 @@ dump_pane() {
   [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
   tmux capture-pane -S -
   tmux save-buffer "$filepath"
-  open_project "$log_dir" "vim $filepath"
+  open_project -d "$log_dir" -c "vim $filepath"
 }
 
 main() {
   local subcommand; subcommand="$1"; shift
   case "$subcommand" in
-    rename-window) rename_window "$2" ;;
+    rename-window) rename_window "$@" ;;
     open-project)  open_project "$@" ;;
     dump-pane)     dump_pane ;;
     *)             echo "$1 not found" >&2; exit 1 ;;
