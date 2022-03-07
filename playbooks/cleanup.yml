@@ -29,6 +29,7 @@
       - .local/share/kubectl
       - .local/share/zsh
       - .local/share/zshrc
+      - .local/share/zsh-functions/mux
       - .tmux.conf
 
     homebrew:

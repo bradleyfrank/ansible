@@ -92,6 +92,7 @@ alias help='run-help'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
+alias pmux='tmuxp'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
@@ -196,3 +197,7 @@ eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_private_ke
 {% elif 'Fedora' in ansible_distribution %}
 eval "$(keychain --eval --ignore-missing --quiet {{ ssh_private_keys | join(' ') }})"
 {% endif %}
+
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode
+fi

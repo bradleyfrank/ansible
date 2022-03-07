@@ -2,15 +2,9 @@
 
 session_name: home
 windows:
-  - window_name: notes-etc
-    start_directory: ~/Development/Projects/notes-etc/main
-    layout: even-horizontal
-    panes:
-      - start_directory: .
-      - start_directory: ~/Development/Reference
-  - window_name: ansible
+  - window_name:  ansible (main)
     start_directory: ~/Development/Projects/ansible/main
     focus: true
-    shell_command: '[[ -d ve ]] && pyenv -a || pyenv ; clear'
-  - window_name: home-server
+    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
+  - window_name:  home-server (main)
     start_directory: ~/Development/Projects/home-server/main

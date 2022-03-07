@@ -11,8 +11,6 @@
     src: tmux.conf.j2
     dest: "{{ ansible_user_dir }}/.config/tmux/{{ item }}.conf"
     mode: 0644
-    backup: true
-  notify: Process backups
   loop:
     - tmux
     - minimal
@@ -30,6 +28,3 @@
     src: tmux-status.bash.j2
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
-    backup: true
-  register: _backup_tmux_status
-  notify: Process backups

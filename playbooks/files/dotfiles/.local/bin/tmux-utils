@@ -42,9 +42,9 @@ open_project() {
     :) echo "-$OPTARG requires a value" >&2; exit 1 ;;
    \?) echo "-$OPTARG is invalid" >&2; exit 1 ;;
   esac; done
-  [[ -z "$project_dir" ]] && project_dir="$(_get_project_dir)"
+  if [[ -z "$project_dir" ]]; then project_dir="$(_get_project_dir)"; fi
   tmux_window="$(tmux new-window -n "$(_get_window_name "$project_dir")" -c "$project_dir" -P)"
-  [[ -n "$cmd" ]] && tmux send-keys -t "$tmux_window" "$cmd" Enter
+  if [[ -n "$cmd" ]]; then tmux send-keys -t "$tmux_window" "$cmd" Enter; fi
 }
 
 dump_pane() {

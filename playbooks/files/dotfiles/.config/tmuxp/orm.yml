@@ -2,32 +2,16 @@
 
 session_name: orm
 windows:
-  - window_name: notes-etc
-    start_directory: ~/Development/Projects/notes-etc/main
-    layout: even-horizontal
-    panes:
-      - start_directory: .
-      - start_directory: ~/Development/Reference
-  - window_name: infractl
+  - window_name:  infractl (main)
     start_directory: ~/Development/Projects/infractl/main
-    layout: even-horizontal
-    panes:
-      - start_directory: .
-        focus: true
-        shell_command: '[[ -d ve ]] && pyenv -a || orm-infractl-setup ; clear'
-      - start_directory: ../
-  - window_name: devdocs
+    focus: true
+    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
+  - window_name:  devdocs (main)
     start_directory: ~/Development/Projects/devdocs/main
-    layout: even-horizontal
-    panes:
-      - start_directory: .
-        focus: true
-        shell_command: '[[ -d ve ]] && pyenv -a || pyenv -c -n ve -v 3.8 ; clear'
-      - start_directory: ../
-  - window_name: orm-cli
+  - window_name:  orm-cli (main)
     start_directory: ~/Development/Projects/orm-cli/main
-    layout: even-horizontal
-    panes:
-      - start_directory: .
-        focus: true
-        shell_command: '[[ -d ve ]] && pyenv -a || pyenv -c -n ve -v 3.8 ; clear'
+    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
+  - window_name:  engineering-plan-of-the-day (main)
+    start_directory: ~/Development/Projects/engineering-plan-of-the-day/main
+  - window_name:  chassis (develop)
+    start_directory: ~/Development/Projects/chassis/develop
