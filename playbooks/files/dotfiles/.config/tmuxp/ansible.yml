@@ -1,0 +1,8 @@
+---
+
+session_name: ansible
+windows:
+  - window_name:  ansible (main)
+    start_directory: ~/Development/Projects/ansible/main
+    focus: true
+    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'

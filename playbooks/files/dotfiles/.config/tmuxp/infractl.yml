@@ -1,0 +1,8 @@
+---
+
+session_name: infractl
+windows:
+  - window_name:  infractl (main)
+    start_directory: ~/Development/Projects/infractl/main
+    focus: true
+    shell_command: 'if [[ -d ve ]]; then pyenv -a; else ./install.sh install; fi; clear'

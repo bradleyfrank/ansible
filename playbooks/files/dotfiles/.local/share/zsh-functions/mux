@@ -1,0 +1,9 @@
+mux () {
+  if [[ -n "$1" ]]; then arg="$1"; else arg="dice"; fi
+  case "$arg" in
+     orm) tmuxp load -y ansible notes orm infractl ;;
+    home) tmuxp load -y notes home ;;
+    dice) tmux new-session -s "$(diceware --delimiter - --num 2)" ;;
+       *) tmux new-session -A -s "$arg" ;;
+  esac
+}

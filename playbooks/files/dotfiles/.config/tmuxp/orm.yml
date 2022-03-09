@@ -2,12 +2,9 @@
 
 session_name: orm
 windows:
-  - window_name:  infractl (main)
-    start_directory: ~/Development/Projects/infractl/main
-    focus: true
-    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
   - window_name:  devdocs (main)
     start_directory: ~/Development/Projects/devdocs/main
+    focus: true
   - window_name:  orm-cli (main)
     start_directory: ~/Development/Projects/orm-cli/main
     shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
@@ -15,3 +12,4 @@ windows:
     start_directory: ~/Development/Projects/engineering-plan-of-the-day/main
   - window_name:  chassis (develop)
     start_directory: ~/Development/Projects/chassis/develop
+    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'

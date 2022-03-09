@@ -6,5 +6,7 @@ windows:
     start_directory: ~/Development/Projects/ansible/main
     focus: true
     shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
+  - window_name:  cmarks (main)
+    start_directory: ~/Development/Projects/cmarks/main
   - window_name:  home-server (main)
     start_directory: ~/Development/Projects/home-server/main

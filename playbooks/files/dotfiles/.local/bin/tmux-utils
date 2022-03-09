@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 
 _get_window_name() {
-  local working_dir dir_name repo window_name username
-  working_dir="$1"
-  dir_name="$(basename "$working_dir")"
-  repo="$(basename "$(dirname "$working_dir")")"
+  local cwd base_cwd repo window_name username
+  cwd="$1"; base_cwd="$(basename "$cwd")"
 
-  pushd "$working_dir" &> /dev/null || exit 1
+  pushd "$cwd" &> /dev/null || exit 1
   if branch_name="$(git branch --show-current 2>/dev/null)"; then
+    if [[ "$base_cwd" == "$branch_name" ]]; then repo="$(basename "$(dirname "$cwd")")"
+    else repo="$base_cwd"
+    fi
     window_name=" ${repo} (${branch_name})"
   else
     username="$(id --user --name)"
-    if [[ "$dir_name" == "$username" ]]; then
-      window_name=" ${username}"
-    else
-      window_name=" ${dir_name}"
+    if [[ "$base_cwd" == "$username" ]]; then window_name=" ${username}"
+    else window_name=" ${base_cwd}"
     fi
   fi
   popd &> /dev/null || exit 1
