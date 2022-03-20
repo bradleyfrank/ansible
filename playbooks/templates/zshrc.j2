@@ -74,24 +74,26 @@ alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[
 
 alias l='exa --color always --classify'
 alias la='exa --color always --classify --all'
-alias lc='exa --color always --classify --long --all --grid'
-alias ld='exa --color always --classify --long --all --only-dirs'
-alias lg='exa --color always --classify --long --all --git'
-alias lG='exa --color always --classify --long --all --group'
-alias ll='exa --color always --classify --long --all'
-alias lp='exa --color always --classify --long --all --no-permissions --octal-permissions'
-alias lS='exa --color always --classify --long --all --group-directories-first --sort size'
+alias lc='exa --color always --classify --long --all --icons --grid'
+alias ld='exa --color always --classify --long --all --icons --only-dirs'
+alias lg='exa --color always --classify --long --all --icons --git'
+alias lG='exa --color always --classify --long --all --icons --group'
+alias ll='exa --color always --classify --long --all --icons'
+alias lp='exa --color always --classify --long --all --icons --no-permissions --octal-permissions'
+alias lS='exa --color always --classify --long --all --icons --group-directories-first --sort size'
 alias ls='ls --color --classify --human-readable'
-alias lt='exa --color always --classify --long --all --sort time'
+alias lt='exa --color always --classify --long --all --icons --sort time'
 
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias e='extract'
+alias fd='fd --no-ignore --hidden'
 alias glances='glances --theme-white'
 alias help='run-help'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
+alias pmux='tmuxp'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
@@ -196,3 +198,7 @@ eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_private_ke
 {% elif 'Fedora' in ansible_distribution %}
 eval "$(keychain --eval --ignore-missing --quiet {{ ssh_private_keys | join(' ') }})"
 {% endif %}
+
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode
+fi

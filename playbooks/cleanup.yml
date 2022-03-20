@@ -21,6 +21,7 @@
       - .local/bin/lib
       - .local/bin/numware
       - .local/bin/orm
+      - .local/bin/tmux-dump-pane
       - .local/bin/ytdl
       - .local/opt/bbdm
       - .local/share/fubectl

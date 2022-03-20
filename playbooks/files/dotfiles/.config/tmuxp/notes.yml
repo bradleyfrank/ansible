@@ -1,0 +1,13 @@
+---
+
+session_name: notes
+windows:
+  - window_name:  notes-etc (main)
+    start_directory: ~/Development/Projects/notes-etc/main
+    focus: true
+  - window_name:  oneliners
+    start_directory: ~/Development/Reference/oneliners
+  - window_name:  art-of-command-line
+    start_directory: ~/Development/Reference/the-art-of-command-line
+  - window_name:  pure-bash-bible
+    start_directory: ~/Development/Reference/pure-bash-bible
