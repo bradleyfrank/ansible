@@ -12,6 +12,7 @@ rpms:
     - dnf-plugin-system-upgrade
     - dnf-utils
     - exa
+    - fd-find
     - fdupes
     - ffmpeg
     - figlet
@@ -157,6 +158,7 @@ homebrew:
     - dict
     - eye-d3
     - exa
+    - fd
     - fdupes
     - ffmpeg
     - fileicon
