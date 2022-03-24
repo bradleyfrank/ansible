@@ -48,6 +48,7 @@ bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
 bind 'D' run-shell -b "tmux-utils dump-pane"
 bind 'O' run-shell -b "tmux-utils open-project"
+bind 'N' new-session -A -s "scratch"
 bind 'P' display-popup -E "zsh"
 bind 'c' new-window -c "~/"
 bind 'h' select-layout even-vertical
