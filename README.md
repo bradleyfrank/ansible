@@ -20,7 +20,7 @@ It was designed to be run *completely local* on a brand-new installed system, ev
 
 3. **Bootstrapping the system:** The `bootstrap` playbook is run to pull in additional software, configure the OS and applications, and setup the user environment (e.g. terminal, desktop, etc).
 
-The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it's own periodically as user preferences and settings grow, adjust, or change. It can be run without `bootstrap`, for example on a shared server, but it assumes all prequisite packages are installed.
+The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it's own periodically as user preferences and settings grow, adjust, or change. It can be run without `bootstrap`, for example on a shared server, but it assumes all prerequisite packages are installed.
 
 ### Reusability
 
@@ -79,5 +79,5 @@ sh install [-g git_branch] [-d]
 To regenerate `~/.ansible/inventory.yml`, run the following command from the top level of the repository:
 
 ```shell
-ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml -e "current_hostname=$(hostname -s)"
+ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml
 ```
