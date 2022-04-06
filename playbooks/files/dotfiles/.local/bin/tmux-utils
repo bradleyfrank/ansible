@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+#
+# Collection of tmux scripts.
+# Author: Brad Frank
+# Date: Feb 2022
+# Tested: GNU bash, version 5.1.16(1)-release (x86_64-apple-darwin20.6.0)
+# Requires: tmux
+#
+
 _get_window_name() {
   local cwd base_cwd repo window_name username
   cwd="$1"; base_cwd="$(basename "$cwd")"
