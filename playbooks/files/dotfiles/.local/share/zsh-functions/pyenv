@@ -8,18 +8,40 @@
 pyenv() {
   local ve version mode pip; pip=1
 
+  zparseopts -D -E -F -- \
+    c=mode -create=mode r=mode -recreate=mode a=mode -activate=mode d=mode -deactivate=mode \
+    n:=name -name:=name v:=version -version:=version p=pip -pip=pip \
+  || { _pyenv_usage >&2; return 1; }
+
+  case "$mode" in
+        -c|--create) _pyenv_create    ;;
+      -r|--recreate) _pyenv_recreate  ;;
+      -a|--activate) _pyenv_activate  ;;
+    -d|--deactivate) deactivate       ;;
+  esac
+
+  _pyenv_usage() {
+    echo "Manages Python virtualenv"
+    echo "Usage: pyenv [create | recreate | activate | deactivate"
+    echo "-c              create virtualenv (default)"
+    echo "  -n <name>     name of virtualenv"
+    echo "  -v <version>  python version to use"
+    echo "-a  activate virtualenv"
+    echo "  -n <name>     name of virtualenv"
+    echo "  -p            install pip packages from requirements.txt"
+    echo "-d  deactivate virtualenv"
+  }
+
   while getopts ':acdhn:pv:' flag; do
     case "$flag" in
       a) mode=activate ;;
       c) mode=create ;;
       d) deactivate ; return $? ;;
-      h) echo "Usage: pyenv [-c(reate) [-n <name> -v <version>] | -a(ctivate) -p(ip)] | -d(eactivate)"
-         return 0
-         ;;
+      h) _pyenv_usage; return 0 ;;
       n) ve="$OPTARG" ;;
       p) pip=0 ;;
       v) version="$OPTARG" ;;
-      *) echo "Invalid argument." >&2 ; return 1 ;;
+      *) echo "Invalid argument." >&2; _pyenv_usage; return 1 ;;
     esac
   done
 
@@ -38,15 +60,19 @@ pyenv() {
   }
 
   _activate() {
-    ve="$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")"
+    [[ -z $ve ]] && ve="$(dirname "$(find . -maxdepth 2 -type f -name pyvenv.cfg)")"
+    if [[ "$(wc -l <<< "$ve")" -gt 1 ]]; then
+      echo "Multiple virtualenvs found; please specify with \`-n <name>\`." >&2
+      return 1
+    fi
     #shellcheck disable=SC1091
     source "$ve/bin/activate"
     if [[ $pip -eq 0 && -f requirements.txt ]]; then "$ve/bin/pip" install -r requirements.txt; fi
   }
 
-  case "$mode" in
-    create)   _create   ;;
-    activate) _activate ;;
-    *)        _create && _activate ;;
-  esac
+  # case "$mode" in
+  #   create)   _create   ;;
+  #   activate) _activate ;;
+  #   *)        _create && _activate ;;
+  # esac
 }

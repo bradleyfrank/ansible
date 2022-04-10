@@ -11,3 +11,5 @@ windows:
     start_directory: ~/Development/Reference/the-art-of-command-line
   - window_name:  pure-bash-bible
     start_directory: ~/Development/Reference/pure-bash-bible
+  - window_name:  python-cheatsheet
+    start_directory: ~/Development/Reference/python-cheatsheet
