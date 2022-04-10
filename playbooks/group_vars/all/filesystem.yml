@@ -4,7 +4,7 @@ backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
 
 bash_shell:
   Fedora: /usr/bin/bash
-  MacOSX: /usr/local/bin/bash
+  MacOSX: "{{ homebrew_prefix }}/bin/bash"
 
 font_dir:
   Fedora: "{{ ansible_user_dir }}/.local/share/fonts"
@@ -24,7 +24,7 @@ python_user_path:
 
 pip:
   Fedora: /usr/bin/pip3
-  MacOSX: "/usr/local/bin/pip3.{{ ansible_python['version']['minor'] }}"
+  MacOSX: "{{ homebrew_prefix }}/bin/pip3.{{ ansible_python['version']['minor'] }}"
 
 root_home:
   Fedora: /root

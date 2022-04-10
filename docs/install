@@ -12,7 +12,11 @@ bootstrap_mac() {
   sudo --validate  # reset `sudo` timeout to use Homebrew install in noninteractive mode
   CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   brew install python3 git
-  PATH="/usr/local/bin:$(/usr/local/bin/python3 -m site --user-base)/bin:$PATH"
+  case "$(uname -m)" in
+    x86_64) python_user_base="$(/usr/local/bin/python3 -m site --user-base)" ;;
+     arm64) python_user_base="$(/opt/homebrew/bin/python3 -m site --user-base)" ;;
+  esac
+  PATH="/usr/local/bin:${python_user_base}/bin:${PATH}"
   export PATH
 }
 
