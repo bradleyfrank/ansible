@@ -8,6 +8,7 @@ rpms:
     - bcal
     - borgbackup
     - bottom
+    - choose
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
@@ -33,7 +34,6 @@ rpms:
     - jq
     - jo
     - k9s
-    - kernel-devel  # openrazer
     - keychain
     - kubectl
     - libmp4v2
@@ -154,8 +154,10 @@ homebrew:
     - bcal
     - bottom
     - cabextract
+    - choose-rust
     - coreutils
     - dict
+    - dog
     - eye-d3
     - exa
     - fd
@@ -234,19 +236,18 @@ homebrew:
     - bbedit
     - calibre
     - chromium
-    - dozer
     - expressions
     - fantastical
     - firefox
     - google-cloud-sdk
+    - hiddenbar
     - iina
     - jumpcut
     - keepassxc
     - keepingyouawake
     - kindle
-    - logitech-options
+    - logi-options-plus
     - macdown
-    - menumeters
     - microsoft-auto-update
     - microsoft-office
     - musicbrainz-picard
@@ -263,9 +264,8 @@ homebrew:
     - zoom
   virtualization_casks:
     - multipass
+    - parallels
     - utm
-    - vagrant
-    - vagrant-vmware-utility
     - vmware-fusion
   mas:
     - 407963104   # Pixelmator

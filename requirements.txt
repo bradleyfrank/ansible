@@ -6,3 +6,4 @@ docker
 github3.py
 pre-commit
 psutil
+pyobjc-framework-Cocoa

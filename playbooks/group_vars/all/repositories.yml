@@ -13,6 +13,12 @@ repos:
     gpgkey: https://download.copr.fedorainfracloud.org/results/atim/bottom/pubkey.gpg
     system_type: [desktop, server]
 
+  - name: choose
+    description: Copr repo for choose
+    baseurl: https://download.copr.fedorainfracloud.org/results/atim/choose/fedora-$releasever-$basearch/
+    gpgkey: https://download.copr.fedorainfracloud.org/results/atim/choose/pubkey.gpg
+    system_type: [desktop, server]
+
   - name: gh-cli
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm

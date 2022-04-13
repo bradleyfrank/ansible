@@ -1,7 +1,9 @@
 PATH="$HOME/.local/bin"
 PATH="$PATH:$HOME/.krew/bin"
 {% if 'MacOSX' in ansible_distribution %}
-PATH="$PATH:$(find -L {{ homebrew_prefix }}/opt -maxdepth 3 -name gnubin -type d | xargs | tr ' ' ':')"
+{% for gnubin in homebrew_gnubin['files'] -%}
+PATH="$PATH:{{ gnubin['path'] }}"
+{% endfor %}
 PATH="$PATH:{{ python_user_path['MacOSX'] }}"
 PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 {% endif %}
@@ -9,7 +11,9 @@ PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 MANPATH="$HOME/.local/share/man"
 {% if 'MacOSX' in ansible_distribution %}
-MANPATH="$MANPATH:$(find -L {{ homebrew_prefix }}/opt -maxdepth 3 -name gnuman -type d | xargs | tr ' ' ':')"
+{% for gnuman in homebrew_gnuman['files'] -%}
+PATH="$PATH:{{ gnuman['path'] }}"
+{% endfor %}
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
@@ -171,9 +175,9 @@ for function in {{ zsh['functions'] }}/*; do source "$function"; done
 source {{ ansible_user_dir }}/.infractl/secrets
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
+
+
 {% endif %}
-
-
 eval "$(dircolors $HOME/.dir_colors)"
 eval "$(zoxide init zsh --hook pwd --cmd cd)"
 eval "$(starship init zsh)"
