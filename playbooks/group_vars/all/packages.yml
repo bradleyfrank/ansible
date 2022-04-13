@@ -294,6 +294,7 @@ flatpaks:
     - name: com.github.liferooter.textpieces
     - name: com.github.rajsolai.textsnatcher
     - name: com.plexamp.Plexamp
+    - name: io.bassi.Amberol
     - name: io.github.seadve.Kooha
     - name: org.signal.Signal
     - name: re.sonny.Junction
