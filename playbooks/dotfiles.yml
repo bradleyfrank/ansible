@@ -143,10 +143,10 @@
       notify: Process backups
       tags: alacritty
 
-    - name: Import BBEdit tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
+    - name: Import msic macOS app tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
       when: "'MacOSX' in ansible_distribution"
-      tags: bbedit
+      tags: [bbedit, stats]
 
     - name: Update macOS app icons
       vars:
