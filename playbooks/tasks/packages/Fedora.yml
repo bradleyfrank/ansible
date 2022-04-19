@@ -7,6 +7,9 @@
   become: true
   tags: always
 
+    # baseurl: https://download.copr.fedorainfracloud.org/results/atim/bottom/fedora-$releasever-$basearch/
+    # gpgkey: https://download.copr.fedorainfracloud.org/results/atim/bottom/pubkey.gpg
+
 - name: Install gpg keys
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
@@ -31,6 +34,18 @@
     repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
     skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
   loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: system_type in item['system_type']
+  tags: repos
+
+- name: Enable copr repositories
+  community.general.copr:
+    host: "{{ item['host'] | default(copr.fedorainfracloud.org) }}"
+    name: "{{ item['name'] }}"
+    state: enabled
+  loop: "{{ copr }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true

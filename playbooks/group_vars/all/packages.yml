@@ -148,6 +148,7 @@ homebrew:
   formulas:
     - asciinema
     - awscli
+    - bandwhich
     - bash
     - bash-completion@2
     - bat
