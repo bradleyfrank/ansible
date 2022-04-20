@@ -16,25 +16,37 @@ _fzf_k_multi() { _fzf_k --multi "$@"; }
 _fzf_k_no_multi() { _fzf_k --no-multi "$@"; }
 
 _k_ctx() {
-    kubectl config get-contexts --output name | grep "${1:-}" | _fzf_k_no_multi
+    local ctx; ctx="$1"
+    kubectl config get-contexts --output name | grep "${ctx:-}" | _fzf_k_no_multi
 }
 
 _k_namespace() {
-    kubectl --context "$1" get namespaces --output name | grep "${2:-}" \
-        | awk --field-separator '/' '{print $2}' | _fzf_k_no_multi
+    local ctx ns; ctx="$1" ns="$2"
+    kubectl --context "$ctx" get namespaces --output name \
+        | grep "${ns:-}" \
+        | awk -F '/' '{print $2}' \
+        | _fzf_k_no_multi
 }
 
-_k_apis() {
-    kubectl --context "$1" --namespace "$2" api-resources --output name | grep "${3:-}" | _fzf_k_no_multi
+_k_api() {
+    local ctx ns api; ctx="$1" ns="$2" api="$3"
+    kubectl --context "$ctx" --namespace "$ns" api-resources --output name \
+        | grep "${api:-}" \
+        | _fzf_k_no_multi
 }
 
 _k_resource() {
-    kubectl --context "$1" --namespace "$2" get "$3" --output name | grep "${4:-}" | _fzf_k_no_multi
+    local ctx ns api resource; ctx="$1" ns="$2" api="$3" resource="$4"
+    kubectl --context "$ctx" --namespace "$ns" get "$api" --output name \
+        | grep "${resource:-}" \
+        | _fzf_k_no_multi
 }
 
 _k_container() {
-    kubectl --context "$1" --namespace "$2" get "$3" \
-        --output json | jq -r '.spec.containers[]|.name' | _fzf_k_no_multi
+    kubectl --context "$1" --namespace "$2" get "$3" --output json \
+        | grep "${4:-}" \
+        | jq -r '.spec.containers[]|.name' \
+        | _fzf_k_no_multi
 }
 
 _save_and_exec() {
@@ -43,14 +55,14 @@ _save_and_exec() {
     eval "$cmd"
 }
 
-# [kapi] show api-resources (i.e. shortnames)
-alias kapi="kubectl api-resources --namespaced=false"
-
 # [kcl] kubectl list context
 alias kcl="kubectl config get-contexts --output name"
 
 # [kcls] kubectl list context short names
 alias kcls="kubectl config get-contexts --output name | grep -o '[^_]*$'"
+
+# [kctl] escape hatch alias
+alias kctl="kubectl"
 
 # [kctx] get the current context
 alias kctx="kubectl config current-context"
@@ -66,159 +78,179 @@ alias stern="kubectl stern"
 
 # [k] wrapper for kubectl; usage: k [-x|--context] [-n|--namespace] [-A|--all-namespaces]
 k() {
-    local context namespace all_namespaces ctx ns
+    local arg_ctx arg_ns arg_all_ns ctx ns
     zparseopts -D -E -- \
-        x:=context -context:=context \
-        n:=namespace -namespace:=namespace \
-        A=all_namespaces -all-namespaces=all_namespaces
-    ctx="$(_k_ctx "${context[2]}")"
-    if [[ -n $all_namespace && -n $namespace ]]; then
+        x:=arg_ctx -context:=arg_ctx \
+        n:=arg_ns -namespace:=arg_ns \
+        A=arg_all_ns -all-namespaces=arg_all_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    if [[ -n $arg_all_ns && -n $arg_ns ]]; then
         return 1
-    elif [[ -n $all_namespaces ]]; then
+    elif [[ -n $arg_all_ns ]]; then
         _save_and_exec "kubectl --context $ctx --all-namespaces $*"
-    elif [[ -n $namespace ]]; then
-        ns="$(_k_namespace "$ctx" "${namespace[2]}")"
+    elif [[ -n $arg_ns ]]; then
+        ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
         _save_and_exec "kubectl --context $ctx --namespace $ns $*"
     else
         _save_and_exec "kubectl --context $ctx $*"
     fi
 }
 
+# [kapi] show api-resources; usage: kapi [-x|--context]
+kapi() {
+    local arg_ctx ctx
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    [[ -z "$ctx" ]] && return 1
+    _save_and_exec "kubectl --context $ctx api-resources"
+}
+
 # [kcm] show configmaps; usage: kcm [-x|--context] [-n|--namespace] [configmap]
 kcm() {
-    local context namespace ctx ns configmap key cmd cmds; cmds=$(mktemp)
+    local arg_ctx arg_ns arg_cm ctx ns configmap cm_key cmd cmds; arg_cm="$1" cmds=$(mktemp)
     local green='\033[0;32m' yellow='\033[0;33m' nc='\033[0m'
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx n:=arg_ns -namespace:=arg_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
     configmap="$(kubectl --context "$ctx" --namespace "$ns" get configmaps --output name \
-        | grep "${1:-}" | _fzf_k_no_multi --delimiter '/' --with-nth 2)"
-    while read -r key; do
-        cmd="kubectl --context $ctx --namespace=$ns get $configmap --output json \
-            | jq -r --arg key $key '.data[\$key]'"
+        | grep "${arg_cm:-}" | _fzf_k_no_multi --delimiter '/' --with-nth 2)"
+    while read -r cm_key; do
+        cmd="kubectl --context $ctx --namespace $ns get $configmap --output json \
+            | jq -r --arg key $cm_key '.data[\$key]'"
         tr -s ' ' <<< "$cmd" >> "$cmds"
         echo -e "\n${green}${ctx}/${ns}/${configmap}/${key}${nc}\n\n${yellow}$(eval "$cmd")${nc}\n"
-    done <<< "$(kubectl --context $ctx --namespace=$ns get $configmap --output json \
+    done <<< "$(kubectl --context $ctx --namespace $ns get $configmap --output json \
         | jq -r '.data|keys[]' | _fzf_k_multi)"
     fc -R "$cmds"; rm -f "$cmds"
 }
 
 # [kcs] context set; usage: kcs [-x|--context]
 kcs() {
-    local context ctx
-    zparseopts -E -D -- x:=context -context:=context
-    ctx="$(_k_ctx "${context[2]}")"
+    local arg_ctx ctx
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
     [[ -z "$ctx" ]] && return 1
     _save_and_exec "kubectl config set current-context $ctx"
 }
 
-# [kdebug] creates an ephemeral container for debugging
+# [kdebug] creates an ephemeral container for debugging; usage: kdebug [-x|--context] [-n|--namespace] [image]
 kdebug() {
-    local context namespace ctx ns
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
+    local arg_ctx arg_ns ctx ns img; img="${1:-'ubuntu:rolling'}"
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx n:=arg_ns -namespace:=arg_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
     _save_and_exec "kubectl run --context $ctx --namespace $ns $(id -un)-debug --rm \
-        --restart='Never' --stdin --tty --image=ubuntu:rolling -- bash"
+        --restart='Never' --stdin --tty --image=$img -- bash"
 }
 
-# [kdes] describe a resource; usage: kdes [-x|--context] [-n|--namespace] [kind] [resource]
+# [kdes] describe a resource; usage: kdes [-x|--context] [-n|--namespace] [kind]
 kdes() {
-    local context namespace ctx ns kind resource
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    [[ -n "$1" ]] && kind="$1" || kind="$(_k_apis "$ctx" "$ns")"
-    [[ -n "$2" ]] && resource="$2" || resource="$(_k_resource "$ctx" "$ns" "$kind")"
+    local arg_ctx arg_ns ctx ns kind resource
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx n:=arg_ns -namespace:=arg_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    [[ -n "$1" ]] && kind="$1" || kind="$(_k_api "$ctx" "$ns")"
+    resource="$(_k_resource "$ctx" "$ns" "$kind")"
     _save_and_exec "kubectl --context $ctx --namespace $ns describe $resource"
 }
 
-# [kex] execute command in container; usage: kex [-x|--context] [-n|--namespace] [command]
+# [kex] execute command in container; usage: kex [-x|--context] [-n|--namespace] [-p|--pod] [-c|--container] [command]
 kex() {
-    local context namespace ctx ns pod container
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    pod="$(_k_resource "$ctx" "$ns" pods)"
-    container="$(_k_container "$ctx" "$ns" "$pod")"
+    local arg_ctx arg_ns arg_pod arg_container ctx ns pod container
+    zparseopts -E -D -- \
+        x:=arg_ctx -context:=arg_ctx \
+        n:=arg_ns -namespace:=arg_ns \
+        p:=arg_pod -pod:=arg_pod \
+        c:=arg_container -container:=arg_container
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    pod="$(_k_resource "$ctx" "$ns" pods "${arg_pod[2]}")"
+    container="$(_k_container "$ctx" "$ns" "$pod" "${arg_container[2]}")"
     _save_and_exec "kubectl --context $ctx --namespace $ns exec --stdin --tty $pod --container $container -- $*"
 }
 
-# [kfor] port-forward a container port; usage: kfor LOCAL_PORT:CONTAINER_PORT
+# [kfor] port-forward a container port; usage: kfor [-x|--context] [-n|--namespace] [-p|--pod] LOCAL_PORT:CONTAINER_PORT
 kfor() {
-    local context namespace ctx ns pod container
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    pod="$(_k_resource "$ctx" "$ns" pods)"
+    local arg_ctx arg_ns ctx ns pod container
+    zparseopts -E -D -- \
+        x:=arg_ctx -context:=arg_ctx \
+        n:=arg_ns -namespace:=arg_ns \
+        p:=arg_pod -pod:=arg_pod
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    pod="$(_k_resource "$ctx" "$ns" pods "${arg_pod[2]}")"
     _save_and_exec "kubectl --context $ctx --namespace $ns "$pod" port-forward $1"
 }
 
-# [kget] get a resource in yaml/json; usage: kdes [-x|--context] [-n|--namespace] [-o|--output] [kind] [resource]
+# [kget] get a resource in yaml/json; usage: kdes [-x|--context] [-n|--namespace] [-o|--output] [kind]
 kget() {
-    local context namespace interval output jq ctx ns format kind resource
+    local arg_ctx arg_ns arg_out ctx ns format kind resource
     zparseopts -E -D -- \
-        x:=context -context:=context \
-        n:=namespace -namespace:=namespace \
-        o:=output -output:=output
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    format="${output[2]:-yaml}"; [[ $format =~ (json|yaml) ]] || return 1
-    [[ -n "$1" ]] && kind="$1" || kind="$(_k_apis "$ctx" "$ns")"
-    [[ -n "$2" ]] && resource="$2" || resource="$(_k_resource "$ctx" "$ns" "$kind")"
+        x:=arg_ctx -context:=arg_ctx \
+        n:=arg_ns -namespace:=arg_ns \
+        o:=arg_out -output:=arg_out
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    format="${arg_out[2]:-yaml}"; [[ $format =~ (json|yaml) ]] || return 1
+    [[ -n "$1" ]] && kind="$1" || kind="$(_k_api "$ctx" "$ns")"
+    resource="$(_k_resource "$ctx" "$ns" "$kind")"
     _save_and_exec "kubectl --context $ctx --namespace $ns get $resource --output $format | kubectl neat"
 }
 
-# [klog] fetch log from container; usage: klog [-x|--context] [-n|--namespace]
+# [klog] fetch log from container; usage: klog [-x|--context] [-n|--namespace] [-p|--pod] [-c|--container]
 klog() {
-    local context namespace ctx ns pod container
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    pod="$(_k_resource "$ctx" "$ns" pods)"
-    container="$(_k_container "$ctx" "$ns" "$pod")"
+    local arg_ctx arg_ns arg_pod arg_container ctx ns pod container
+    zparseopts -E -D -- \
+        x:=arg_ctx -context:=arg_ctx \
+        n:=arg_ns -namespace:=arg_ns \
+        p:=arg_pod -pod:=arg_pod \
+        c:=arg_container -container:=arg_container
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    pod="$(_k_resource "$ctx" "$ns" pods "${arg_pod[2]}")"
+    container="$(_k_container "$ctx" "$ns" "$pod" "${arg_container[2]}")"
     _save_and_exec "kubectl --context $ctx --namespace $ns logs $pod --container $container"
 }
 
 # [kdb] export DB_* environment variables from K8s secrets; usage: kdb [-x|--context] [-n|--namespace]
 kdb() {
-    local context namespace ctx ns secret
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
+    local arg_ctx arg_ns ctx ns secret
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx n:=arg_ns -namespace:=arg_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
     while read -r secret; do export "$secret"; done <<< "$(
-        kubectl --context="$ctx" --namespace="$ns" get secrets --output json \
+        kubectl --context "$ctx" --namespace "$ns" get secrets --output json \
         | jq -jr '.items[1].data|with_entries(select(.key|match("DB_";"i")))|to_entries[]|"\(.key)=\(.value|@base64d)\n"')"
 }
 
 # [ksecret] base64 decrypt secrets; usage: ksecret [-x|--context] [-n|--namespace] [secret]
 ksecret() {
-    local context namespace ctx ns secret key cmd cmds; cmds=$(mktemp)
+    local arg_ctx arg_ns ctx ns secret key cmd cmds; cmds=$(mktemp)
     local green='\033[0;32m' yellow='\033[0;33m' nc='\033[0m'
-    zparseopts -E -D -- x:=context -context:=context n:=namespace -namespace:=namespace
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    secret=$(kubectl --context="$ctx" --namespace="$ns" get secrets | grep "$1" | _fzf_k_no_multi | awk '{print $1}')
+    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx n:=arg_ns -namespace:=arg_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    secret="$(kubectl --context "$ctx" --namespace "$ns" get secrets --output name | grep "${1:-}" \
+        | _fzf_k_no_multi)"
     while read -r key; do
-        cmd="kubectl --context $ctx --namespace=$ns get secret $secret --output json \
+        cmd="kubectl --context $ctx --namespace $ns get secret $secret --output json \
             | jq -r --arg key $key '.data[\$key]|@base64d'"
         tr -s ' ' <<< "$cmd" >> "$cmds"
         echo -e "\n${green}${ctx}/${ns}/${secret}/${key}${nc}\n\n${yellow}$(eval "$cmd")${nc}\n"
-    done <<< "$(kubectl --context "$ctx" --namespace="$ns" get secret "$secret" \
-        --output json | jq -r '.data|keys[]' | _fzf_k_multi)"
+    done <<< "$(kubectl --context "$ctx" --namespace "$ns" get "$secret" --output json \
+        | jq -r '.data|keys[]' | _fzf_k_multi)"
     fc -R "$cmds"; rm -f "$cmds"
 }
 
-# [kwatch] watch a resource; usage: kwatch [-x|--context] [-n|--namespace] [-i|--interval] [kind]
+# [kwatch] watch a resource; usage: kwatch [-x|--context] [-n|--namespace] [kind]
 kwatch() {
-    local context namespace interval ctx ns kind
+    local arg_ctx arg_ns ctx ns kind
     zparseopts -E -D -- \
-        x:=context -context:=context \
-        n:=namespace -namespace:=namespace \
-        i:=interval -interval:=interval
-    ctx="$(_k_ctx "${context[2]}")"
-    ns="$(_k_namespace "$ctx" "${namespace[2]}")"
-    [[ -n "$1" ]] && kind="$1" || kind="$(_k_apis "$ctx" "$ns")"
+        x:=arg_ctx -context:=arg_ctx \
+        n:=arg_ns -namespace:=arg_ns
+    ctx="$(_k_ctx "${arg_ctx[2]}")"
+    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
+    kind="$(_k_api "$ctx" "$ns" "$1")"
     _save_and_exec "watch kubectl --context $ctx --namespace $ns get $kind"
 }
 
@@ -226,7 +258,7 @@ kwatch() {
 khelp() {
     echo "helper aliases and functions for kubectl"
     echo
-    grep --extended-regexp '^# \[.+\]' "${(%):-%x}"
+    grep -E '^# \[.+\]' "${(%):-%x}"
 }
 
 complete -F __start_kubectl k
