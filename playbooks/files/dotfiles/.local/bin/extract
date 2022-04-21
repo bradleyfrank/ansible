@@ -53,4 +53,7 @@ main() {
 }
 
 [[ "$#" -eq 0 ]] && { echo "Usage: extract <file1> [file2] ... [fileN]" >&2; exit 1; }
-for compressed_file in "$@"; do main "$compressed_file"; done
+
+for compressed_file in "$@"; do
+  main "$compressed_file"
+done
