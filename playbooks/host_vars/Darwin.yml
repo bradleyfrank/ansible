@@ -1,0 +1,9 @@
+---
+
+font_dir: "{{ ansible_user_dir }}/Library/Fonts"
+glow_config_path: "{{ ansible_user_dir }}/Library/Preferences/glow"
+k9s_config_path: "{{ ansible_user_dir }}/Library/Preferences"
+python_user_path: "{{ ansible_user_dir }}/Library/Python/3.{{ ansible_python['version']['minor'] }}/bin"
+pip_exec: "{{ homebrew_prefix }}/bin/pip3.{{ ansible_python['version']['minor'] }}"
+root_home: /var/root
+sudoers: /private/etc/sudoers.d/99_ansible

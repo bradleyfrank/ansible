@@ -6,6 +6,13 @@
     use: macos
   become: true
 
+- name: Make newer bash default for root
+  ansible.builtin.user:
+    name: root
+    shell: "{{ homebrew_prefix }}/bin/bash"
+  become: true
+  tags: [root, shell]
+
 - name: Configure shells
   block:
     - name: Make additional shells available

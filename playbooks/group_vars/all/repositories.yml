@@ -5,11 +5,14 @@ copr:
     system_type: [desktop, server]
   - name: atim/choose
     system_type: [desktop, server]
+  - name: atim/bandwhich
+    system_type: [desktop, server]
   - name: keefle/glow
     system_type: [desktop, server]
   - name: luminoso/k9s
-    host: copr-be.cloud.fedoraproject.org
     system_type: [desktop, server]
+  - name: taw/joplin
+    system_type: [desktop]
 
 repos:
   - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
@@ -28,12 +31,6 @@ repos:
     description: Google Chrome
     baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
     gpgkey: https://dl.google.com/linux/linux_signing_key.pub
-    system_type: [desktop]
-
-  - name: hardware:razer
-    description: packages for Razer hardware
-    baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
-    gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
     system_type: [desktop]
 
   - name: kubernetes

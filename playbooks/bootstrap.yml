@@ -6,7 +6,7 @@
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.copy:
         content: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
-        dest: "{{ sudoers[ansible_distribution] }}"
+        dest: "{{ sudoers }}"
         validate: /usr/sbin/visudo -csf %s
         mode: 0644
       become: true
@@ -24,17 +24,10 @@
       ansible.builtin.include_tasks: "tasks/packages/{{ ansible_distribution }}.yml"
       tags: always
 
-    - name: Make bash default for root
-      ansible.builtin.user:
-        name: root
-        shell: "{{ bash_shell[ansible_distribution] }}"
-      become: true
-      tags: [root, shell]
-
     - name: Install root dotfiles
       ansible.builtin.copy:
         src: root/
-        dest: "{{ root_home[ansible_distribution] }}/"
+        dest: "{{ root_home }}/"
         mode: 0644
       become: true
       tags: [root, dotfiles]
@@ -46,7 +39,7 @@
   handlers:
     - name: Remove passwordless sudo permissions
       ansible.builtin.file:
-        path: "{{ sudoers[ansible_distribution] }}"
+        path: "{{ sudoers }}"
         state: absent
       become: true
 

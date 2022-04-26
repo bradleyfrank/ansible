@@ -4,6 +4,7 @@ rpms:
   cli:
     - abcde
     - bash-completion
+    - bandwhich
     - bat
     - bcal
     - borgbackup
@@ -93,6 +94,7 @@ rpms:
       - google-noto-sans-fonts
       - google-noto-sans-mono-fonts
       - google-noto-serif-fonts
+      - joplin
       - keepassxc
       - libreoffice
       - mediawriter
@@ -243,6 +245,7 @@ homebrew:
     - google-cloud-sdk
     - hiddenbar
     - iina
+    - joplin
     - jumpcut
     - keepassxc
     - keepingyouawake

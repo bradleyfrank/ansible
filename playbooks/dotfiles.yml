@@ -54,7 +54,7 @@
 
     - name: Ensure glow config directory exists
       ansible.builtin.file:
-        path: "{{ glow_config_path[ansible_distribution] }}"
+        path: "{{ glow_config_path }}"
         state: directory
         mode: 0755
       tags: [core, glow]
@@ -62,7 +62,7 @@
     - name: Install glow configs
       ansible.builtin.copy:
         src: apps/glow
-        dest: "{{ glow_config_path[ansible_distribution] }}/"
+        dest: "{{ glow_config_path }}/"
         mode: 0644
       tags: [core, glow]
 
@@ -98,7 +98,7 @@
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
-        path: "{{ font_dir[ansible_distribution] }}"
+        path: "{{ font_dir }}"
         state: directory
         mode: 0700
       tags: fonts
@@ -106,7 +106,7 @@
     - name: Copy fonts
       ansible.builtin.copy:
         src: fonts/
-        dest: "{{ font_dir[ansible_distribution] }}/"
+        dest: "{{ font_dir }}/"
         mode: 0644
       when: "'desktop' in system_type"
       tags: fonts
@@ -117,7 +117,7 @@
 
     - name: Install Python packages
       ansible.builtin.pip:
-        executable: "{{ pip[ansible_distribution] }}"
+        executable: "{{ pip_exec }}"
         name: "{{ pypi_packages }}"
         extra_args: --user
       tags: python

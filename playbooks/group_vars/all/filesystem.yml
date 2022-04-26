@@ -1,39 +1,6 @@
 ---
 
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
-
-bash_shell:
-  Fedora: /usr/bin/bash
-  MacOSX: "{{ homebrew_prefix }}/bin/bash"
-
-font_dir:
-  Fedora: "{{ ansible_user_dir }}/.local/share/fonts"
-  MacOSX: "{{ ansible_user_dir }}/Library/Fonts"
-
-glow_config_path:
-  Fedora: "{{ ansible_user_dir }}/.config"
-  MacOSX: "{{ ansible_user_dir }}/Library/Preferences/glow"
-
-k9s_config_path:
-  Fedora: "{{ ansible_user_dir }}/.config"
-  MacOSX: "{{ ansible_user_dir }}/Library/Preferences"
-
-python_user_path:
-  Fedora: "{{ ansible_user_dir }}/.local/bin"
-  MacOSX: "{{ ansible_user_dir }}/Library/Python/3.{{ ansible_python['version']['minor'] }}/bin"
-
-pip:
-  Fedora: /usr/bin/pip3
-  MacOSX: "{{ homebrew_prefix }}/bin/pip3.{{ ansible_python['version']['minor'] }}"
-
-root_home:
-  Fedora: /root
-  MacOSX: /var/root
-
-sudoers:
-  Fedora: /etc/sudoers.d/99_ansible
-  MacOSX: /private/etc/sudoers.d/99_ansible
-
 zsh:
   completions: "{{ ansible_user_dir }}/.local/share/zsh-completions"
   functions: "{{ ansible_user_dir }}/.local/share/zsh-functions"

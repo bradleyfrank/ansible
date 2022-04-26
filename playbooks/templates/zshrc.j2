@@ -4,7 +4,7 @@ PATH="$PATH:$HOME/.krew/bin"
 {% for gnubin in homebrew_gnubin['files'] -%}
 PATH="$PATH:{{ gnubin['path'] }}"
 {% endfor %}
-PATH="$PATH:{{ python_user_path['MacOSX'] }}"
+PATH="$PATH:{{ python_user_path }}"
 PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
