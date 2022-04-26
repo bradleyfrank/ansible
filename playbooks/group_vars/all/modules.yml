@@ -29,6 +29,7 @@ krew_plugins:
 
 pypi_packages:
   - archivebox
+  - bashate
   - beets
   - click  # https://github.com/tmux-python/tmuxp/pull/679
   - diceware
