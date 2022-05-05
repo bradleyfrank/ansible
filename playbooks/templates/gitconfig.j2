@@ -38,7 +38,12 @@
 [user]
   name = {{ ansible_user_gecos }}
   email = {{ email }}
+  signingkey = {{ signingkey }}
 {% if work_system -%}
 [url "https://api:{{ github['work_token'] | trim('\n') }}@github.com/"]
   insteadOf = https://github.com/
 {% endif -%}
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh

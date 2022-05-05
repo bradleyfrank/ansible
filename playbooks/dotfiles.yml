@@ -42,16 +42,6 @@
       changed_when: false
       tags: core
 
-    - name: Install gitconfig
-      ansible.builtin.template:
-        src: gitconfig.j2
-        dest: "{{ ansible_user_dir }}/.gitconfig"
-        mode: 0755
-        backup: true
-      register: _backup_gitconfig
-      notify: Process backups
-      tags: [core, git]
-
     - name: Ensure glow config directory exists
       ansible.builtin.file:
         path: "{{ glow_config_path }}"
@@ -91,6 +81,24 @@
         apply:
           tags: k8s
       tags: [kubectl, krew, stern, k9s]
+
+    # Depends on ssh tasks generating keys
+    - name: Install gitconfig
+      vars:
+        files:
+          - "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
+          - "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
+        pubkey: "{{ lookup('first_found', files) }}"
+        pubkey_content: "{{ lookup('file', pubkey) | split(' ') }}"
+        signingkey: "{{ pubkey_content[0] }} {{ pubkey_content[1] }}"
+      ansible.builtin.template:
+        src: gitconfig.j2
+        dest: "{{ ansible_user_dir }}/.gitconfig"
+        mode: 0755
+        backup: true
+      register: _backup_gitconfig
+      notify: Process backups
+      tags: [core, git]
 
 # ============================================================================
 #  assets and modules

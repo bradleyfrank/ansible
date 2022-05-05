@@ -303,6 +303,7 @@ flatpaks:
     - name: org.signal.Signal
     - name: re.sonny.Junction
     - name: re.sonny.Tangram
+    - name: sh.cider.Cider
     - name: us.zoom.Zoom
 
 containers:
