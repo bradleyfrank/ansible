@@ -85,7 +85,6 @@
           tags: k8s
       tags: [kubectl, krew, stern, k9s]
 
-    # Depends on ssh tasks generating keys
     - name: Install gitconfig
       vars:
         pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"

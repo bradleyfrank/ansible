@@ -3,6 +3,10 @@
 - name: Bootstrap localhost
   hosts: localhost
   tasks:
+
+    - name: Import os-specific variables
+      ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.copy:
         content: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
