@@ -16,6 +16,9 @@
 
   tasks:
 
+    - name: Import os-specific variables
+      ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+
 # ============================================================================
 #  dotfiles and command line configuration
 # ----------------------------------------------------------------------------
