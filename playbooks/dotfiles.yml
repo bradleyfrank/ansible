@@ -87,8 +87,7 @@
 
     - name: Install gitconfig
       vars:
-        pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
-        pubkey_content: "{{ lookup('file', pubkey) | split(' ') }}"
+        pubkey_content: "{{ lookup('file', git_public_signing_key) | split(' ') }}"
       ansible.builtin.template:
         src: gitconfig.j2
         dest: "{{ ansible_user_dir }}/.gitconfig"
@@ -100,8 +99,7 @@
 
     - name: Create allowed signers file
       vars:
-        pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
-        pubkey_content: "{{ lookup('file', pubkey) | split(' ') }}"
+        pubkey_content: "{{ lookup('file', git_public_signing_key) | split(' ') }}"
       ansible.builtin.copy:
         content: "{{ email }} {{ pubkey_content[0] }} {{ pubkey_content[1] }}"
         dest: "{{ git_allowed_signers_file }}"
