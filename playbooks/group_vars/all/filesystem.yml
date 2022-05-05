@@ -1,6 +1,7 @@
 ---
 
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
+git_allowed_signers_file: "{{ ansible_user_dir }}/.ssh/allowed_signers"
 zsh:
   completions: "{{ ansible_user_dir }}/.local/share/zsh-completions"
   functions: "{{ ansible_user_dir }}/.local/share/zsh-functions"

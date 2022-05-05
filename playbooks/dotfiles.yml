@@ -85,12 +85,8 @@
     # Depends on ssh tasks generating keys
     - name: Install gitconfig
       vars:
-        files:
-          - "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
-          - "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
-        pubkey: "{{ lookup('first_found', files) }}"
+        pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
         pubkey_content: "{{ lookup('file', pubkey) | split(' ') }}"
-        signingkey: "{{ pubkey_content[0] }} {{ pubkey_content[1] }}"
       ansible.builtin.template:
         src: gitconfig.j2
         dest: "{{ ansible_user_dir }}/.gitconfig"
@@ -98,6 +94,16 @@
         backup: true
       register: _backup_gitconfig
       notify: Process backups
+      tags: [core, git]
+
+    - name: Create allowed signers file
+      vars:
+        pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
+        pubkey_content: "{{ lookup('file', pubkey) | split(' ') }}"
+      ansible.builtin.copy:
+        content: "{{ email }} {{ pubkey_content[0] }} {{ pubkey_content[1] }}"
+        dest: "{{ git_allowed_signers_file }}"
+        mode: 0644
       tags: [core, git]
 
 # ============================================================================
