@@ -1,9 +1,15 @@
+#
+# Opens tmux sessions defined by tmuxp.
+# Author: Brad Frank
+# Date: Oct 2021
+# Tested: zsh 5.8.1 (x86_64-apple-darwin21.3.0)
+#
+
 mux () {
-  if [[ -n "$1" ]]; then arg="$1"; else arg="dice"; fi
-  case "$arg" in
+  case "$1" in
      orm) tmuxp load -y ansible scratch notes orm infractl ;;
     home) tmuxp load -y ansible scratch notes home ;;
     dice) tmux new-session -s "$(diceware --delimiter - --num 2)" ;;
-       *) tmux new-session -A -s "$arg" ;;
+       *) tmux new-session -A -s "$1" ;;
   esac
 }

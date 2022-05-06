@@ -18,6 +18,7 @@
 
     - name: Import os-specific variables
       ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+      tags: always
 
 # ============================================================================
 #  dotfiles and command line configuration

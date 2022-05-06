@@ -6,6 +6,7 @@
 
     - name: Import os-specific variables
       ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+      tags: always
 
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.copy:

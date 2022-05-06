@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 #
 # Functions for making kubectl easier to use.
 # Author: Brad Frank
