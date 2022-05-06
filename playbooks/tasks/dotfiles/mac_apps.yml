@@ -1,0 +1,32 @@
+---
+
+- name: Install BBEdit cli tool
+  ansible.builtin.copy:
+    src: /Applications/BBEdit.app/Contents/Helpers/bbedit_tool
+    dest: /usr/local/bin/bbedit
+    mode: 0755
+
+- name: Install BBEdit color themes
+  ansible.builtin.copy:
+    src: apps/bbedit/
+    dest: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes/"
+    mode: 0755
+
+- name: Get Stats version
+  ansible.builtin.shell:
+    cmd: brew info --cask stats --json=v2 | jq -r '.casks[].installed'
+  changed_when: false
+  register: stats_version
+
+- name: Copy Stats xml config
+  ansible.builtin.template:
+    src: stats.xml.j2
+    dest: /tmp/eu.exelban.Stats.xml
+    mode: 0644
+
+- name: Generate Stats plist config
+  vars:
+    stats_xml: /tmp/eu.exelban.Stats.xml
+    stats_plist: "{{ ansible_user_dir }}/Library/Preferences/eu.exelban.Stats.plist"
+  ansible.builtin.shell:
+    cmd: "plutil -convert binary1 {{ stats_xml }} -o {{ stats_plist }}"

@@ -35,6 +35,26 @@
   changed_when: false
   register: zsh_version
 
+- name: Find Homebrew gnubin directories
+  ansible.builtin.find:
+    paths: "{{ homebrew_prefix }}/opt"
+    patterns: gnubin
+    file_type: directory
+    depth: 3
+    recurse: true
+    follow: true
+  register: homebrew_gnubin
+
+- name: Find Homebrew gnuman directories
+  ansible.builtin.find:
+    paths: "{{ homebrew_prefix }}/opt"
+    patterns: gnuman
+    file_type: directory
+    depth: 3
+    recurse: true
+    follow: true
+  register: homebrew_gnuman
+
 - name: Apply zshrc template
   vars:
     zsh_source_files: "{{ find_zsh_source_dirs['files'] | default([]) }}"

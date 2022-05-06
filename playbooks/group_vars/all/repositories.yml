@@ -1,5 +1,19 @@
 ---
 
+copr:
+  - name: atim/bottom
+    system_type: [desktop, server]
+  - name: atim/choose
+    system_type: [desktop, server]
+  - name: atim/bandwhich
+    system_type: [desktop, server]
+  - name: keefle/glow
+    system_type: [desktop, server]
+  - name: luminoso/k9s
+    system_type: [desktop, server]
+  - name: taw/joplin
+    system_type: [desktop]
+
 repos:
   - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
     description: 1Password GUI
@@ -7,22 +21,10 @@ repos:
     gpgkey: https://downloads.1password.com/linux/keys/1password.asc
     system_type: [desktop]
 
-  - name: bottom
-    description: Copr repo for bottom
-    baseurl: https://download.copr.fedorainfracloud.org/results/atim/bottom/fedora-$releasever-$basearch/
-    gpgkey: https://download.copr.fedorainfracloud.org/results/atim/bottom/pubkey.gpg
-    system_type: [desktop, server]
-
   - name: gh-cli
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm
     gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
-    system_type: [desktop, server]
-
-  - name: glow
-    description: Copr repo for glow
-    baseurl: https://download.copr.fedorainfracloud.org/results/keefle/glow/fedora-$releasever-$basearch/
-    gpgkey: https://download.copr.fedorainfracloud.org/results/keefle/glow/pubkey.gpg
     system_type: [desktop, server]
 
   - name: google-chrome
@@ -30,18 +32,6 @@ repos:
     baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
     gpgkey: https://dl.google.com/linux/linux_signing_key.pub
     system_type: [desktop]
-
-  - name: hardware:razer
-    description: packages for Razer hardware
-    baseurl: https://download.opensuse.org/repositories/hardware:/razer/Fedora_$releasever
-    gpgkey: https://download.opensuse.org/repositories/hardware:/razer/Fedora_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key
-    system_type: [desktop]
-
-  - name: k9s
-    description: Copr repo for k9s
-    baseurl: https://copr-be.cloud.fedoraproject.org/results/luminoso/k9s/fedora-$releasever-$basearch/
-    gpgkey: https://copr-be.cloud.fedoraproject.org/results/luminoso/k9s/pubkey.gpg
-    system_type: [desktop, server]
 
   - name: kubernetes
     description: Kubernetes

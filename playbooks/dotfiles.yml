@@ -16,6 +16,10 @@
 
   tasks:
 
+    - name: Import os-specific variables
+      ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+      tags: always
+
 # ============================================================================
 #  dotfiles and command line configuration
 # ----------------------------------------------------------------------------
@@ -42,19 +46,9 @@
       changed_when: false
       tags: core
 
-    - name: Install gitconfig
-      ansible.builtin.template:
-        src: gitconfig.j2
-        dest: "{{ ansible_user_dir }}/.gitconfig"
-        mode: 0755
-        backup: true
-      register: _backup_gitconfig
-      notify: Process backups
-      tags: [core, git]
-
     - name: Ensure glow config directory exists
       ansible.builtin.file:
-        path: "{{ glow_config_path[ansible_distribution] }}"
+        path: "{{ glow_config_path }}"
         state: directory
         mode: 0755
       tags: [core, glow]
@@ -62,7 +56,7 @@
     - name: Install glow configs
       ansible.builtin.copy:
         src: apps/glow
-        dest: "{{ glow_config_path[ansible_distribution] }}/"
+        dest: "{{ glow_config_path }}/"
         mode: 0644
       tags: [core, glow]
 
@@ -92,13 +86,34 @@
           tags: k8s
       tags: [kubectl, krew, stern, k9s]
 
+    - name: Install gitconfig
+      vars:
+        pubkey_content: "{{ lookup('file', git_public_signing_key) | split(' ') }}"
+      ansible.builtin.template:
+        src: gitconfig.j2
+        dest: "{{ ansible_user_dir }}/.gitconfig"
+        mode: 0755
+        backup: true
+      register: _backup_gitconfig
+      notify: Process backups
+      tags: [core, git]
+
+    - name: Create allowed signers file
+      vars:
+        pubkey_content: "{{ lookup('file', git_public_signing_key) | split(' ') }}"
+      ansible.builtin.copy:
+        content: "{{ email }} {{ pubkey_content[0] }} {{ pubkey_content[1] }}"
+        dest: "{{ git_allowed_signers_file }}"
+        mode: 0644
+      tags: [core, git]
+
 # ============================================================================
 #  assets and modules
 # ----------------------------------------------------------------------------
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
-        path: "{{ font_dir[ansible_distribution] }}"
+        path: "{{ font_dir }}"
         state: directory
         mode: 0700
       tags: fonts
@@ -106,7 +121,7 @@
     - name: Copy fonts
       ansible.builtin.copy:
         src: fonts/
-        dest: "{{ font_dir[ansible_distribution] }}/"
+        dest: "{{ font_dir }}/"
         mode: 0644
       when: "'desktop' in system_type"
       tags: fonts
@@ -117,7 +132,7 @@
 
     - name: Install Python packages
       ansible.builtin.pip:
-        executable: "{{ pip[ansible_distribution] }}"
+        executable: "{{ pip_exec }}"
         name: "{{ pypi_packages }}"
         extra_args: --user
       tags: python
@@ -143,10 +158,10 @@
       notify: Process backups
       tags: alacritty
 
-    - name: Import BBEdit tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/bbedit.yml
+    - name: Import misc macOS app tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
       when: "'MacOSX' in ansible_distribution"
-      tags: bbedit
+      tags: [bbedit, stats]
 
     - name: Update macOS app icons
       vars:

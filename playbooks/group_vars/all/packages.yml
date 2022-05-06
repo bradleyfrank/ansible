@@ -4,10 +4,12 @@ rpms:
   cli:
     - abcde
     - bash-completion
+    - bandwhich
     - bat
     - bcal
     - borgbackup
     - bottom
+    - choose
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
@@ -33,7 +35,6 @@ rpms:
     - jq
     - jo
     - k9s
-    - kernel-devel  # openrazer
     - keychain
     - kubectl
     - libmp4v2
@@ -93,6 +94,7 @@ rpms:
       - google-noto-sans-fonts
       - google-noto-sans-mono-fonts
       - google-noto-serif-fonts
+      - joplin
       - keepassxc
       - libreoffice
       - mediawriter
@@ -148,14 +150,17 @@ homebrew:
   formulas:
     - asciinema
     - awscli
+    - bandwhich
     - bash
     - bash-completion@2
     - bat
     - bcal
     - bottom
     - cabextract
+    - choose-rust
     - coreutils
     - dict
+    - dog
     - eye-d3
     - exa
     - fd
@@ -234,19 +239,19 @@ homebrew:
     - bbedit
     - calibre
     - chromium
-    - dozer
     - expressions
     - fantastical
     - firefox
     - google-cloud-sdk
+    - hiddenbar
     - iina
+    - joplin
     - jumpcut
     - keepassxc
     - keepingyouawake
     - kindle
-    - logitech-options
+    - logi-options-plus
     - macdown
-    - menumeters
     - microsoft-auto-update
     - microsoft-office
     - musicbrainz-picard
@@ -263,9 +268,8 @@ homebrew:
     - zoom
   virtualization_casks:
     - multipass
+    - parallels
     - utm
-    - vagrant
-    - vagrant-vmware-utility
     - vmware-fusion
   mas:
     - 407963104   # Pixelmator
@@ -294,10 +298,12 @@ flatpaks:
     - name: com.github.liferooter.textpieces
     - name: com.github.rajsolai.textsnatcher
     - name: com.plexamp.Plexamp
+    - name: io.bassi.Amberol
     - name: io.github.seadve.Kooha
     - name: org.signal.Signal
     - name: re.sonny.Junction
     - name: re.sonny.Tangram
+    - name: sh.cider.Cider
     - name: us.zoom.Zoom
 
 containers:

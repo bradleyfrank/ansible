@@ -13,6 +13,9 @@ git_reference_repos:
   - https_url: https://github.com/6mile/DevSecOps-Playbook.git
     name: devsecops-playbook
     version: main
+  - https_url: https://github.com/gto76/python-cheatsheet.git
+    name: python-cheatsheet
+    version: main
 
 krew_plugins:
   - cert-manager
@@ -26,6 +29,7 @@ krew_plugins:
 
 pypi_packages:
   - archivebox
+  - bashate
   - beets
   - click  # https://github.com/tmux-python/tmuxp/pull/679
   - diceware

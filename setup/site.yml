@@ -21,10 +21,6 @@
       prompt: Enter email address
       private: false
       default: "{{ default_email }}"
-    - name: ssh_key_types_to_generate
-      prompt: SSH key types to generate (dsa,ecdsa,ed25519,rsa|None)
-      private: false
-      default: "rsa,ed25519"
     - name: clone_personal_repos
       prompt: Clone all personal GitHub repos (True|False)
       private: false
@@ -53,7 +49,7 @@
       vars:
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
-      loop: "{{ ssh_key_types_to_generate | split(',') }}"
+      loop: [rsa, ed25519]
       when: "ssh_key_types_to_generate != 'None'"
       register: ssh_keys
 

@@ -1,31 +1,19 @@
 PATH="$HOME/.local/bin"
 PATH="$PATH:$HOME/.krew/bin"
 {% if 'MacOSX' in ansible_distribution %}
-PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/findutils/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/gawk/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/gnu-sed/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/gnu-tar/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/gnu-which/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/grep/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/gsed/libexec/gnubin"
-PATH="$PATH:/usr/local/opt/libtool/libexec/gnubin"
-PATH="$PATH:{{ python_user_path['MacOSX'] }}"
-PATH="$PATH:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
+{% for gnubin in homebrew_gnubin['files'] -%}
+PATH="$PATH:{{ gnubin['path'] }}"
+{% endfor %}
+PATH="$PATH:{{ python_user_path }}"
+PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 MANPATH="$HOME/.local/share/man"
 {% if 'MacOSX' in ansible_distribution %}
-MANPATH="$MANPATH:/usr/local/opt/coreutils/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/findutils/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/gawk/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/gnu-sed/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/gnu-tar/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/gnu-which/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/grep/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/gsed/libexec/gnuman"
-MANPATH="$MANPATH:/usr/local/opt/libtool/libexec/gnuman"
+{% for gnuman in homebrew_gnuman['files'] -%}
+PATH="$PATH:{{ gnuman['path'] }}"
+{% endfor %}
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
@@ -49,11 +37,11 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
 export CLOUDSDK_PYTHON=/usr/bin/python3
-export HELPDIR=/usr/local/Cellar/zsh/{{ zsh_version['stdout'] }}/share/zsh/help
-export HOMEBREW_CELLAR=/usr/local/Cellar
-export HOMEBREW_PREFIX=/usr/local
-export HOMEBREW_REPOSITORY=/usr/local/Homebrew
-export INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
+export HELPDIR={{ homebrew_prefix }}/Cellar/zsh/{{ zsh_version['stdout'] }}/share/zsh/help
+export HOMEBREW_CELLAR={{ homebrew_prefix }}/Cellar
+export HOMEBREW_PREFIX={{ homebrew_prefix }}
+export HOMEBREW_REPOSITORY={{ homebrew_prefix }}/Homebrew
+export INFOPATH={{ homebrew_prefix }}/share/info:"${INFOPATH:-}"
 export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
 {% elif 'Fedora' in ansible_distribution %}
 export HELPDIR=/usr/share/zsh/{{ zsh_version['stdout'] }}/help
@@ -169,11 +157,11 @@ bindkey '^X^E' edit-command-line
 
 
 {% if 'MacOSX' in ansible_distribution %}
-source /usr/local/opt/fzf/shell/completion.zsh
-source /usr/local/opt/fzf/shell/key-bindings.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+source {{ homebrew_prefix }}/opt/fzf/shell/completion.zsh
+source {{ homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
+source {{ homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source {{ homebrew_prefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source {{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 {% elif 'Fedora' in ansible_distribution %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -187,9 +175,9 @@ for function in {{ zsh['functions'] }}/*; do source "$function"; done
 source {{ ansible_user_dir }}/.infractl/secrets
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
+
+
 {% endif %}
-
-
 eval "$(dircolors $HOME/.dir_colors)"
 eval "$(zoxide init zsh --hook pwd --cmd cd)"
 eval "$(starship init zsh)"

@@ -37,6 +37,17 @@
   when: system_type in item['system_type']
   tags: repos
 
+- name: Enable copr repositories
+  community.general.copr:
+    name: "{{ item['name'] }}"
+    state: enabled
+  loop: "{{ copr }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: system_type in item['system_type']
+  tags: [repos, copr]
+
 - name: Update all packages
   ansible.builtin.dnf:
     name: "*"

@@ -55,6 +55,6 @@
 - name: Install k9s configs
   ansible.builtin.copy:
     src: apps/k9s
-    dest: "{{ k9s_config_path[ansible_distribution] }}/"
+    dest: "{{ k9s_config_path }}/"
     mode: 0644
   tags: k9s
