@@ -47,6 +47,7 @@ rpms:
     - ncdu
     - neofetch
     - nmap
+    - ocrmypdf
     - p7zip
     - p7zip-plugins
     - par
@@ -201,6 +202,7 @@ homebrew:
     - ncdu
     - neofetch
     - nmap
+    - ocrmypdf
     - p7zip
     - par
     - prettyping
