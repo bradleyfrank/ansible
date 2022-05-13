@@ -256,6 +256,7 @@ homebrew:
     - macdown
     - microsoft-auto-update
     - microsoft-office
+    - minecraft
     - musicbrainz-picard
     - plexamp
     - rectangle
@@ -292,6 +293,7 @@ flatpaks:
     - name: elementary
       url: https://flatpak.elementary.io/repo.flatpakrepo
   packages:
+    - name: app.drey.Warp
     - name: com.github.avojak.warble
       remote: elementary
     - name: com.github.phase1geo.annotator
