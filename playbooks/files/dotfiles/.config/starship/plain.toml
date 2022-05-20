@@ -54,5 +54,4 @@ error_symbol = "[%%](bold fg:160)"
 
 [cmd_duration]
 format = "\\[[${duration}](bold fg:136)\\]"
-min_time = 50
-show_milliseconds = true
+min_time = 1000

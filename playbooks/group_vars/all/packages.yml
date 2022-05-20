@@ -75,7 +75,6 @@ rpms:
     - wget
     - xsel
     - xz
-    - zoxide
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
@@ -228,7 +227,6 @@ homebrew:
     - watch
     - wget
     - yamllint
-    - zoxide
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
