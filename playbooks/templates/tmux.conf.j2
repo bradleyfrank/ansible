@@ -10,8 +10,9 @@ set -g renumber-windows on
 set -g status-interval 1
 
 {% if "tmux" in item -%}
-set -g pane-active-border-style "bold,bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour166}}"
-set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour136}"
+set -g pane-active-border-style "bg=default,#{?window_zoomed_flag,fg=colour160,#{?pane_synchronized,fg=colour37,fg=colour166}}"
+set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour245}"
+set -g pane-border-lines "double"
 set -g status-format[1] "#[align=right]#(tmux-status)"
 set -g status-right "#[fg=colour61,bold]#{session_name} #[fg=default]@ #[fg=colour64]#h#[nobold]"
 set -g window-status-current-format "#[fg=colour231,bg=colour33,bold] #I: #W #[nobold]"
@@ -19,6 +20,7 @@ set -g window-status-format "#[fg=colour33,bg=colour254,bold] #I: #W #[nobold]"
 {% elif "minimal" in item -%}
 set -g pane-active-border-style "fg=colour230,#{?window_zoomed_flag,bg=colour160,#{?pane_synchronized,bg=colour37,bg=colour166}}"
 set -g pane-border-style "fg=colour230,#{?pane_synchronized,bg=colour37,bg=colour136}"
+set -g pane-border-lines "heavy"
 set -g status-format[1] ""
 set -g status-right "#[fg=colour61,bold]#{session_name} "
 set -g window-status-current-format "#[fg=colour33,bold][#I]#[nobold]"
@@ -28,7 +30,6 @@ set -g aggressive-resize off
 set -g mode-style "bg=colour24,fg=colour231"
 set -g pane-border-format " #P: #{s|{{ ansible_user_dir }}|~|:pane_current_path} #[align=right] #{pane_current_command} "
 set -g pane-border-status top
-set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour136}"
 set -g status 2
 set -g status-left ""
 set -g status-position top

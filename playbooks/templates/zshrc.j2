@@ -33,6 +33,7 @@ export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
 export PRE_COMMIT_COLOR=never           # pre-commit colors incompatible with solarized-light
+export STARSHIP_CONFIG={{ ansible_user_dir }}/.config/starship/plain.toml
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
@@ -123,7 +124,7 @@ SAVEHIST=5000
 setopt appendhistory           # Immediately append history instead of overwriting
 setopt autocd                  # Change directory without `cd`
 setopt correct                 # Auto correct mistakes
-setopt extended_history        # Save each command’s beginning timestamp and the duration
+setopt extended_history        # Save each commands beginning timestamp and the duration
 setopt extendedglob            # Extended globbing. Allows using regular expressions with *
 setopt hist_verify             # Confirm commands from history expansion
 setopt histignorealldups       # If a new command is a duplicate, remove the older one
