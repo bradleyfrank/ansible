@@ -27,11 +27,9 @@ local:
     homebrew_prefix: {%- if 'x86_64' in ansible_machine %} /usr/local
                      {%- else %} /opt/homebrew
                      {%- endif %}
-    {%- endif %}
-    {%- if ssh_key_types_to_generate != 'None' %}
+    {% endif %}
 
     ssh_keys:
   {% for item in ssh_keys['results'] %}
   {{ item['stdout'] | indent(width=2, first=True) }}
   {% endfor %}
-    {%- endif %}

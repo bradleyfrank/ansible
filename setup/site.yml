@@ -24,19 +24,19 @@
     - name: clone_personal_repos
       prompt: Clone all personal GitHub repos (True|False)
       private: false
-      default: true
+      default: "True"
     - name: manage_ssh_config
       prompt: Manage SSH config (True|False)
       private: false
-      default: true
+      default: "True"
     - name: upload_ssh_key_github
       prompt: Upload SSH key to Github (True|False)
       private: false
-      default: true
+      default: "True"
     - name: work_system
       prompt: Install employer settings and scripts (True|False)
       private: false
-      default: false
+      default: "True"
 
   tasks:
     - name: Create vault file
@@ -50,7 +50,6 @@
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
       loop: [rsa, ed25519]
-      when: "ssh_key_types_to_generate != 'None'"
       register: ssh_keys
 
     - name: Create inventory
