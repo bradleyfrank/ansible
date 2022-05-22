@@ -45,6 +45,8 @@
     type: "{{ item['type'] | default(omit) }}"
     value: "{{ item['value'] }}"
   loop: "{{ defaults }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   tags: system_settings
 
 - name: Remove all dock icons
