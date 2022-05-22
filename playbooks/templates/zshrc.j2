@@ -117,7 +117,7 @@ zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
 zstyle ':completion:*' use-cache on                # "
 zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 
-WORDCHARS=${WORDCHARS//\/[&;]}                    # Don't consider these part of the word
+WORDCHARS=${WORDCHARS//\/[&;]}                     # Don't consider these part of the word
 CORRECT_IGNORE_FILE='[_|.]*'                       # Skip correcting commands matching pattern
 HISTFILE=~/.zsh_history
 HISTSIZE=2000
@@ -187,11 +187,10 @@ complete -o nospace -C /usr/local/bin/vault vault
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
 eval "$(starship init zsh)"
-{% if 'MacOSX' in ansible_distribution %}
-eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_private_keys | join(' ') }})"
-{% elif 'Fedora' in ansible_distribution %}
-eval "$(keychain --eval --ignore-missing --quiet {{ ssh_private_keys | join(' ') }})"
-{% endif %}
+eval "$(keychain --eval --ignore-missing --quiet
+{%- if 'MacOSX' in ansible_distribution %} --inherit any
+{%- else %}
+{%- endif %} id_rsa id_ed25519 ansible google_compute_engine)"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode

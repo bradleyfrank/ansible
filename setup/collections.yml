@@ -1,0 +1,17 @@
+---
+
+- name: Install and update Ansible Galaxy collections
+  hosts: localhost
+
+  tasks:
+    - name: Copy Ansible Galaxy requirements
+      ansible.builtin.copy:
+        src: requirements.yml
+        dest: "{{ ansible_user_dir }}/.ansible/requirements.yml"
+        mode: 0755
+
+    - name: Install Ansible Galaxy collections
+      community.general.ansible_galaxy_install:
+        type: collection
+        requirements_file: "{{ ansible_user_dir }}/.ansible/requirements.yml"
+        force: true

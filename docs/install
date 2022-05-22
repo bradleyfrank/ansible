@@ -53,7 +53,6 @@ virtualenv venv
 . venv/bin/activate
 pip install --requirement setup/requirements.txt
 
-ansible-galaxy collection install -r setup/requirements.yml
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml \
   --extra-vars current_hostname="$(hostname -s)" --extra-vars current_email="$(id -un)@$(uname -n)"
 

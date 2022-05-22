@@ -1,11 +1,5 @@
 ---
 
-- name: Ensure ~/.ssh directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.ssh"
-    state: directory
-    mode: 0755
-
 - name: Set proper permissions on ~/.ssh/authorized_keys
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
@@ -22,23 +16,3 @@
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
-
-- name: Copy SSH keys
-  ansible.builtin.copy:
-    src: "{{ item['src'] }}"
-    dest: "{{ ansible_user_dir }}/.ssh"
-    mode: "{{ '0644' if 'pub' in item['src'] | basename else '0600' }}"
-  loop: "{{ lookup('community.general.filetree', 'ssh/') }}"
-  loop_control:
-    label: "{{ item['src'] | basename }}"
-  when: manage_ssh_config and (item['src'] | basename != 'config')
-
-- name: Copy SSH config
-  ansible.builtin.copy:
-    src: ssh/config
-    dest: "{{ ansible_user_dir }}/.ssh/config"
-    mode: 0644
-    backup: true
-  register: _backup_ssh_config
-  notify: Process backups
-  when: manage_ssh_config

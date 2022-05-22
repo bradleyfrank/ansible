@@ -36,7 +36,7 @@
     - name: work_system
       prompt: Install employer settings and scripts (True|False)
       private: false
-      default: "True"
+      default: "False"
 
   tasks:
     - name: Create vault file
@@ -57,3 +57,6 @@
         src: inventory.yml.j2
         dest: "{{ ansible_user_dir }}/.ansible/inventory.yml"
         mode: 0755
+
+- name: Import Ansible galaxy playbook
+  ansible.builtin.import_playbook: collections.yml

@@ -87,6 +87,11 @@
   become: true
   tags: unhide_dirs
 
+- name: Remove all dock icons
+  ansible.builtin.command: defaults write "com.apple.dock" "persistent-apps" -array
+  changed_when: false
+  tags: dock
+
 - name: Restart dock to apply changes
   ansible.builtin.command: killall Dock
   changed_when: false
