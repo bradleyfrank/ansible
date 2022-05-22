@@ -125,7 +125,7 @@ defaults:
     domain: com.apple.dock
     key: show-recents
     type: bool
-    value: 'true'
+    value: 'false'
 
   - name: Disable icon bouncing in the Dock
     domain: com.apple.dock
