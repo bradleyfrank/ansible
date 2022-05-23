@@ -25,6 +25,7 @@ krew_plugins:
   - get-all
   - neat
   - score
+  - sniff
   - stern
 
 pypi_packages:

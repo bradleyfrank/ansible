@@ -7,6 +7,8 @@
     dotfiles:
       - .ansible_vault_password
       - .config/p10k.zsh
+      - .config/starship.toml
+      - .config/starship/default.toml
       - .dotfiles
       - .k9s
       - .infractl/orm
@@ -39,6 +41,7 @@
         - tmux-mem-cpu-load
         - yq
         - youtube-dl
+        - zoxide
       casks:
         - anylist
         - firefox-developer-edition

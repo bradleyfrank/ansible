@@ -50,7 +50,6 @@
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
       loop: [rsa, ed25519]
-      when: "ssh_key_types_to_generate != 'None'"
       register: ssh_keys
 
     - name: Create inventory
@@ -58,3 +57,6 @@
         src: inventory.yml.j2
         dest: "{{ ansible_user_dir }}/.ansible/inventory.yml"
         mode: 0755
+
+- name: Import Ansible galaxy playbook
+  ansible.builtin.import_playbook: collections.yml

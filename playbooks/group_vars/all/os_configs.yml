@@ -1,313 +1,380 @@
 ---
 
 defaults:
-  - domain: com.apple.TimeMachine
+  - name: Disable prompting to use new exteral drives as Time Machine volume
+    domain: com.apple.TimeMachine
     key: DoNotOfferNewDisksForBackup
-    name: Disable prompting to use new exteral drives as Time Machine volume
     type: bool
     value: 'true'
-  - domain: com.apple.mail
+
+  - name: Sort conversations in Mail by most recent on top
+    domain: com.apple.mail
     key: ConversationViewSortDescending
-    name: Sort conversations in Mail by most recent on top
     type: int
     value: '1'
-  - domain: com.apple.Terminal
+
+  - name: Open new Terminal tabs in the default directory
+    domain: com.apple.Terminal
     key: NewTabWorkingDirectoryBehavior
-    name: Open new Terminal tabs in the default directory
     type: int
     value: '1'
-  - domain: com.apple.TextEdit
+
+  - name: Set TextEdit to use plain text mode as default
+    domain: com.apple.TextEdit
     key: RichText
-    name: Set TextEdit to use plain text mode as default
     type: int
     value: '0'
-  - domain: com.apple.print.PrintingPrefs
+
+  - name: Quit printer app after print jobs complete
+    domain: com.apple.print.PrintingPrefs
     key: Quit When Finished
-    name: Quit printer app after print jobs complete
     type: bool
     value: 'true'
-  - domain: NSGlobalDomain
+
+  - name: Show filename extensions by default
+    domain: NSGlobalDomain
     key: AppleShowAllExtensions
-    name: Show filename extensions by default
     type: bool
     value: 'true'
-  - domain: com.apple.desktopservices
+
+  - name: Disable creation of .DS_Store files on network volumes
+    domain: com.apple.desktopservices
     key: DSDontWriteNetworkStores
-    name: Disable creation of .DS_Store files on network volumes
     type: bool
     value: 'true'
-  - domain: com.apple.finder
+
+  - name: Hide external hard drives on desktop
+    domain: com.apple.finder
     key: ShowExternalHardDrivesOnDesktop
-    name: Hide external hard drives on desktop
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Hide hard drives on desktop
+    domain: com.apple.finder
     key: ShowHardDrivesOnDesktop
-    name: Hide hard drives on desktop
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Hide removable media on desktop
+    domain: com.apple.finder
     key: ShowRemovableMediaOnDesktop
-    name: Hide removable media on desktop
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Hide mounted servers on desktop
+    domain: com.apple.finder
     key: ShowMountedServersOnDesktop
-    name: Hide mounted servers on desktop
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Hide icons on desktop
+    domain: com.apple.finder
     key: CreateDesktop
-    name: Hide icons on desktop
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Enable status bar in Finder
+    domain: com.apple.finder
     key: ShowStatusBar
-    name: Enable status bar in Finder
     type: bool
     value: 'true'
-  - domain: com.apple.finder
+
+  - name: Enable breadcrumbs in Finder
+    domain: com.apple.finder
     key: ShowPathbar
-    name: Enable breadcrumbs in Finder
     type: bool
     value: 'true'
-  - domain: com.apple.finder
+
+  - name: Disable Trash empty warning
+    domain: com.apple.finder
     key: WarnOnEmptyTrash
-    name: Disable Trash empty warning
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Disable file extension change warning
+    domain: com.apple.finder
     key: FXEnableExtensionChangeWarning
-    name: Disable file extension change warning
     type: bool
     value: 'false'
-  - domain: com.apple.finder
+
+  - name: Set default Finder view to list
+    domain: com.apple.finder
     key: FXPreferredViewStyle
-    name: Set default Finder view to list
     type: string
     value: Nlsv
-  - domain: com.apple.finder
+
+  - name: Set default Finder new window target
+    domain: com.apple.finder
     key: NewWindowTarget
-    name: Set default Finder new window target
     type: string
     value: PfLo
-  - domain: com.apple.finder
+
+  - name: Set default Finder location to ~/Downloads
+    domain: com.apple.finder
     key: NewWindowTargetPath
-    name: Set default Finder location to ~/Downloads
     type: string
     value: file://{{ ansible_user_dir }}/Downloads/
-  - domain: com.apple.finder
+
+  - name: Auto-hide the Dock
+    domain: com.apple.dock
     key: autohide
-    name: Auto-hide the Dock
     type: bool
     value: 'true'
-  - domain: com.apple.finder
-    key: no-bouncing
-    name: Disable icon bouncing in the Dock
-    type: bool
-    value: 'true'
-  - domain: com.apple.dock
-    key: appswitcher-all-displays
-    name: Show app switcher on all displays
-    type: bool
-    value: 'true'
-  - domain: com.apple.dock
-    key: tilesize
-    name: Set Dock size
-    type: int
-    value: '43'
-  - domain: com.apple.screencapture
-    key: location
-    name: Save screenshots to ~/Downloads
-    value: '{{ ansible_user_dir }}/Downloads'
-  - domain: com.apple.dock
-    key: wvous-bl-corner
-    name: Set expose hot corner bottom-left (application windows)
-    type: int
-    value: '3'
-  - domain: com.apple.dock
-    key: wvous-bl-modifier
-    name: Set expose hot corner bottom-left modifier
-    type: int
-    value: '0'
-  - domain: com.apple.dock
-    key: wvous-br-corner
-    name: Set expose hot corner bottom-right (screen saver)
-    type: int
-    value: '5'
-  - domain: com.apple.dock
-    key: wvous-br-modifier
-    name: Set expose hot corner bottom-right modifier
-    type: int
-    value: '0'
-  - domain: com.apple.dock
-    key: wvous-tl-corner
-    name: Set expose hot corner top-left (mission control)
-    type: int
-    value: '2'
-  - domain: com.apple.dock
-    key: wvous-tl-modifier
-    name: Set expose hot corner top-left modifier
-    type: int
-    value: '0'
-  - domain: com.apple.dock
-    key: wvous-tr-corner
-    name: Set expose hot corner top-right (launchpad)
-    type: int
-    value: '11'
-  - domain: com.apple.dock
-    key: wvous-tr-modifier
-    name: Set expose hot corner top-right modifier
-    type: int
-    value: '0'
-  - domain: com.apple.dock
-    key: mru-spaces
-    name: Disable automatically rearranging Spaces
+
+  - name: Disable recent apps in the Dock
+    domain: com.apple.dock
+    key: show-recents
     type: bool
     value: 'false'
-  - domain: com.apple.dock
-    key: expose-group-apps
-    name: Enable grouping windows by application
+
+  - name: Disable icon bouncing in the Dock
+    domain: com.apple.dock
+    key: no-bouncing
     type: bool
     value: 'true'
-  - domain: com.apple.screensaver
-    key: idleTime
-    name: Set screensaver timeout
+
+  - name: Show app switcher on all displays
+    domain: com.apple.dock
+    key: appswitcher-all-displays
+    type: bool
+    value: 'true'
+
+  - name: Set Dock size
+    domain: com.apple.dock
+    key: tilesize
     type: int
-    value: '300'
-  - domain: com.apple.screensaver
-    key: askForPassword
-    name: Set screensaver password timeout
+    value: '43'
+
+  - name: Save screenshots to ~/Downloads
+    domain: com.apple.screencapture
+    key: location
+    value: '{{ ansible_user_dir }}/Downloads'
+
+  - name: Set expose hot corner bottom-left (application windows)
+    domain: com.apple.dock
+    key: wvous-bl-corner
     type: int
-    value: '1'
-  - domain: com.apple.screensaver
-    key: askForPasswordDelay
-    name: Set screensaver password delay
+    value: '3'
+
+  - name: Set expose hot corner bottom-left modifier
+    domain: com.apple.dock
+    key: wvous-bl-modifier
+    type: int
+    value: '0'
+
+  - name: Set expose hot corner bottom-right (screen saver)
+    domain: com.apple.dock
+    key: wvous-br-corner
     type: int
     value: '5'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: Clicking
-    name: Configure bluetooth Apple trackpad - tap-to-click
+
+  - name: Set expose hot corner bottom-right modifier
+    domain: com.apple.dock
+    key: wvous-br-modifier
     type: int
-    value: '1'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: trackpadRightClick
-    name: Configure bluetooth Apple trackpad - 2 finger tap right-click
-    type: int
-    value: '1'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: trackpadPinch
-    name: Configure bluetooth Apple trackpad - pinch to zoom
-    type: int
-    value: '1'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: trackpadRotate
-    name: Configure bluetooth Apple trackpad - 2 finger rotate
-    type: int
-    value: '1'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: TrackpadThreeFingerHorizSwipeGesture
-    name: Configure bluetooth Apple trackpad - 3 finger swipe between pages
-    type: int
-    value: '1'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: trackpadTwoFingerDoubleTapGesture
-    name: Configure bluetooth Apple trackpad - smart zoom
-    type: int
-    value: '1'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: TrackpadTwoFingerFromRightEdgeSwipeGesture
-    name: Configure bluetooth Apple trackpad - Notification Center
-    type: int
-    value: '3'
-  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: trackpadThreeFingerTapGesture
-    name: Configure bluetooth Apple trackpad - perform look up
+    value: '0'
+
+  - name: Set expose hot corner top-left (mission control)
+    domain: com.apple.dock
+    key: wvous-tl-corner
     type: int
     value: '2'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: Clicking
-    name: Configure builtin Apple trackpad - tap-to-click
+
+  - name: Set expose hot corner top-left modifier
+    domain: com.apple.dock
+    key: wvous-tl-modifier
     type: int
-    value: '1'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: trackpadRightClick
-    name: Configure builtin Apple trackpad - 2 finger tap right-click
+    value: '0'
+
+  - name: Set expose hot corner top-right (launchpad)
+    domain: com.apple.dock
+    key: wvous-tr-corner
     type: int
-    value: '1'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: trackpadPinch
-    name: Configure builtin Apple trackpad - pinch to zoom
+    value: '11'
+
+  - name: Set expose hot corner top-right modifier
+    domain: com.apple.dock
+    key: wvous-tr-modifier
     type: int
-    value: '1'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: trackpadRotate
-    name: Configure builtin Apple trackpad - 2 finger rotate
-    type: int
-    value: '1'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: TrackpadThreeFingerHorizSwipeGesture
-    name: Configure builtin Apple trackpad - 3 finger swipe between pages
-    type: int
-    value: '1'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: trackpadTwoFingerDoubleTapGesture
-    name: Configure builtin Apple trackpad - smart zoom
-    type: int
-    value: '1'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: TrackpadTwoFingerFromRightEdgeSwipeGesture
-    name: Configure builtin Apple trackpad - Notification Center
-    type: int
-    value: '3'
-  - domain: com.apple.AppleMultitouchtrackpad
-    key: trackpadThreeFingerTapGesture
-    name: Configure builtin Apple trackpad - perform look up
-    type: int
-    value: '2'
-  - domain: NSGlobalDomain
-    key: com.apple.mouse.tapBehavior
-    name: Enable tap-to-click on Apple mouse
-    type: int
-    value: '1'
-  - domain: NSGlobalDomain
-    key: AppleEnableSwipeNavigateWithScrolls
-    name: Set global two finger horizontal swipe between pages
+    value: '0'
+
+  - name: Disable automatically rearranging Spaces
+    domain: com.apple.dock
+    key: mru-spaces
+    type: bool
+    value: 'false'
+
+  - name: Enable grouping windows by application
+    domain: com.apple.dock
+    key: expose-group-apps
     type: bool
     value: 'true'
-  - domain: NSGlobalDomain
+
+  - name: Set screensaver timeout
+    domain: com.apple.screensaver
+    key: idleTime
+    type: int
+    value: '300'
+
+  - name: Set screensaver password timeout
+    domain: com.apple.screensaver
+    key: askForPassword
+    type: int
+    value: '1'
+
+  - name: Set screensaver password delay
+    domain: com.apple.screensaver
+    key: askForPasswordDelay
+    type: int
+    value: '5'
+
+  - name: Configure bluetooth Apple trackpad - tap-to-click
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: Clicking
+    type: int
+    value: '1'
+
+  - name: Configure bluetooth Apple trackpad - 2 finger tap right-click
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadRightClick
+    type: int
+    value: '1'
+
+  - name: Configure bluetooth Apple trackpad - pinch to zoom
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadPinch
+    type: int
+    value: '1'
+
+  - name: Configure bluetooth Apple trackpad - 2 finger rotate
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadRotate
+    type: int
+    value: '1'
+
+  - name: Configure bluetooth Apple trackpad - 3 finger swipe between pages
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: TrackpadThreeFingerHorizSwipeGesture
+    type: int
+    value: '1'
+
+  - name: Configure bluetooth Apple trackpad - smart zoom
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadTwoFingerDoubleTapGesture
+    type: int
+    value: '1'
+
+  - name: Configure bluetooth Apple trackpad - Notification Center
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: TrackpadTwoFingerFromRightEdgeSwipeGesture
+    type: int
+    value: '3'
+
+  - name: Configure bluetooth Apple trackpad - perform look up
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: trackpadThreeFingerTapGesture
+    type: int
+    value: '2'
+
+  - name: Configure builtin Apple trackpad - tap-to-click
+    domain: com.apple.AppleMultitouchtrackpad
+    key: Clicking
+    type: int
+    value: '1'
+
+  - name: Configure builtin Apple trackpad - 2 finger tap right-click
+    domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadRightClick
+    type: int
+    value: '1'
+
+  - name: Configure builtin Apple trackpad - pinch to zoom
+    domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadPinch
+    type: int
+    value: '1'
+
+  - name: Configure builtin Apple trackpad - 2 finger rotate
+    domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadRotate
+    type: int
+    value: '1'
+
+  - name: Configure builtin Apple trackpad - 3 finger swipe between pages
+    domain: com.apple.AppleMultitouchtrackpad
+    key: TrackpadThreeFingerHorizSwipeGesture
+    type: int
+    value: '1'
+
+  - name: Configure builtin Apple trackpad - smart zoom
+    domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadTwoFingerDoubleTapGesture
+    type: int
+    value: '1'
+
+  - name: Configure builtin Apple trackpad - Notification Center
+    domain: com.apple.AppleMultitouchtrackpad
+    key: TrackpadTwoFingerFromRightEdgeSwipeGesture
+    type: int
+    value: '3'
+
+  - name: Configure builtin Apple trackpad - perform look up
+    domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadThreeFingerTapGesture
+    type: int
+    value: '2'
+
+  - name: Enable tap-to-click on Apple mouse
+    domain: NSGlobalDomain
+    key: com.apple.mouse.tapBehavior
+    type: int
+    value: '1'
+
+  - name: Set global two finger horizontal swipe between pages
+    domain: NSGlobalDomain
+    key: AppleEnableSwipeNavigateWithScrolls
+    type: bool
+    value: 'true'
+
+  - name: Set very low key repeat rates
+    domain: NSGlobalDomain
     key: InitialKeyRepeat
-    name: Set very low key repeat rates
     type: int
     value: '25'
-  - domain: NSGlobalDomain
+
+  - name: Set very low key repeat rates
+    domain: NSGlobalDomain
     key: KeyRepeat
-    name: Set very low key repeat rates
     type: int
     value: '1'
-  - domain: com.apple.SoftwareUpdate
+
+  - name: Check for software updates daily
+    domain: com.apple.SoftwareUpdate
     key: ScheduleFrequency
-    name: Check for software updates daily
     type: int
     value: '1'
-  - domain: NSGlobalDomain
+
+  - name: Expand save panel 1 by default
+    domain: NSGlobalDomain
     key: NSNavPanelExpandedStateForSaveMode
-    name: Expand save panel 1 by default
     type: bool
     value: 'true'
-  - domain: NSGlobalDomain
+
+  - name: Expand save panel 2 by default
+    domain: NSGlobalDomain
     key: NSNavPanelExpandedStateForSaveMode2
-    name: Expand save panel 2 by default
     type: bool
     value: 'true'
-  - domain: NSGlobalDomain
+
+  - name: Expand print panel 1 by default
+    domain: NSGlobalDomain
     key: PMPrintingExpandedStateForPrint
-    name: Expand print panel 1 by default
     type: bool
     value: 'true'
-  - domain: NSGlobalDomain
+
+  - name: Expand print panel 2 by default
+    domain: NSGlobalDomain
     key: PMPrintingExpandedStateForPrint2
-    name: Expand print panel 2 by default
     type: bool
     value: 'true'
 

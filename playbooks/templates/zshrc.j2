@@ -18,11 +18,9 @@ PATH="$PATH:{{ gnuman['path'] }}"
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
 
-export PATH
-export MANPATH
-export VISUAL=vim
-export EDITOR=vim
+export DIRSTACKSIZE=10                  # Max directories in auto_pushd stack
 export DOCKER_BUILDKIT=1                # Build containers in parallel
+export EDITOR=vim
 export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi --info inline"
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
@@ -32,7 +30,11 @@ export LESS_TERMCAP_so=$'\E[01;47;34m'  # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
-export PRE_COMMIT_COLOR=never           # pre-commit colors incompatible with solarized-light
+export MANPATH
+export PATH
+export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
+export STARSHIP_CONFIG={{ ansible_user_dir }}/.config/starship/plain.toml
+export VISUAL=vim
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
@@ -96,6 +98,7 @@ alias lsports='lsof -i -P -n'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
+cdf() { dirs -lp | fzf --no-multi; }
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
@@ -114,16 +117,17 @@ zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
 zstyle ':completion:*' use-cache on                # "
 zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 
-WORDCHARS=${WORDCHARS//\/[&;]}                    # Don't consider these part of the word
+WORDCHARS=${WORDCHARS//\/[&;]}                     # Don't consider these part of the word
 CORRECT_IGNORE_FILE='[_|.]*'                       # Skip correcting commands matching pattern
 HISTFILE=~/.zsh_history
 HISTSIZE=2000
 SAVEHIST=5000
 
 setopt appendhistory           # Immediately append history instead of overwriting
+setopt auto_pushd              # Push directories onto stack
 setopt autocd                  # Change directory without `cd`
 setopt correct                 # Auto correct mistakes
-setopt extended_history        # Save each command’s beginning timestamp and the duration
+setopt extended_history        # Save each commands beginning timestamp and the duration
 setopt extendedglob            # Extended globbing. Allows using regular expressions with *
 setopt hist_verify             # Confirm commands from history expansion
 setopt histignorealldups       # If a new command is a duplicate, remove the older one
@@ -131,7 +135,10 @@ setopt inc_append_history_time # Time taken by the command is recorded correctly
 setopt nobeep                  # No beep
 setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
+setopt pushd_ignore_dups       # Ignore duplices in the directory stack
 setopt rcexpandparam           # Array expension with parameters
+
+cdpath=("{{ ansible_user_dir }}/Development" "{{ ansible_user_dir }}/Development/Projects")
 
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc vcs_info edit-command-line run-help && compinit
@@ -179,13 +186,11 @@ complete -o nospace -C /usr/local/bin/vault vault
 
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
-eval "$(zoxide init zsh --hook pwd --cmd cd)"
 eval "$(starship init zsh)"
-{% if 'MacOSX' in ansible_distribution %}
-eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_private_keys | join(' ') }})"
-{% elif 'Fedora' in ansible_distribution %}
-eval "$(keychain --eval --ignore-missing --quiet {{ ssh_private_keys | join(' ') }})"
-{% endif %}
+eval "$(keychain --eval --ignore-missing --quiet
+{%- if 'MacOSX' in ansible_distribution %} --inherit any
+{%- else %}
+{%- endif %} id_rsa id_ed25519 ansible google_compute_engine)"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode

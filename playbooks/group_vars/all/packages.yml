@@ -47,6 +47,7 @@ rpms:
     - ncdu
     - neofetch
     - nmap
+    - ocrmypdf
     - p7zip
     - p7zip-plugins
     - par
@@ -74,7 +75,6 @@ rpms:
     - wget
     - xsel
     - xz
-    - zoxide
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
@@ -201,6 +201,7 @@ homebrew:
     - ncdu
     - neofetch
     - nmap
+    - ocrmypdf
     - p7zip
     - par
     - prettyping
@@ -226,7 +227,6 @@ homebrew:
     - watch
     - wget
     - yamllint
-    - zoxide
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting
@@ -254,6 +254,7 @@ homebrew:
     - macdown
     - microsoft-auto-update
     - microsoft-office
+    - minecraft
     - musicbrainz-picard
     - plexamp
     - rectangle
@@ -290,6 +291,7 @@ flatpaks:
     - name: elementary
       url: https://flatpak.elementary.io/repo.flatpakrepo
   packages:
+    - name: app.drey.Warp
     - name: com.github.avojak.warble
       remote: elementary
     - name: com.github.phase1geo.annotator

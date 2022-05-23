@@ -71,12 +71,21 @@ sh install [-g git_branch] [-d]
     5. Manage `~/.ssh/config` (True|False)
     6. Upload SSH key to Github (True|False)
     7. Install employer settings and scripts (True|False)
-2. Creates `~/.ansible/inventory.yml` from the above answers
+2. Generates passphrases for SSH keys (saved under `~/.ssh/`)
+3. Creates `~/.ansible/inventory.yml` from the above answers
 
-## Managing Inventory
+## Managing Ansible
 
-To regenerate `~/.ansible/inventory.yml`, run the following command from the top level of the repository:
+The following commands should be run from the top level of the repository.
+
+To regenerate `~/.ansible/inventory.yml`:
 
 ```shell
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml
+```
+
+To update the installed Ansible Galaxy collections:
+
+```shell
+ansible-playbook setup/collections.yml
 ```

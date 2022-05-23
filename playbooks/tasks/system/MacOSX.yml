@@ -45,6 +45,13 @@
     type: "{{ item['type'] | default(omit) }}"
     value: "{{ item['value'] }}"
   loop: "{{ defaults }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: system_settings
+
+- name: Remove all dock icons
+  ansible.builtin.command: defaults write "com.apple.dock" "persistent-apps" -array
+  changed_when: false
   tags: system_settings
 
 - name: Put display to sleep after 15 minutes and computer to sleep after 30 minutes
