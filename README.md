@@ -44,8 +44,9 @@ The `install` script requires `sudo` access in Fedora Linux to install OS packag
 
 #### Additional manual pre and post tasks
 
-* For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas` (this step will be skipped by design if not authenticated).
+* For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas`.
 * A full reboot is required on either system after a successful bootstrap.
+* To install Logi Options+ run `open -a "$HOMEBREW_PREFIX"/Caskroom/logi-options-plus/latest/logioptionsplus_installer.app`.
 
 #### SSH keys & Github
 

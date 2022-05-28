@@ -1,5 +1,6 @@
 ---
 
+bat_exec: "{{ homebrew_prefix }}/bin/bat"
 font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 glow_config_path: "{{ ansible_user_dir }}/Library/Preferences/glow"
 k9s_config_path: "{{ ansible_user_dir }}/Library/Preferences"
