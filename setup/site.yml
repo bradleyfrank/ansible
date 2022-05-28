@@ -4,8 +4,10 @@
   hosts: localhost
 
   vars:
+    system_type: "{{ current_system if current_system is defined else 'None' }}"
     default_hostname: "{{ current_hostname if current_hostname is defined else '' }}"
     default_email: "{{ current_email if current_email is defined else '' }}"
+    default_mas: "{{ true if 'Darwin' in system_type else false }}"
     vault_password_file: "{{ ansible_user_dir }}/.ansible/vault"
 
   vars_prompt:
@@ -33,6 +35,10 @@
       prompt: Upload SSH key to Github (True|False)
       private: false
       default: true
+    - name: install_mas_apps
+      prompt: Install apps from Mac App Store (True|False)
+      private: false
+      default: "{{ default_mas }}"
     - name: work_system
       prompt: Install employer settings and scripts (True|False)
       private: false

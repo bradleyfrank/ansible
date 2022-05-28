@@ -18,15 +18,24 @@ git_reference_repos:
     version: main
 
 krew_plugins:
-  - cert-manager
-  - config-cleanup
-  - deprecations
-  - doctor
-  - get-all
-  - neat
-  - score
-  - sniff
-  - stern
+  x86_64:
+    - cert-manager
+    - config-cleanup
+    - deprecations
+    - doctor
+    - get-all
+    - neat
+    - score
+    - sniff
+    - stern
+  arm64:
+    - cert-manager
+    - deprecations
+    - get-all
+    - neat
+    - score
+    - sniff
+    - stern
 
 pypi_packages:
   - archivebox

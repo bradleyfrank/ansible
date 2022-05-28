@@ -207,6 +207,7 @@ homebrew:
     - prettyping
     - pwgen
     - qpdf
+    - raindropio
     - rdfind
     - rename
     - ripgrep
@@ -242,7 +243,6 @@ homebrew:
     - expressions
     - fantastical
     - firefox
-    - google-cloud-sdk
     - hiddenbar
     - iina
     - joplin
@@ -256,6 +256,7 @@ homebrew:
     - microsoft-office
     - minecraft
     - musicbrainz-picard
+    - nextcloud
     - plexamp
     - rectangle
     - signal
@@ -283,6 +284,7 @@ homebrew:
     - 1516894961  # Codye
     - 1529448980  # Reeder
     - 1555925018  # Genki Arcade
+    - 1569813296  # 1Password Safari extension
 
 flatpaks:
   remotes:
@@ -302,6 +304,7 @@ flatpaks:
     - name: com.plexamp.Plexamp
     - name: io.bassi.Amberol
     - name: io.github.seadve.Kooha
+    - name: io.posidon.Paper
     - name: org.signal.Signal
     - name: re.sonny.Junction
     - name: re.sonny.Tangram

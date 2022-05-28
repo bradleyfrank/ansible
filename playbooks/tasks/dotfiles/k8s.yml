@@ -1,25 +1,5 @@
 ---
 
-- name: Find kubectl executable
-  ansible.builtin.find:
-    paths: "{{ ansible_env['PATH'] | split(':') }}"
-    patterns: kubectl
-    file_type: any
-  register: find_kubectl
-  tags: kubectl
-
-- name: Install kubectl
-  vars:
-    url: https://storage.googleapis.com/kubernetes-release/release
-    release: "{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}"
-    arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
-  ansible.builtin.get_url:
-    url: "{{ url }}/{{ release }}/bin/{{ ansible_system | lower }}/{{ arch }}/kubectl"
-    dest: "{{ ansible_user_dir }}/.local/bin/"
-    mode: 0755
-  when: find_kubectl['matched'] == 0
-  tags: kubectl
-
 - name: Install Krew
   block:
     - name: Download Krew installer
@@ -46,8 +26,8 @@
 
 - name: Install Krew plugins
   environment:
-    PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
-  ansible.builtin.command: "kubectl krew install {{ krew_plugins | join(' ') }}"
+    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.krew/bin"
+  ansible.builtin.command: "kubectl krew install {{ krew_plugins[ansible_architecture] | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install['stdout']"
   tags: krew

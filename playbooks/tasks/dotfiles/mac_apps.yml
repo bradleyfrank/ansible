@@ -3,7 +3,7 @@
 - name: Install BBEdit cli tool
   ansible.builtin.copy:
     src: /Applications/BBEdit.app/Contents/Helpers/bbedit_tool
-    dest: /usr/local/bin/bbedit
+    dest: "{{ ansible_user_dir }}/.local/bin/bbedit"
     mode: 0755
 
 - name: Install BBEdit color themes
@@ -13,6 +13,8 @@
     mode: 0755
 
 - name: Get Stats version
+  environment:
+    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}"
   ansible.builtin.shell:
     cmd: brew info --cask stats --json=v2 | jq -r '.casks[].installed'
   changed_when: false

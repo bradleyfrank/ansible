@@ -8,7 +8,7 @@
 
 - name: Generate Zsh completions
   environment:
-    PATH: "{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
+    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
   ansible.builtin.shell: "{{ item['command'] }} > {{ zsh['completions'] }}/{{ item['name'] }}"
   changed_when: false
   loop:
@@ -26,7 +26,17 @@
     dest: "{{ zsh['functions'] }}/"
     mode: 0644
 
+- name: Get Google Cloud SDK root path
+  environment:
+    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin"
+  ansible.builtin.command: gcloud info --format='value(config.paths.sdk_root)'
+  changed_when: false
+  when: work_system
+  register: gcloud_sdk_root
+
 - name: Get zsh version
+  environment:
+    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin"
   ansible.builtin.shell: |
     case $(uname -s) in
       Darwin) brew info zsh --json | jq -r '.[].installed[0].version' ;;

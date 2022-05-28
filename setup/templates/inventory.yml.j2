@@ -24,6 +24,7 @@ local:
 
     system_type: desktop
     desktop_env: macos
+    install_mas_apps: {{ install_mas_apps }}
     homebrew_prefix: {%- if 'x86_64' in ansible_machine %} /usr/local
                      {%- else %} /opt/homebrew
                      {%- endif %}

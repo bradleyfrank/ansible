@@ -5,7 +5,12 @@ PATH="$PATH:$HOME/.krew/bin"
 PATH="$PATH:{{ gnubin['path'] }}"
 {% endfor %}
 PATH="$PATH:{{ python_user_path }}"
-PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
+{% if work_system %}
+PATH="$PATH:{{ gcloud_sdk_root['stdout'] }}/bin"
+{% endif %}
+{% if 'arm64' in ansible_machine %}
+PATH="$PATH:{{ homebrew_prefix }}/bin"
+{% endif %}
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
@@ -168,7 +173,6 @@ source {{ homebrew_prefix }}/opt/fzf/shell/completion.zsh
 source {{ homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
 source {{ homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source {{ homebrew_prefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source {{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 {% elif 'Fedora' in ansible_distribution %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -180,6 +184,7 @@ for function in {{ zsh['functions'] }}/*; do source "$function"; done
 
 {% if work_system -%}
 source {{ ansible_user_dir }}/.infractl/secrets
+source {{ gcloud_sdk_root['stdout'] }}/completion.zsh.inc
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 
