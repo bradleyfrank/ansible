@@ -53,6 +53,7 @@
     depth: 3
     recurse: true
     follow: true
+  when: "'MacOSX' in ansible_distribution"
   register: homebrew_gnubin
 
 - name: Find Homebrew gnuman directories
@@ -63,6 +64,7 @@
     depth: 3
     recurse: true
     follow: true
+  when: "'MacOSX' in ansible_distribution"
   register: homebrew_gnuman
 
 - name: Apply zshrc template
