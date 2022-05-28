@@ -44,13 +44,14 @@ The `install` script requires `sudo` access in Fedora Linux to install OS packag
 
 #### Additional manual pre and post tasks
 
-* For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas`.
+* For macOS, log in to the App Store prior to running the `bootstrap` playbook to install apps via `mas` (this step will be skipped by design if not authenticated).
+* Record the SSH passphrases post-Ansible run.
 * A full reboot is required on either system after a successful bootstrap.
 * To install Logi Options+ run `open -a "$HOMEBREW_PREFIX"/Caskroom/logi-options-plus/latest/logioptionsplus_installer.app`.
 
 #### SSH keys & Github
 
-The `setup` playbook will prompt for a comma-separated list of SSH types for the `dotfiles` playbook to generate. For each type specified, `setup` will generate a passphrase — encrypted by Ansible Vault — and store the encrypted passphrase in the `inventory.yml` file (this allows `dotfiles` to remain idempotent). A user readable copy is saved to `~/.ssh/` for each key type, with the suffix `.passphrase`. *It should be deleted upon recording the passphrase in your password manager of choice.*
+For SSH key types `ed25519` and `rsa`, the `setup` playbook will generate a passphrase — encrypted by Ansible Vault — and store the encrypted passphrase in `inventory.yml` (this allows `dotfiles` to remain idempotent). A user readable copy is saved to `~/.ssh/` for each key type, with the suffix `.passphrase`. *It should be deleted upon recording the passphrase in your password manager of choice.*
 
 If `upload_ssh_key_github` is set to `True`, and a SSH key type of `ed25519` or `rsa` is generated, the key will be uploaded to Github.
 
@@ -75,7 +76,7 @@ sh install [-g git_branch] [-d]
 2. Generates passphrases for SSH keys (saved under `~/.ssh/`)
 3. Creates `~/.ansible/inventory.yml` from the above answers
 
-## Managing Ansible
+## Housekeeping Tasks via Ansible
 
 The following commands should be run from the top level of the repository.
 
