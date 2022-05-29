@@ -8,16 +8,12 @@
 
 - name: Generate Zsh completions
   environment:
-    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin:{{ ansible_user_dir }}/.krew/bin"
+    PATH: "{{ ansible_user_dir }}/.krew/bin:{{ path }}"
   ansible.builtin.shell: "{{ item['command'] }} > {{ zsh['completions'] }}/{{ item['name'] }}"
   changed_when: false
-  loop:
-    - name: kubectl
-      command: kubectl completion zsh
-    - name: stern
-      command: kubectl stern --completion=zsh
-    - name: k9s
-      command: k9s completion zsh
+  loop: "{{ zsh_completions }}"
+  loop_control:
+    label: "{{ item['name'] }}"
   tags: [kubectl, stern, k9s]
 
 - name: Download cmarks script
@@ -28,7 +24,7 @@
 
 - name: Get Google Cloud SDK root path
   environment:
-    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin"
+    PATH: "{{ path }}"
   ansible.builtin.command: gcloud info --format='value(config.paths.sdk_root)'
   changed_when: false
   when: work_system
@@ -36,7 +32,7 @@
 
 - name: Get zsh version
   environment:
-    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}:{{ ansible_user_dir }}/.local/bin"
+    PATH: "{{ path }}"
   ansible.builtin.shell: |
     case $(uname -s) in
       Darwin) brew info zsh --json | jq -r '.[].installed[0].version' ;;

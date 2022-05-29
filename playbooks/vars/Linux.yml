@@ -4,6 +4,7 @@ bat_exec: "/usr/bin/bat"
 font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 glow_config_path: "{{ ansible_user_dir }}/.config"
 k9s_config_path: "{{ ansible_user_dir }}/.config"
+path: "{{ ansible_user_dir }}/.local/bin:{{ ansible_env['PATH'] }}"
 python_user_path: "{{ ansible_user_dir }}/.local/bin"
 pip_exec: /usr/bin/pip3
 root_home: /root

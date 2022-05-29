@@ -27,7 +27,7 @@
         mode: 0644
     - name: Extract {{ name }} archive
       environment:
-        PATH: "{{ homebrew_prefix }}/bin"
+        PATH: "{{ path }}"
       ansible.builtin.unarchive:
         src: "{{ download_path }}"
         dest: "/tmp/{{ name }}"
@@ -46,12 +46,6 @@
       ansible.builtin.file:
         path: "{{ install_path }}/{{ name }}"
         mode: 0755
-    - name: Record new version of {{ name }}
-      vars:
-        existing_packages: "{{ github_package_versions | default({}) }}"
-      set_fact:
-        github_package_versions: "{{ existing_packages | combine({name: latest_release}) }}"
-        cacheable: true
   always:
     - name: Remove temp files
       ansible.builtin.file:
