@@ -5,9 +5,7 @@ PATH="$PATH:$HOME/.krew/bin"
 PATH="$PATH:{{ gnubin['path'] }}"
 {% endfor %}
 PATH="$PATH:{{ python_user_path }}"
-{% if work_system %}
 PATH="$PATH:{{ gcloud_sdk_root['stdout'] }}/bin"
-{% endif %}
 {% if 'arm64' in ansible_machine %}
 PATH="$PATH:{{ homebrew_prefix }}/bin"
 {% endif %}

@@ -243,6 +243,7 @@ homebrew:
     - expressions
     - fantastical
     - firefox
+    - google-cloud-sdk
     - hiddenbar
     - iina
     - joplin
