@@ -5,7 +5,7 @@ PATH="$PATH:$HOME/.krew/bin"
 PATH="$PATH:{{ gnubin['path'] }}"
 {% endfor %}
 PATH="$PATH:{{ python_user_path }}"
-PATH="$PATH:{{ gcloud_sdk_root['stdout'] }}/bin"
+PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 {% if 'arm64' in ansible_machine %}
 PATH="$PATH:{{ homebrew_prefix }}/bin"
 {% endif %}

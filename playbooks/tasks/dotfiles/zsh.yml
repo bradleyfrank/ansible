@@ -22,14 +22,6 @@
     dest: "{{ zsh['functions'] }}/"
     mode: 0644
 
-- name: Get Google Cloud SDK root path
-  environment:
-    PATH: "{{ path }}"
-  ansible.builtin.command: gcloud info --format='value(config.paths.sdk_root)'
-  changed_when: false
-  when: "'MacOSX' in ansible_distribution"
-  register: gcloud_sdk_root
-
 - name: Get zsh version
   environment:
     PATH: "{{ path }}"
