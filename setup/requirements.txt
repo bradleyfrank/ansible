@@ -1,7 +1,0 @@
-ansible
-bcrypt
-cryptography>=35.0.0
-docker
-github3.py
-psutil
-pyobjc-framework-Cocoa; sys_platform == 'darwin'

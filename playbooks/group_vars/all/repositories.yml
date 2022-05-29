@@ -3,8 +3,6 @@
 copr:
   - name: atim/bottom
     system_type: [desktop, server]
-  - name: atim/choose
-    system_type: [desktop, server]
   - name: atim/bandwhich
     system_type: [desktop, server]
   - name: keefle/glow
@@ -33,9 +31,9 @@ repos:
     gpgkey: https://dl.google.com/linux/linux_signing_key.pub
     system_type: [desktop]
 
-  - name: kubernetes
-    description: Kubernetes
-    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+  - name: google-cloud-sdk
+    description: Google Cloud utilities
+    baseurl: https://packages.cloud.google.com/yum/repos/cloud-sdk-el8-x86_64
     gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     system_type: [desktop, server]
 

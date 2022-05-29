@@ -52,7 +52,7 @@ python3 -m pip install --user virtualenv
 virtualenv venv
 #shellcheck disable=SC1091
 . venv/bin/activate
-pip install --requirement setup/requirements.txt
+pip install --requirement requirements.txt
 
 cat << EOF > setup/extra-vars.yml
 current_system: "$(uname -s)"

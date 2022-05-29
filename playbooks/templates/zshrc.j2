@@ -15,7 +15,7 @@ PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 MANPATH="$HOME/.local/share/man"
 {% if 'MacOSX' in ansible_distribution %}
 {% for gnuman in homebrew_gnuman['files'] -%}
-PATH="$PATH:{{ gnuman['path'] }}"
+MANPATH="$MANPATH:{{ gnuman['path'] }}"
 {% endfor %}
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"

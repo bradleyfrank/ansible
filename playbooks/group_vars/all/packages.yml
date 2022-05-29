@@ -4,12 +4,11 @@ rpms:
   cli:
     - abcde
     - bash-completion
-    - bandwhich
+    - bandwhich  # atim
     - bat
     - bcal
     - borgbackup
-    - bottom
-    - choose
+    - bottom  # atim
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
@@ -21,11 +20,12 @@ rpms:
     - fwupd
     - fzf
     - geary
-    - gh
+    - gh  # gh-cli
     - ghostscript
     - git-delta
     - glances
-    - glow
+    - glow  # keefle
+    - google-cloud-cli  # google-cloud-sdk
     - gron
     - hadolint
     - htop
@@ -34,12 +34,12 @@ rpms:
     - inxi
     - jq
     - jo
-    - k9s
+    - k9s  # luminoso
     - keychain
-    - kubectl
+    - kubectl  # google-cloud-sdk
     - libmp4v2
     - libvirt-client
-    - libxcrypt-compat
+    - libxcrypt-compat  # google-cloud-sdk
     - mkvtoolnix
     - most
     - msmtp
@@ -80,21 +80,22 @@ rpms:
     - zsh-syntax-highlighting
   gui:
     common:
-      - 1password
+      - 1password  # 1password-gui
       - alacritty
       - asciinema
       - audacious
       - calibre
-      - code
+      - code  # vscode
+      - distrobox
       - flatpak
       - fragments
       - ghostwriter
-      - google-chrome-stable
+      - google-chrome-stable  # google-chrome
       - google-noto-emoji-color-fonts
       - google-noto-sans-fonts
       - google-noto-sans-mono-fonts
       - google-noto-serif-fonts
-      - joplin
+      - joplin  # taw
       - keepassxc
       - libreoffice
       - mediawriter
@@ -104,6 +105,7 @@ rpms:
       - picard
       - remmina
       - seahorse
+      - spotify*  # negativo17-multimedia
       - solaar
       - system-config-printer
       - timeshift
@@ -157,7 +159,6 @@ homebrew:
     - bcal
     - bottom
     - cabextract
-    - choose-rust
     - coreutils
     - dict
     - dog
@@ -271,7 +272,6 @@ homebrew:
     - zoom
   virtualization_casks:
     - multipass
-    - parallels
     - utm
     - vmware-fusion
   mas:
