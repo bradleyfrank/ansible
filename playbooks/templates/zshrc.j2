@@ -171,6 +171,7 @@ source {{ homebrew_prefix }}/opt/fzf/shell/completion.zsh
 source {{ homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
 source {{ homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source {{ homebrew_prefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source {{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 {% elif 'Fedora' in ansible_distribution %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -182,7 +183,6 @@ for function in {{ zsh['functions'] }}/*; do source "$function"; done
 
 {% if work_system -%}
 source {{ ansible_user_dir }}/.infractl/secrets
-source {{ gcloud_sdk_root['stdout'] }}/completion.zsh.inc
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 
