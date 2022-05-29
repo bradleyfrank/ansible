@@ -14,7 +14,7 @@
 
 - name: Get Stats version
   environment:
-    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env['PATH'] }}"
+    PATH: "{{ path }}"
   ansible.builtin.shell:
     cmd: brew info --cask stats --json=v2 | jq -r '.casks[].installed'
   changed_when: false
