@@ -18,15 +18,24 @@ git_reference_repos:
     version: main
 
 krew_plugins:
-  - cert-manager
-  - config-cleanup
-  - deprecations
-  - doctor
-  - get-all
-  - neat
-  - score
-  - sniff
-  - stern
+  x86_64:
+    - cert-manager
+    - config-cleanup
+    - deprecations
+    - doctor
+    - get-all
+    - neat
+    - score
+    - sniff
+    - stern
+  arm64:
+    - cert-manager
+    - deprecations
+    - get-all
+    - neat
+    - score
+    - sniff
+    - stern
 
 pypi_packages:
   - archivebox
@@ -52,3 +61,11 @@ vim_extensions:
     repo: https://github.com/preservim/nerdtree.git
   - name: indentLine
     repo: https://github.com/Yggdroot/indentLine.git
+
+zsh_completions:
+  - name: kubectl
+    command: kubectl completion zsh
+  - name: stern
+    command: kubectl stern --completion=zsh
+  - name: k9s
+    command: k9s completion zsh

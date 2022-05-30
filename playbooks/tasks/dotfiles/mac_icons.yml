@@ -7,7 +7,7 @@
   tags: icons
 
 - name: Set squircle icon for {{ app }}
-  ansible.builtin.command: "fileicon set {{ app }} {{ item['src'] }}"
+  ansible.builtin.command: "{{ homebrew_prefix }}/bin/fileicon set {{ app }} {{ item['src'] }}"
   changed_when: false
   when: "app_metadata['stat']['exists'] and app_metadata['stat']['pw_name'] == ansible_user_id"
   tags: icons

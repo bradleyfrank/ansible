@@ -42,7 +42,7 @@
       tags: [core, dotfiles]
 
     - name: Install themes for bat
-      ansible.builtin.command: "bat cache --build"
+      ansible.builtin.command: "{{ bat_exec }} cache --build"
       changed_when: false
       tags: core
 

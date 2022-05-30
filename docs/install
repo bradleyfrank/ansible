@@ -9,14 +9,15 @@ ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
-  sudo --validate  # reset `sudo` timeout to use Homebrew install in noninteractive mode
+  sudo --validate  # reset `sudo` timeout
+  case "$(uname -m)" in
+    x86_64) export PATH="/opt/homebrew/bin:${PATH}" ;;
+     arm64) export PATH="/usr/local/bin:${PATH}"
+            sudo softwareupdate --install-rosetta   ;;
+  esac
   CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   brew install python3 git
-  case "$(uname -m)" in
-    x86_64) python_user_base="$(/usr/local/bin/python3 -m site --user-base)" ;;
-     arm64) python_user_base="$(/opt/homebrew/bin/python3 -m site --user-base)" ;;
-  esac
-  PATH="/usr/local/bin:${python_user_base}/bin:${PATH}"
+  PATH="/usr/local/bin:$(python3 -m site --user-base)/bin:${PATH}"
   export PATH
 }
 
@@ -51,10 +52,15 @@ python3 -m pip install --user virtualenv
 virtualenv venv
 #shellcheck disable=SC1091
 . venv/bin/activate
-pip install --requirement setup/requirements.txt
+pip install --requirement requirements.txt
 
-ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml \
-  --extra-vars current_hostname="$(hostname -s)" --extra-vars current_email="$(id -un)@$(uname -n)"
+cat << EOF > setup/extra-vars.yml
+current_system: "$(uname -s)"
+current_hostname: "$(hostname -s)"
+current_email: "$(id -un)@$(uname -n)"
+EOF
+
+ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml --extra-vars "@setup/extra-vars.yml"
 
 case $ANSIBLE_REPO_PLAYBOOK in
   bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;

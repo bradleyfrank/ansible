@@ -42,7 +42,7 @@ tag_disabled = false
 tag_symbol = ""
 
 [git_state]
-format = "[${state}( $progress_current/$progress_total)](bold fg:136)"
+format = "[ \\(${state}( $progress_current/$progress_total)\\)](bold fg:136)"
 
 [git_status]
 format = "[( \\[${all_status}\\])](bold fg:136) "
