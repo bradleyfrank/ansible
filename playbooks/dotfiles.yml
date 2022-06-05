@@ -55,7 +55,7 @@
 
     - name: Install glow configs
       ansible.builtin.copy:
-        src: apps/glow
+        src: apps/glow/
         dest: "{{ glow_config_path }}/"
         mode: 0644
       tags: [core, glow]
