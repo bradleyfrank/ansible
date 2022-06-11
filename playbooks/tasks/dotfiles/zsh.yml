@@ -6,6 +6,16 @@
     state: directory
     mode: 0755
 
+- name: Install zsh plugins
+  ansible.builtin.git:
+    repo: "{{ item['repo'] }}"
+    dest: "{{ ansible_user_dir }}/.local/share/{{ item['name'] }}"
+    depth: '1'
+    version: "{{ item['version'] | default(omit) }}"
+  loop: "{{ zsh_plugins }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+
 - name: Generate Zsh completions
   environment:
     PATH: "{{ ansible_user_dir }}/.krew/bin:{{ path }}"

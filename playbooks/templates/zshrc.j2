@@ -60,9 +60,9 @@ alias gtop='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)
 alias gbranch='cd $(git worktree list --porcelain | grep -E "^worktree" | cut -d" " -f2 \
   | fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview="git log {} --" -d / --with-nth -1)'
 
-alias pipi='python3 -m pip install --user'
-alias pipr='python3 -m pip uninstall'
-alias pipu='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
+alias pipin='python3 -m pip install --user'
+alias pipun='python3 -m pip uninstall'
+alias pipup='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
   | xargs --no-run-if-empty python3 -m pip install --user --upgrade'
 
 alias l='exa --color always --classify'
@@ -251,6 +251,7 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
+source {{ ansible_user_dir }}/.local/share/zpy/zpy.plugin.zsh
 for completion in {{ zsh['completions'] }}/*; do source "$completion"; done
 for function in {{ zsh['functions'] }}/*; do source "$function"; done
 
