@@ -19,7 +19,6 @@ rpms:
     - figlet
     - fwupd
     - fzf
-    - geary
     - gh  # gh-cli
     - ghostscript
     - git-delta
@@ -116,6 +115,7 @@ rpms:
       - celluloid
       - cozy
       - foliate
+      - geary
       - gedit-plugin-codecomment
       - gedit-plugin-colorpicker
       - gedit-plugin-git
@@ -309,6 +309,7 @@ flatpaks:
     - name: re.sonny.Junction
     - name: re.sonny.Tangram
     - name: sh.cider.Cider
+    - name: tv.plex.PlexDesktop
     - name: us.zoom.Zoom
 
 containers:
