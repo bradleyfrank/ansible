@@ -17,6 +17,9 @@ MANPATH="$HOME/.local/share/man"
 {% for gnuman in homebrew_gnuman['files'] -%}
 MANPATH="$MANPATH:{{ gnuman['path'] }}"
 {% endfor %}
+{% if 'arm64' in ansible_machine %}
+MANPATH="$MANPATH:{{ homebrew_prefix }}/share/man"
+{% endif %}
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
@@ -60,9 +63,9 @@ alias gtop='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)
 alias gbranch='cd $(git worktree list --porcelain | grep -E "^worktree" | cut -d" " -f2 \
   | fzf --no-multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border --preview="git log {} --" -d / --with-nth -1)'
 
-alias pipin='python3 -m pip install --user'
-alias pipun='python3 -m pip uninstall'
-alias pipup='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
+alias pyin='python3 -m pip install --user'
+alias pyun='python3 -m pip uninstall'
+alias pyup='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
   | xargs --no-run-if-empty python3 -m pip install --user --upgrade'
 
 alias l='exa --color always --classify'
