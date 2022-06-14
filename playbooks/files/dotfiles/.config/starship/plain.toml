@@ -1,24 +1,18 @@
 format = """
-$hostname\
-$directory\
-$kubernetes\
-$python\
-$git_branch\
-$git_commit\
-$git_state\
-$git_status\
-$line_break\
-$character
+${directory}\
+${kubernetes}\
+${python}\
+${git_branch}${git_commit}${git_state}${git_status}\
+${line_break}\
+${character}
 """
 
 command_timeout = 2000
 
-[hostname]
-style = "bold fg:125"
-
 [directory]
-format = "[${path}](bold fg:33) "
+format = "in [${path}](bold fg:33) "
 truncation_length = 1
+#fish_style_pwd_dir_length = 1
 
 [kubernetes]
 disabled = false
@@ -30,11 +24,11 @@ format = "using [${context}](bold fg:61) "
 [python]
 detect_extensions = []
 detect_files = []
-format = "via [${pyenv_prefix}${version}](bold fg:37) "
-version_format = "${raw}"
+format = "via [${version}](bold fg:37) "
+version_format = "v${major}.${minor}"
 
 [git_branch]
-format = "on [${branch}(:${remote_branch})](bold fg:64)"
+format = "on [${branch}](bold fg:64)"
 
 [git_commit]
 format = "[:${hash}( ${tag})](bold fg:136)"
@@ -45,7 +39,7 @@ tag_symbol = ""
 format = "[ \\(${state}( $progress_current/$progress_total)\\)](bold fg:136)"
 
 [git_status]
-format = "[( \\[${all_status}\\])](bold fg:136) "
+format = "[( ${all_status})](bold fg:136)"
 
 [character]
 success_symbol = "[%%](bold fg:64)"

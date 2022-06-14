@@ -114,80 +114,6 @@ show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 
 
-precmd() {
-  local rc=$? eol=$'\n' _kcxt _repo _branch _vcs_info _prompt_color
-  local _right_arrow=$'\uf554' _git_icon=$'\ue725' _py_icon=$'\ue606' _k8s_icon=$'\ufd31'
-  local bold="%B" nobold="%b" fg_NoColor="%f" reset="%k%b%f"
-  local fg_Blue="%F{33}" \
-        fg_Cyan="%F{37}" \
-        fg_Violet="%F{61}" \
-        fg_Green="%F{64}" \
-        fg_Magenta="%F{125}" \
-        fg_Red="%F{160}" \
-        fg_Yellow="%F{136}"
-  declare -A _prompt
-
-  if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
-    _HOSTNAME="[${bold}${fg_Magenta}$(hostname -s)${reset}]${_dash}"
-  else
-    _HOSTNAME=""
-  fi
-
-  if [[ -n $TMUX ]]; then
-    _CWD="${bold}${fg_Blue}${_right_arrow} %1~${reset} "
-  else
-    _CWD="${bold}${fg_Blue}${_right_arrow} %(5~|%-1~/.../%1~|%~)${reset} "
-  fi
-
-  if _kcxt="$(kubectl config current-context 2> /dev/null)"; then
-    [[ $_kcxt =~ ^gke ]] && _kcxt="$(sed -rn 's|^gke_.*_.*_(.*)(-cluster)*$|\1|p' <<< $_kcxt)"
-    _KUBECTL="${fg_Violet}${bold}${_k8s_icon} ${_kcxt}${reset} "
-  else
-    _KUBECTL=""
-  fi
-
-  if [[ -n "$VIRTUAL_ENV" ]]; then
-    _PYENV="via ${fg_Cyan}${bold}${_py_icon} $(python --version | grep -Po '3(\.\d+)+')${reset} "
-  else
-    _PYENV=""
-  fi
-
-  if git rev-parse --git-common-dir >/dev/null 2>&1; then
-    vcs_info; [[ "$vcs_info_msg_0_" != "" ]] && _vcs_info=" ${fg_Yellow}[${vcs_info_msg_0_}]${fg_NoColor}" || _vcs_info=""
-    _repo="${fg_Yellow}${_git_icon} $(basename -s '.git' $(git config --get remote.origin.url || git rev-parse --show-toplevel))${fg_NoColor}"
-    _branch="${fg_Green}$(git branch --show-current)${fg_NoColor}"
-    _GIT="on ${bold}${_repo}/${_branch}${_vcs_info}${nobold}"
-  else
-    _GIT=""
-  fi
-
-  case "$rc" in
-    0) _prompt_color="${fg_Green}"   ;;
-    1) _prompt_color="${fg_Red}"     ;;
-    *) _prompt_color="${fg_Magenta}" ;;
-  esac
-
-  _prompt=(
-    [1]="${eol}${_HOSTNAME}${_CWD}${_KUBECTL}${_PYENV}${_GIT}"
-    [2]="${eol}${bold}${_prompt_color}%#${fg_NoColor}${nobold} "
-  )
-
-  PS1="${_prompt[1]}${_prompt[2]}"
-}
-
-+vi-extended-git() {
-  if [[ -s $(git rev-parse --show-toplevel)/.git/refs/stash ]]; then hook_com[staged]+="$"; fi
-  if git status --porcelain | grep -q "^?? " 2> /dev/null; then hook_com[staged]+="?"; fi
-}
-
-zstyle ':vcs_info:git*' actionformats "%u%c%m|%a"
-zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' formats "%u%c%m"
-zstyle ':vcs_info:git*' stagedstr '+'
-zstyle ':vcs_info:git*' unstagedstr '*'
-zstyle ':vcs_info:git*+set-message:*' hooks extended-git
-
-
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
 zstyle ':completion:*' menu select                 # Use menu selection for completion
@@ -267,6 +193,7 @@ complete -o nospace -C /usr/local/bin/vault vault
 
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
+eval "$(starship init zsh)"
 eval "$(keychain --eval --ignore-missing --quiet
 {%- if 'MacOSX' in ansible_distribution %} --inherit any
 {%- else %}
