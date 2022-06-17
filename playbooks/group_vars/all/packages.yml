@@ -12,6 +12,7 @@ rpms:
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
+    - dua-cli
     - exa
     - fd-find
     - fdupes
@@ -162,6 +163,7 @@ homebrew:
     - coreutils
     - dict
     - dog
+    - dua-cli
     - eye-d3
     - exa
     - fd
