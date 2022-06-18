@@ -1,4 +1,5 @@
 format = """
+${hostname}\
 ${directory}\
 ${kubernetes}\
 ${python}\
@@ -9,13 +10,17 @@ ${character}
 
 command_timeout = 2000
 
+[hostname]
+format = "[\uf054\uf054 ${hostname}](bold fg:125)  "
+ssh_only = true
+
 [directory]
-format = "in [${path}](bold fg:33) "
+format = "[\uf054\uf054 ${path}](bold fg:33)  "
 truncation_length = 1
 
 [kubernetes]
 disabled = false
-format = "using [${context}](bold fg:61) "
+format = "\uf054\uf054 [${context}](bold fg:61)  "
 
 [kubernetes.context_aliases]
 "gke_.*_(?P<cluster>[\\w-]+)" = "${cluster}"
@@ -23,19 +28,19 @@ format = "using [${context}](bold fg:61) "
 [python]
 detect_extensions = []
 detect_files = []
-format = "via [${version}](bold fg:37) "
+format = "[\uf054\uf054 ${version}](bold fg:37)  "
 version_format = "v${major}.${minor}"
 
 [git_branch]
-format = "on [${branch}](bold fg:64)"
+format = "[\uf054\uf054 ${branch}](bold fg:64)"
 
 [git_commit]
-format = "[:${hash}( ${tag})](bold fg:136)"
+format = "[ \uf054 ${hash}( ${tag})](bold fg:125)"
 tag_disabled = false
 tag_symbol = ""
 
 [git_state]
-format = "[ \\(${state}( $progress_current/$progress_total)\\)](bold fg:136)"
+format = "[ \uf054 ${state}( $progress_current/$progress_total)](bold fg:160)"
 
 [git_status]
 format = "[( ${all_status})](bold fg:136)"

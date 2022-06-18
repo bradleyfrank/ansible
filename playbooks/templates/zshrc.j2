@@ -24,10 +24,12 @@ MANPATH="$MANPATH:{{ homebrew_prefix }}/share/man"
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
 
+export PATH
+export MANPATH
+export EDITOR=vim
+export VISUAL=vim
 export DIRSTACKSIZE=10                  # Max directories in auto_pushd stack
 export DOCKER_BUILDKIT=1                # Build containers in parallel
-export EDITOR=vim
-export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi --info inline"
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
 export LESS_TERMCAP_me=$'\E[0m'         # "
@@ -36,11 +38,9 @@ export LESS_TERMCAP_so=$'\E[01;47;34m'  # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
-export MANPATH
-export PATH
+export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi --info inline"
 export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
-export STARSHIP_CONFIG={{ ansible_user_dir }}/.config/starship/plain.toml
-export VISUAL=vim
+export STARSHIP_CONFIG={{ ansible_user_dir }}/.config/starship/segments.toml
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
@@ -104,7 +104,7 @@ alias lsports='lsof -i -P -n'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
-cdf() { dirs -lp | fzf --no-multi; }
+cdf() { cd $(dirs -lp | fzf --no-multi); }
 cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }

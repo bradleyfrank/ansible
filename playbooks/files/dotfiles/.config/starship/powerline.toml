@@ -18,9 +18,6 @@ $character
 
 command_timeout = 2000
 
-[hostname]
-style = "bold fg:125"
-
 [directory]
 format = "[ ${path} ](bold bg:#268bd2 fg:#fdf6e3)"
 truncation_length = 1
