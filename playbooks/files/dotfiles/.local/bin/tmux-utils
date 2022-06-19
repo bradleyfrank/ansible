@@ -35,7 +35,7 @@ _get_window_name() {
 
 _get_project_dir() {
   find "${HOME}/Development/Projects" -mindepth 2 -maxdepth 2 -type d \
-    | fzf-tmux --ansi -i --height=50% --reverse -0 --inline-info --border --no-multi \
+    | fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border none --no-multi \
       --delimiter / --with-nth -2,-1 \
       --preview="exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --"
 }
@@ -56,6 +56,7 @@ open_project() {
     esac
   done
   [[ -z "$project_dir" ]] && project_dir="$(_get_project_dir)"
+  [[ -z "$project_dir" ]] && exit
   tmux_window="$(tmux new-window -n "$(_get_window_name "$project_dir")" -c "$project_dir" -P)"
   if [[ -n "$cmd" ]]; then
     tmux send-keys -t "$tmux_window" "$cmd" Enter

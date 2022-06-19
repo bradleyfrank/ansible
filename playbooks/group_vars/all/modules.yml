@@ -69,3 +69,7 @@ zsh_completions:
     command: kubectl stern --completion=zsh
   - name: k9s
     command: k9s completion zsh
+
+zsh_plugins:
+  - name: zpy
+    repo: https://github.com/AndydeCleyre/zpy.git

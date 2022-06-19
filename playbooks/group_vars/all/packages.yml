@@ -12,6 +12,7 @@ rpms:
     - dictd
     - dnf-plugin-system-upgrade
     - dnf-utils
+    - dua-cli
     - exa
     - fd-find
     - fdupes
@@ -19,7 +20,6 @@ rpms:
     - figlet
     - fwupd
     - fzf
-    - geary
     - gh  # gh-cli
     - ghostscript
     - git-delta
@@ -116,6 +116,7 @@ rpms:
       - celluloid
       - cozy
       - foliate
+      - geary
       - gedit-plugin-codecomment
       - gedit-plugin-colorpicker
       - gedit-plugin-git
@@ -162,6 +163,7 @@ homebrew:
     - coreutils
     - dict
     - dog
+    - dua-cli
     - eye-d3
     - exa
     - fd
@@ -252,6 +254,7 @@ homebrew:
     - keepassxc
     - keepingyouawake
     - kindle
+    - libreoffice
     - logi-options-plus
     - macdown
     - microsoft-auto-update
@@ -309,6 +312,7 @@ flatpaks:
     - name: re.sonny.Junction
     - name: re.sonny.Tangram
     - name: sh.cider.Cider
+    - name: tv.plex.PlexDesktop
     - name: us.zoom.Zoom
 
 containers:
