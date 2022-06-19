@@ -85,7 +85,7 @@ k() {
     if [[ -n $arg_all_ns && -n $arg_ns ]]; then
         return 1
     elif [[ -n $arg_all_ns ]]; then
-        _save_and_exec "kubectl --context $ctx --all-namespaces $*"
+        _save_and_exec "kubectl --context $ctx $* --all-namespaces"
     elif [[ -n $arg_ns ]]; then
         ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
         _save_and_exec "kubectl --context $ctx --namespace $ns $*"
