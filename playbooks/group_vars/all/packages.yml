@@ -308,6 +308,7 @@ flatpaks:
     - name: io.bassi.Amberol
     - name: io.github.seadve.Kooha
     - name: io.posidon.Paper
+    - name: org.nickvision.tagger
     - name: org.signal.Signal
     - name: re.sonny.Junction
     - name: re.sonny.Tangram

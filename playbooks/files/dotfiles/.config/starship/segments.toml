@@ -1,26 +1,22 @@
 format = """
-${hostname}\
-${directory}\
-${kubernetes}\
-${python}\
-${git_branch}${git_commit}${git_state}${git_status}\
-${line_break}\
+[\uf054](bold fg:245)( ${hostname})( ${directory})( ${kubernetes})( ${python})\
+( ${git_branch})( ${git_commit})( ${git_state})( ${git_status})${line_break}\
 ${character}
 """
 
 command_timeout = 2000
 
 [hostname]
-format = "[\uf054\uf054 ${hostname}](bold fg:125)  "
+format = "[[\ue0b6](bold fg:125)\uf0a0 ${hostname}[\ue0b4](bold fg:125)](bold fg:255 bg:125)"
 ssh_only = true
 
 [directory]
-format = "[\uf054\uf054 ${path}](bold fg:33)  "
+format = "[[\ue0b6](bold fg:33)\uf74a ${path}[\ue0b4](bold fg:33)](bold fg:255 bg:33)"
 truncation_length = 1
 
 [kubernetes]
 disabled = false
-format = "\uf054\uf054 [${context}](bold fg:61)  "
+format = "[[\ue0b6](bold fg:61)\ufd31 ${context}[\ue0b4](bold fg:61)](bold fg:255 bg:61)"
 
 [kubernetes.context_aliases]
 "gke_.*_(?P<cluster>[\\w-]+)" = "${cluster}"
@@ -28,22 +24,22 @@ format = "\uf054\uf054 [${context}](bold fg:61)  "
 [python]
 detect_extensions = []
 detect_files = []
-format = "[\uf054\uf054 ${version}](bold fg:37)  "
-version_format = "v${major}.${minor}"
+format = "[[\ue0b6](bold fg:37)\ue606 ${version}[\ue0b4](bold fg:37)](bold fg:255 bg:37)"
+version_format = "${major}.${minor}"
 
 [git_branch]
-format = "[\uf054\uf054 ${branch}](bold fg:64)"
+format = "[[\ue0b6](bold fg:64)\uf407 ${branch}[\ue0b4](bold fg:64)](bold fg:255 bg:64)"
 
 [git_commit]
-format = "[ \uf054 ${hash}( ${tag})](bold fg:125)"
+format = "[[\ue0b6](bold fg:125)${hash}(:${tag})[\ue0b4](bold fg:125)](bold fg:255 bg:125)"
 tag_disabled = false
 tag_symbol = ""
 
 [git_state]
-format = "[ \uf054 ${state}( $progress_current/$progress_total)](bold fg:160)"
+format = "[[\ue0b6](bold fg:160)${state}( $progress_current/$progress_total)[\ue0b4](bold fg:160)](bold fg:255 bg:160)"
 
 [git_status]
-format = "[( \uf054 ${all_status})](bold fg:136)"
+format = "[([\ue0b6](bold fg:136)${all_status}[\ue0b4](bold fg:136))](bold fg:255 bg:136)"
 
 [character]
 success_symbol = "[%%](bold fg:64)"

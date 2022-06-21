@@ -9,38 +9,7 @@
 #
 
 usage() {
-    echo "Usage: pdf-compress -h | -c [compression] -f [file]"
-    echo "  -c  Compression level using one of the following options:"
-    echo "         screen   (screen-view-only quality, 72 dpi)"
-    echo "         ebook    (low quality, 150 dpi)"
-    echo "         printer  (high quality, 300 dpi)"
-    echo "         prepress (high quality, color preserving, 300 dpi)"
-    echo "         default  (default dpi)"
-    echo "  -f  PDF file to compress."
-}
-
-compress() {
-  local input file dir compression output
-  input="$1" compression="$2"
-
-  file="$(basename "$input")"
-  dir="$(dirname "$input")"
-  output="$dir/${file%.*}.$compression.pdf"
-
-  if gs \
-      -sDEVICE=pdfwrite \
-      -dCompatibilityLevel=1.4 \
-      -dPDFSETTINGS=/"$COMPRESS_LEVEL" \
-      -dNOPAUSE \
-      -dQUIET \
-      -dBATCH \
-      -sOutputFile="$output" \
-      "$input" >/dev/null; then
-    echo "Wrote: $output"
-    return 0
-  else
-    return 1
-  fi
+    echo "Usage: pdf-compress -h | [-c <screen|ebook|printer|prepress|default>] -f <file>"
 }
 
 main() {
@@ -51,15 +20,20 @@ main() {
       h) usage; exit 0 ;;
       c) compression="$OPTARG" ;;
       f) input="$OPTARG" ;;
-      :) echo "Must supply an argument to -$OPTARG." >&2; usage; exit 1 ;;
-     \?) echo "Invalid option: $OPTARG" >&2; usage; exit 1 ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; usage >&2; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; usage >&2; exit 1 ;;
     esac
   done
 
-  [[ ! -f "$input" ]] && { echo "Error: file does not exist, skipping." >&2; exit 1; }
-  [[ ! $compression =~ (screen|ebook|printer|prepress|default) ]] && \
-    { echo "Error: invalid compression option." >&2; usage; exit 1; }
-  compress "$input" "$compression"
+  gs \
+    -sDEVICE=pdfwrite \
+    -dCompatibilityLevel=1.4 \
+    -dPDFSETTINGS=/"$compression" \
+    -dNOPAUSE \
+    -dQUIET \
+    -dBATCH \
+    -sOutputFile="${input%.*}.${compression}.pdf" \
+    "$input"
 }
 
 main "$@"
