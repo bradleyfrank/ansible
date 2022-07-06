@@ -196,7 +196,7 @@ eval "$(starship init zsh)"
 eval "$(keychain --eval --ignore-missing --quiet
 {%- if 'MacOSX' in ansible_distribution %} --inherit any
 {%- else %}
-{%- endif %} id_rsa id_ed25519 id_home ansible google_compute_engine)"
+{%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode
