@@ -32,7 +32,7 @@
         src: "{{ download_path }}"
         dest: "/tmp/{{ name }}"
         list_files: true
-        mode: 0644
+        mode: 0755
       register: unarchive_list_files
     - name: Install {{ name }}
       ansible.builtin.copy:
