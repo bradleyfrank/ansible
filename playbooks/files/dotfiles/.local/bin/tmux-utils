@@ -75,12 +75,24 @@ dump_pane() {
   open_project -d "$log_dir" -c "vim $filepath"
 }
 
+git_branch() {
+  local git_branch icon_git cwd; cwd="$1"
+  icon_git=$'\ue725'
+  cd "$cwd" || exit
+  if git_branch="$(git branch --show-current 2>/dev/null)"; then
+    echo -e "#[fg=colour64]${icon_git} ${git_branch}#[fg=default]"
+  else
+    echo -e "#[fg=colour64]${icon_git} n/a#[fg=default]"
+  fi
+}
+
 main() {
   local subcommand; subcommand="$1"; shift
   case "$subcommand" in
     rename-window) rename_window "$@" ;;
     open-project)  open_project "$@" ;;
     dump-pane)     dump_pane ;;
+    git-branch)    git_branch "$@" ;;
     *)             echo "$1 not found" >&2; exit 1 ;;
   esac
 }
