@@ -20,16 +20,16 @@ symbol = "\u2500"
 style = "fg:245"
 
 [hostname]
-format = "[\\[${hostname}\\]](bold fg:125) "
+format = "[\\[\uf0a0 ${hostname}\\]](bold fg:125)"
 ssh_only = true
 
 [directory]
-format = "[\\[${path}\\]](bold fg:33)"
+format = "[\\[\uf74a ${path}\\]](bold fg:33)"
 truncation_length = 1
 
 [kubernetes]
 disabled = false
-format = "using [\\[${context}\\]](bold fg:61)"
+format = "using [\\[\ufd31 ${context}\\]](bold fg:61)"
 
 [kubernetes.context_aliases]
 "gke_.*_(?P<cluster>[\\w-]+)" = "${cluster}"
@@ -37,11 +37,11 @@ format = "using [\\[${context}\\]](bold fg:61)"
 [python]
 detect_extensions = []
 detect_files = []
-format = "[\\[${version}\\]](bold fg:37)"
+format = "[\\[\ue606 ${version}\\]](bold fg:37)"
 version_format = "${major}.${minor}"
 
 [git_branch]
-format = "[\\[${branch}\\]](bold fg:64)"
+format = "[\\[\ue725 ${branch}\\]](bold fg:64)"
 
 [git_commit]
 format = "[\\[${hash}( ${tag})\\]](bold fg:125)"
@@ -49,10 +49,10 @@ tag_disabled = false
 tag_symbol = ""
 
 [git_state]
-format = "[\\[${state}( $progress_current/$progress_total)\\]](bold fg:160)"
+format = "[(\\[${state}( $progress_current/$progress_total)\\])](bold fg:160)"
 
 [git_status]
-format = "[\\[${all_status}\\]](bold fg:136)"
+format = "[(\\[${all_status}\\])](bold fg:136)"
 
 [character]
 success_symbol = "[%](bold fg:64)"

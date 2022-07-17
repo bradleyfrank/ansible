@@ -65,13 +65,14 @@ open_project() {
 }
 
 dump_pane() {
-  local log_dir filename filepath
+  local log_dir filename filepath promt_prefix=$'\uf054'
   log_dir="$HOME/Development/Logs"
   filename="$(tmux display-message -p 'tmux-+%Y-%b-%d-%H%M-#{session_name}-w#{window_index}p#{pane_index}.out')"
   filepath="${log_dir}/${filename}"
   [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
   tmux capture-pane -S -
   tmux save-buffer "$filepath"
+  sed -ir "/^$promt_prefix.*$/d" "$filepath"
   open_project -d "$log_dir" -c "vim $filepath"
 }
 
