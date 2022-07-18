@@ -40,7 +40,7 @@ fzf_bit() {
 }
 
 bit_branch() {
-  repo_base_path="$(basename "$git_toplevel_path")"
+  repo_base_path="$(dirname "$git_toplevel_path")"
   cd "$git_toplevel_path" || exit 1
   [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$git_toplevel_path")"
   repo_branch_path="$repo_base_path/$new_branch_name"
@@ -49,7 +49,7 @@ bit_branch() {
 }
 
 bit_pull() {
-  repo_base_path="$(basename "$git_toplevel_path")"
+  repo_base_path="$(dirname "$git_toplevel_path")"
   git fetch origin --prune
   new_branch_name="$(
     git for-each-ref --format='%(refname:short)' refs/remotes \
@@ -120,10 +120,14 @@ bit_clone() {
 }
 
 open_in_tmux() {
-  case $open_in in
-    window) tmux-utils open-project -d "$repo_branch_path" ;;
-    pane)   tmux split-window -h -c "$repo_branch_path" ;;
-  esac
+  if [[ -n $TMUX ]]; then
+    case $open_in in
+      window) tmux-utils open-project -d "$repo_branch_path" ;;
+      pane)   tmux split-window -h -c "$repo_branch_path" ;;
+    esac
+  else
+    cd "$repo_branch_path" || exit 1
+  fi
 }
 
 
