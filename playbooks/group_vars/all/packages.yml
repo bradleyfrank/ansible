@@ -61,7 +61,6 @@ rpms:
     - ripgrep
     - ruby
     - ShellCheck
-    - starship
     - stow
     - strace
     - tidy
@@ -221,7 +220,6 @@ homebrew:
     - shfmt
     - slides
     - ssh-copy-id
-    - starship
     - stow
     - tidy-html5
     - tmux
@@ -301,6 +299,7 @@ flatpaks:
       remote: elementary
     - name: com.github.phase1geo.annotator
       remote: elementary
+    - name: com.github.huluti.Curtail
     - name: com.github.junrrein.PDFSlicer
     - name: com.github.liferooter.textpieces
     - name: com.github.rajsolai.textsnatcher

@@ -8,7 +8,7 @@
       - .ansible_vault_password
       - .config/p10k.zsh
       - .config/starship.toml
-      - .config/starship/default.toml
+      - .config/starship
       - .dotfiles
       - .k9s
       - .infractl/orm
@@ -39,6 +39,7 @@
         - diff-so-fancy
         - ffsend
         - hstr
+        - starship
         - tmux-mem-cpu-load
         - yq
         - youtube-dl
