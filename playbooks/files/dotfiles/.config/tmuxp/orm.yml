@@ -2,14 +2,20 @@
 
 session_name: orm
 windows:
-  - window_name:  devdocs (main)
+  - window_name: devdocs
     start_directory: ~/Development/Projects/devdocs/main
-    focus: true
-  - window_name:  orm-cli (main)
+    panes:
+      - tmux-utils rename-window "$(pwd)" && clear
+  - window_name: orm-cli
     start_directory: ~/Development/Projects/orm-cli/main
-    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
-  - window_name:  engineering-plan-of-the-day (main)
+    panes:
+      - tmux-utils rename-window "$(pwd)" && clear
+  - window_name: pod
     start_directory: ~/Development/Projects/engineering-plan-of-the-day/main
-  - window_name:  chassis (develop)
-    start_directory: ~/Development/Projects/chassis/develop
-    shell_command: 'if [[ -d ve ]]; then pyenv -a; else pyenv; fi; clear'
+    panes:
+      - tmux-utils rename-window "$(pwd)" && clear
+  - window_name: infractl
+    start_directory: ~/Development/Projects/infractl/main
+    panes:
+      - tmux-utils rename-window "$(pwd)" && clear
+    focus: true

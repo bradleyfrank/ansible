@@ -1,7 +1,0 @@
----
-
-session_name: scratch
-windows:
-  - window_name:  scratch
-    start_directory: ~/Development/Scratch
-    focus: true

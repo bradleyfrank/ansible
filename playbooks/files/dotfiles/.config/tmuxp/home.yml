@@ -2,7 +2,11 @@
 
 session_name: home
 windows:
-  - window_name:  cmarks (main)
+  - window_name: cmarks
     start_directory: ~/Development/Projects/cmarks/main
-  - window_name:  home-server (main)
+    panes:
+      - tmux-utils rename-window "$(pwd)" && clear
+  - window_name: home-server
     start_directory: ~/Development/Projects/home-server/main
+    panes:
+      - tmux-utils rename-window "$(pwd)" && clear
