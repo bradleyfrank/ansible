@@ -53,25 +53,18 @@ _save_and_exec() {
     eval "$cmd"
 }
 
-# [kcl] kubectl list context
+alias d='docker'
+alias dc='docker compose'
+
+dmi() {
+    docker image list --format "{{json .}}" | jq -rj '.ID,"\t",.Size,"\t",.Repository,":",.Tag,"\n"'
+}
+
 alias kcl="kubectl config get-contexts --output name"
-
-# [kcls] kubectl list context short names
 alias kcls="kubectl config get-contexts --output name | grep -o '[^_]*$'"
-
-# [kctl] escape hatch alias
-alias kctl="kubectl"
-
-# [kctx] get the current context
 alias kctx="kubectl config current-context"
-
-# [kcu] kubectl context unset
 alias kcu="kubectl config unset current-context"
-
-# [krew] alias for "kubectl krew"
 alias krew="kubectl krew"
-
-# [stern] alias for "kubectl stern"
 alias stern="kubectl stern"
 
 # [k] wrapper for kubectl; usage: k [-x|--context] [-n|--namespace] [-A|--all-namespaces]
