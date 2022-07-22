@@ -108,6 +108,7 @@ dw() { diceware -d- -n"${1:-5}"; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
+tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 
 precmd() {
