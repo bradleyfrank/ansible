@@ -61,11 +61,19 @@ dmi() {
 }
 
 alias kcl="kubectl config get-contexts --output name"
-alias kcls="kubectl config get-contexts --output name | grep -o '[^_]*$'"
 alias kctx="kubectl config current-context"
 alias kcu="kubectl config unset current-context"
 alias krew="kubectl krew"
 alias stern="kubectl stern"
+
+# [krename] rename all contexts with shorter names
+krename() {
+    local context
+    kubectl config unset current-context &> /dev/null
+    for context in $(kubectl config get-contexts --output name); do
+        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")" 2> /dev/null
+    done
+}
 
 # [k] wrapper for kubectl; usage: k [-x|--context] [-n|--namespace] [-A|--all-namespaces]
 k() {
@@ -85,15 +93,6 @@ k() {
     else
         _save_and_exec "kubectl --context $ctx $*"
     fi
-}
-
-# [kapi] show api-resources; usage: kapi [-x|--context]
-kapi() {
-    local arg_ctx ctx
-    zparseopts -E -D -- x:=arg_ctx -context:=arg_ctx
-    ctx="$(_k_ctx "${arg_ctx[2]}")"
-    [[ -z "$ctx" ]] && return 1
-    _save_and_exec "kubectl --context $ctx api-resources"
 }
 
 # [kcm] show configmaps; usage: kcm [-x|--context] [-n|--namespace] [configmap]
@@ -171,21 +170,6 @@ kfor() {
     ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
     pod="$(_k_resource "$ctx" "$ns" pods "${arg_pod[2]}")"
     _save_and_exec "kubectl --context $ctx --namespace $ns "$pod" port-forward $1"
-}
-
-# [kget] get a resource in yaml/json; usage: kdes [-x|--context] [-n|--namespace] [-o|--output] [kind]
-kget() {
-    local arg_ctx arg_ns arg_out ctx ns format kind resource
-    zparseopts -E -D -- \
-        x:=arg_ctx -context:=arg_ctx \
-        n:=arg_ns -namespace:=arg_ns \
-        o:=arg_out -output:=arg_out
-    ctx="$(_k_ctx "${arg_ctx[2]}")"
-    ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
-    format="${arg_out[2]:-yaml}"; [[ $format =~ (json|yaml) ]] || return 1
-    [[ -n "$1" ]] && kind="$1" || kind="$(_k_api "$ctx" "$ns")"
-    resource="$(_k_resource "$ctx" "$ns" "$kind")"
-    _save_and_exec "kubectl --context $ctx --namespace $ns get $resource --output $format | kubectl neat"
 }
 
 # [klog] fetch log from container; usage: klog [-x|--context] [-n|--namespace] [-p|--pod] [-c|--container]
