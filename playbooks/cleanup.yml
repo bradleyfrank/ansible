@@ -30,6 +30,7 @@
       - .local/share/icons
       - .local/share/kubectl
       - .local/share/zsh-functions/pyenv
+      - .local/share/zsh-functions/kubesh
       - .local/share/zsh
       - .local/share/zshrc
       - .tmux.conf

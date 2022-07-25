@@ -120,8 +120,8 @@ precmd() {
              icon_rightcap=$'\ue0b4' \
              icon_prompt=$'\uf054' \
              icon_folder=$'\uf74a' \
-             icon_git=$'\ue725' \
-             icon_git_dir=$'\ufc6e' \
+             icon_location=$'\uf124' \
+             icon_git_branch=$'\ue725' \
 {% if 'MacOSX' in ansible_distribution %}
              icon_host=$'\ue711' \
 {% else %}
@@ -129,7 +129,8 @@ precmd() {
 {% endif %}
              icon_python=$'\ue606' \
              icon_k8s=$'\ufd31'
-  typeset -r blue="33" \
+  typeset -r base0="244" \
+             blue="33" \
              cyan="37" \
              green="64" \
              magenta="125" \
@@ -148,7 +149,7 @@ precmd() {
     ps1[host]="$(build_segment "${icon_host} %m" "${magenta}") "
   fi
 
-  ps1[cwd]="$(build_segment "${icon_folder} %1~" "${blue}") "
+  ps1[cwd]="$(build_segment "${icon_location} %1~" "${base0}") "
 
   if k8s_cxt="$(kubectl config current-context 2> /dev/null)"; then
     [[ $k8s_cxt =~ ^gke ]] && k8s_cxt="${k8s_cxt##*_}"
@@ -179,11 +180,11 @@ precmd() {
     fi
 
     if [[ $git_depth -ge 0 ]]; then
-      ps1[git]+="$(build_segment "${icon_git_dir} ${git_depth}" "${orange}") "
+      ps1[git]+="$(build_segment "${icon_folder} ${git_depth}" "${yellow}") "
     fi
 
     if [[ -n ${vcsinfo[2]} ]]; then
-      ps1[git]+="$(build_segment "${icon_git} ${vcsinfo[2]}" "${green}")"
+      ps1[git]+="$(build_segment "${icon_git_branch} ${vcsinfo[2]}" "${green}")"
     fi
 
     if [[ -n ${vcsinfo[3]} ]]; then
