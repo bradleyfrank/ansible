@@ -112,9 +112,11 @@ tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 
 precmd() {
-  typeset    rc=$? k8s_cxt prompt_color vcsinfo
+  typeset    rc=$? gitdepth
+  typeset -a vcsinfo
   typeset -A ps1
   typeset -r base0="%F{244}" \
+             base3="%F{230}" \
              blue="%F{33}" \
              cyan="%F{37}" \
              green="%F{64}" \
@@ -127,27 +129,13 @@ precmd() {
              nobold="%b" \
              default="%f" \
              reset="%f%b" \
-             ellipsis=$'\u2026' \
              eol=$'\n'
 
-  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [git_dir]="" [git_info]="" [prompt]="")
+  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [prompt]="")
 
-  if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
-    ps1[host]="${bold}[${magenta}%m${default}]${nobold}"
-  fi
-
-  if k8s_cxt="$(kubectl config current-context 2> /dev/null)"; then
-    [[ $k8s_cxt =~ ^gke ]] && k8s_cxt="${k8s_cxt##*_}"
-    ps1[k8s]=" ${bold}[${violet}${k8s_cxt}${default}]${nobold}"
-  fi
-
-  if [[ -n $VIRTUAL_ENV ]]; then
-    ps1[pyenv]=" ${bold}[${cyan}Py $(python --version | grep -Po '3(\.\d+)')${default}]${nobold}"
-  fi
-
-  zstyle ':vcs_info:git*' actionformats "%S %b %u%c %a"
+  zstyle ':vcs_info:git*' actionformats "%b %S %u%c %a"
   zstyle ':vcs_info:git*' check-for-changes true
-  zstyle ':vcs_info:git*' formats "%S %b %u%c"
+  zstyle ':vcs_info:git*' formats "%b %S %u%c"
   zstyle ':vcs_info:git*' stagedstr "+"
   zstyle ':vcs_info:git*' unstagedstr "*"
   zstyle ':vcs_info:git*+set-message:*' hooks extended-git
@@ -155,26 +143,25 @@ precmd() {
   vcs_info
 
   if [[ -n $vcs_info_msg_0_ ]]; then
-    vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] subdirectory [2] branch [3] status [4] action
-    [[ -n ${vcsinfo[1]} ]] && ps1[git_dir]="${base0}${vcsinfo[1]}${default}"
-    [[ -n ${vcsinfo[2]} ]] && ps1[git_info]+="${green}${vcsinfo[2]}${default}"
-    [[ -n ${vcsinfo[3]} ]] && ps1[git_info]+=" ${yellow}${vcsinfo[3]}${default}"
-    [[ -n ${vcsinfo[4]} ]] && ps1[git_info]+=" ${red}${vcsinfo[4]}${default}"
-    ps1[git]="${bold}[${ps1[git_info]}] ${ps1[git_dir]}${nobold}"
-    ps1[cwd]=""
-  else
-    ps1[cwd]="${bold}${base0}%(2~|.../%1~|%~)${reset}"
+    vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
+    [[ ${vcsinfo[2]} == "." ]] && gitdepth="" || gitdepth=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")d"
+    ps1[git]+="${green}${vcsinfo[1]}${yellow}${gitdepth}${default}"
+    [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
+    [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
+    ps1[git]="${bold}[${ps1[git]}]${nobold}"
   fi
 
+  ps1[cwd]="${bold}${base0}%1~${default}${nobold} "
+  [[ -n $SSH_CONNECTION && -z $TMUX ]] && ps1[host]="${bold}${magenta}%m${default}${nobold}"
+  [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]="${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold} "
+
   case "$rc" in
-    0) prompt_color="${green}"   ;;
-    1) prompt_color="${red}"     ;;
-    *) prompt_color="${magenta}" ;;
+    0) ps1[prompt]="${bold}${green}%#${reset} "   ;;
+    1) ps1[prompt]="${bold}${red}%#${reset} "     ;;
+    *) ps1[prompt]="${bold}${magenta}%#${reset} " ;;
   esac
 
-  ps1[prompt]="${bold}${prompt_color}%#${reset} "
-
-  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[git]}${ps1[k8s]}${ps1[pyenv]}${eol}${ps1[prompt]}"
+  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[pyenv]}${ps1[git]}${ps1[k8s]}${ps1[prompt]}"
 }
 
 +vi-extended-git() {
