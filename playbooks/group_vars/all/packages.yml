@@ -304,6 +304,7 @@ flatpaks:
     - name: com.github.liferooter.textpieces
     - name: com.github.rajsolai.textsnatcher
     - name: com.plexamp.Plexamp
+    - name: fr.romainvigier.MetadataCleaner
     - name: io.bassi.Amberol
     - name: io.github.seadve.Kooha
     - name: io.posidon.Paper
