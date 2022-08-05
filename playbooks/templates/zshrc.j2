@@ -161,7 +161,7 @@ precmd() {
     *) ps1[prompt]="${bold}${magenta}%#${reset} " ;;
   esac
 
-  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[pyenv]}${ps1[git]}${ps1[k8s]}${ps1[prompt]}"
+  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[pyenv]}${ps1[git]}${ps1[k8s]} ${ps1[prompt]}"
 }
 
 +vi-extended-git() {
