@@ -112,52 +112,37 @@ tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 
 precmd() {
-  typeset    rc=$? k8s_cxt
-  typeset -a vcsinfo git_subdirectories
+  typeset    rc=$? k8s_cxt prompt_color vcsinfo
   typeset -A ps1
-  typeset -r eol=$'\n' \
-             icon_leftcap=$'\ue0b6' \
-             icon_rightcap=$'\ue0b4' \
-             icon_prompt=$'\uf054' \
-             icon_folder=$'\uf74a' \
-             icon_location=$'\uf124' \
-             icon_git_branch=$'\ue725' \
-{% if 'MacOSX' in ansible_distribution %}
-             icon_host=$'\ue711' \
-{% else %}
-             icon_host=$'\uf30a' \
-{% endif %}
-             icon_python=$'\ue606' \
-             icon_k8s=$'\ufd31'
-  typeset -r base0="244" \
-             blue="33" \
-             cyan="37" \
-             green="64" \
-             magenta="125" \
-             orange="166" \
-             red="160" \
-             violet="61" \
-             yellow="136"
+  typeset -r base0="%F{244}" \
+             blue="%F{33}" \
+             cyan="%F{37}" \
+             green="%F{64}" \
+             magenta="%F{125}" \
+             orange="%F{166}" \
+             red="%F{160}" \
+             violet="%F{61}" \
+             yellow="%F{136}"
+  typeset -r bold="%B" \
+             nobold="%b" \
+             default="%f" \
+             reset="%f%b" \
+             ellipsis=$'\u2026' \
+             eol=$'\n'
 
-  build_segment() {
-    print -P -- "%B%F{${2}}${icon_leftcap}%f%K{${2}}%F{231}${1}%f%k%F{${2}}${icon_rightcap}%f%b"
-  }
-
-  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [prompt]="")
+  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [git_dir]="" [git_info]="" [prompt]="")
 
   if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
-    ps1[host]="$(build_segment "${icon_host} %m" "${magenta}") "
+    ps1[host]="${bold}[${magenta}%m${default}]${nobold}"
   fi
-
-  ps1[cwd]="$(build_segment "${icon_location} %1~" "${base0}") "
 
   if k8s_cxt="$(kubectl config current-context 2> /dev/null)"; then
     [[ $k8s_cxt =~ ^gke ]] && k8s_cxt="${k8s_cxt##*_}"
-    ps1[k8s]="$(build_segment "${icon_k8s} ${k8s_cxt}" "${violet}") "
+    ps1[k8s]=" ${bold}[${violet}${k8s_cxt}${default}]${nobold}"
   fi
 
-  if [[ -n "$VIRTUAL_ENV" ]]; then
-    ps1[pyenv]="$(build_segment "${icon_python} $(python --version | grep -Po '3(\.\d+)')" "${cyan}") "
+  if [[ -n $VIRTUAL_ENV ]]; then
+    ps1[pyenv]=" ${bold}[${cyan}Py $(python --version | grep -Po '3(\.\d+)')${default}]${nobold}"
   fi
 
   zstyle ':vcs_info:git*' actionformats "%S %b %u%c %a"
@@ -168,47 +153,34 @@ precmd() {
   zstyle ':vcs_info:git*+set-message:*' hooks extended-git
 
   vcs_info
-  {% raw %}
+
   if [[ -n $vcs_info_msg_0_ ]]; then
     vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] subdirectory [2] branch [3] status [4] action
-    git_subdirectories=("${(@s|/|)vcsinfo[1]}")
-
-    if [[ "${vcsinfo[1]}" == "." ]]; then
-      git_depth="0"
-    else
-      git_depth="${#git_subdirectories}"
-    fi
-
-    if [[ $git_depth -ge 0 ]]; then
-      ps1[git]+="$(build_segment "${icon_folder} ${git_depth}" "${yellow}") "
-    fi
-
-    if [[ -n ${vcsinfo[2]} ]]; then
-      ps1[git]+="$(build_segment "${icon_git_branch} ${vcsinfo[2]}" "${green}")"
-    fi
-
-    if [[ -n ${vcsinfo[3]} ]]; then
-      ps1[git]+=" $(build_segment "${vcsinfo[3]}" "${yellow}")"
-    fi
-
-    if [[ -n ${vcsinfo[4]} ]]; then
-      ps1[git]+=" $(build_segment "${vcsinfo[4]}" "${red}")"
-    fi
+    [[ -n ${vcsinfo[1]} ]] && ps1[git_dir]="${base0}${vcsinfo[1]}${default}"
+    [[ -n ${vcsinfo[2]} ]] && ps1[git_info]+="${green}${vcsinfo[2]}${default}"
+    [[ -n ${vcsinfo[3]} ]] && ps1[git_info]+=" ${yellow}${vcsinfo[3]}${default}"
+    [[ -n ${vcsinfo[4]} ]] && ps1[git_info]+=" ${red}${vcsinfo[4]}${default}"
+    ps1[git]="${bold}[${ps1[git_info]}] ${ps1[git_dir]}${nobold}"
+    ps1[cwd]=""
+  else
+    ps1[cwd]="${bold}${base0}%(2~|.../%1~|%~)${reset}"
   fi
-  {% endraw %}
+
   case "$rc" in
-    0) ps1[prompt]="%B%F{${green}}%#%f%b "   ;;
-    1) ps1[prompt]="%B%F{${red}}%#%f%b "     ;;
-    *) ps1[prompt]="%B%F{${magenta}}%#%f%b " ;;
+    0) prompt_color="${green}"   ;;
+    1) prompt_color="${red}"     ;;
+    *) prompt_color="${magenta}" ;;
   esac
 
-  PROMPT="${eol}${icon_prompt} ${ps1[host]}${ps1[cwd]}${ps1[k8s]}${ps1[pyenv]}${ps1[git]}${eol}${ps1[prompt]}"
+  ps1[prompt]="${bold}${prompt_color}%#${reset} "
+
+  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[git]}${ps1[k8s]}${ps1[pyenv]}${eol}${ps1[prompt]}"
 }
 
 +vi-extended-git() {
-  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
+  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)}" == "true}" ]]; then
     if [[ -s $(git rev-parse --show-toplevel)/.git/refs/stash ]]; then hook_com[staged]+="$"; fi
-    if git status --porcelain | grep -q "^?? " 2> /dev/null; then hook_com[staged]+="?"; fi
+    if git status --porcelain | grep -q "^?? }" 2> /dev/null; then hook_com[staged]+="?"; fi
   fi
 }
 
