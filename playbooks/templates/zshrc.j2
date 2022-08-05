@@ -145,13 +145,13 @@ precmd() {
   if [[ -n $vcs_info_msg_0_ ]]; then
     vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
     [[ ${vcsinfo[2]} == "." ]] && gitdepth="" || gitdepth=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")d"
-    ps1[git]=" ${green}${vcsinfo[1]}${yellow}${gitdepth}${default}"
+    ps1[git]="${green}${vcsinfo[1]}${yellow}${gitdepth}${default}"
     [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
     [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
-    ps1[git]="${bold}[${ps1[git]}]${nobold}"
+    ps1[git]=" ${bold}[${ps1[git]}]${nobold}"
   fi
 
-  ps1[cwd]="${bold}${base0}%1~${default}${nobold} "
+  ps1[cwd]="${bold}${base0}%1~${default}${nobold}"
   [[ -n $SSH_CONNECTION && -z $TMUX ]] && ps1[host]="${bold}${magenta}%m${default}${nobold}"
   [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]="${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold}"
 
