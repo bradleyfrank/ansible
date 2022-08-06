@@ -153,7 +153,7 @@ precmd() {
 
   ps1[cwd]="${bold}${base0}%1~${default}${nobold}"
   [[ -n $SSH_CONNECTION && -z $TMUX ]] && ps1[host]="${bold}${magenta}%m${default}${nobold}"
-  [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]="${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold}"
+  [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]=" ${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold}"
 
   case "$rc" in
     0) ps1[prompt]="${bold}${green}%#${reset} "   ;;
