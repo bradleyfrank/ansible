@@ -7,7 +7,7 @@ PATH="$PATH:{{ gnubin['path'] }}"
 PATH="$PATH:{{ python_user_path }}"
 PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 {% if 'arm64' in ansible_machine %}
-PATH="$PATH:{{ homebrew_prefix }}/bin"
+PATH="$PATH:{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin"
 {% endif %}
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
@@ -113,7 +113,7 @@ tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 
 precmd() {
-  typeset    rc=$? gitdepth
+  typeset    rc=$?
   typeset -a vcsinfo
   typeset -A ps1
   typeset -r base0="%F{244}" \
@@ -145,8 +145,8 @@ precmd() {
 
   if [[ -n $vcs_info_msg_0_ ]]; then
     vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
-    [[ ${vcsinfo[2]} == "." ]] && gitdepth="" || gitdepth=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")d"
-    ps1[git]="${green}${vcsinfo[1]}${yellow}${gitdepth}${default}"
+    [[ ${vcsinfo[2]} == "." ]] && vcsinfo[2]="" || vcsinfo[2]=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")d"
+    ps1[git]="${green}${vcsinfo[1]}${yellow}${vcsinfo[2]}${default}"
     [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
     [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
     ps1[git]=" ${bold}[${ps1[git]}]${nobold}"
