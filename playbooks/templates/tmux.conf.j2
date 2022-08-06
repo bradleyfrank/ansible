@@ -14,7 +14,7 @@ set -g pane-active-border-style "bg=default,#{?window_zoomed_flag,fg=colour160,#
 set -g pane-border-style "bg=default,#{?pane_synchronized,fg=colour37,fg=colour245}"
 set -g pane-border-lines "heavy"
 set -g status-format[1] "#[align=right]#(tmux-status)"
-set -g status-right "#[fg=colour125,bold]#{session_name} #[fg=default]@ #[fg=colour64]#h#[nobold]"
+set -g status-right "#[fg=colour61,bold]#{session_name} #[fg=default]@ #[fg=colour125]#h#[nobold]"
 set -g window-status-current-format "#[fg=colour231,bg=colour33,bold] #I: #W #[nobold]"
 set -g window-status-format "#[fg=colour33,bg=colour254,bold] #I: #W #[nobold]"
 {% elif "minimal" in item -%}
