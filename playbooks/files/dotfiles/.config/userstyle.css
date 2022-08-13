@@ -1,0 +1,29 @@
+code, pre {
+  font-family: "SauceCodePro Nerd Font";
+  line-height: 1.5em;
+  border-radius: .5em;
+}
+
+pre {
+  background: rgba(0, 76, 114, 0.04) !important;
+  padding: .5em !important;
+}
+
+code {
+  background: rgba(0, 76, 114, 0.08);
+}
+
+pre code {
+  background: none !important;
+}
+
+.code, .inline-code {
+  border: none;
+  background: rgba(0, 76, 114, 0.08);
+  border-radius: 10px;
+}
+
+.inline-code {
+  border-radius: .25em;
+  padding: .25em;
+}

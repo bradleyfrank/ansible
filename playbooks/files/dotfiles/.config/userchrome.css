@@ -1,0 +1,9 @@
+.cm-hr {
+  color: rgb(101, 123, 131) !important;
+  border-top: 0 !important;
+  display: inline;
+}
+
+div.CodeMirror div.cm-jn-code-block-background {
+  background-color: inherit !important;
+}
