@@ -1,3 +1,8 @@
+#rendered-md {
+  padding-bottom: 400px;
+  font-family: "SauceCodePro Nerd Font";
+}
+
 code, pre {
   font-family: "SauceCodePro Nerd Font";
   line-height: 1.5em;
@@ -26,4 +31,9 @@ pre code {
 .inline-code {
   border-radius: .25em;
   padding: .25em;
+}
+
+hr {
+  border-bottom: 2px solid #cccccc;
+  margin: 2em 0;
 }
