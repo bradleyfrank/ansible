@@ -8,3 +8,7 @@ div.CodeMirror div.cm-jn-code-block-background {
   display: inline !important;
 }
 
+.cm-comment {
+  color: #657b83 !important;
+}
+
