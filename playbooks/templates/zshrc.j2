@@ -242,7 +242,8 @@ eval "$(keychain --eval --ignore-missing --quiet
 {%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode
+  vscwd="$(basename $(pwd))"
+  tmux -L "$vscwd" -f ~/.config/tmux/minimal.conf new-session -A -s "$vscwd"
 elif [[ -z "$TMUX" ]]; then
 {% if work_system %}
   tmuxp load -y ansible notes orm
