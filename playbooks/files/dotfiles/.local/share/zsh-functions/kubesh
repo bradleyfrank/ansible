@@ -60,23 +60,24 @@ dmi() {
     docker image list --format "{{json .}}" | jq -rj '.ID,"\t",.Size,"\t",.Repository,":",.Tag,"\n"'
 }
 
-alias kcl="kubectl config get-contexts --output name"
-alias kctx="kubectl config current-context"
-alias kcu="kubectl config unset current-context"
-alias krew="kubectl krew"
-alias stern="kubectl stern"
+alias k='kubectl'
+alias kcl='kubectl config get-contexts --output name'
+alias kctx='kubectl config current-context'
+alias kcu='kubectl config unset current-context'
+alias krew='kubectl krew'
+alias stern='kubectl stern'
 
 # [krename] rename all contexts with shorter names
 krename() {
     local context
     kubectl config unset current-context &> /dev/null
     for context in $(kubectl config get-contexts --output name); do
-        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")" 2> /dev/null
+        kubectl config rename-context "$context" "$(grep -o '[^_]*$' <<< "$context")"
     done
 }
 
-# [k] wrapper for kubectl; usage: k [-x|--context] [-n|--namespace] [-A|--all-namespaces]
-k() {
+# [kc] wrapper for kubectl; usage: kc [-x|--context] [-n|--namespace] [-A|--all-namespaces]
+kc() {
     local arg_ctx arg_ns arg_all_ns ctx ns
     zparseopts -D -E -- \
         x:=arg_ctx -context:=arg_ctx \

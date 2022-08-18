@@ -211,6 +211,8 @@ zle -N edit-command-line
 
 bindkey -e
 bindkey '^X^E' edit-command-line
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
 
 
 {% if 'MacOSX' in ansible_distribution %}
