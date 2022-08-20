@@ -43,6 +43,7 @@ pypi_packages:
   - beets
   - click  # https://github.com/tmux-python/tmuxp/pull/679
   - diceware
+  - edir
   - Jinja2
   - tmuxp
   - virtualenv
