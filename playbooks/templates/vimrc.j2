@@ -24,6 +24,7 @@ let g:vim_json_conceal = 0
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
+set rtp+=/usr/local/bin/fzf
 set background=light
 set backspace=indent,eol,start
 {% if 'MacOSX' in ansible_distribution -%}
@@ -31,6 +32,7 @@ set clipboard=unnamed
 {% endif -%}
 set colorcolumn=100
 set cursorline
+set foldmethod=syntax
 set hlsearch incsearch
 set laststatus=2
 set linebreak
@@ -58,4 +60,3 @@ augroup numbertoggle
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
-```
