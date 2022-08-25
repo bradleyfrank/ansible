@@ -115,7 +115,7 @@ tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 precmd() {
   typeset    rc=$?
-  typeset -a git_info
+  typeset -a vcsinfo
   typeset -A ps1
   typeset -r base0="%F{244}" \
              base3="%F{230}" \
@@ -135,14 +135,12 @@ precmd() {
 
   ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [prompt]="")
 
-  vcs_info
-
-  if [[ -n $vcs_info_msg_0_ ]]; then
-    git_info=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
-    [[ ${git_info[2]} == "." ]] && git_info[2]="" || git_info[2]=":$(awk -F '/' '{print NF-1}' <<< "/${git_info[2]}")d"
-    ps1[git]="${green}${git_info[1]}${yellow}${git_info[2]}${default}"
-    [[ -n ${git_info[3]} ]] && ps1[git]+=" ${orange}${git_info[3]}${default}"
-    [[ -n ${git_info[4]} ]] && ps1[git]+=" ${red}${git_info[4]}${default}"
+  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
+    vcs_info; vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
+    [[ ${vcsinfo[2]} == "." ]] && vcsinfo[2]="" || vcsinfo[2]=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")"
+    ps1[git]="${green}${vcsinfo[1]}${yellow}${vcsinfo[2]}${default}"
+    [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
+    [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
     ps1[git]=" ${bold}[${ps1[git]}]${nobold}"
   fi
 
@@ -160,10 +158,8 @@ precmd() {
 }
 
 +vi-extended-git() {
-  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)}" == "true}" ]]; then
-    if [[ -s $(git rev-parse --show-toplevel)/.git/refs/stash ]]; then hook_com[staged]+="$"; fi
-    if git status --porcelain | grep -q "^?? }" 2> /dev/null; then hook_com[staged]+="?"; fi
-  fi
+  [[ -s $(git rev-parse --git-common-dir)/refs/stash ]] && hook_com[staged]+="$"
+  git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
 }
 
 zstyle ':vcs_info:git*' actionformats "%b %S %u%c %a"
