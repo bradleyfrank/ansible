@@ -1,0 +1,12 @@
+Host deep-thought
+  HostName 192.168.1.40
+
+Host home-backup
+  HostName 192.168.1.30
+
+Host *
+  CanonicalizeHostname yes
+  IdentityFile ~/.ssh/id_home
+  ServerAliveCountMax 4
+  ServerAliveInterval 15
+  User bfrank

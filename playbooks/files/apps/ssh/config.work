@@ -1,0 +1,18 @@
+Host 10.144.*.*
+	ProxyJump bastion.playground.gcp.oreilly.com
+
+Host 10.130.*.*
+	ProxyJump bastion.platform-dev.gcp.oreilly.com
+
+Host 10.134.*.*
+  ProxyJump bastion.platform-prod.gcp.oreilly.com
+
+Host 10.142.*.*
+  ProxyJump bastion.common-build.gcp.oreilly.com
+
+Host *
+  CanonicalizeHostname yes
+  IdentityFile ~/.ssh/google_compute_engine
+  ServerAliveCountMax 4
+  ServerAliveInterval 15
+  User bfrank
