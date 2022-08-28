@@ -41,7 +41,6 @@ pypi_packages:
   - archivebox
   - bashate
   - beets
-  - click  # https://github.com/tmux-python/tmuxp/pull/679
   - diceware
   - edir
   - Jinja2

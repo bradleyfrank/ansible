@@ -16,3 +16,9 @@
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
+
+- name: Install SSH configs
+  ansible.builtin.copy:
+    src: "ssh/{{ 'work' if work_system else 'home' }}.config"
+    dest: "{{ ansible_user_dir }}/.ssh/config"
+    mode: 0644

@@ -1,27 +1,9 @@
 ---
 
 - name: Install Krew
-  block:
-    - name: Download Krew installer
-      vars:
-        name: krew
-        user: kubernetes-sigs
-        repo: krew
-        arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
-        filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
-      ansible.builtin.include_tasks:
-        file: tasks/helpers/github_release.yml
-        apply:
-          tags: krew
-    - name: Install Krew
-      ansible.builtin.command:
-        cmd: "{{ ansible_user_dir }}/.local/bin/krew install krew"
-        creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
-  always:
-    - name: Remove installer
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin/krew"
-        state: absent
+  ansible.builtin.command:
+    cmd: "{{ ansible_user_dir }}/.local/bin/krew-install"
+    creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
   tags: krew
 
 - name: Install Krew plugins

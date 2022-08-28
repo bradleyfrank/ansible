@@ -66,7 +66,6 @@
       - name: com.github.PintaProject.Pinta
       - name: com.gitlab.newsflash
       - name: com.spotify.Client
-      - name: net.cozic.joplin_desktop
       - name: org.gabmus.hydrapaper
       - name: org.gnome.Connections
       - name: org.gnome.Games
