@@ -36,7 +36,7 @@ _get_window_name() {
 
 _get_project_dir() {
   find "${HOME}/Development/Projects" -mindepth 2 -maxdepth 2 -type d \
-    | fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border none --no-multi \
+    | fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border rounded --no-multi \
       --delimiter / --with-nth -2,-1 \
       --preview="exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --"
 }
