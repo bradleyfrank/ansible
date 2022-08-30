@@ -70,23 +70,23 @@
 
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
-      tags: [ssh, core]
+      tags: [core, ssh]
 
     - name: Include git tasks  # must follow ssh key creation
       ansible.builtin.import_tasks: tasks/dotfiles/git.yml
-      tags: [git, core]
+      tags: [core, git]
 
     - name: Import tmux tasks
       ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
-      tags: [tmux, core]
+      tags: [core, tmux]
 
     - name: Import vim tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
-      tags: [vim, core]
+      tags: [core, vim]
 
     - name: Include k8s tasks
       ansible.builtin.import_tasks: tasks/dotfiles/k8s.yml
-      tags: [k8s, core]
+      tags: [core, k8s]
 
 # ============================================================================
 #  assets and modules
@@ -135,8 +135,6 @@
         dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
         mode: 0644
         backup: true
-      register: _backup_alacritty
-      notify: Process backups
       tags: alacritty
 
     - name: Import misc macOS app tasks
@@ -144,10 +142,15 @@
       when: "'MacOSX' in ansible_distribution"
       tags: [bbedit, stats]
 
-    - name: Update macOS app icons
+    - name: Set app squircle icons
       vars:
         app: "/Applications/{{ item['path'] | splitext | first }}.app"
-      ansible.builtin.include_tasks: tasks/dotfiles/mac_icons.yml
+      ansible.builtin.command: "{{ homebrew_prefix }}/bin/fileicon set {{ app }} {{ item['src'] }}"
+      register: cmd_fileicon_set
+      changed_when: false
+      failed_when:
+        - "'you do not have read permissions' in cmd_fileicon_set.stderr"
+        - "'file not found or not a (readable) regular file' in cmd_fileicon_set.stderr"
       when: "'MacOSX' in ansible_distribution"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:

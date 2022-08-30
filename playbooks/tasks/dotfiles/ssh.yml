@@ -1,5 +1,11 @@
 ---
 
+- name: Ensure SSH directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: 0755
+
 - name: Set proper permissions on ~/.ssh/authorized_keys
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
