@@ -38,6 +38,7 @@ export LESS_TERMCAP_so=$'\E[01;47;34m'  # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
+export CHTSH_QUERY_OPTIONS="style=vs"
 export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi --info inline"
 export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
@@ -103,7 +104,6 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
 cdf() { cd $(dirs -lp | fzf --no-multi); }
-cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 dw() { diceware -d- -n"${1:-5}"; }
@@ -200,7 +200,7 @@ setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt pushd_ignore_dups       # Ignore duplices in the directory stack
 setopt rcexpandparam           # Array expension with parameters
 
-cdpath=("{{ ansible_user_dir }}/Development" "{{ ansible_user_dir }}/Development/Projects")
+cdpath=("$HOME/Development" "$HOME/Development/Projects")
 
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc vcs_info edit-command-line run-help && compinit
@@ -224,7 +224,7 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
-source {{ ansible_user_dir }}/.local/share/zpy/zpy.plugin.zsh
+source $HOME/.local/share/zpy/zpy.plugin.zsh
 for completion in {{ zsh['completions'] }}/*; do source "$completion"; done
 for function in {{ zsh['functions'] }}/*; do source "$function"; done
 

@@ -52,7 +52,7 @@
     - name: Install themes for bat
       ansible.builtin.command: "{{ bat_exec }} cache --build"
       changed_when: false
-      tags: core
+      tags: [core, bat]
 
     - name: Ensure glow config directory exists
       ansible.builtin.file:
@@ -67,6 +67,13 @@
         dest: "{{ glow_config_path }}/"
         mode: 0644
       tags: [core, glow]
+
+    - name: Install cheat script
+      ansible.builtin.get_url:
+        url: https://cht.sh/:cht.sh
+        dest: "{{ ansible_user_dir }}/.local/bin/cht"
+        mode: 0755
+      tags: [core, cheat]
 
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
