@@ -73,6 +73,8 @@ zsh_completions:
     command: kubectl stern --completion=zsh
   - name: k9s
     command: k9s completion zsh
+  - name: cht
+    command: curl https://cheat.sh/:zsh
 
 zsh_plugins:
   - name: zpy

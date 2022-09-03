@@ -23,9 +23,11 @@ MANPATH="$MANPATH:{{ homebrew_prefix }}/share/man"
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
+FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
 
 export PATH
 export MANPATH
+export FPATH
 export EDITOR=vim
 export VISUAL=vim
 export DIRSTACKSIZE=10                  # Max directories in auto_pushd stack
@@ -81,6 +83,7 @@ alias lS='exa --color always --classify --long --all --icons --group-directories
 alias ls='ls --color --classify --human-readable'
 alias lt='exa --color always --classify --long --all --icons --sort time'
 
+alias cheat='cht.sh'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dotfiles='ansible-playbook playbooks/dotfiles.yml'
@@ -225,8 +228,7 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
 source $HOME/.local/share/zpy/zpy.plugin.zsh
-for completion in {{ zsh['completions'] }}/*; do source "$completion"; done
-for function in {{ zsh['functions'] }}/*; do source "$function"; done
+for rc in {{ zsh['rc.d'] }}/*; do source "$rc"; done
 
 
 {% if work_system -%}

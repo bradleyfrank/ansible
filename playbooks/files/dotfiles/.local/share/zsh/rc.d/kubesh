@@ -58,8 +58,6 @@ dmi() {
     docker image list --format "{{json .}}" | jq -rj '.ID,"\t",.Size,"\t",.Repository,":",.Tag,"\n"'
 }
 
-alias -g -- -x="--context"
-
 alias k='kubectl'
 alias kcl='kubectl config get-contexts --output name'
 alias kctx='kubectl config current-context'

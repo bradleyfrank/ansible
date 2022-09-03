@@ -19,8 +19,6 @@ _save_and_exec() {
     eval "$cmd"
 }
 
-alias -g -- -p="--project"
-
 alias gpu='gcloud config unset project'
 alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
 

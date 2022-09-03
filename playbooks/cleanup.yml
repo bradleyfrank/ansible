@@ -29,9 +29,8 @@
       - .local/share/fubectl
       - .local/share/icons
       - .local/share/kubectl
-      - .local/share/zsh-functions/pyenv
-      - .local/share/zsh-functions/kubesh
-      - .local/share/zsh
+      - .local/share/zsh-functions
+      - .local/share/zsh-completions
       - .local/share/zshrc
       - .tmux.conf
 
