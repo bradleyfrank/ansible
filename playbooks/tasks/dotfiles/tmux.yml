@@ -28,3 +28,12 @@
     src: tmux-status.bash.j2
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
+
+- name: Symlink main tmuxp profile
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/.config/tmuxp/{{ 'work' if work_system else 'home' }}.yml"
+    dest: "{{ ansible_user_dir }}/.config/tmuxp/main.yml"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ user_group }}"
+    state: link
+

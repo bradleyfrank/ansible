@@ -92,6 +92,7 @@ alias glances='glances --theme-white'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
+alias mux='tmuxp load -y ansible notes main'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
@@ -246,10 +247,5 @@ eval "$(keychain --eval --ignore-missing --quiet
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   vscwd="$(basename $(pwd))"
   tmux -L "$vscwd" -f ~/.config/tmux/minimal.conf new-session -A -s "$vscwd"
-elif [[ -z "$TMUX" ]]; then
-{% if work_system %}
-  tmuxp load -y ansible notes orm
-{% else %}
-  tmuxp load -y ansible notes home
-{% endif %}
 fi
+
