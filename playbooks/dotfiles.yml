@@ -4,6 +4,7 @@
   hosts: localhost
 
   handlers:
+
     - name: Process backups
       vars:
         backup_var: "{{ lookup('vars', item) }}"
@@ -18,6 +19,13 @@
 
     - name: Import os-specific variables
       ansible.builtin.include_vars: "{{ ansible_system }}.yml"
+      tags: always
+
+    - name: Ensure backup directory exists
+      ansible.builtin.file:
+        path: "{{ backups_dir }}"
+        state: directory
+        mode: 0755
       tags: always
 
 # ============================================================================
@@ -44,7 +52,7 @@
     - name: Install themes for bat
       ansible.builtin.command: "{{ bat_exec }} cache --build"
       changed_when: false
-      tags: core
+      tags: [core, bat]
 
     - name: Ensure glow config directory exists
       ansible.builtin.file:
@@ -60,32 +68,32 @@
         mode: 0644
       tags: [core, glow]
 
-    - name: Ensure backup directory exists
-      ansible.builtin.file:
-        path: "{{ backups_dir }}"
-        state: directory
+    - name: Install cheat script
+      ansible.builtin.get_url:
+        url: https://cht.sh/:cht.sh
+        dest: "{{ ansible_user_dir }}/.local/bin/cht"
         mode: 0755
-      tags: always
+      tags: [core, cheat]
 
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
-      tags: [ssh, core]
+      tags: [core, ssh]
 
     - name: Include git tasks  # must follow ssh key creation
       ansible.builtin.import_tasks: tasks/dotfiles/git.yml
-      tags: [git, core]
+      tags: [core, git]
 
     - name: Import tmux tasks
       ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
-      tags: [tmux, core]
+      tags: [core, tmux]
 
     - name: Import vim tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
-      tags: [vim, core]
+      tags: [core, vim]
 
     - name: Include k8s tasks
       ansible.builtin.import_tasks: tasks/dotfiles/k8s.yml
-      tags: [k8s, core]
+      tags: [core, k8s]
 
 # ============================================================================
 #  assets and modules
@@ -121,7 +129,7 @@
 #  gui apps configuration
 # ----------------------------------------------------------------------------
 
-    - name: Ensure ~/.config/alacritty directory exists
+    - name: Ensure alacritty config directory exists
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/.config/alacritty"
         state: directory
@@ -134,8 +142,6 @@
         dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
         mode: 0644
         backup: true
-      register: _backup_alacritty
-      notify: Process backups
       tags: alacritty
 
     - name: Import misc macOS app tasks
@@ -143,10 +149,15 @@
       when: "'MacOSX' in ansible_distribution"
       tags: [bbedit, stats]
 
-    - name: Update macOS app icons
+    - name: Set app squircle icons
       vars:
         app: "/Applications/{{ item['path'] | splitext | first }}.app"
-      ansible.builtin.include_tasks: tasks/dotfiles/mac_icons.yml
+      ansible.builtin.command: "{{ homebrew_prefix }}/bin/fileicon set {{ app }} {{ item['src'] }}"
+      register: cmd_fileicon_set
+      changed_when: false
+      failed_when:
+        - "'you do not have read permissions' in cmd_fileicon_set.stderr"
+        - "'file not found or not a (readable) regular file' in cmd_fileicon_set.stderr"
       when: "'MacOSX' in ansible_distribution"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:

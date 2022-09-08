@@ -41,8 +41,8 @@ pypi_packages:
   - archivebox
   - bashate
   - beets
-  - click  # https://github.com/tmux-python/tmuxp/pull/679
   - diceware
+  - edir
   - Jinja2
   - tmuxp
   - virtualenv
@@ -61,6 +61,10 @@ vim_extensions:
     repo: https://github.com/preservim/nerdtree.git
   - name: indentLine
     repo: https://github.com/Yggdroot/indentLine.git
+  - name: vim-terraform
+    repo: https://github.com/hashivim/vim-terraform.git
+  - name: vim-solarized8
+    repo: https://github.com/lifepillar/vim-solarized8.git
 
 zsh_completions:
   - name: kubectl
@@ -69,6 +73,8 @@ zsh_completions:
     command: kubectl stern --completion=zsh
   - name: k9s
     command: k9s completion zsh
+  - name: cht
+    command: curl https://cheat.sh/:zsh
 
 zsh_plugins:
   - name: zpy

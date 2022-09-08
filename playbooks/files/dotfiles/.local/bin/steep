@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 #
-# Updates Homebrew packages.
+# Updates various package managers and components.
 # Author: Brad Frank
 # Date: Sept 2021
 # Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
-# Requires: homebrew
 #
 
 xcode-select --version &> /dev/null || xcode-select --install
@@ -15,5 +14,9 @@ brew upgrade
 brew leaves --installed-as-dependency | xargs | xargs --no-run-if-empty brew uninstall
 brew cleanup
 
+krew upgrade
+
 bat cache --clear
 bat cache --build
+
+gcloud components update --quiet

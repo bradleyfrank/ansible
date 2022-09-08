@@ -5,23 +5,26 @@ highlight GitGutterDelete cterm=bold        ctermfg=160
 highlight Search          ctermbg=DarkBlue  ctermfg=231
 highlight! link SignColumn LineNr
 
+syntax on
+colorscheme solarized8
+
 let g:airline_skip_empty_sections = 1
 let g:airline_theme = 'sol'
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:indentLine_char = '│'
 let g:indentLine_color_term = 254
 let g:is_posix = 1
 let g:netrw_winsize = 30
+let g:solarized_statusline = "flat"
+let g:solarized_termtrans = 1
 let g:vim_json_conceal = 0
-
-syntax on
-let &t_EI = "\e[2 q"  " block cursor
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
+set rtp+=/usr/local/bin/fzf
 set background=light
 set backspace=indent,eol,start
 {% if 'MacOSX' in ansible_distribution -%}
@@ -29,6 +32,7 @@ set clipboard=unnamed
 {% endif -%}
 set colorcolumn=100
 set cursorline
+set foldmethod=syntax
 set hlsearch incsearch
 set laststatus=2
 set linebreak
@@ -49,3 +53,10 @@ set tabstop=2 softtabstop=2 shiftwidth=2
 if exists('$TMUX')
   set ttymouse=xterm2
 endif
+
+" use hybrid line numbering by default with automatic toggling
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END

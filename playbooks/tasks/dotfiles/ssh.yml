@@ -1,5 +1,11 @@
 ---
 
+- name: Ensure SSH directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+    mode: 0755
+
 - name: Set proper permissions on ~/.ssh/authorized_keys
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
@@ -16,3 +22,9 @@
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
+
+- name: Install SSH configs
+  ansible.builtin.copy:
+    src: "ssh/{{ 'work' if work_system else 'home' }}.config"
+    dest: "{{ ansible_user_dir }}/.ssh/config"
+    mode: 0644

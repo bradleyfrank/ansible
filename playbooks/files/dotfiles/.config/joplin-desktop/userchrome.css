@@ -1,0 +1,13 @@
+div.CodeMirror div.cm-jn-code-block-background {
+  background-color: inherit !important;
+}
+
+.cm-s-solarized .cm-hr {
+  color: #657b83 !important;
+  border: 0 !important;
+  display: inline !important;
+}
+
+.cm-comment {
+  color: #657b83 !important;
+}

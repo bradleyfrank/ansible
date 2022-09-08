@@ -7,7 +7,7 @@ PATH="$PATH:{{ gnubin['path'] }}"
 PATH="$PATH:{{ python_user_path }}"
 PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 {% if 'arm64' in ansible_machine %}
-PATH="$PATH:{{ homebrew_prefix }}/bin"
+PATH="$PATH:{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin"
 {% endif %}
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
@@ -23,9 +23,11 @@ MANPATH="$MANPATH:{{ homebrew_prefix }}/share/man"
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
+FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
 
 export PATH
 export MANPATH
+export FPATH
 export EDITOR=vim
 export VISUAL=vim
 export DIRSTACKSIZE=10                  # Max directories in auto_pushd stack
@@ -38,9 +40,9 @@ export LESS_TERMCAP_so=$'\E[01;47;34m'  # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
+export CHTSH_QUERY_OPTIONS="style=vs"
 export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi --info inline"
 export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
-export STARSHIP_CONFIG={{ ansible_user_dir }}/.config/starship/segments.toml
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
@@ -57,6 +59,7 @@ export HELPDIR=/usr/share/zsh/{{ zsh_version['stdout'] }}/help
 
 
 unalias run-help
+alias help='run-help'
 
 alias gcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
 alias gtop='cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)'
@@ -80,21 +83,22 @@ alias lS='exa --color always --classify --long --all --icons --group-directories
 alias ls='ls --color --classify --human-readable'
 alias lt='exa --color always --classify --long --all --icons --sort time'
 
+alias cheat='cht.sh'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
+alias dotfiles='ansible-playbook playbooks/dotfiles.yml'
 alias e='extract'
-alias fd='fd --no-ignore --hidden'
 alias glances='glances --theme-white'
-alias help='run-help'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
-alias pmux='tmuxp'
+alias mux='tmuxp load -y ansible notes main'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
+alias vwd='venvs_path'
 {% if 'Fedora' in ansible_distribution %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
@@ -104,13 +108,70 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 
 cdf() { cd $(dirs -lp | fzf --no-multi); }
-cheat() { curl -s "cheat.sh/$1?style=vs"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 dw() { diceware -d- -n"${1:-5}"; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
+tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
+
+
+precmd() {
+  typeset    rc=$?
+  typeset -a vcsinfo
+  typeset -A ps1
+  typeset -r base0="%F{244}" \
+             base3="%F{230}" \
+             blue="%F{33}" \
+             cyan="%F{37}" \
+             green="%F{64}" \
+             magenta="%F{125}" \
+             orange="%F{166}" \
+             red="%F{160}" \
+             violet="%F{61}" \
+             yellow="%F{136}"
+  typeset -r bold="%B" \
+             nobold="%b" \
+             default="%f" \
+             reset="%f%b" \
+             eol=$'\n'
+
+  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [prompt]="")
+
+  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
+    vcs_info; vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
+    [[ ${vcsinfo[2]} == "." ]] && vcsinfo[2]="" || vcsinfo[2]=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")"
+    ps1[git]="${green}${vcsinfo[1]}${yellow}${vcsinfo[2]}${default}"
+    [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
+    [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
+    ps1[git]=" ${bold}[${ps1[git]}]${nobold}"
+  fi
+
+  ps1[cwd]="${bold}${base0}%1~${default}${nobold}"
+  [[ -n $SSH_CONNECTION && -z $TMUX ]] && ps1[host]="${bold}${magenta}%m${default}${nobold}"
+  [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]=" ${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold}"
+
+  case "$rc" in
+    0) ps1[prompt]="${bold}${green}%#${reset} "   ;;
+    1) ps1[prompt]="${bold}${red}%#${reset} "     ;;
+    *) ps1[prompt]="${bold}${magenta}%#${reset} " ;;
+  esac
+
+  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[pyenv]}${ps1[git]}${ps1[k8s]}${eol}${ps1[prompt]}"
+}
+
++vi-extended-git() {
+  [[ -s $(git rev-parse --git-common-dir)/refs/stash ]] && hook_com[staged]+="$"
+  git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
+}
+
+zstyle ':vcs_info:git*' actionformats "%b %S %u%c %a"
+zstyle ':vcs_info:git*' check-for-changes true
+zstyle ':vcs_info:git*' formats "%b %S %u%c"
+zstyle ':vcs_info:git*' stagedstr "+"
+zstyle ':vcs_info:git*' unstagedstr "*"
+zstyle ':vcs_info:git*+set-message:*' hooks extended-git
 
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
@@ -143,29 +204,17 @@ setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt pushd_ignore_dups       # Ignore duplices in the directory stack
 setopt rcexpandparam           # Array expension with parameters
 
-cdpath=("{{ ansible_user_dir }}/Development" "{{ ansible_user_dir }}/Development/Projects")
+cdpath=("$HOME/Development" "$HOME/Development/Projects")
 
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit zmv zcalc vcs_info edit-command-line run-help && compinit
 zle -N edit-command-line
 
-bindkey -e                                         # Emacs style shortcuts
-bindkey '^[[7~' beginning-of-line                  # Home key
-bindkey '^[[H' beginning-of-line                   # Home key
-if [[ "${terminfo[khome]}" != "" ]]; then
-  bindkey "${terminfo[khome]}" beginning-of-line   # [Home] - Go to beginning of line
-fi
-bindkey '^[[8~' end-of-line                        # End key
-bindkey '^[[F' end-of-line                         # End key
-if [[ "${terminfo[kend]}" != "" ]]; then
-  bindkey "${terminfo[kend]}" end-of-line          # [End] - Go to end of line
-fi
-bindkey '^[[3~' delete-char                        # Delete key
-bindkey '^[[C'  forward-char                       # Right key
-bindkey '^[[D'  backward-char                      # Left key
-bindkey '^[[5~' history-beginning-search-backward  # Page up key
-bindkey '^[[6~' history-beginning-search-forward   # Page down key
+bindkey -e
 bindkey '^X^E' edit-command-line
+bindkey '\033' edit-command-line
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
 
 
 {% if 'MacOSX' in ansible_distribution %}
@@ -179,25 +228,24 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
-source {{ ansible_user_dir }}/.local/share/zpy/zpy.plugin.zsh
-for completion in {{ zsh['completions'] }}/*; do source "$completion"; done
-for function in {{ zsh['functions'] }}/*; do source "$function"; done
+source $HOME/.local/share/zpy/zpy.plugin.zsh
+for rc in {{ zsh['rc.d'] }}/*; do source "$rc"; done
 
 
 {% if work_system -%}
-source {{ ansible_user_dir }}/.infractl/secrets
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 
 
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
-eval "$(starship init zsh)"
 eval "$(keychain --eval --ignore-missing --quiet
 {%- if 'MacOSX' in ansible_distribution %} --inherit any
 {%- else %}
-{%- endif %} id_rsa id_ed25519 id_home ansible google_compute_engine)"
+{%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  tmux -L vscode -f ~/.config/tmux/minimal.conf new-session -A -s vscode
+  vscwd="$(basename $(pwd))"
+  tmux -L "$vscwd" -f ~/.config/tmux/minimal.conf new-session -A -s "$vscwd"
 fi
+

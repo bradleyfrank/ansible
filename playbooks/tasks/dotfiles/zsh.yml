@@ -1,8 +1,8 @@
 ---
 
-- name: Create completions directory
+- name: Create site-functions directory
   ansible.builtin.file:
-    path: "{{ zsh['completions'] }}"
+    path: "{{ zsh['site_functions'] }}"
     state: directory
     mode: 0755
 
@@ -19,7 +19,7 @@
 - name: Generate Zsh completions
   environment:
     PATH: "{{ ansible_user_dir }}/.krew/bin:{{ path }}"
-  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh['completions'] }}/{{ item['name'] }}"
+  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh['site_functions'] }}/_{{ item['name'] }}"
   changed_when: false
   loop: "{{ zsh_completions }}"
   loop_control:
@@ -29,7 +29,7 @@
 - name: Download cmarks script
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/bradleyfrank/cmarks/main/cmarks
-    dest: "{{ zsh['functions'] }}/"
+    dest: "{{ zsh['rc.d'] }}/"
     mode: 0644
 
 - name: Get zsh version

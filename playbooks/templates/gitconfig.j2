@@ -1,5 +1,7 @@
 [alias]
   co = checkout
+  diff-staged = diff --staged
+  diff-upstream = !git fetch origin && git diff master origin/master
   graph = log --oneline --decorate --graph --all
   history = log --full-history --
   last = log -1 HEAD --stat
@@ -19,6 +21,7 @@
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
   pager = delta
+  fsmonitor = true
 [delta]
   syntax-theme = Solarized (light)
   navigate = true

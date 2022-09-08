@@ -9,8 +9,9 @@
 #
 
 _get_window_name() {
-  local cwd base_cwd repo window_name username
-  cwd="$1"; base_cwd="$(basename "$cwd")"
+  local cwd base_cwd repo window_name username icon_git icon_folder icon_home
+  icon_git=$'\ue725' icon_folder=$'\uf74a' icon_home=$'\uf7db'
+  cwd="$1" base_cwd="$(basename "$cwd")"
 
   pushd "$cwd" &> /dev/null || exit 1
   if branch_name="$(git branch --show-current 2>/dev/null)"; then
@@ -19,13 +20,13 @@ _get_window_name() {
     else
       repo="$base_cwd"
     fi
-    window_name=" ${repo} (${branch_name})"
+    window_name="${icon_git} ${repo} (${branch_name})"
   else
     username="$(id --user --name)"
     if [[ "$base_cwd" == "$username" ]]; then
-      window_name=" ${username}"
+      window_name="${icon_home} ${username}"
     else
-      window_name=" ${base_cwd}"
+      window_name="${icon_folder} ${base_cwd}"
     fi
   fi
   popd &> /dev/null || exit 1
@@ -35,7 +36,7 @@ _get_window_name() {
 
 _get_project_dir() {
   find "${HOME}/Development/Projects" -mindepth 2 -maxdepth 2 -type d \
-    | fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border none --no-multi \
+    | fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border rounded --no-multi \
       --delimiter / --with-nth -2,-1 \
       --preview="exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --"
 }
@@ -64,14 +65,27 @@ open_project() {
 }
 
 dump_pane() {
-  local log_dir filename filepath
-  log_dir="$HOME/Development/Logs"
+  local tmpfile log_dir filename filepath prompt_prefix=$'\uf054'; tmpfile="$(mktemp)"
+  log_dir="${HOME}/Development/Logs"; [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
   filename="$(tmux display-message -p 'tmux-+%Y-%b-%d-%H%M-#{session_name}-w#{window_index}p#{pane_index}.out')"
   filepath="${log_dir}/${filename}"
-  [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
   tmux capture-pane -S -
-  tmux save-buffer "$filepath"
+  tmux save-buffer "$tmpfile"
+  sed -ir -e "/^${prompt_prefix}.*$/d" -e "/^%(\s|\t)*$/d" "$tmpfile"
+  cat -s "$tmpfile" > "$filepath"
+  rm "$tmpfile"
   open_project -d "$log_dir" -c "vim $filepath"
+}
+
+git_branch() {
+  local git_branch icon_git cwd; cwd="$1"
+  icon_git=$'\ue725'
+  cd "$cwd" || exit
+  if git_branch="$(git branch --show-current 2>/dev/null)"; then
+    echo -e "#[fg=colour64]${icon_git} ${git_branch}#[fg=default]"
+  else
+    echo -e "#[fg=colour64]${icon_git} n/a#[fg=default]"
+  fi
 }
 
 main() {
@@ -80,6 +94,7 @@ main() {
     rename-window) rename_window "$@" ;;
     open-project)  open_project "$@" ;;
     dump-pane)     dump_pane ;;
+    git-branch)    git_branch "$@" ;;
     *)             echo "$1 not found" >&2; exit 1 ;;
   esac
 }

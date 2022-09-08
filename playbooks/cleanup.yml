@@ -8,7 +8,7 @@
       - .ansible_vault_password
       - .config/p10k.zsh
       - .config/starship.toml
-      - .config/starship/default.toml
+      - .config/starship
       - .dotfiles
       - .k9s
       - .infractl/orm
@@ -25,12 +25,13 @@
       - .local/bin/orm
       - .local/bin/tmux-dump-pane
       - .local/bin/ytdl
+      - .local/config/tmuxp/orm.yml
       - .local/opt/bbdm
       - .local/share/fubectl
       - .local/share/icons
       - .local/share/kubectl
-      - .local/share/zsh-functions/pyenv
-      - .local/share/zsh
+      - .local/share/zsh-functions
+      - .local/share/zsh-completions
       - .local/share/zshrc
       - .tmux.conf
 
@@ -39,6 +40,7 @@
         - diff-so-fancy
         - ffsend
         - hstr
+        - starship
         - tmux-mem-cpu-load
         - yq
         - youtube-dl
@@ -64,7 +66,6 @@
       - name: com.github.PintaProject.Pinta
       - name: com.gitlab.newsflash
       - name: com.spotify.Client
-      - name: net.cozic.joplin_desktop
       - name: org.gabmus.hydrapaper
       - name: org.gnome.Connections
       - name: org.gnome.Games

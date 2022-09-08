@@ -1,8 +1,5 @@
-# Set the theme
 --theme="Solarized-Light"
-
-# Add mouse scrolling support in less
---pager="less -FR"
-
-# Use "gitignore" highlighting for ".ignore" files
+--pager="less -R"
 --map-syntax .ignore:.gitignore
+--tabs 2
+--style plain

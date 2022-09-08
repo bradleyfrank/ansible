@@ -10,7 +10,7 @@
         arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
         filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
       ansible.builtin.include_tasks:
-        file: tasks/helpers/github_release.yml
+        file: includes/github_release.yml
         apply:
           tags: krew
     - name: Install Krew

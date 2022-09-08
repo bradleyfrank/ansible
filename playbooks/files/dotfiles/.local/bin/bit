@@ -3,106 +3,90 @@
 #
 # Branches a Git repo as a worktree within tmux.
 # Author: Brad Frank
-# Date: May 2021
+# Date: May 2021, July 2022
 # Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
 # Requires: tmux, git, fzf, gh
 #
 
 usage() {
-  if [[ "$1" =~ (create|all) ]]; then
-    echo "bit create [-h] | [-r <repo> -f <name>] [-n <name>] [-p|-w]"
-    echo "-f <name>   Branch to branch from"
-    echo "-n          Name of the new branch"
-    echo "-r <repo>   Repository to branch from"
-    echo "-p          Opens the branch in a tmux pane in the same window (default)"
-    echo "-w          Opens the branch in a new tmux window"
+  if [[ "$1" =~ (branch|all) ]]; then
+    echo "bit branch [-n <name>] [-p|-w]"
+    echo "  -n  Name of the new branch"
+    echo "  -p  Opens the branch in a tmux pane in the same window (default)"
+    echo "  -w  Opens the branch in a new tmux window"
   fi
 
   if [[ "$1" =~ (pull|all) ]]; then
-    echo "bit pull [-h] | [-r <repo>] [-p|-w]"
-    echo "-r <repo>   Repository to branch from"
-    echo "-p          Opens the branch in a tmux pane in the same window (default)"
-    echo "-w          Opens the branch in a new tmux window"
+    echo "bit pull [-p|-w]"
+    echo "  -p  Opens the branch in a tmux pane in the same window (default)"
+    echo "  -w  Opens the branch in a new tmux window"
   fi
 
   if [[ "$1" =~ (delete|all) ]]; then
-    echo "bit delete [-h]"
+    echo "bit delete"
   fi
 
   if [[ "$1" =~ (clone|all) ]]; then
-    echo "bit clone [-h] | [<url>]"
+    echo "bit clone [<url>]"
   fi
 }
 
-_fzf_b() { fzf --ansi -i --height=50% --reverse -0 --inline-info --border "$@"; }
-_fzf_b_multi() { _fzf_b --multi "$@"; }
-_fzf_b_no_multi() { _fzf_b --no-multi "$@"; }
-
-find_dir_fzf() { find "$1" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | _fzf_b_multi -1; }
-
-get_repo_path() {
-  if [[ -z $repo_name && $in_git_repo -eq $false ]]; then
-    repo_name="$(find_dir_fzf "$projects_dir")"
-  elif [[ -z $repo_name && $in_git_repo -eq $true ]]; then
-    repo_name="$(basename "$(dirname "$gitdir")")"
+fzf_bit() {
+  if [[ -n $TMUX ]]; then
+    fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
+  else
+    fzf --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
   fi
-  repo_path="$projects_dir/$repo_name"
 }
 
-create_worktree_new() {
-  if [[ -z $branch_from && $in_git_repo -eq $false ]]; then
-    branch_from="$(find_dir_fzf "$repo_path")"
-  elif [[ -z $branch_from && $in_git_repo -eq $true ]]; then
-    branch_from="$(basename "$gitdir")"
-  fi
-  branch_path="$repo_path/$branch_from"
-  [[ -z $new_branch ]] && new_branch="$(date +%Y-%b-%d-%H%M)-${branch_from}"
-  repo_branch="$repo_path/$new_branch"
-  cd "$branch_path" || exit 1
-  git worktree add "$repo_branch"
+bit_branch() {
+  repo_base_path="$(dirname "$git_toplevel_path")"
+  cd "$git_toplevel_path" || exit 1
+  [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$git_toplevel_path")"
+  repo_branch_path="$repo_base_path/$new_branch_name"
+  git worktree add "$repo_branch_path"
+  open_in_tmux
 }
 
-create_worktree_from_origin() {
+bit_pull() {
+  repo_base_path="$(dirname "$git_toplevel_path")"
   git fetch origin --prune
-  new_branch="$(
+  new_branch_name="$(
     git for-each-ref --format='%(refname:short)' refs/remotes \
       | cut --delimiter / --fields 2 \
       | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
-      | _fzf_b_no_multi --preview='git log --pretty=reference origin/{}'
+      | fzf_bit --no-multi --preview='git log --pretty=reference origin/{}'
   )"
-  repo_branch="$repo_path/$new_branch"
-  git worktree add "$repo_branch"
-  cd "$repo_branch" || exit 1
-  git branch --set-upstream-to origin/"$new_branch" "$new_branch"
+  repo_branch_path="$repo_base_path/$new_branch_name"
+  # TODO: Fix path!
+  git worktree add "$repo_branch_path"
+  cd "$repo_branch_path" || exit 1
+  git branch --set-upstream-to origin/"$new_branch_name" "$new_branch_name"
   git pull
-  git reset --hard origin/"$new_branch"
+  git reset --hard origin/"$new_branch_name"
+  open_in_tmux
 }
 
-delete_worktrees() {
+bit_delete() {
   local worktree
-
-  if [[ in_git_repo -eq $false ]]; then
-    echo "Must be in a git repository." >&2
-    exit 1
-  fi
-
   while read -r worktree; do
-    [[ -z "$worktree" ]] && { echo "No worktree selected." >&2; exit 1; }
-    [[ "$worktree" == "$gitdir" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
+    [[ -z $worktree ]] && { echo "No worktree(s) selected." >&2; exit 1; }
+    [[ "$worktree" == "$git_toplevel_path" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
     git worktree remove --force "$worktree"
     git branch --delete --force "$(basename "$worktree")"
   done <<< "$(
     git worktree list --porcelain \
       | grep --extended-regexp '^worktree' \
       | awk '{print $2}' \
-      | _fzf_b_multi --preview='git log {} --' --delimiter / --with-nth -1
+      | fzf_bit --multi --preview='git log {} --' --delimiter / --with-nth -1
   )"
 }
 
-get_repo_to_clone() {
-  if [[ -z $1 ]]; then
-    org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | _fzf_b_no_multi)"
-    local gh_repo
+bit_clone() {
+  local gh_repo repo_url tmp_repo; repo_url="$1"
+
+  if [[ -z $repo_url ]]; then
+    org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | fzf_bit --no-multi)"
     #shellcheck disable=SC2016
     gh_repo="$(
       gh api graphql --paginate --field owner="$org_name" --raw-field query='
@@ -114,43 +98,46 @@ get_repo_to_clone() {
             }
           }
         }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-        | _fzf_b_no_multi --preview='git log --pretty=reference origin/{}'
+        | fzf_bit --no-multi --preview='git log --pretty=reference origin/{}'
     )"
     [[ -z $gh_repo ]] && { echo "No valid repository url provided." >&2; exit 1; }
     repo_url="git@github.com:${gh_repo}.git"
     repo_name="$(basename "$gh_repo")"
   elif git ls-remote --quiet "$1" 2> /dev/null; then
-    repo_url="$1"
-    repo_name="$(basename "$repo_url")"
-    repo_name="${repo_name%%.*}"
+    repo_name="$(basename "${repo_url/.git/}")"
   else
     echo "No valid repository url provided." >&2
     exit 1
   fi
-}
 
-clone_repo() {
-  local tmp_repo
-  repo_path="$projects_dir/$repo_name"
-  mkdir --parents "$repo_path" || exit 1
+  repo_base_path="$projects_dir/$repo_name"
+  mkdir --parents "$repo_base_path" || exit 1
   tmp_repo="$(mktemp --directory)"
   git clone "$repo_url" "$tmp_repo/$repo_name"
   cd "$tmp_repo/$repo_name" || exit 1
-  repo_branch="$repo_path/$(git branch --show-current)"
-  mv --no-target-directory "$tmp_repo/$repo_name" "$repo_branch"
+  repo_branch_path="$repo_base_path/$(git branch --show-current)"
+  mv --no-target-directory "$tmp_repo/$repo_name" "$repo_branch_path"
+  open_in_tmux
 }
 
 open_in_tmux() {
-  case $open_in in
-    window) tmux-utils open-project -d "$repo_branch" ;;
-    pane)   tmux split-window -h -c "$repo_branch" ;;
-  esac
+  if [[ -n $TMUX ]]; then
+    case $open_in in
+      window) tmux-utils open-project -d "$repo_branch_path" ;;
+      pane)   tmux split-window -h -c "$repo_branch_path" ;;
+    esac
+  else
+    cd "$repo_branch_path" || exit 1
+  fi
 }
+
 
 main() {
   local OPTIND subcommand
-  local projects_dir open_in in_git_repo gitdir worktree org_name repo_path repo_branch
-  declare -r true=0 false=1
+  local projects_dir open_in git_toplevel_path org_name repo_name repo_base_path repo_branch_path
+
+  projects_dir="$HOME/Development/Projects"
+  open_in="window"
 
   while getopts "h" opt; do
     case "$opt" in
@@ -159,75 +146,30 @@ main() {
     esac
   done
 
-  projects_dir="$HOME/Development/Projects"
-  open_in="window"
-  gitdir="$(git rev-parse --show-toplevel 2> /dev/null)" && in_git_repo=$true || in_git_repo=$false
-
   shift $((OPTIND-1)); subcommand="$1"; shift
 
+  # TODO: `clone` command can bypass this!
+  if ! git_toplevel_path="$(git rev-parse --show-toplevel 2> /dev/null)" 2> /dev/null; then
+    echo "Must be in a Git repository" >&2
+    exit 1
+  fi
+
+  while getopts ':hn:pw' flag; do
+    case "$flag" in
+      h) usage "$subcommand"; exit 0 ;;
+      n) new_branch_name="$OPTARG" ;;
+      p) open_in="pane" ;;
+      w) open_in="window" ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; usage "$subcommand"; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; usage "$subcommand"; exit 1 ;;
+    esac
+  done
+
   case "$subcommand" in
-
-    create)
-      while getopts ':f:hn:pr:w' flag; do
-        case "$flag" in
-          f) branch_from="$OPTARG" ;;
-          h) usage "create"; exit 0 ;;
-          n) new_branch="$OPTARG" ;;
-          p) open_in="pane" ;;
-          r) repo_name="$OPTARG" ;;
-          w) open_in="window" ;;
-          :) echo "Must supply an argument to -$OPTARG." >&2; usage "create"; exit 1 ;;
-         \?) echo "Invalid option: $OPTARG" >&2; usage "create"; exit 1 ;;
-        esac
-      done
-
-      get_repo_path
-      create_worktree_new
-      open_in_tmux
-      ;;
-
-    pull)
-      while getopts ':hpr:w' flag; do
-        case "$flag" in
-          h) usage "pull"; exit 0 ;;
-          p) open_in="pane" ;;
-          r) repo_name="$OPTARG" ;;
-          w) open_in="window" ;;
-          :) echo "Must supply an argument to -$OPTARG." >&2; usage "pull"; exit 1 ;;
-         \?) echo "Invalid option: $OPTARG" >&2; usage "pull"; exit 1 ;;
-        esac
-      done
-
-      get_repo_path
-      create_worktree_from_origin
-      open_in_tmux
-      ;;
-
-    delete)
-      while getopts 'h' flag; do
-        case "$flag" in
-          h) usage "delete"; exit 0 ;;
-          *) echo "Invalid option" >&2; usage "delete"; exit 1 ;;
-        esac
-      done
-
-      delete_worktrees
-      ;;
-
-    clone)
-      while getopts 'h' flag; do
-        case "$flag" in
-          h) usage "clone"; exit 0 ;;
-          *) echo "Invalid option" >&2; usage "clone"; exit 1 ;;
-        esac
-      done
-
-      get_repo_to_clone "$1"
-      clone_repo
-      open_in="window"
-      open_in_tmux
-      ;;
-
+    branch) bit_branch     ;;
+      pull) bit_pull       ;;
+    delete) bit_delete     ;;
+     clone) bit_clone "$1" ;;
   esac
 }
 

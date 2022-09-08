@@ -1,0 +1,75 @@
+#
+# Functions for making gcloud easier to use.
+# Author: Brad Frank
+# Date: Feb 2022
+# Tested: zsh 5.8 (x86_64-apple-darwin19.6.0)
+# Requires: gcloud, fzf
+#
+
+_fzf_g() { fzf --select-1 --exit-0 --ansi -i --height=50% --reverse --inline-info --border rounded "$@"; }
+
+_gc_project() {
+    gcloud projects list --format="value(name,projectId)" | grep "${1:-}" \
+        | _fzf_g --no-multi --delimiter '\t' --with-nth 1 | awk '{print $2}'
+}
+
+_save_and_exec() {
+    local cmd; cmd="$(tr -s ' ' <<< "$1")"
+    fc -R =(echo "$cmd")
+    eval "$cmd"
+}
+
+alias gpu='gcloud config unset project'
+alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
+
+# [gkube] generate kubectl credentials
+gkube() {
+    local projects project cluster cluster_name cluster_region
+    projects="$(gcloud projects list --format="value(projectId)" | _fzf_g --multi)"
+    mv "$HOME"/.kube/config "$HOME"/.kube/config."$(date --iso-8601=seconds | tr -d ':-')"
+
+    while read -r project; do
+        while read -r cluster; do
+            [[ -z "$cluster" ]] && continue
+            cluster_name="$(awk '{print $2}' <<< "$cluster")"
+            cluster_region="$(awk '{print $1}' <<< "$cluster")"
+            _save_and_exec "gcloud --project $project container clusters get-credentials $cluster_name --region=$cluster_region"
+        done <<< "$(gcloud --project "$project" container clusters list --format="value[separator=' '](zone,name)" \
+                        | _fzf_g --multi --delimiter ' ' --with-nth 2)"
+    done <<< "$projects"
+}
+
+# [gcreds] sets GCP project credentials via environment variables
+gcreds() {
+    local project _project service_account
+    service_account="$(find "$HOME"/.infractl/ -type f -name '*.json' -exec basename {} .json \; | _fzf_g --no-multi)"
+    export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.infractl/${service_account}.json"
+}
+
+# [gtags] show tags for docker image in GCR; usage: gtags [-p|--project] [-i|--image]
+gtags() {
+    local project _project image _image
+    zparseopts -E -D -- p:=project -project:=project i:=image -image:=image
+    _project="$(_gc_project "${project[2]}")"
+    _image="$(gcloud --project "$_project" container images list 2> /dev/null | grep -E "${image[2]:-}" | _fzf_g --no-multi)"
+    _save_and_exec "gcloud container images list-tags $_image"
+}
+
+# [gssh] allows you to ssh into a GCS instance; usage: gssh [-p|--project]
+gssh() {
+    local project _project
+    zparseopts -E -D -- p:=project -project:=project
+    _project="$(_gc_project "${project[2]}")"
+    ssh "$(gcloud --project "$_project" compute instances list \
+        --format="value[separator=' '](name,networkInterfaces[0].networkIP)" \
+        | _fzf_g --no-multi --delimiter " " --with-nth 1 \
+        | awk '{print $2}'
+    )"
+}
+
+# [ghelp] show this help message
+ghelp() {
+    echo "helper aliases and functions for gcloud SDK"
+    echo
+    grep -E '^# \[.+\]' "${(%):-%x}"
+}
