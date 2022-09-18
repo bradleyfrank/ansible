@@ -3,33 +3,20 @@
 local:
   hosts:
     localhost
+  children:
+    distro_{{ ansible_distribution }}:
+      hosts:
+        localhost
   vars:
     ansible_connection: local
     email: {{ email }}
     hostname: {{ hostname }}
     work_system: {{ work_system }}
     clone_personal_repos: {{ clone_personal_repos }}
-    manage_ssh_config: {{ manage_ssh_config }}
     upload_ssh_key_github: {{ upload_ssh_key_github }}
-    {%- if 'Fedora' in ansible_distribution %}
-
-    system_type: {%- if ansible_env['XDG_SESSION_DESKTOP'] is defined %} desktop
-                 {%- else %} server
-                 {%- endif %}
-
-    desktop_env: {%- if 'gnome' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} gnome
-                 {%- elif 'kde' in ansible_env['XDG_CURRENT_DESKTOP'] | lower %} kde
-                 {%- endif %}
-    {%- elif 'MacOSX' in ansible_distribution %}
-
-    system_type: desktop
-    desktop_env: macos
     install_mas_apps: {{ install_mas_apps }}
-    homebrew_prefix: {%- if 'x86_64' in ansible_machine %} /usr/local
-                     {%- else %} /opt/homebrew
-                     {%- endif %}
-    {% endif %}
-
+    homebrew_prefix: {{ homebrew_prefix }}
+    system_type: {{ system_type }}
     ssh_keys:
   {% for item in ssh_keys['results'] %}
   {{ item['stdout'] | indent(width=2, first=True) }}

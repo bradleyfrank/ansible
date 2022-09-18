@@ -18,7 +18,7 @@
 
 - name: Install Homebrew casks for virtualization
   community.general.homebrew_cask:
-    name: "{{ homebrew['virtualization_casks'] }}"
+    name: "{{ homebrew['virt'] }}"
     accept_external_apps: true
   when: ansible_model is match('Mac')  # skips installing casks in a virtual machine
   tags: [packages, homebrew_casks]

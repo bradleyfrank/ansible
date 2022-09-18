@@ -15,15 +15,6 @@
   become: true
   tags: user
 
-- name: Add user to 'plugdev' group for open-razer
-  ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
-    groups: plugdev
-    append: true
-  become: true
-  when: "'desktop' in system_type"
-  tags: [user, groups]
-
 - name: Symlink lcddefault conf for fonts
   ansible.builtin.file:
     src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
@@ -32,41 +23,17 @@
     group: root
     state: link
   become: true
-  when: "'desktop' in system_type"
+  when: "'gui' in system_type"
   tags: fonts
 
-- name: Apply desktop settings
-  block:
-    - name: Apply Gnome settings
-      community.general.dconf:
-        key: "{{ item['key'] }}"
-        value: "{{ item['value'] }}"
-      loop: "{{ dconf | dict2items }}"
-      loop_control:
-        label: "{{ item['key'] }}"
-      when: "'gnome' in desktop_env"
-    - name: Apply KDE desktop settings
-      ansible.builtin.copy:
-        src: kde/plasma-org.kde.plasma.desktop-appletsrc
-        dest: "{{ ansible_user_dir }}/.config/"
-        mode: 0644
-        backup: true
-      when: "'kde' in desktop_env"
-    - name: Apply KDE settings
-      vars:
-        default_path: "{{ ansible_user_dir }}/.config"
-      community.general.ini_file:
-        path: "{{ item['path'] | default(default_path) }}/{{ item['file'] }}"
-        mode: 0644
-        section: "{{ item['section'] }}"
-        option: "{{ item['option'] }}"
-        value: "{{ item['value'] }}"
-        no_extra_spaces: true
-      loop: "{{ kde_ini_settings }}"
-      loop_control:
-        label: "{{ item['file'] }}"
-      when: "'kde' in desktop_env"
-  when: ansible_env['XDG_SESSION_DESKTOP'] is defined
+- name: Apply Gnome settings
+  community.general.dconf:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+  loop: "{{ dconf | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
+  when: "('gui' in system_type) and ('gnome' in ansible_env['XDG_CURRENT_DESKTOP'])"
   tags: desktop
 
 - name: Generate host keys

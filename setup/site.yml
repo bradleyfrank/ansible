@@ -27,10 +27,6 @@
       prompt: Clone all personal GitHub repos (True|False)
       private: false
       default: true
-    - name: manage_ssh_config
-      prompt: Manage SSH config (True|False)
-      private: false
-      default: true
     - name: upload_ssh_key_github
       prompt: Upload SSH key to Github (True|False)
       private: false
@@ -57,6 +53,18 @@
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
       loop: [rsa, ed25519]
       register: ssh_keys
+
+    - name: Set MacOS system information
+      ansible.builtin.set_fact:
+        desktop: gui
+        homebrew_prefix: "{{ '/usr/local' if 'x86_64' in ansible_machine else '/opt/homebrew' }}"
+      when: "'Darwin' in ansible_system"
+
+    - name: Set Linux system information
+      ansible.builtin.set_fact:
+        desktop: "{{ 'gui' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'cli' }}"
+        homebrew_prefix: /home/linuxbrew/.linuxbrew
+      when: "'Linux' in ansible_system"
 
     - name: Create inventory
       ansible.builtin.template:

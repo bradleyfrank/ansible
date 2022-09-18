@@ -78,69 +78,65 @@ rpms:
     - zsh-autosuggestions
     - zsh-syntax-highlighting
   gui:
-    common:
-      - 1password  # 1password-gui
-      - alacritty
-      - asciinema
-      - audacious
-      - calibre
-      - code  # vscode
-      - distrobox
-      - flatpak
-      - fragments
-      - ghostwriter
-      - google-chrome-stable  # google-chrome
-      - google-noto-emoji-color-fonts
-      - google-noto-sans-fonts
-      - google-noto-sans-mono-fonts
-      - google-noto-serif-fonts
-      - joplin  # taw
-      - keepassxc
-      - libreoffice
-      - mediawriter
-      - nextcloud-client
-      - nextcloud-client-nautilus
-      - openrazer-meta
-      - picard
-      - remmina
-      - seahorse
-      - spotify*  # negativo17-multimedia
-      - solaar
-      - system-config-printer
-      - timeshift
-      - torbrowser-launcher
-      - vlc
-    gnome:
-      - apostrophe
-      - celluloid
-      - cozy
-      - foliate
-      - geary
-      - gedit-plugin-codecomment
-      - gedit-plugin-colorpicker
-      - gedit-plugin-git
-      - gedit-plugin-joinlines
-      - gedit-plugin-multiedit
-      - gnome-characters
-      - gnome-connections
-      - gnome-extensions-app
-      - gnome-games
-      - gnome-shell-extension-dash-to-dock
-      - gnome-shell-extension-gpaste
-      - gnome-shell-extension-system-monitor-applet
-      - gnome-tweaks
-      - gnote
-      - gpaste*
-      - gthumb
-      - hydrapaper
-      - libgnome-keyring
-      - marker
-      - meld
-      - mpv
-      - newsflash
-      - transmission-gtk
-    kde:
-      - transmission-qt
+    - 1password  # 1password-gui
+    - alacritty
+    - asciinema
+    - audacious
+    - calibre
+    - code  # vscode
+    - distrobox
+    - flatpak
+    - fragments
+    - ghostwriter
+    - google-chrome-stable  # google-chrome
+    - google-noto-emoji-color-fonts
+    - google-noto-sans-fonts
+    - google-noto-sans-mono-fonts
+    - google-noto-serif-fonts
+    - joplin  # taw
+    - keepassxc
+    - libreoffice
+    - mediawriter
+    - nextcloud-client
+    - nextcloud-client-nautilus
+    - picard
+    - remmina
+    - seahorse
+    - spotify*  # negativo17-multimedia
+    - solaar
+    - system-config-printer
+    - timeshift
+    - torbrowser-launcher
+    - vlc
+  gnome:
+    - apostrophe
+    - celluloid
+    - cozy
+    - foliate
+    - geary
+    - gedit-plugin-codecomment
+    - gedit-plugin-colorpicker
+    - gedit-plugin-git
+    - gedit-plugin-joinlines
+    - gedit-plugin-multiedit
+    - gnome-characters
+    - gnome-connections
+    - gnome-extensions-app
+    - gnome-games
+    - gnome-shell-extension-dash-to-dock
+    - gnome-shell-extension-gpaste
+    - gnome-shell-extension-system-monitor-applet
+    - gnome-tweaks
+    - gnote
+    - gpaste*
+    - gthumb
+    - hydrapaper
+    - libgnome-keyring
+    - marker
+    - meld
+    - mpv
+    - newsflash
+    - transmission-gtk  # transmission-qt
 
 homebrew:
   taps:
@@ -272,7 +268,7 @@ homebrew:
     - visual-studio-code
     - vlc
     - zoom
-  virtualization_casks:
+  virt:
     - multipass
     - utm
     - vmware-fusion
