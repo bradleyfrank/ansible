@@ -19,9 +19,9 @@
         regexp: '^#?FallbackDNS='
         line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
       become: true
-      when: "'Fedora' in ansible_distribution"
+      when: "'Linux' in ansible_system"
 
-    - name: Include system-specific package installations
+    - name: Include distro-specific packages
       ansible.builtin.include_tasks: "tasks/packages/{{ ansible_distribution }}.yml"
       tags: always
 
@@ -34,7 +34,7 @@
       tags: [root, dotfiles]
 
     - name: Configure system settings
-      ansible.builtin.include_tasks: "tasks/system/{{ ansible_distribution }}.yml"
+      ansible.builtin.include_tasks: "tasks/system/{{ ansible_system }}.yml"
       tags: always
 
   handlers:
