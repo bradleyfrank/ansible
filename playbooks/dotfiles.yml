@@ -17,10 +17,6 @@
 
   tasks:
 
-    - name: Import os-specific variables
-      ansible.builtin.include_vars: "{{ ansible_system }}.yml"
-      tags: always
-
     - name: Ensure backup directory exists
       ansible.builtin.file:
         path: "{{ backups_dir }}"

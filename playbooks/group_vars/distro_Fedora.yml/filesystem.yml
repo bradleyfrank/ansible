@@ -10,4 +10,3 @@ pip_exec: /usr/bin/pip3
 root_home: /root
 sudoers: /etc/sudoers.d/99_ansible
 user_group: "{{ ansible_user_id }}"
-

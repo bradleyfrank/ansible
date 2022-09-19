@@ -79,3 +79,7 @@ zsh_completions:
 zsh_plugins:
   - name: zpy
     repo: https://github.com/AndydeCleyre/zpy.git
+    source: zpy.plugin.zsh
+  - name: zman
+    repo: https://github.com/mattmc3/zman
+    source: zman.zsh

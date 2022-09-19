@@ -59,7 +59,7 @@
 
 - name: Install cli packages
   ansible.builtin.dnf:
-    name: "{{ rpms['cli'] }}"
+    name: "{{ packages['cli'] }}"
     state: present
     update_cache: true
   become: true
@@ -67,7 +67,7 @@
 
 - name: Install gui packages
   ansible.builtin.dnf:
-    name: "{{ rpms['gui'] }}"
+    name: "{{ packages['gui'] }}"
     state: present
     update_cache: true
   become: true
@@ -76,7 +76,7 @@
 
 - name: Install Gnome packages
   ansible.builtin.dnf:
-    name: "{{ rpms['gui'] }}"
+    name: "{{ packages['gnome'] }}"
     state: present
     update_cache: true
   become: true
