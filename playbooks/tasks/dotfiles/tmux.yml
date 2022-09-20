@@ -36,4 +36,3 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ user_group }}"
     state: link
-

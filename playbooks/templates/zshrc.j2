@@ -250,4 +250,3 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   vscwd="$(basename $(pwd))"
   tmux -L "$vscwd" -f ~/.config/tmux/minimal.conf new-session -A -s "$vscwd"
 fi
-

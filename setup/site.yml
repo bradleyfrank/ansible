@@ -52,6 +52,7 @@
         passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
       ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
       loop: [rsa, ed25519]
+      changed_when: false
       register: ssh_keys
 
     - name: Set MacOS system information

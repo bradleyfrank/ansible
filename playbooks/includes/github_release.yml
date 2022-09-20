@@ -36,6 +36,7 @@
       register: unarchive_list_files
     - name: Install {{ name }}
       ansible.builtin.copy:
+        mode: 0755
         src: "/tmp/{{ name }}/{{ file }}"
         dest: "{{ install_path }}/{{ name }}"
       loop: "{{ unarchive_list_files['files'] }}"

@@ -36,6 +36,7 @@
   environment:
     PATH: "{{ path }}"
   ansible.builtin.shell: |
+    set -o pipefail
     case $(uname -s) in
       Darwin) brew info zsh --json | jq -r '.[].installed[0].version' ;;
       Linux)  rpm --query --queryformat '%{VERSION}' zsh ;;

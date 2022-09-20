@@ -30,5 +30,6 @@
   vars:
     stats_xml: /tmp/eu.exelban.Stats.xml
     stats_plist: "{{ ansible_user_dir }}/Library/Preferences/eu.exelban.Stats.plist"
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "plutil -convert binary1 {{ stats_xml }} -o {{ stats_plist }}"
+  changed_when: false
