@@ -1,6 +1,6 @@
 ---
 
-os_packages:
+packages:
   cli:
     - abcde
     - apt-file

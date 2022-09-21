@@ -57,13 +57,13 @@
 
     - name: Set MacOS system information
       ansible.builtin.set_fact:
-        desktop: gui
+        system_type: gui
         homebrew_prefix: "{{ '/usr/local' if 'x86_64' in ansible_machine else '/opt/homebrew' }}"
       when: "'Darwin' in ansible_system"
 
     - name: Set Linux system information
       ansible.builtin.set_fact:
-        desktop: "{{ 'gui' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'cli' }}"
+        system_type: "{{ 'gui' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'cli' }}"
         homebrew_prefix: /home/linuxbrew/.linuxbrew
       when: "'Linux' in ansible_system"
 
