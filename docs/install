@@ -23,9 +23,22 @@ bootstrap_mac() {
 
 bootstrap_linux() {
   sudo systemctl stop packagekit
-  sudo dnf clean all
-  sudo dnf makecache
-  sudo dnf install -y python3 python3-pip python3-devel python-wheel git redhat-lsb-core
+  # shellcheck disable=SC1091
+  . /etc/os-release
+
+  case "$NAME" in
+    Fedora*)
+      sudo dnf clean all
+      sudo dnf makecache
+      sudo dnf install -y python3 python3-pip python-wheel git redhat-lsb-core
+      ;;
+    Ubuntu)
+      sudo apt-get clean
+      sudo apt-get update
+      sudo apt-get install -y python3 python3-pip git lsb-release
+      ;;
+    *) exit 1 ;;
+  esac
 }
 
 while getopts ':dg:' opt; do
@@ -48,6 +61,7 @@ git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
 
+PATH="$PATH:$(python3 -m site --user-base)/bin"; export PATH
 python3 -m pip install --user virtualenv
 virtualenv venv
 #shellcheck disable=SC1091
