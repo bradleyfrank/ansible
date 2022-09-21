@@ -25,6 +25,32 @@
       ansible.builtin.include_tasks: "tasks/packages/{{ ansible_distribution }}.yml"
       tags: always
 
+    - name: Install flatpak remotes
+      community.general.flatpak_remote:
+        name: "{{ item['name'] }}"
+        state: present
+        flatpakrepo_url: "{{ item['url'] }}"
+        method: user
+      loop: "{{ flatpaks['remotes'] }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+      when:
+        - "'Linux' in ansible_system"
+        - "'gui' in system_type"
+      tags: [packages, flatpak]
+
+    - name: Install flatpak packages
+      community.general.flatpak:
+        name: "{{ item['name'] }}"
+        state: present
+        method: user
+        remote: "{{ item['remote'] | default('flathub') }}"
+      loop: "{{ flatpaks['packages'] }}"
+      when:
+        - "'Linux' in ansible_system"
+        - "'gui' in system_type"
+      tags: [packages, flatpak]
+
     - name: Install root dotfiles
       ansible.builtin.copy:
         src: root/

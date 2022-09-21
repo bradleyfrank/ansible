@@ -1,0 +1,34 @@
+---
+
+flatpaks:
+  remotes:
+    - name: flathub
+      url: https://flathub.org/repo/flathub.flatpakrepo
+    - name: elementary
+      url: https://flatpak.elementary.io/repo.flatpakrepo
+  packages:
+    - name: app.drey.Warp
+    - name: com.github.avojak.warble
+      remote: elementary
+    - name: com.github.phase1geo.annotator
+      remote: elementary
+    - name: com.github.fabiocolacio.marker
+    - name: com.github.geigi.cozy
+    - name: com.github.huluti.Curtail
+    - name: com.github.junrrein.PDFSlicer
+    - name: com.github.liferooter.textpieces
+    - name: com.github.rajsolai.textsnatcher
+    - name: com.gitlab.newsflash
+    - name: com.plexamp.Plexamp
+    - name: fr.romainvigier.MetadataCleaner
+    - name: io.bassi.Amberol
+    - name: io.github.seadve.Kooha
+    - name: io.posidon.Paper
+    - name: org.gnome.gitlab.somas.Apostrophe
+    - name: org.nickvision.tagger
+    - name: org.signal.Signal
+    - name: re.sonny.Junction
+    - name: re.sonny.Tangram
+    - name: sh.cider.Cider
+    - name: tv.plex.PlexDesktop
+    - name: us.zoom.Zoom
