@@ -99,12 +99,15 @@ alias scp='rsync -va'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias vs='code .'
 alias vwd='venvs_path'
-{% if 'Fedora' in ansible_distribution %}
+{% if 'Linux' in ansible_system %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
 alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
 alias lsports='lsof -i -P -n'
 alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
+{% endif %}
+{% if 'Ubuntu' in ansible_distribution %}
+alias bat='batcat'
 {% endif %}
 
 cdf() { cd $(dirs -lp | fzf --no-multi); }
@@ -227,6 +230,11 @@ source {{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/c
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
+{% elif 'Ubuntu' in ansible_distribution %}
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
 {% for plugin in zsh_plugins %}
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}

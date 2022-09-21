@@ -80,9 +80,7 @@
     state: present
     update_cache: true
   become: true
-  when:
-    - "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
-    - "'gui' in system_type"
+  when: "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
   tags: [packages, dnf]
 
 - name: Remove repositories added by packages

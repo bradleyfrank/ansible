@@ -71,7 +71,5 @@
     cache_valid_time: 3600
     install_recommends: true
   become: true
-  when:
-    - "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
-    - "'gui' in system_type"
+  when: "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
   tags: [packages, apt]
