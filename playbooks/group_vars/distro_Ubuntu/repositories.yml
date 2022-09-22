@@ -33,8 +33,11 @@ repos:
     system_type: [gui, cli]
 
   - name: gh-cli
-    repo: deb https://cli.github.com/packages groovy main
-    key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
+      https://cli.github.com/packages stable main"
+    key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
     system_type: [gui, cli]
 
   - name: kubernetes
