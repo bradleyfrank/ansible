@@ -4,16 +4,14 @@ packages:
   cli:
     - abcde
     - apt-file
-    - apt-transport-https  # docker, gcloud
+    - apt-transport-https  # gcloud
     - bash-completion
     - bat
     - bcal
     - borgbackup
-    - ca-certificates  # docker, gcloud
+    - ca-certificates  # gcloud
     - containerd.io
     - dictd
-    - docker-ce
-    - docker-ce-cli
     - exa
     - fdupes
     - ffmpeg
@@ -23,7 +21,7 @@ packages:
     - gh
     - ghostscript
     - glances
-    - gnupg  # docker, gcloud
+    - gnupg  # gcloud
     - gnupg2  # kubernetes
     - google-cloud-sdk
     - gron
@@ -46,6 +44,7 @@ packages:
     - p7zip-*
     - par
     - perf-tools-unstable
+    - podman
     - pwgen
     - python3
     - python3-dev

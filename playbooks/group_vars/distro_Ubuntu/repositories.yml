@@ -35,7 +35,7 @@ repos:
   - name: gh-cli
     repo: >
       deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
-      https://cli.github.com/packages stable main"
+      https://cli.github.com/packages stable main
     key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
     keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
     system_type: [gui, cli]
@@ -51,20 +51,6 @@ repos:
     id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
     system_type: [gui]
 
-  - name: exa
-    repo: ppa:spvkgn/exa
-    keyserver: keyserver.ubuntu.com
-    id: F2C37BD8BDF01321549242C9AEC82AC78B65E182
-    system_type: [gui, cli]
-
-  - name: docker
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
-      https://download.docker.com/linux/ubuntu {{ ansible_lsb['codename'] }} stable
-    key: https://download.docker.com/linux/ubuntu/gpg
-    keyring: /usr/share/keyrings/docker-archive-keyring.gpg
-    system_type: [gui, cli]
-
   - name: gcloud
     repo: >
       deb [signed-by=/usr/share/keyrings/cloud.google.gpg]
@@ -74,6 +60,9 @@ repos:
     system_type: [gui, cli]
 
   - name: hashicorp
-    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_lsb['codename'] }} main
+    repo: >
+      deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
+      https://apt.releases.hashicorp.com {{ ansible_lsb['codename'] }} main
     key: https://apt.releases.hashicorp.com/gpg
+    keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
     system_type: [gui, cli]
