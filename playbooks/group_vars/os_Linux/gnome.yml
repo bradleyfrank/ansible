@@ -1,6 +1,6 @@
 ---
 
-dconf:
+dconf_common:
   /org/gnome/calendar/follow-night-light: "false"
   /org/gnome/desktop/datetime/automatic-timezone: "true"
   /org/gnome/desktop/input-sources/current: "uint32 0"
@@ -101,16 +101,3 @@ dconf:
   /org/gnome/terminal/legacy/profiles:/default: "'57ec47b4-dd6d-4fa3-9434-f65de25dd9ed'"
   /org/gnome/terminal/legacy/profiles:/list: "['57ec47b4-dd6d-4fa3-9434-f65de25dd9ed']"
   /org/gnome/terminal/legacy/theme-variant: "'system'"
-  /org/gnome/shell/enabled-extensions: "[\
-    'GPaste@gnome-shell-extensions.gnome.org',
-    'background-logo@fedorahosted.org',
-    'system-monitor@paradoxxx.zero.gmail.com',
-    'dash-to-dock@micxgx.gmail.com']"
-  /org/gnome/shell/favorite-apps: "[\
-    'org.gnome.Terminal.desktop',
-    'firefox.desktop',
-    'org.gnome.Nautilus.desktop',
-    'code.desktop',
-    '1password.desktop',
-    'org.gnome.gedit.desktop',
-    'signal-desktop.desktop']"

@@ -30,10 +30,12 @@
   community.general.dconf:
     key: "{{ item['key'] }}"
     value: "{{ item['value'] }}"
-  loop: "{{ dconf | dict2items }}"
+  loop: "{{ dconf_common | combine(dconf_distro) | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
-  when: "('gui' in system_type) and ('gnome' in ansible_env['XDG_CURRENT_DESKTOP'])"
+  when:
+    - "'gui' in system_type"
+    - "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
   tags: desktop
 
 - name: Generate host keys
