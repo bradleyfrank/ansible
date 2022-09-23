@@ -1,0 +1,40 @@
+---
+
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  tags: always
+
+- name: Include distro-specific package tasks
+  ansible.builtin.include_tasks: "tasks/packages/distro_{{ ansible_distribution }}.yml"
+  tags: always
+
+- name: Install flatpak packages
+  block:
+    - name: Install flatpak remotes
+      community.general.flatpak_remote:
+        name: "{{ item['name'] }}"
+        state: present
+        flatpakrepo_url: "{{ item['url'] }}"
+        method: user
+      loop: "{{ flatpaks['remotes'] }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+    - name: Install flatpak packages
+      community.general.flatpak:
+        name: "{{ item['name'] }}"
+        state: present
+        method: user
+        remote: "{{ item['remote'] | default('flathub') }}"
+      loop: "{{ flatpaks['packages'] }}"
+  when: "'gui' in system_type"
+  tags: [packages, flatpak]
+
+- name: Start packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: started
+  become: true
+  tags: always
