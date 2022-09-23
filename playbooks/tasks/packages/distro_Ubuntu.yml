@@ -73,3 +73,17 @@
   become: true
   when: "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
   tags: [packages, apt]
+
+- name: Install cli Snaps
+  community.general.snap:
+    name: "{{ item['name'] }}"
+    classic: "{{ item['classic'] | default(false) }}"
+  loop: "{{ snaps['packages']['cli'] }}"
+  tags: [packages, snap]
+
+- name: Install gui Snaps
+  community.general.snap:
+    name: "{{ item['name'] }}"
+    classic: "{{ item['classic'] | default(false) }}"
+  loop: "{{ snaps['packages']['gui'] }}"
+  tags: [packages, snap]

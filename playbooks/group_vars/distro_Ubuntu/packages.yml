@@ -10,7 +10,6 @@ packages:
     - bcal
     - borgbackup
     - ca-certificates  # gcloud
-    - containerd.io
     - dictd
     - exa
     - fdupes
@@ -75,7 +74,6 @@ packages:
     - zsh-syntax-highlighting
   gui:
     - 1password
-    - alacritty
     - asciinema
     - audacious
     - calibre
@@ -126,3 +124,15 @@ packages:
     - meld
     - mpv
     - transmission-gtk
+
+snaps:
+  cli:
+    - name: google-cloud-cli
+      classic: true
+    - name: k9s
+  gui:
+    - name: 1password
+    - name: code
+      classic: true
+    - name: makemkv
+    - name: nextcloud

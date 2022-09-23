@@ -7,30 +7,30 @@ repos:
     keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
     system_type: [gui]
 
-  - name: 1Password
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
-      https://onepassword.s3.amazonaws.com/linux/debian edge main
-    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
-    keyring: /usr/share/keyrings/1password.gpg
-    system_type: [gui]
+  # - name: 1Password
+  #   repo: >
+  #     deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
+  #     https://onepassword.s3.amazonaws.com/linux/debian edge main
+  #   key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+  #   keyring: /usr/share/keyrings/1password.gpg
+  #   system_type: [gui]
 
   - name: google-chrome
     repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
     system_type: [gui]
 
-  - name: nextcloud
-    repo: ppa:nextcloud-devs/client
-    keyserver: keyserver.ubuntu.com
-    id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
-    system_type: [gui]
+  # - name: nextcloud
+  #   repo: ppa:nextcloud-devs/client
+  #   keyserver: keyserver.ubuntu.com
+  #   id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
+  #   system_type: [gui]
 
-  - name: makemkv
-    repo: ppa:heyarje/makemkv-beta
-    keyserver: keyserver.ubuntu.com
-    id: 94B56C64CA7278ECFC34E8808540356019F7E55B
-    system_type: [gui, cli]
+  # - name: makemkv
+  #   repo: ppa:heyarje/makemkv-beta
+  #   keyserver: keyserver.ubuntu.com
+  #   id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+  #   system_type: [gui, cli]
 
   - name: gh-cli
     repo: >
@@ -48,19 +48,13 @@ repos:
     keyring: /usr/share/keyrings/kubernetes-archive-keyring.gpg
     system_type: [gui, cli]
 
-  - name: alacritty
-    repo: ppa:mmstick76/alacritty
-    keyserver: keyserver.ubuntu.com
-    id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
-    system_type: [gui]
-
-  - name: gcloud
-    repo: >
-      deb [signed-by=/usr/share/keyrings/cloud.google.gpg]
-      https://packages.cloud.google.com/apt cloud-sdk main
-    key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    keyring: /usr/share/keyrings/cloud.google.gpg
-    system_type: [gui, cli]
+  # - name: gcloud
+  #   repo: >
+  #     deb [signed-by=/usr/share/keyrings/cloud.google.gpg]
+  #     https://packages.cloud.google.com/apt cloud-sdk main
+  #   key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  #   keyring: /usr/share/keyrings/cloud.google.gpg
+  #   system_type: [gui, cli]
 
   - name: hashicorp
     repo: >

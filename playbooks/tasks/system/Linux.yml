@@ -23,7 +23,9 @@
     group: root
     state: link
   become: true
-  when: "'gui' in system_type"
+  when:
+    - "'gui' in system_type"
+    - "'Fedora' in ansible_distribution"
   tags: fonts
 
 - name: Apply Gnome settings
