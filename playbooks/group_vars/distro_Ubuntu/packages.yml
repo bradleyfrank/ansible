@@ -127,12 +127,6 @@ packages:
 
 snaps:
   cli:
-    - name: google-cloud-cli
-      classic: true
     - name: k9s
   gui:
-    - name: 1password
-    - name: code
-      classic: true
-    - name: makemkv
-    - name: nextcloud
+    - name: firefox

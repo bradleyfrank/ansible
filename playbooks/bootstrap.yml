@@ -25,7 +25,7 @@
 
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.template:
-        src: gitconfig.j2
+        src: sudoers.j2
         dest: "{{ sudoers }}"
         validate: /usr/sbin/visudo -csf %s
         mode: 0644

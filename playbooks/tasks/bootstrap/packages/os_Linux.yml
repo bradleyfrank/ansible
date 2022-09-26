@@ -8,7 +8,7 @@
   tags: always
 
 - name: Include distro-specific package tasks
-  ansible.builtin.include_tasks: "tasks/packages/distro_{{ ansible_distribution }}.yml"
+  ansible.builtin.include_tasks: "tasks/bootstrap/packages/distro_{{ ansible_distribution }}.yml"
   tags: always
 
 - name: Install flatpak packages

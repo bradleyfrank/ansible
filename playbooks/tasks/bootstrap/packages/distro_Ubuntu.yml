@@ -71,7 +71,7 @@
     cache_valid_time: 3600
     install_recommends: true
   become: true
-  when: "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
+  when: gnome_destkop
   tags: [packages, apt]
 
 - name: Install cli Snaps
