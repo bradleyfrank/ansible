@@ -26,6 +26,7 @@ flatpaks:
     - name: io.posidon.Paper
     - name: org.gnome.gitlab.somas.Apostrophe
     - name: org.nickvision.tagger
+    - name: org.ppsspp.PPSSPP
     - name: org.signal.Signal
     - name: re.sonny.Junction
     - name: re.sonny.Tangram

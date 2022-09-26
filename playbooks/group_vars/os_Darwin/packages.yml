@@ -120,6 +120,7 @@ packages:
     - musicbrainz-picard
     - nextcloud
     - plexamp
+    - ppsspp
     - rectangle
     - signal
     - sony-ps-remote-play

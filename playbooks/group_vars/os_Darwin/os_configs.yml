@@ -145,6 +145,12 @@ defaults:
     type: int
     value: '43'
 
+  - name: Remove all dock icons
+    domain: com.apple.dock
+    key: persistent-apps
+    type: array
+    value: ''
+
   - name: Save screenshots to ~/Downloads
     domain: com.apple.screencapture
     key: location
