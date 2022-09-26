@@ -123,7 +123,7 @@ packages:
     - gnome-games
     - gnome-shell-extension-dash-to-dock
     - gnome-shell-extension-gpaste
-    - gnome-shell-extension-system-monitor-applet
+    - gnome-system-monitor
     - gnome-tweaks
     - gnote
     - gpaste*

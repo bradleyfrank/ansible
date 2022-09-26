@@ -4,6 +4,11 @@
   ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
   tags: always
 
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  tags: [packages, dnf, apt]
+
 - name: Create temp download directory
   ansible.builtin.file:
     path: "{{ github_release_temp_dir }}"

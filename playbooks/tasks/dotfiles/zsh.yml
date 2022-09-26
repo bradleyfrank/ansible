@@ -35,13 +35,9 @@
 - name: Get zsh version
   environment:
     PATH: "{{ path }}"
-  ansible.builtin.shell: |
-    set -o pipefail
-    case $(uname -s) in
-      Darwin) brew info zsh --json | jq -r '.[].installed[0].version' ;;
-      Linux)  rpm --query --queryformat '%{VERSION}' zsh ;;
-    esac
+  ansible.builtin.shell: brew info zsh --json | jq -r '.[].installed[0].version'
   changed_when: false
+  when: "'MacOSX' in ansible_distribution"
   register: zsh_version
 
 - name: Find Homebrew gnubin directories

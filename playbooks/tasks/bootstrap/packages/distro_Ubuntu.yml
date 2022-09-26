@@ -78,12 +78,12 @@
   community.general.snap:
     name: "{{ item['name'] }}"
     classic: "{{ item['classic'] | default(false) }}"
-  loop: "{{ snaps['packages']['cli'] }}"
+  loop: "{{ snaps['cli'] }}"
   tags: [packages, snap]
 
 - name: Install gui Snaps
   community.general.snap:
     name: "{{ item['name'] }}"
     classic: "{{ item['classic'] | default(false) }}"
-  loop: "{{ snaps['packages']['gui'] }}"
+  loop: "{{ snaps['gui'] }}"
   tags: [packages, snap]

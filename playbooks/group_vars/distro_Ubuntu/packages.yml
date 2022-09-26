@@ -100,7 +100,6 @@ packages:
     - vlc
   gnome:
     - celluloid
-    - foliate
     - geary
     - gedit-plugin-code-comment
     - gedit-plugin-color-picker
@@ -112,10 +111,10 @@ packages:
     - gnome-games-app
     - gnome-keyring
     - gnome-shell-extension-manager
-    - gnome-shell-extension-system-monitor
     - gnome-shell-extensions
     - gnome-shell-extensions-gpaste
     - gnome-sushi
+    - gnome-system-monitor
     - gnome-tweaks
     - gnote
     - gpaste*
@@ -130,3 +129,4 @@ snaps:
     - name: k9s
   gui:
     - name: firefox
+    - name: foliate

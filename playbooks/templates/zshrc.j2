@@ -54,7 +54,7 @@ export HOMEBREW_REPOSITORY={{ homebrew_prefix }}/Homebrew
 export INFOPATH={{ homebrew_prefix }}/share/info:"${INFOPATH:-}"
 export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
 {% elif 'Fedora' in ansible_distribution %}
-export HELPDIR=/usr/share/zsh/{{ zsh_version['stdout'] }}/help
+export HELPDIR=/usr/share/zsh/{{ ansible_facts.packages['zsh'][0]['version'] }}/help
 {% endif %}
 
 
