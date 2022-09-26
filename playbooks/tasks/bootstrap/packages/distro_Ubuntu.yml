@@ -37,7 +37,7 @@
 
 - name: Install cli packages
   ansible.builtin.apt:
-    name: "{{ packages['cli'] }}"
+    name: "{{ apt_packages['cli'] }}"
     state: present
     autoclean: true
     autoremove: true
@@ -50,7 +50,7 @@
 
 - name: Install gui packages
   ansible.builtin.apt:
-    name: "{{ packages['gui'] }}"
+    name: "{{ apt_packages['gui'] }}"
     state: present
     autoclean: true
     autoremove: true
@@ -63,7 +63,7 @@
 
 - name: Install Gnome packages
   ansible.builtin.apt:
-    name: "{{ packages['gnome'] }}"
+    name: "{{ apt_packages['gnome'] }}"
     state: present
     autoclean: true
     autoremove: true

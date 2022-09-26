@@ -11,6 +11,11 @@
   ansible.builtin.include_tasks: "tasks/bootstrap/packages/distro_{{ ansible_distribution }}.yml"
   tags: always
 
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  tags: [packages, dnf, apt]
+
 - name: Install flatpak packages
   block:
     - name: Install flatpak remotes
@@ -19,7 +24,7 @@
         state: present
         flatpakrepo_url: "{{ item['url'] }}"
         method: user
-      loop: "{{ flatpaks['remotes'] }}"
+      loop: "{{ flatpak_remotes }}"
       loop_control:
         label: "{{ item['name'] }}"
     - name: Install flatpak packages
@@ -28,7 +33,7 @@
         state: present
         method: user
         remote: "{{ item['remote'] | default('flathub') }}"
-      loop: "{{ flatpaks['packages'] }}"
+      loop: "{{ flatpak_packages }}"
   when: "'gui' in system_type"
   tags: [packages, flatpak]
 

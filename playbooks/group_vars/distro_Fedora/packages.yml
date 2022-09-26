@@ -1,6 +1,6 @@
 ---
 
-packages:
+dnf_packages:
   cli:
     - abcde
     - bash-completion

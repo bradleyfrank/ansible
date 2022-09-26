@@ -52,7 +52,7 @@
 
 - name: Install cli packages
   ansible.builtin.dnf:
-    name: "{{ packages['cli'] }}"
+    name: "{{ dnf_packages['cli'] }}"
     state: present
     update_cache: true
   become: true
@@ -60,7 +60,7 @@
 
 - name: Install gui packages
   ansible.builtin.dnf:
-    name: "{{ packages['gui'] }}"
+    name: "{{ dnf_packages['gui'] }}"
     state: present
     update_cache: true
   become: true
@@ -69,7 +69,7 @@
 
 - name: Install Gnome packages
   ansible.builtin.dnf:
-    name: "{{ packages['gnome'] }}"
+    name: "{{ dnf_packages['gnome'] }}"
     state: present
     update_cache: true
   become: true

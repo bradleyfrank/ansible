@@ -7,7 +7,7 @@ taps:
   - homebrew/cask-fonts
   - homebrew/core
 
-packages:
+brew_packages:
   cli:
     - asciinema
     - awscli
@@ -136,7 +136,7 @@ packages:
     - multipass
     - utm
 
-mas:
+mas_packages:
   - 407963104   # Pixelmator
   - 425424353   # Unarchiver
   - 568494494   # Pocket
