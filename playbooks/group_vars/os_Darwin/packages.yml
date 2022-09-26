@@ -6,6 +6,8 @@ taps:
   - homebrew/cask-drivers
   - homebrew/cask-fonts
   - homebrew/core
+  - fairwindsops/tap  # pluto
+  - noahgorstein/tap  # jqp
 
 brew_packages:
   cli:
@@ -48,10 +50,12 @@ brew_packages:
     - httpie
     - iftop
     - jq
+    - jqp
     - jo
     - k9s
     - keychain
     - kpcli
+    - krew
     - kubectl
     - kube-linter
     - lame
@@ -65,6 +69,7 @@ brew_packages:
     - ocrmypdf
     - p7zip
     - par
+    - pluto
     - prettyping
     - pwgen
     - qpdf

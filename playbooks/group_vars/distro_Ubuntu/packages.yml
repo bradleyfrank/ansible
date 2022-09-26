@@ -126,8 +126,7 @@ apt_packages:
     - transmission-gtk
 
 snaps:
-  cli:
-    - name: k9s
+  cli: []
   gui:
     - name: firefox
     - name: foliate

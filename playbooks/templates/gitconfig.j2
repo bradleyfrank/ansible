@@ -21,7 +21,9 @@
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
   pager = delta
+{% if 'MacOSX' in ansible_distribution %}
   fsmonitor = true
+{% endif -%}
 [delta]
   syntax-theme = Solarized (light)
   navigate = true

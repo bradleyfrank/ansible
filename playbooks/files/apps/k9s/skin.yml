@@ -1,6 +1,6 @@
 # K9s Solarized Light Skin Contributed by [@leg100](louisgarman@gmail.com)
 foreground: &foreground "#657b83"
-background: &background default
+background: &background "#fdf6e3"
 current_line: &current_line "#eee8d5"
 selection: &selection "#eee8d5"
 comment: &comment "#93a1a1"
@@ -50,7 +50,7 @@ k9s:
       modifyColor: *blue
       addColor: *green
       errorColor: *red
-      highlightcolor: *orange
+      highlightColor: *orange
       killColor: *comment
       completedColor: *comment
     title:

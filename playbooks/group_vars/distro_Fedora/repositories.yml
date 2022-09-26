@@ -7,8 +7,6 @@ copr:
     system_type: [gui, cli]
   - name: keefle/glow
     system_type: [gui, cli]
-  - name: luminoso/k9s
-    system_type: [gui, cli]
   - name: taw/joplin
     system_type: [gui]
 

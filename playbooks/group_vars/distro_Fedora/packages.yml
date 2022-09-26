@@ -34,7 +34,6 @@ dnf_packages:
     - inxi
     - jq
     - jo
-    - k9s  # luminoso
     - keychain
     - kubectl  # google-cloud-sdk
     - libmp4v2

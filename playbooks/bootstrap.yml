@@ -40,8 +40,9 @@
       become: true
       when: "'Linux' in ansible_system"
 
-    - name: Include package tasks
-      ansible.builtin.import_tasks: "tasks/bootstrap/packages.yml"
+    - name: Include os-specific package tasks
+      ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
+      tags: always
 
     - name: Install root dotfiles
       ansible.builtin.copy:

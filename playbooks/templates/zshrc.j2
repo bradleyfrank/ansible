@@ -9,6 +9,8 @@ PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-
 {% if 'arm64' in ansible_machine %}
 PATH="$PATH:{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin"
 {% endif %}
+{% elif 'Ubuntu' in ansible_distribution %}
+PATH="$PATH:/snap/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
