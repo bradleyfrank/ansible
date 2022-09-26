@@ -36,8 +36,7 @@
   loop_control:
     label: "{{ item['key'] }}"
   when:
-    - "'gui' in system_type"
-    - "'gnome' in ansible_env['XDG_CURRENT_DESKTOP']"
+    - gnome_destkop
   tags: desktop
 
 - name: Generate host keys
