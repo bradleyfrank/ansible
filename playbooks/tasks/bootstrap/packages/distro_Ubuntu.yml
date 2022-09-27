@@ -71,5 +71,5 @@
     cache_valid_time: 3600
     install_recommends: true
   become: true
-  when: gnome_destkop
+  when: gnome_desktop
   tags: [packages, apt]

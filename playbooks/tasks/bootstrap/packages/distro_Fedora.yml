@@ -73,7 +73,7 @@
     state: present
     update_cache: true
   become: true
-  when: gnome_destkop
+  when: gnome_desktop
   tags: [packages, dnf]
 
 - name: Remove repositories added by packages
