@@ -63,7 +63,7 @@
 
     - name: Set Linux system information
       ansible.builtin.set_fact:
-        system_type: "{{ 'gui' if ansible_env['XDG_SESSION_DESKTOP'] is defined else 'cli' }}"
+        system_type: "{{ 'cli' if 'tty' in ansible_env['XDG_SESSION_TYPE'] else 'gui' }}"
         homebrew_prefix: /home/linuxbrew/.linuxbrew
       when: "'Linux' in ansible_system"
 

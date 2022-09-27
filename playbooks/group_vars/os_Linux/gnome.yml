@@ -1,6 +1,6 @@
 ---
 
-xdg_current_desktop: "{{ ansible_env['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
+xdg_current_desktop: "{{ ansible_env['XDG_CURRENT_DESKTOP'] if 'gui' in system_type else 'tty' }}"
 gnome_destkop: "'True' if gnome in xdg_current_desktop else 'False'"
 
 dconf_common:
