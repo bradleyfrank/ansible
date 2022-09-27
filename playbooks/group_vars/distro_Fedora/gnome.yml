@@ -3,9 +3,7 @@
 dconf_distro:
   /org/gnome/shell/enabled-extensions: "[\
     'GPaste@gnome-shell-extensions.gnome.org',
-    'background-logo@fedorahosted.org',
-    'system-monitor@paradoxxx.zero.gmail.com',
-    'dash-to-dock@micxgx.gmail.com']"
+    'background-logo@fedorahosted.org']"
   /org/gnome/shell/favorite-apps: "[\
     'org.gnome.Terminal.desktop',
     'firefox.desktop',

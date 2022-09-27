@@ -35,7 +35,7 @@
 - name: Get zsh version
   environment:
     PATH: "{{ path }}"
-  ansible.builtin.shell: brew info zsh --json | jq -r '.[].installed[0].version'
+  ansible.builtin.shell: set -o pipefail && brew info zsh --json | jq -r '.[].installed[0].version'
   changed_when: false
   when: "'MacOSX' in ansible_distribution"
   register: zsh_version

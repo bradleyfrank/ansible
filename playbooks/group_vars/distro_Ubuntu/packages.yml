@@ -115,7 +115,6 @@ apt_packages:
     - gnome-shell-extensions
     - gnome-shell-extensions-gpaste
     - gnome-sushi
-    - gnome-system-monitor
     - gnome-tweaks
     - gnote
     - gpaste*

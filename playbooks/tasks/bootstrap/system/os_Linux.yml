@@ -15,7 +15,7 @@
   become: true
   tags: user
 
-- name: Symlink lcddefault conf for fonts
+- name: Symlink lcdfilter conf for better fonts
   ansible.builtin.file:
     src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
     dest: /etc/fonts/conf.d/11-lcdfilter-default.conf
@@ -37,6 +37,11 @@
     label: "{{ item['key'] }}"
   when:
     - gnome_destkop
+  tags: desktop
+
+- name: Set Firefox as default browser
+  ansible.builtin.command: xdg-settings set default-web-browser firefox.desktop
+  when: "'gui' in system_type"
   tags: desktop
 
 - name: Generate host keys

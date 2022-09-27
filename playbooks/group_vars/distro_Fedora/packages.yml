@@ -122,7 +122,6 @@ dnf_packages:
     - gnome-games
     - gnome-shell-extension-dash-to-dock
     - gnome-shell-extension-gpaste
-    - gnome-system-monitor
     - gnome-tweaks
     - gnote
     - gpaste*
