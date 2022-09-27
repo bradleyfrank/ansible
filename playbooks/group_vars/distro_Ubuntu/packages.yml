@@ -56,7 +56,6 @@ apt_packages:
     - ssh
     - stow
     - strace
-    - system-config-printer
     - tidy
     - tlp
     - tmux
@@ -93,6 +92,7 @@ apt_packages:
     - remmina
     - shutter
     - solaar
+    - system-config-printer
     - timeshift
     - torbrowser-launcher
     - vlc
