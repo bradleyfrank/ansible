@@ -65,7 +65,7 @@
       vars:
         slug: kubernetes-sigs/krew
         version: "{{ krew_latest_release['tag'] }}"
-        arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+        arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
         filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
       ansible.builtin.get_url:
         url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
@@ -95,7 +95,7 @@
       vars:
         slug: noahgorstein/jqp
         version: "{{ jqp_latest_release['tag'] }}"
-        filename: "jqp_{{ version | replace('v', '', 1) }}_{{ ansible_system }}_{{ ansible_architecture }}.tar.gz"
+        filename: "jqp_{{ version | replace('v', '', 1) }}_{{ ansible_system }}_{{ ansible_machine }}.tar.gz"
       ansible.builtin.get_url:
         url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
         dest: "{{ github_release_temp_dir }}/jqp.tar.gz"
@@ -126,7 +126,7 @@
       vars:
         slug: derailed/k9s
         version: "{{ k9s_latest_release['tag'] }}"
-        filename: "k9s_{{ ansible_system }}_{{ ansible_architecture }}.tar.gz"
+        filename: "k9s_{{ ansible_system }}_{{ ansible_machine }}.tar.gz"
       ansible.builtin.get_url:
         url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
         dest: "{{ github_release_temp_dir }}/k9s.tar.gz"

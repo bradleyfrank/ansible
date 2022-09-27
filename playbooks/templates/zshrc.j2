@@ -60,7 +60,9 @@ export HELPDIR=/usr/share/zsh/{{ ansible_facts.packages['zsh'][0]['version'] }}/
 {% endif %}
 
 
+{% if 'Ubuntu' not in ansible_distribution %}
 unalias run-help
+{% endif %}
 alias help='run-help'
 
 alias gcommon='cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .)'
