@@ -79,6 +79,7 @@
     name: "{{ item['name'] }}"
     classic: "{{ item['classic'] | default(false) }}"
   loop: "{{ snaps['cli'] }}"
+  become: true
   tags: [packages, snap]
 
 - name: Install gui Snaps
@@ -86,4 +87,5 @@
     name: "{{ item['name'] }}"
     classic: "{{ item['classic'] | default(false) }}"
   loop: "{{ snaps['gui'] }}"
+  become: true
   tags: [packages, snap]
