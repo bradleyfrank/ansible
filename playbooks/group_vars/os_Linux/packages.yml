@@ -15,6 +15,7 @@ flatpak_packages:
   - name: com.github.fabiocolacio.marker
   - name: com.github.geigi.cozy
   - name: com.github.huluti.Curtail
+  - name: com.github.johnfactotum.Foliate
   - name: com.github.junrrein.PDFSlicer
   - name: com.github.liferooter.textpieces
   - name: com.github.rajsolai.textsnatcher

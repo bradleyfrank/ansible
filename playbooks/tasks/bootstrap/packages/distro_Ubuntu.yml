@@ -1,12 +1,5 @@
 ---
 
-- name: Remove Firefox snap
-  community.general.snap:
-    name: firefox
-    state: absent
-  become: true
-  tags: [packages, snap]
-
 - name: Install gpg keys
   ansible.builtin.apt_key:
     url: "{{ item['key'] | default(omit) }}"

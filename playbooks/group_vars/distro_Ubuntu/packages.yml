@@ -79,7 +79,6 @@ apt_packages:
     - calibre
     - code
     - drawing
-    - firefox
     - flatpak
     - fonts-noto-color-emoji
     - ghostwriter
@@ -90,9 +89,7 @@ apt_packages:
     - makemkv-oss
     - nextcloud-client
     - nextcloud-client-nautilus
-    - openrazer-meta
     - picard
-    - python3-openrazer
     - remmina
     - shutter
     - solaar

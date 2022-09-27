@@ -109,7 +109,6 @@ dnf_packages:
     - vlc
   gnome:
     - celluloid
-    - foliate
     - geary
     - gedit-plugin-codecomment
     - gedit-plugin-colorpicker
