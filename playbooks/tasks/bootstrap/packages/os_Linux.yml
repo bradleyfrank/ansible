@@ -53,6 +53,9 @@
   tags: [packages, github_release]
 
 - name: Install Krew
+  vars:
+    arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
+    filename: "krew-{{ ansible_system | lower }}_{{ arch }}"
   block:
     - name: Get latest version of Krew
       community.general.github_release:
@@ -65,10 +68,8 @@
       vars:
         slug: kubernetes-sigs/krew
         version: "{{ krew_latest_release['tag'] }}"
-        arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
-        filename: "krew-{{ ansible_system | lower }}_{{ arch }}.tar.gz"
       ansible.builtin.get_url:
-        url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
+        url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}.tar.gz"
         dest: "{{ github_release_temp_dir }}/krew.tar.gz"
         mode: 0644
     - name: Extract Krew archive
@@ -78,7 +79,7 @@
         mode: 0755
     - name: Install Krew
       ansible.builtin.command:
-        cmd: "{{ github_release_temp_dir }}/krew install krew"
+        cmd: "{{ github_release_temp_dir }}/{{ filename }} install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
   tags: [packages, github_release]
 

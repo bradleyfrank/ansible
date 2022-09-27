@@ -17,6 +17,12 @@ repos:
     keyring: /usr/share/keyrings/1password.gpg
     system_type: [gui]
 
+  - name: firefox
+    repo: ppa:mozillateam/ppa
+    keyserver: keyserver.ubuntu.com
+    id: 0AB215679C571D1C8325275B9BDB3D89CE49EC21
+    system_type: [gui]
+
   - name: google-chrome
     repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub

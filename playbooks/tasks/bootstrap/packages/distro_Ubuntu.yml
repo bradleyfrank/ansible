@@ -1,5 +1,12 @@
 ---
 
+- name: Remove Firefox snap
+  community.general.snap:
+    name: firefox
+    state: absent
+  become: true
+  tags: [packages, snap]
+
 - name: Install gpg keys
   ansible.builtin.apt_key:
     url: "{{ item['key'] | default(omit) }}"
@@ -73,19 +80,3 @@
   become: true
   when: gnome_destkop
   tags: [packages, apt]
-
-- name: Install cli Snaps
-  community.general.snap:
-    name: "{{ item['name'] }}"
-    classic: "{{ item['classic'] | default(false) }}"
-  loop: "{{ snaps['cli'] }}"
-  become: true
-  tags: [packages, snap]
-
-- name: Install gui Snaps
-  community.general.snap:
-    name: "{{ item['name'] }}"
-    classic: "{{ item['classic'] | default(false) }}"
-  loop: "{{ snaps['gui'] }}"
-  become: true
-  tags: [packages, snap]

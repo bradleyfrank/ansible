@@ -79,6 +79,7 @@ apt_packages:
     - calibre
     - code
     - drawing
+    - firefox
     - flatpak
     - fonts-noto-color-emoji
     - ghostwriter
@@ -122,9 +123,3 @@ apt_packages:
     - meld
     - mpv
     - transmission-gtk
-
-snaps:
-  cli: []
-  gui:
-    - name: firefox
-    - name: foliate

@@ -4,11 +4,14 @@ Ansible playbook for bootstrapping MacOS & Fedora Linux workstations, and managi
 
 ## About
 
-This repository was created to handle three main personal computer setups:
+This repository was created to handle various computer setups:
 
-1. MacOS systems (Intel and ARM)
-2. Fedora Workstation edition (Gnome and KDE spins)
-3. Fedora Server edition
+1. **MacOS systems** (support for both Intel and Arm)
+2. **Linux systems**
+   1. **Fedora Workstation edition** (spins may work but are unsupported)
+   2. **Fedora Server edition**
+   3. **Ubuntu Desktop LTS** (flavors may work but are unsupported)
+   4. **Ubuntu Server LTS**
 
 All workstations are unique in a way that cannot be fully captured in configs or variables within the repository — unlike a server where you could be installing from a known pre-built image or kickstart — so the playbooks are designed with *no assumed knowledge of the system*. To address host-specific settings, certain variables are stored in the Ansible inventory.
 
