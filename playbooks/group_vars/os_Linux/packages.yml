@@ -20,11 +20,14 @@ flatpak_packages:
   - name: com.github.liferooter.textpieces
   - name: com.github.rajsolai.textsnatcher
   - name: com.gitlab.newsflash
+  - name: com.makemkv.MakeMKV
   - name: com.plexamp.Plexamp
+  - name: com.spotify.Client
   - name: fr.romainvigier.MetadataCleaner
   - name: io.bassi.Amberol
   - name: io.github.seadve.Kooha
   - name: io.posidon.Paper
+  - name: net.cozic.joplin_desktop
   - name: org.gnome.gitlab.somas.Apostrophe
   - name: org.nickvision.tagger
   - name: org.ppsspp.PPSSPP

@@ -92,7 +92,6 @@ dnf_packages:
     - google-noto-sans-fonts
     - google-noto-sans-mono-fonts
     - google-noto-serif-fonts
-    - joplin  # taw
     - keepassxc
     - libreoffice
     - mediawriter
@@ -101,7 +100,6 @@ dnf_packages:
     - picard
     - remmina
     - seahorse
-    - spotify*  # negativo17-multimedia
     - solaar
     - system-config-printer
     - timeshift

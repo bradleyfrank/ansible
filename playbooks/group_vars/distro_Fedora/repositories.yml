@@ -7,8 +7,6 @@ copr:
     system_type: [gui, cli]
   - name: keefle/glow
     system_type: [gui, cli]
-  - name: taw/joplin
-    system_type: [gui]
 
 repos:
   - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
@@ -20,7 +18,7 @@ repos:
   - name: gh-cli
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm
-    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059
     system_type: [gui, cli]
 
   - name: google-chrome
@@ -39,7 +37,7 @@ repos:
     description: negativo17 - Multimedia
     baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
     gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-    includepkgs: ['spotify*', 'makemkv*', 'ccextractor*', '*nvidia*']  # https://negativo17.org/nvidia-driver
+    includepkgs: ['ccextractor*', '*nvidia*']  # https://negativo17.org/nvidia-driver
     system_type: [gui, cli]
 
   - name: rpmfusion-free
