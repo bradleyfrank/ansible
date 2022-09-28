@@ -18,8 +18,6 @@ local:
     clone_personal_repos: {{ clone_personal_repos }}
     upload_ssh_key_github: {{ upload_ssh_key_github }}
     install_mas_apps: {{ install_mas_apps }}
-    homebrew_prefix: {{ homebrew_prefix }}
-    system_type: {{ system_type }}
     ssh_keys:
   {% for item in ssh_keys['results'] %}
   {{ item['stdout'] | indent(width=2, first=True) }}

@@ -55,18 +55,6 @@
       changed_when: false
       register: ssh_keys
 
-    - name: Set MacOS system information
-      ansible.builtin.set_fact:
-        system_type: gui
-        homebrew_prefix: "{{ '/usr/local' if 'x86_64' in ansible_machine else '/opt/homebrew' }}"
-      when: "'Darwin' in ansible_system"
-
-    - name: Set Linux system information
-      ansible.builtin.set_fact:
-        system_type: "{{ 'cli' if 'tty' in ansible_env['XDG_SESSION_TYPE'] else 'gui' }}"
-        homebrew_prefix: /home/linuxbrew/.linuxbrew
-      when: "'Linux' in ansible_system"
-
     - name: Create inventory
       ansible.builtin.template:
         src: inventory.yml.j2
