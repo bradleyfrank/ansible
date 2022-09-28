@@ -20,6 +20,7 @@ dnf_packages:
     - figlet
     - fwupd
     - fzf
+    - gcc-c++
     - gh  # gh-cli
     - ghostscript
     - git-delta

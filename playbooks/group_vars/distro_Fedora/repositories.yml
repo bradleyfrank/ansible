@@ -37,7 +37,7 @@ repos:
     description: negativo17 - Multimedia
     baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
     gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-    includepkgs: ['ccextractor*', '*nvidia*']  # https://negativo17.org/nvidia-driver
+    includepkgs: ['*nvidia*']  # https://negativo17.org/nvidia-driver
     system_type: [gui, cli]
 
   - name: rpmfusion-free
