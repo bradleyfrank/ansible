@@ -4,13 +4,16 @@ Ansible playbook for bootstrapping MacOS & Fedora Linux workstations, and managi
 
 ## About
 
-This repository was created to handle three main personal computer setups:
+This Ansible repo bootstraps and manages dotfiles for the following system types:
 
-1. MacOS systems (Intel and ARM)
-2. Fedora Workstation edition (Gnome and KDE spins)
-3. Fedora Server edition
+1. **MacOS systems** `x86_64`, `arm64`
+2. **Linux systems** `x86_64`
+   1. **Fedora Workstation edition** (spins may work but are unsupported)
+   2. **Fedora Server edition**
+   3. **Ubuntu Desktop LTS** (flavors may work but are unsupported)
+   4. **Ubuntu Server LTS**
 
-All workstations are unique in a way that cannot be fully captured in configs or variables within the repository — unlike a server where you could be installing from a known pre-built image or kickstart — so the playbooks are designed with *no assumed knowledge of the system*. To address host-specific settings, certain variables are stored in the Ansible inventory.
+Personal systems are usually unique in a way that cannot be fully captured with configs or variables in a repository — unless you are installing from a pre-built image or kickstart — so the playbooks are designed with *no assumed knowledge of the system*. To address host-specific settings, certain variables are stored in the Ansible inventory.
 
 The playbooks were designed to be run *completely local* on a freshly installed system, with the barest of prerequists. To that end, there are multiple stages of bootstrapping handled by the `install` script:
 
@@ -24,7 +27,7 @@ The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it
 
 ### Reusability
 
-The playbooks are heavily personalized and customized to my needs, but in theory they can meet the needs of others through forking this repository and modifying the `group_vars` and `vars` variables, and other various configs in `files` and `templates` to suit your needs.
+The playbooks are heavily personalized and customized to my needs, but in theory they can meet the needs of others through forking this repository and modifying the `group_vars` variables, and other various configs in `files` and `templates` to suit your needs. Importantly, a new Ansible Vault needs to be created and credentials in `group_vars/credentials` will need to be replaced.
 
 ## Installing
 
@@ -40,8 +43,8 @@ curl -sO https://bbdm.franklybrad.com/install
 
 #### On requiring admin privileges
 
-* The `install` script requires `sudo` access on Fedora Linux to install OS packages.
-* The `bootstrap` playbook requires `sudo` access on Fedora Linux *and* MacOS.
+* The `install` script requires `sudo` access on Linux to install OS packages.
+* The `bootstrap` playbook requires `sudo` access on Linux *and* MacOS.
 * The `dotfiles` playbook is designed to never require `sudo` access for either system.
 
 #### SSH keys & Github
@@ -72,10 +75,9 @@ sh install [-g git_branch] [-d]
     2. Hostname
     3. Email address (for Git commits and signing)
     4. Clone all personal GitHub repos (True|False)
-    5. Manage `~/.ssh/config` (True|False)
-    6. Upload SSH key to Github (True|False)
-    7. Install apps from Mac App Store (True|False)
-    8. Install employer settings and scripts (True|False)
+    5. Upload SSH key to Github (True|False)
+    6. Install apps from Mac App Store (True|False)
+    7. Install employer settings and scripts (True|False)
 2. Generates passphrases for SSH keys (saved under `~/.ssh/`)
 3. Creates `~/.ansible/inventory.yml` from the above answers
 

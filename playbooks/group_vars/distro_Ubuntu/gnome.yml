@@ -1,0 +1,24 @@
+---
+
+dconf_distro:
+  /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
+  /org/gnome/shell/disabled-extensions: "[\
+    'ding@rastersoft.com',
+    'window-list@gnome-shell-extensions.gcampax.github.com',
+    'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
+    'places-menu@gnome-shell-extensions.gcampax.github.com',
+    'ubuntu-dock@ubuntu.com',
+    'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
+  /org/gnome/shell/enabled-extensions: "[\
+    'GPaste@gnome-shell-extensions.gnome.org',
+    'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
+    'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
+    'ubuntu-appindicators@ubuntu.com']"
+  /org/gnome/shell/favorite-apps: "[\
+    'org.gnome.Terminal.desktop',
+    'firefox_firefox.desktop',
+    'org.gnome.Nautilus.desktop',
+    'code.desktop',
+    '1password.desktop',
+    'org.gnome.gedit.desktop',
+    'org.signal.Signal.desktop']"

@@ -17,10 +17,6 @@
 
   tasks:
 
-    - name: Import os-specific variables
-      ansible.builtin.include_vars: "{{ ansible_system }}.yml"
-      tags: always
-
     - name: Ensure backup directory exists
       ansible.builtin.file:
         path: "{{ backups_dir }}"
@@ -111,7 +107,6 @@
         src: fonts/
         dest: "{{ font_dir }}/"
         mode: 0644
-      when: "'desktop' in system_type"
       tags: fonts
 
     - name: Import GitHub tasks

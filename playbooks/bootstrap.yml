@@ -2,15 +2,30 @@
 
 - name: Bootstrap localhost
   hosts: localhost
+
+  handlers:
+
+    - name: Remove passwordless sudo permissions
+      ansible.builtin.file:
+        path: "{{ sudoers }}"
+        state: absent
+      become: true
+
+    - name: Remove GitHub downloads
+      ansible.builtin.file:
+        path: "{{ github_release_temp_dir }}"
+        state: absent
+
+    - name: Restart dock to apply changes
+      ansible.builtin.command: killall Dock
+      changed_when: false
+      become: true
+
   tasks:
 
-    - name: Import os-specific variables
-      ansible.builtin.include_vars: "{{ ansible_system }}.yml"
-      tags: always
-
     - name: Add temporary passwordless sudo permissions
-      ansible.builtin.copy:
-        content: "{{ ansible_user_id }} ALL=(ALL) NOPASSWD: ALL"
+      ansible.builtin.template:
+        src: sudoers.j2
         dest: "{{ sudoers }}"
         validate: /usr/sbin/visudo -csf %s
         mode: 0644
@@ -23,10 +38,10 @@
         regexp: '^#?FallbackDNS='
         line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
       become: true
-      when: "'Fedora' in ansible_distribution"
+      when: "'Linux' in ansible_system"
 
-    - name: Include system-specific package installations
-      ansible.builtin.include_tasks: "tasks/packages/{{ ansible_distribution }}.yml"
+    - name: Include os-specific package tasks
+      ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
       tags: always
 
     - name: Install root dotfiles
@@ -38,15 +53,9 @@
       tags: [root, dotfiles]
 
     - name: Configure system settings
-      ansible.builtin.include_tasks: "tasks/system/{{ ansible_distribution }}.yml"
+      ansible.builtin.include_tasks: "tasks/bootstrap/system/os_{{ ansible_system }}.yml"
       tags: always
-
-  handlers:
-    - name: Remove passwordless sudo permissions
-      ansible.builtin.file:
-        path: "{{ sudoers }}"
-        state: absent
-      become: true
 
 - name: Import dotfile playbook
   ansible.builtin.import_playbook: dotfiles.yml
+  tags: dotfiles

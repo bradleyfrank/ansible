@@ -23,6 +23,7 @@ let g:vim_json_conceal = 0
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+nnoremap q <c-v>
 
 set rtp+=/usr/local/bin/fzf
 set background=light
@@ -37,6 +38,7 @@ set hlsearch incsearch
 set laststatus=2
 set linebreak
 set mouse=a
+set nofixendofline  " prevents automatic newline at EOF
 set novisualbell noerrorbells
 set number
 set scrolloff=4

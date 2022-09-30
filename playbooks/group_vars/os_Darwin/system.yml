@@ -1,0 +1,6 @@
+---
+
+homebrew_prefixes:
+  x86_64: /usr/local
+  arm64: /opt/homebrew
+homebrew_prefix: "{{ homebrew_prefixes[ansible_machine] }}"

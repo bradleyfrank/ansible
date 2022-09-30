@@ -1,0 +1,14 @@
+---
+
+dconf_distro:
+  /org/gnome/shell/enabled-extensions: "[\
+    'GPaste@gnome-shell-extensions.gnome.org',
+    'background-logo@fedorahosted.org']"
+  /org/gnome/shell/favorite-apps: "[\
+    'org.gnome.Terminal.desktop',
+    'firefox.desktop',
+    'org.gnome.Nautilus.desktop',
+    'code.desktop',
+    '1password.desktop',
+    'org.gnome.gedit.desktop',
+    'signal-desktop.desktop']"

@@ -1,0 +1,53 @@
+---
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+  become: true
+  tags: hostname
+
+- name: Set user shell to zsh and add to group 'cdrom'
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
+    groups: cdrom
+    append: true
+  become: true
+  tags: user
+
+- name: Symlink lcdfilter conf for better fonts
+  ansible.builtin.file:
+    src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
+    dest: /etc/fonts/conf.d/11-lcdfilter-default.conf
+    owner: root
+    group: root
+    state: link
+  become: true
+  when:
+    - "'gui' in system_type"
+    - "'Fedora' in ansible_distribution"
+  tags: fonts
+
+- name: Apply Gnome settings
+  community.general.dconf:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+  loop: "{{ dconf_common | combine(dconf_distro) | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
+  when:
+    - gnome_desktop
+  tags: desktop
+
+- name: Generate host keys
+  ansible.builtin.command:
+    cmd: ssh-keygen -A
+    creates: /etc/ssh/ssh_host_*_key
+  become: true
+  tags: ssh
+
+- name: Secure SSH settings
+  import_role:
+    name: devsec.hardening.ssh_hardening
+  become: true
+  tags: [ssh, security]

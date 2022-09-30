@@ -1,0 +1,75 @@
+---
+
+- name: Install gpg keys
+  ansible.builtin.apt_key:
+    url: "{{ item['key'] | default(omit) }}"
+    keyring: "{{ item['keyring'] | default(omit) }}"
+    id: "{{ item['id'] | default(omit) }}"
+    keyserver: "{{ item['keyserver'] | default(omit) }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: system_type in item['system_type']
+  tags: repos
+
+- name: Install repositories
+  ansible.builtin.apt_repository:
+    repo: "{{ item['repo'] }}"
+    filename: "{{ item['name'] }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: system_type in item['system_type']
+  tags: repos
+
+- name: Update system
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
+  become: true
+
+- name: Install cli packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages['cli'] }}"
+    state: present
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
+    dpkg_options: force-overwrite  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
+  become: true
+  tags: [packages, apt]
+
+- name: Install gui packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages['gui'] }}"
+    state: present
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
+  become: true
+  when: "'gui' in system_type"
+  tags: [packages, apt]
+
+- name: Install Gnome packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages['gnome'] }}"
+    state: present
+    autoclean: true
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: true
+  become: true
+  when: gnome_desktop
+  tags: [packages, apt]

@@ -1,7 +1,0 @@
----
-
-session_name: ansible
-windows:
-  - window_name:  ansible (main)
-    start_directory: ~/Development/Projects/ansible/main
-    focus: true
