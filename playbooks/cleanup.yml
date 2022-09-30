@@ -25,7 +25,7 @@
       - .local/bin/orm
       - .local/bin/tmux-dump-pane
       - .local/bin/ytdl
-      - .local/config/tmuxp/orm.yml
+      - .local/config/tmuxp/main.yml
       - .local/opt/bbdm
       - .local/share/fubectl
       - .local/share/icons

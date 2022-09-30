@@ -17,7 +17,8 @@ usage() {
   fi
 
   if [[ "$1" =~ (pull|all) ]]; then
-    echo "bit pull [-p|-w]"
+    echo "bit pull [-n <name>] [-p|-w]"
+    echo "  -n  Name of branch to pull"
     echo "  -p  Opens the branch in a tmux pane in the same window (default)"
     echo "  -w  Opens the branch in a new tmux window"
   fi
@@ -31,15 +32,23 @@ usage() {
   fi
 }
 
+in_git_repo() {
+  if ! git_toplevel_path="$(git rev-parse --show-toplevel 2> /dev/null)" 2> /dev/null; then
+    echo "Must be in a Git repository" >&2
+    return 1
+  fi
+}
+
 fzf_bit() {
   if [[ -n $TMUX ]]; then
-    fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
+    fzf-tmux -p --select-1 --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
   else
-    fzf --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
+    fzf --select-1 --ansi -i --height=50% --reverse -0 --inline-info --border "$@"
   fi
 }
 
 bit_branch() {
+  in_git_repo || exit 1
   repo_base_path="$(dirname "$git_toplevel_path")"
   cd "$git_toplevel_path" || exit 1
   [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$git_toplevel_path")"
@@ -49,12 +58,14 @@ bit_branch() {
 }
 
 bit_pull() {
+  in_git_repo || exit 1
   repo_base_path="$(dirname "$git_toplevel_path")"
   git fetch origin --prune
   new_branch_name="$(
     git for-each-ref --format='%(refname:short)' refs/remotes \
       | cut --delimiter / --fields 2 \
       | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
+      | grep "$new_branch_name" \
       | fzf_bit --no-multi --preview='git log --pretty=reference origin/{}'
   )"
   repo_branch_path="$repo_base_path/$new_branch_name"
@@ -69,6 +80,7 @@ bit_pull() {
 
 bit_delete() {
   local worktree
+  in_git_repo || exit 1
   while read -r worktree; do
     [[ -z $worktree ]] && { echo "No worktree(s) selected." >&2; exit 1; }
     [[ "$worktree" == "$git_toplevel_path" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
@@ -148,12 +160,6 @@ main() {
 
   shift $((OPTIND-1)); subcommand="$1"; shift
 
-  # TODO: `clone` command can bypass this!
-  if ! git_toplevel_path="$(git rev-parse --show-toplevel 2> /dev/null)" 2> /dev/null; then
-    echo "Must be in a Git repository" >&2
-    exit 1
-  fi
-
   while getopts ':hn:pw' flag; do
     case "$flag" in
       h) usage "$subcommand"; exit 0 ;;
@@ -166,6 +172,7 @@ main() {
   done
 
   case "$subcommand" in
+    create) echo "Use 'branch' instead." ;;
     branch) bit_branch     ;;
       pull) bit_pull       ;;
     delete) bit_delete     ;;
