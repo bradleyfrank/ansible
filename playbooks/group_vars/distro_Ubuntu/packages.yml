@@ -20,6 +20,7 @@ apt_packages:
     - gh
     - ghostscript
     - glances
+    - glow
     - gnupg  # gcloud
     - gnupg2  # kubernetes
     - google-cloud-sdk

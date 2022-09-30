@@ -9,16 +9,16 @@ repos:
     keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
     system_type: [gui]
 
-  - name: 1Password
+  - name: 1password
     repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg]
-      https://onepassword.s3.amazonaws.com/linux/debian edge main
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
+      https://downloads.1password.com/linux/debian/amd64 stable main
     key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
-    keyring: /usr/share/keyrings/1password.gpg
+    keyring: /usr/share/keyrings/1password-archive-keyring.gpg
     system_type: [gui]
 
   - name: google-chrome
-    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
     system_type: [gui]
 
@@ -64,4 +64,10 @@ repos:
       https://apt.releases.hashicorp.com {{ ansible_lsb['codename'] }} main
     key: https://apt.releases.hashicorp.com/gpg
     keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    system_type: [gui, cli]
+
+  - name: charm
+    repo: deb [trusted=yes] https://repo.charm.sh/apt/ /
+    key: https://apt.fury.io/charmcli/gpg.key
+    keyring: /usr/share/keyrings/charmcli.gpg
     system_type: [gui, cli]

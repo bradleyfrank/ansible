@@ -39,8 +39,8 @@ set -g window-status-activity-style "fg=colour33,bg=default"
 set -g window-status-current-style "fg=colour231,bg=default"
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
-{%- if 'MacOSX' in ansible_distribution %} "pbcopy"
-{% elif 'Fedora' in ansible_distribution %} "xsel -i -p && xsel -o -p | xsel -i -b"
+{%- if 'Darwin' in ansible_system %} "pbcopy"
+{% elif 'Linux' in ansible_system %} "xsel -i -p && xsel -o -p | xsel -i -b"
 {% endif -%}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
