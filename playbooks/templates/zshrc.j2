@@ -95,7 +95,6 @@ alias glances='glances --theme-white'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
-alias mux='tmuxp load -y ansible notes main'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
@@ -117,6 +116,7 @@ cdf() { cd $(dirs -lp | fzf --no-multi); }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 dw() { diceware -d- -n"${1:-5}"; }
+mux() { tmuxp load -y "$(tmuxp ls)"; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }

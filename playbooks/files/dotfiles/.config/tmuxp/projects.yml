@@ -5,7 +5,7 @@ windows:
   - window_name:  cmarks (main)
     start_directory: ~/Development/Projects/cmarks/main
   - window_name:  home-server (main)
-    start_directory: ~/Development/Projects/home-server/main
+    start_directory: ~/Development/Projects/home-server/master
   - window_name:  cliday (gh-pages)
     start_directory: ~/Development/Projects/cliday/gh-pages
   - window_name:  ansible (main)
