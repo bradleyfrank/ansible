@@ -149,7 +149,7 @@ defaults:
     domain: com.apple.dock
     key: persistent-apps
     type: array
-    value: ''
+    value: '[]'
 
   - name: Save screenshots to ~/Downloads
     domain: com.apple.screencapture
