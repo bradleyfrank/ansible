@@ -73,7 +73,6 @@ brew_packages:
     - prettyping
     - pwgen
     - qpdf
-    - raindropio
     - rdfind
     - rename
     - ripgrep
@@ -126,6 +125,7 @@ brew_packages:
     - nextcloud
     - plexamp
     - ppsspp
+    - raindropio
     - rectangle
     - signal
     - sony-ps-remote-play
