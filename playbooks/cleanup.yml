@@ -26,6 +26,7 @@
       - .local/bin/tmux-dump-pane
       - .local/bin/ytdl
       - .local/config/tmuxp/main.yml
+      - .local/config/glow.yml
       - .local/opt/bbdm
       - .local/share/fubectl
       - .local/share/icons
