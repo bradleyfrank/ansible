@@ -69,6 +69,7 @@ brew_packages:
     - ocrmypdf
     - p7zip
     - par
+    - pdfgrep
     - pluto
     - prettyping
     - pwgen

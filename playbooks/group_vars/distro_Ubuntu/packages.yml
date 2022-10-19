@@ -44,6 +44,7 @@ apt_packages:
     - p7zip-*
     - par
     - perf-tools-unstable
+    - pdfgrep
     - podman
     - pwgen
     - python3
