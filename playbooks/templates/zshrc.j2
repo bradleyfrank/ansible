@@ -143,20 +143,38 @@ precmd() {
              reset="%f%b" \
              eol=$'\n'
 
-  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [prompt]="")
+  ps1=(
+    [cwd]="${bold}${base0}%1~${default}${nobold}"
+    [pyenv]=""
+    [git]=""
+    [prompt]=""
+  )
 
   if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
-    vcs_info; vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
-    [[ ${vcsinfo[2]} == "." ]] && vcsinfo[2]="" || vcsinfo[2]=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")"
-    ps1[git]="${green}${vcsinfo[1]}${yellow}${vcsinfo[2]}${default}"
-    [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
-    [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
-    ps1[git]=" ${bold}[${ps1[git]}]${nobold}"
+    vcs_info; vcsinfo=("${(@s| |)vcs_info_msg_0_}")
+
+    if [[ ${vcsinfo[2]} == "." ]]; then
+      ps1[cwd]="${bold}${green}${vcsinfo[1]}${default}${nobold}"
+    else
+      ps1[cwd]="${bold}${green}${vcsinfo[1]}${default}${base0}/${vcsinfo[2]}${default}${nobold}"
+    fi
+
+    # status
+    if [[ -n ${vcsinfo[3]} ]]; then
+      ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
+    fi
+
+    # action
+    if [[ -n ${vcsinfo[4]} ]]; then
+      ps1[git]+=" ${red}[${vcsinfo[4]:u}]${default}"
+    fi
+
+    ps1[git]="${bold}${ps1[git]}${nobold}"
   fi
 
-  ps1[cwd]="${bold}${base0}%1~${default}${nobold}"
-  [[ -n $SSH_CONNECTION && -z $TMUX ]] && ps1[host]="${bold}${magenta}%m${default}${nobold}"
-  [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]=" ${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold}"
+  if [[ -n $VIRTUAL_ENV ]]; then
+    ps1[pyenv]=" ${bold}${cyan}(v$(python --version | grep -Po '3(\.\d+)'))${default}${nobold}"
+  fi
 
   case "$rc" in
     0) ps1[prompt]="${bold}${green}%#${reset} "   ;;
@@ -164,7 +182,7 @@ precmd() {
     *) ps1[prompt]="${bold}${magenta}%#${reset} " ;;
   esac
 
-  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[pyenv]}${ps1[git]}${ps1[k8s]}${eol}${ps1[prompt]}"
+  PROMPT="${eol}${ps1[cwd]}${ps1[git]}${ps1[pyenv]}${eol}${ps1[prompt]}"
 }
 
 +vi-extended-git() {
