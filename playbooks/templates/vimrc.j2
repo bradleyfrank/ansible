@@ -21,9 +21,14 @@ let g:solarized_statusline = "flat"
 let g:solarized_termtrans = 1
 let g:vim_json_conceal = 0
 
+filetype plugin on
+let g:vimwiki_list = [{
+  \ 'path': '~/Development/Reference/vimwiki/',
+  \ 'syntax': 'markdown',
+  \ 'ext': '.md'}]
+
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
-nnoremap q <c-v>
 
 set rtp+=/usr/local/bin/fzf
 set background=light
@@ -31,6 +36,7 @@ set backspace=indent,eol,start
 {% if 'MacOSX' in ansible_distribution -%}
 set clipboard=unnamed
 {% endif -%}
+set conceallevel=0
 set colorcolumn=100
 set cursorline
 set foldmethod=syntax
@@ -41,6 +47,7 @@ set mouse=a
 set nofixendofline  " prevents automatic newline at EOF
 set novisualbell noerrorbells
 set number
+set pastetoggle=<C-p>
 set scrolloff=4
 set showmatch
 set term=screen-256color
@@ -62,3 +69,22 @@ augroup numbertoggle
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
+
+" automatically enable paste mode when pasting
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
+  return "\<Esc>Ptmux;" . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . "\<Esc>\\"
+endfunction
+
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
