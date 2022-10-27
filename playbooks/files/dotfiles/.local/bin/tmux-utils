@@ -65,13 +65,14 @@ open_project() {
 }
 
 dump_pane() {
-  local tmpfile log_dir filename filepath
-  log_dir="${HOME}/Development/Logs"; [[ -d "$log_dir" ]] || mkdir -p "$log_dir"
+  local tmpfile log_dir filename filepath; tmpfile="$(mktemp)"
+  log_dir="${HOME}/Development/Logs"
   filename="$(tmux display-message -p 'tmux-%Y-%b-%d-%H%M-#{session_name}-#{b:pane_current_path}.out' | tr -cd '[:print:]')"
   filepath="${log_dir}/${filename}"
   tmux capture-pane -S -
   tmux save-buffer "$tmpfile"
-  mv =(cat -s "$filepath") "$filepath"
+  cat -s "$tmpfile" > "$filepath"
+  rm "$tempfile"
   open_project -d "$log_dir" -c "vim $filepath"
 }
 
