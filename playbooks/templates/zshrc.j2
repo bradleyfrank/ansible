@@ -86,7 +86,6 @@ alias lS='exa --color always --classify --long --all --group-directories-first -
 alias ls='ls --color --classify --human-readable'
 alias lt='exa --color always --classify --long --all --sort time'
 
-alias cheat='cht.sh'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dotfiles='ansible-playbook playbooks/dotfiles.yml'
@@ -116,90 +115,11 @@ cdf() { cd $(dirs -lp | fzf --no-multi); }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 dw() { diceware -d- -n"${1:-5}"; }
-mux() { tmuxp load -y $(tmuxp ls); }
+mux() { tmuxp load -y notes project {% if work_system -%}work{%- endif %}; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
-
-
-precmd() {
-  typeset    rc=$?
-  typeset -a vcsinfo
-  typeset -A ps1
-  typeset -r base0="%F{244}" \
-             base3="%F{230}" \
-             blue="%F{33}" \
-             cyan="%F{37}" \
-             green="%F{64}" \
-             magenta="%F{125}" \
-             orange="%F{166}" \
-             red="%F{160}" \
-             violet="%F{61}" \
-             yellow="%F{136}"
-  typeset -r bold="%B" \
-             nobold="%b" \
-             default="%f" \
-             reset="%f%b" \
-             eol=$'\n'
-
-  ps1=(
-    [cwd]="${bold}${base0}%1~${default}${nobold}"
-    [pyenv]=""
-    [git]=""
-    [prompt]=""
-  )
-
-  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
-    vcs_info; vcsinfo=("${(@s| |)vcs_info_msg_0_}")
-
-    if [[ "${vcsinfo[1]}" != "${PWD##*/}" ]]; then
-      vcsinfo[1]="${PWD##*/}/${vcsinfo[1]}"
-    fi
-
-    if [[ "${vcsinfo[2]}" == "." ]]; then
-      ps1[cwd]="${bold}${green}${vcsinfo[1]}${default}${nobold}"
-    else
-      ps1[cwd]="${bold}${green}${vcsinfo[1]}${default}${base0}:${vcsinfo[2]}${default}${nobold}"
-    fi
-
-    # status
-    if [[ -n ${vcsinfo[3]} ]]; then
-      ps1[git]+=" ${yellow}[${vcsinfo[3]}]${default}"
-    fi
-
-    # action
-    if [[ -n ${vcsinfo[4]} ]]; then
-      ps1[git]+=" ${red}[${vcsinfo[4]:u}]${default}"
-    fi
-
-    ps1[git]="${bold}${ps1[git]}${nobold}"
-  fi
-
-  if [[ -n $VIRTUAL_ENV ]]; then
-    ps1[pyenv]=" ${bold}${cyan}(v$(python --version | grep -Po '3(\.\d+)'))${default}${nobold}"
-  fi
-
-  case "$rc" in
-    0) ps1[prompt]="${bold}${green}%#${reset} "   ;;
-    1) ps1[prompt]="${bold}${red}%#${reset} "     ;;
-    *) ps1[prompt]="${bold}${magenta}%#${reset} " ;;
-  esac
-
-  PROMPT="${eol}${ps1[cwd]}${ps1[git]}${ps1[pyenv]}${eol}${ps1[prompt]}"
-}
-
-+vi-extended-git() {
-  [[ -s $(git rev-parse --git-common-dir)/refs/stash ]] && hook_com[staged]+="$"
-  git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
-}
-
-zstyle ':vcs_info:git*' actionformats "%b %S %u%c %a"
-zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' formats "%b %S %u%c"
-zstyle ':vcs_info:git*' stagedstr "+"
-zstyle ':vcs_info:git*' unstagedstr "*"
-zstyle ':vcs_info:git*+set-message:*' hooks extended-git
 
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
@@ -234,8 +154,8 @@ setopt rcexpandparam           # Array expension with parameters
 
 cdpath=("$HOME/Development" "$HOME/Development/Projects")
 
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz compinit zmv zcalc vcs_info edit-command-line run-help && compinit
+autoload -Uz compinit bashcompinit zmv zcalc vcs_info edit-command-line run-help
+compinit -C && bashcompinit
 zle -N edit-command-line
 
 bindkey -e
@@ -274,6 +194,7 @@ complete -o nospace -C /usr/local/bin/vault vault
 
 {% endif %}
 eval "$(dircolors $HOME/.dir_colors)"
+eval "$(starship init zsh)"
 eval "$(keychain --eval --ignore-missing --quiet
 {%- if 'MacOSX' in ansible_distribution %} --inherit any
 {%- else %}

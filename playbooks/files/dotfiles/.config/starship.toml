@@ -1,0 +1,48 @@
+format = """
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$python\
+$line_break\
+$character
+"""
+
+command_timeout = 2000
+
+[hostname]
+style = "bold fg:125"
+
+[directory]
+fish_style_pwd_dir_length = 1
+repo_root_format = "at [$before_root_path]($style)[$repo_root]($repo_root_style)[$path]($repo_root_style) "
+repo_root_style = "bold fg:244"
+style = "bold fg:33"
+truncation_length = 0
+truncate_to_repo = true
+
+[python]
+detect_extensions = []
+detect_files = []
+format = "via [${pyenv_prefix}${version}](bold fg:37) "
+version_format = "${raw}"
+
+[git_branch]
+format = "on [${branch}(:${remote_branch})](bold fg:64)"
+
+[git_commit]
+format = "[:${hash}( ${tag})](bold fg:136)"
+tag_disabled = false
+tag_symbol = ""
+
+[git_state]
+format = "[${state}( $progress_current/$progress_total)](bold fg:136)"
+
+[git_status]
+format = "[( \\[${all_status}\\])](bold fg:136) "
+
+[character]
+success_symbol = "[%](bold fg:64)"
+error_symbol = "[%](bold fg:160)"

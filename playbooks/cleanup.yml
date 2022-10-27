@@ -7,8 +7,6 @@
     dotfiles:
       - .ansible_vault_password
       - .config/p10k.zsh
-      - .config/starship.toml
-      - .config/starship
       - .dotfiles
       - .k9s
       - .infractl/orm
@@ -31,6 +29,7 @@
       - .local/share/fubectl
       - .local/share/icons
       - .local/share/kubectl
+      - .local/share/zsh/rc.d/cmarks
       - .local/share/zsh-functions
       - .local/share/zsh-completions
       - .local/share/zshrc
@@ -41,7 +40,6 @@
         - diff-so-fancy
         - ffsend
         - hstr
-        - starship
         - tmux-mem-cpu-load
         - yq
         - youtube-dl

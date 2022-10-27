@@ -26,12 +26,6 @@
     label: "{{ item['name'] }}"
   tags: [kubectl, stern, k9s]
 
-- name: Download cmarks script
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/bradleyfrank/cmarks/main/cmarks
-    dest: "{{ zsh['rc.d'] }}/"
-    mode: 0644
-
 - name: Get zsh version
   environment:
     PATH: "{{ path }}"
@@ -72,3 +66,15 @@
     backup: true
   register: _backup_zshrc
   notify: Process backups
+
+- name: Refresh zcompdump
+  block:
+    - name: Delete zcompdump
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.zcompdump"
+        state: absent
+    - name: Generate zcompdump
+      ansible.builtin.shell: autoload -Uz compinit && compinit
+      args:
+        executable: "{{ zsh_exec }}"
+        creates: "{{ ansible_user_dir }}/.zcompdump"
