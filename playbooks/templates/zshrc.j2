@@ -115,6 +115,7 @@ cdf() { cd $(dirs -lp | fzf --no-multi); }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 dw() { diceware -d- -n"${1:-5}"; }
+jekyll() { docker run --rm --volume="$1:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
 mux() { tmuxp load -y notes project {% if work_system -%}work{%- endif %}; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
