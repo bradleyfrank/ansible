@@ -14,6 +14,7 @@
   loop:
     - tmux
     - minimal
+    - vscode
 
 - name: Check for battery
   ansible.builtin.stat:
