@@ -19,7 +19,7 @@
   ansible.builtin.stat:
     path: /sys/class/power_supply/BAT0
   register: battery
-  when: "'Fedora' in ansible_distribution"
+  when: "'Linux' in ansible_system"
 
 - name: Install tmux script
   vars:
@@ -28,3 +28,4 @@
     src: tmux-status.bash.j2
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
+

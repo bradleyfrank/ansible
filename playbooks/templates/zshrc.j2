@@ -112,10 +112,11 @@ alias bat='batcat'
 {% endif %}
 
 cdf() { cd $(dirs -lp | fzf --no-multi); }
+cmark() { fc -ln "${1:-10}" | fzf --ansi -i --exit-0 --multi >> "$HOME/Development/Logs/$(date +%Y-%b-%d).zsh_history"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
 dw() { diceware -d- -n"${1:-5}"; }
 jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
-mux() { tmuxp load -y notes project {% if work_system -%}work{%- endif %}; }
+mux() { tmuxp load -y notes projects{% if work_system %} work{% endif %}; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }

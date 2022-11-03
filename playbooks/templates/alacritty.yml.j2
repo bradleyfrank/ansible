@@ -4,10 +4,7 @@ window:
   padding:
     x: 15
     y: 15
-  decorations: {%- if 'MacOSX' in ansible_distribution %} buttonless
-               {%- elif 'Fedora' in ansible_distribution %} none
-               {%- endif %}
-
+  decorations: {% if 'Darwin' in ansible_system %}buttonless{% else %}none{% endif %}
   startup_mode: Maximized
 font:
   normal:
@@ -22,11 +19,10 @@ font:
   bold_italic:
     family: SauceCodePro Nerd Font
     style: Bold Italic
-  size: {%- if 'MacOSX' in ansible_distribution %} 13
-        {%- elif 'Fedora' in ansible_distribution %} 12
-        {%- endif %}
-
-  use_thin_strokes: true
+  size: {% if 'Darwin' in ansible_system %}13{% else %}12{% endif %}
+  {% if 'Darwin' in ansible_system %}
+  AppleFontSmooting: true
+  {% endif %}
 colors:
   primary:
     background: '0xfdf6e3'

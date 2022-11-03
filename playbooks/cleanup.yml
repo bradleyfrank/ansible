@@ -83,13 +83,13 @@
       community.general.homebrew:
         name: "{{ homebrew['formulas'] }}"
         state: absent
-      when: "'MacOSX' in ansible_distribution"
+      when: "'Darwin' in ansible_system"
 
     - name: Uninstall Homebrew casks
       community.general.homebrew_cask:
         name: "{{ homebrew['casks'] }}"
         state: absent
-      when: "'MacOSX' in ansible_distribution"
+      when: "'Darwin' in ansible_system"
 
     - name: Remove flatpak packages
       community.general.flatpak:
@@ -98,4 +98,4 @@
         method: user
         remote: "{{ item['remote'] | default('flathub') }}"
       loop: "{{ flatpaks }}"
-      when: "'Fedora' in ansible_distribution"
+      when: "'Linux' in ansible_system"

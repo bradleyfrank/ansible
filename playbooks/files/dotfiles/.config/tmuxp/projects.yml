@@ -2,8 +2,6 @@
 
 session_name: projects
 windows:
-  - window_name:  cmarks (main)
-    start_directory: ~/Development/Projects/cmarks/main
   - window_name:  home-server (main)
     start_directory: ~/Development/Projects/home-server/master
   - window_name:  cliday (gh-pages)
