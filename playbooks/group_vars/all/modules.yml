@@ -65,8 +65,6 @@ vim_extensions:
     repo: https://github.com/hashivim/vim-terraform.git
   - name: vim-solarized8
     repo: https://github.com/lifepillar/vim-solarized8.git
-  - name: vim-wiki
-    repo: https://github.com/vimwiki/vimwiki.git
 
 zsh_completions:
   - name: kubectl

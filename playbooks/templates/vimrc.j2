@@ -20,12 +20,7 @@ let g:netrw_winsize = 30
 let g:solarized_statusline = "flat"
 let g:solarized_termtrans = 1
 let g:vim_json_conceal = 0
-
-filetype plugin on
-let g:vimwiki_list = [{
-  \ 'path': '~/Development/Reference/vimwiki/',
-  \ 'syntax': 'markdown',
-  \ 'ext': '.md'}]
+let g:vim_markdown_conceal = 0
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -36,7 +31,6 @@ set backspace=indent,eol,start
 {% if 'MacOSX' in ansible_distribution -%}
 set clipboard=unnamed
 {% endif -%}
-set conceallevel=0
 set colorcolumn=100
 set cursorline
 set foldmethod=syntax
