@@ -85,6 +85,7 @@ apt_packages:
     - ghostwriter
     - google-chrome-stable
     - keepassxc
+    - kitty
     - libreoffice
     - makemkv-bin
     - makemkv-oss

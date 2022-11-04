@@ -95,6 +95,7 @@ dnf_packages:
     - google-noto-sans-mono-fonts
     - google-noto-serif-fonts
     - keepassxc
+    - kitty
     - libreoffice
     - mediawriter
     - nextcloud-client
