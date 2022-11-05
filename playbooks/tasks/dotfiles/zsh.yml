@@ -31,7 +31,7 @@
     PATH: "{{ path }}"
   ansible.builtin.shell: set -o pipefail && brew info zsh --json | jq -r '.[].installed[0].version'
   changed_when: false
-  when: "'MacOSX' in ansible_distribution"
+  when: "'Darwin' in ansible_system"
   register: zsh_version
 
 - name: Find Homebrew gnubin directories
@@ -42,7 +42,7 @@
     depth: 3
     recurse: true
     follow: true
-  when: "'MacOSX' in ansible_distribution"
+  when: "'Darwin' in ansible_system"
   register: homebrew_gnubin
 
 - name: Find Homebrew gnuman directories
@@ -53,7 +53,7 @@
     depth: 3
     recurse: true
     follow: true
-  when: "'MacOSX' in ansible_distribution"
+  when: "'Darwin' in ansible_system"
   register: homebrew_gnuman
 
 - name: Apply zshrc template

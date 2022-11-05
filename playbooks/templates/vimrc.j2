@@ -28,7 +28,7 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 set rtp+=/usr/local/bin/fzf
 set background=light
 set backspace=indent,eol,start
-{% if 'MacOSX' in ansible_distribution -%}
+{% if 'Darwin' in ansible_system -%}
 set clipboard=unnamed
 {% endif -%}
 set colorcolumn=100

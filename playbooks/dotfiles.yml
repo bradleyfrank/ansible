@@ -141,7 +141,7 @@
 
     - name: Import misc macOS app tasks
       ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
-      when: "'MacOSX' in ansible_distribution"
+      when: "'Darwin' in ansible_system"
       tags: [bbedit, stats]
 
     - name: Set app squircle icons
@@ -153,7 +153,7 @@
       failed_when:
         - "'you do not have read permissions' in cmd_fileicon_set.stderr"
         - "'file not found or not a (readable) regular file' in cmd_fileicon_set.stderr"
-      when: "'MacOSX' in ansible_distribution"
+      when: "'Darwin' in ansible_system"
       loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
       loop_control:
         label: "{{ app }}"
