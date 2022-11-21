@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+#
+# Wrapper for git-absorb.
+# Author: Brad Frank
+# Date: Nov 2022
+# Tested: GGNU bash, version 5.1.16(1)-release (x86_64-apple-darwin20.6.0)
+#
+
+default_branch="$(git remote show origin | awk '/HEAD branch/ {print $NF}')"
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+base="$(git log "$default_branch".."$current_branch" --oneline --reverse --pretty=format:"%h" | head -n1)"
+
+git absorb --base "$base"
+

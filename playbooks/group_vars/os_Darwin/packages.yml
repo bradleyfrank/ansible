@@ -36,6 +36,7 @@ brew_packages:
     - gawk
     - gh
     - ghostscript
+    - git-absorb
     - git-delta
     - glances
     - glow
