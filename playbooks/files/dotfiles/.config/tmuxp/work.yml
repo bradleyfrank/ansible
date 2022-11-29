@@ -4,10 +4,8 @@ session_name: orm
 windows:
   - window_name:  devdocs (main)
     start_directory: ~/Development/Projects/devdocs/main
-  - window_name:  orm-cli (main)
-    start_directory: ~/Development/Projects/orm-cli/main
-  - window_name:  pod (main)
-    start_directory: ~/Development/Projects/engineering-plan-of-the-day/main
+  - window_name:  pe-wiki (main)
+    start_directory: ~/Development/Projects/platform-engineering-wiki/main
   - window_name:  infractl (main)
     start_directory: ~/Development/Projects/infractl/main
     focus: true
