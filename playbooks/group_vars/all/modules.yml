@@ -85,3 +85,6 @@ zsh_plugins:
   - name: zman
     repo: https://github.com/mattmc3/zman
     source: zman.zsh
+  - name: fzf-tab
+    repo: https://github.com/Aloxaf/fzf-tab
+    source: fzf-tab.plugin.zsh
