@@ -18,6 +18,8 @@ brew cleanup
 bat cache --clear
 bat cache --build
 
-krew upgrade
+kubectl krew update
+kubectl krew upgrade
+
 gcloud components update --quiet
 
