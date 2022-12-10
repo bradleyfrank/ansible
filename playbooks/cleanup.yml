@@ -37,6 +37,7 @@
 
     homebrew:
       formulas:
+        - awscli
         - diff-so-fancy
         - ffsend
         - hstr
@@ -45,10 +46,14 @@
         - youtube-dl
         - zoxide
       casks:
+        - alacritty
         - anylist
         - firefox-developer-edition
         - firefox-nightly
+        - hiddenbar
+        - jumpcut
         - qownnotes
+        - macdown
         - openshot-video-editor
         - parallels
         - stay

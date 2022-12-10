@@ -12,7 +12,6 @@ taps:
 brew_packages:
   cli:
     - asciinema
-    - awscli
     - bandwhich
     - bash
     - bash-completion@2
@@ -109,17 +108,15 @@ brew_packages:
     - fantastical
     - firefox
     - google-cloud-sdk
-    - hiddenbar
     - iina
     - joplin
-    - jumpcut
     - keepassxc
     - keepingyouawake
     - kindle
     - kitty
     - libreoffice
     - logi-options-plus
-    - macdown
+    - maccy
     - microsoft-auto-update
     - microsoft-office
     - minecraft
