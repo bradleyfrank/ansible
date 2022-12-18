@@ -12,6 +12,7 @@ flatpak_packages:
     remote: elementary
   - name: com.github.phase1geo.annotator
     remote: elementary
+  - name: app.drey.EarTag
   - name: com.github.fabiocolacio.marker
   - name: com.github.geigi.cozy
   - name: com.github.huluti.Curtail
