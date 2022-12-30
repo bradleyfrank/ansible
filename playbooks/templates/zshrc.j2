@@ -159,7 +159,7 @@ precmd() {
   vcs_info
 
   if [[ -n $vcs_info_msg_0_ ]]; then
-    ps1[git]="$vcs_info_msg_0_"
+    ps1[git]="$(sed 's/\s*$//g' <<< $vcs_info_msg_0_)"
     ps1[cwd]=""
   else
     if [[ -n $TMUX ]]; then ps1[cwd]="%1~" else ps1[cwd]="%~"; fi
@@ -167,7 +167,7 @@ precmd() {
   fi
 
   if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
-    ps1[host]="host ${bold}[${magenta}%m${reset}"
+    ps1[host]="host ${bold}[${magenta}%m${reset} "
   fi
 
   if [[ -n $VIRTUAL_ENV ]]; then
