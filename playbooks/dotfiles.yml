@@ -124,21 +124,6 @@
 #  gui apps configuration
 # ----------------------------------------------------------------------------
 
-    - name: Ensure alacritty config directory exists
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.config/alacritty"
-        state: directory
-        mode: 0755
-      tags: alacritty
-
-    - name: Apply Alacritty template
-      ansible.builtin.template:
-        src: alacritty.yml.j2
-        dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.yml"
-        mode: 0644
-        backup: true
-      tags: alacritty
-
     - name: Import misc macOS app tasks
       ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
       when: "'Darwin' in ansible_system"

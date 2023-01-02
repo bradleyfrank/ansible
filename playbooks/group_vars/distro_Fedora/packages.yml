@@ -80,7 +80,6 @@ dnf_packages:
     - zsh-syntax-highlighting
   gui:
     - 1password  # 1password-gui
-    - alacritty
     - asciinema
     - audacious
     - calibre
