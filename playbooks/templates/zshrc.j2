@@ -169,9 +169,9 @@ precmd() {
     ps1[git]="${vcs_info_msg_0_/% /}"  # strip trailing space
     ps1[cwd]=""
   elif [[ -n $TMUX ]]; then
-    ps1[cwd]="at ${bold}${blue}%1~${reset} "
+    ps1[cwd]="at ${bold}${blue}%1~${reset}"
   else
-    ps1[cwd]="at ${bold}${blue}%~${reset} "
+    ps1[cwd]="at ${bold}${blue}%~${reset}"
   fi
 
   if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
