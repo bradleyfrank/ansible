@@ -72,7 +72,7 @@ dump_pane() {
   tmux capture-pane -S -
   tmux save-buffer "$tmpfile"
   cat -s "$tmpfile" > "$filepath"
-  rm "$tempfile"
+  rm "$tmpfile"
   open_project -d "$log_dir" -c "vim $filepath"
 }
 
