@@ -135,6 +135,7 @@ brew_packages:
     - tor-browser
     - visual-studio-code
     - vlc
+    - waterfox
     - zoom
   virt:
     - multipass
