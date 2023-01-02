@@ -146,9 +146,11 @@ precmd() {
     hook_com[base-name]="at ${bold}${blue}${hook_com[base-name]}${reset}"
     hook_com[subdir]="${bold}${base0}/${hook_com[subdir]}${reset}"
     hook_com[branch]="on ${bold}${green}${hook_com[branch]}${reset}"
-    [[ -n ${hook_com[staged]} ]] && hook_com[staged]="${bold}${yellow}+${reset}"
-    [[ -n ${hook_com[unstaged]} ]] && hook_com[unstaged]="${bold}${yellow}!${reset}"
     [[ -n ${hook_com[action]} ]] && hook_com[action]="doing ${bold}${red}${hook_com[action]:u}${reset}"
+    [[ -n ${hook_com[staged]} ]] && hook_com[staged]="+"
+    [[ -s $(git rev-parse --git-common-dir)/refs/stash ]] && hook_com[staged]+="$"
+    [[ -n ${hook_com[staged]} ]] && hook_com[staged]="${bold}${yellow}${hook_com[staged]}${reset}"
+    [[ -n ${hook_com[unstaged]} ]] && hook_com[unstaged]="${bold}${yellow}!${reset}"
   }
 
   zstyle ':vcs_info:git*' check-for-changes true
@@ -159,11 +161,12 @@ precmd() {
   vcs_info
 
   if [[ -n $vcs_info_msg_0_ ]]; then
-    ps1[git]="$(sed 's/\s*$//g' <<< $vcs_info_msg_0_)"
+    ps1[git]="${vcs_info_msg_0_/% /}"  # strip trailing space
     ps1[cwd]=""
+  elif [[ -n $TMUX ]]; then
+    ps1[cwd]="at ${bold}${blue}%1~${reset} "
   else
-    if [[ -n $TMUX ]]; then ps1[cwd]="%1~" else ps1[cwd]="%~"; fi
-    ps1[cwd]="at ${bold}${blue}${ps1[cwd]}${reset} "
+    ps1[cwd]="at ${bold}${blue}%~${reset} "
   fi
 
   if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
@@ -215,8 +218,6 @@ setopt nocaseglob              # Case insensitive globbing
 setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt pushd_ignore_dups       # Ignore duplices in the directory stack
 setopt rcexpandparam           # Array expension with parameters
-
-cdpath=("$HOME/Development" "$HOME/Development/Projects")
 
 autoload -Uz compinit bashcompinit zmv zcalc vcs_info edit-command-line run-help
 compinit -C && bashcompinit
