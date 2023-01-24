@@ -43,7 +43,7 @@ export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
 export CHTSH_QUERY_OPTIONS="style=vs"
-export FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi --info inline"
+export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:240:bold,bg+:254,hl:166,hl+:166:bold --reverse --height=50% --multi --info inline"
 export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=14"
 {% if 'MacOSX' in ansible_distribution %}
@@ -51,6 +51,11 @@ export CLICOLOR=1
 export CLOUDSDK_PYTHON=/usr/bin/python3
 export HELPDIR={{ homebrew_prefix }}/Cellar/zsh/{{ zsh_version['stdout'] }}/share/zsh/help
 export HOMEBREW_CELLAR={{ homebrew_prefix }}/Cellar
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_EMOJI=1
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_INSTALL_UPGRADE=1
 export HOMEBREW_PREFIX={{ homebrew_prefix }}
 export HOMEBREW_REPOSITORY={{ homebrew_prefix }}/Homebrew
 export INFOPATH={{ homebrew_prefix }}/share/info:"${INFOPATH:-}"
@@ -86,7 +91,6 @@ alias lS='exa --color always --classify --long --all --group-directories-first -
 alias ls='ls --color --classify --human-readable'
 alias lt='exa --color always --classify --long --all --sort time'
 
-alias cheat='cht.sh'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dotfiles='ansible-playbook playbooks/dotfiles.yml'
@@ -95,6 +99,7 @@ alias glances='glances --theme-white'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
+alias mux='tmuxp load -y notes projects{% if work_system %} work{% endif %}'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
@@ -113,22 +118,21 @@ alias bat='batcat'
 {% endif %}
 
 cdf() { cd $(dirs -lp | fzf --no-multi); }
+cmark() { fc -ln "${1:-10}" | fzf --ansi -i --exit-0 --multi >> "$HOME/Development/Logs/$(date +%Y-%b-%d).zsh_history"; }
 code-remote() { code --remote=ssh-remote+"$1" /home/{{ ansible_user_id }}; }
-dtags() { http https://registry.hub.docker.com/v1/repositories/"$1"/tags | jq -r '.[]|.name'; }
 dw() { diceware -d- -n"${1:-5}"; }
-mux() { tmuxp load -y $(tmuxp ls); }
+jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
 show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
+tux() { n="$(diceware -d- -n2)"; tmux -L "${1:-$n}" -f ~/.config/tmux/minimal.conf new-session -A -s "${1:-$n}"; }
 
 
 precmd() {
-  typeset    rc=$?
-  typeset -a vcsinfo
+  typeset    _rc=$? _prompt_color
   typeset -A ps1
   typeset -r base0="%F{244}" \
-             base3="%F{230}" \
              blue="%F{33}" \
              cyan="%F{37}" \
              green="%F{64}" \
@@ -138,48 +142,61 @@ precmd() {
              violet="%F{61}" \
              yellow="%F{136}"
   typeset -r bold="%B" \
-             nobold="%b" \
-             default="%f" \
-             reset="%f%b" \
+             reset="%b%f" \
              eol=$'\n'
 
-  ps1=([host]="" [cwd]="" [k8s]="" [pyenv]="" [git]="" [prompt]="")
+  ps1=([host]="" [cwd]="" [pyenv]="" [git]="" [prompt]="")
 
-  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
-    vcs_info; vcsinfo=("${(@s| |)vcs_info_msg_0_}")  # [1] branch [2] subdirectory [3] status [4] action
-    [[ ${vcsinfo[2]} == "." ]] && vcsinfo[2]="" || vcsinfo[2]=":$(awk -F '/' '{print NF-1}' <<< "/${vcsinfo[2]}")"
-    ps1[git]="${green}${vcsinfo[1]}${yellow}${vcsinfo[2]}${default}"
-    [[ -n ${vcsinfo[3]} ]] && ps1[git]+=" ${orange}${vcsinfo[3]}${default}"
-    [[ -n ${vcsinfo[4]} ]] && ps1[git]+=" ${red}${vcsinfo[4]}${default}"
-    ps1[git]=" ${bold}[${ps1[git]}]${nobold}"
+  +vi-format() {
+    hook_com[base-name]="at ${bold}${blue}${hook_com[base-name]}${reset}"
+    hook_com[subdir]="${bold}${base0}/${hook_com[subdir]}${reset}"
+    hook_com[branch]="on ${bold}${green}${hook_com[branch]}${reset}"
+    [[ -n ${hook_com[action]} ]] && hook_com[action]="doing ${bold}${red}${hook_com[action]:u}${reset}"
+    [[ -n ${hook_com[staged]} ]] && hook_com[staged]="+"
+    [[ -s $(git rev-parse --git-common-dir)/refs/stash ]] && hook_com[staged]+="$"
+    [[ -n ${hook_com[staged]} ]] && hook_com[staged]="${bold}${yellow}${hook_com[staged]}${reset}"
+    [[ -n ${hook_com[unstaged]} ]] && hook_com[unstaged]="${bold}${yellow}!${reset}"
+  }
+
+  zstyle ':vcs_info:git*' check-for-changes true
+  zstyle ':vcs_info:git*' actionformats '%r%S %b %u%c %a'
+  zstyle ':vcs_info:git*' formats '%r%S %b %u%c'
+  zstyle ':vcs_info:git*+set-message:*' hooks format
+
+  vcs_info
+
+  if [[ -n $vcs_info_msg_0_ ]]; then
+    ps1[git]="${vcs_info_msg_0_/% /}"  # strip trailing space
+    ps1[cwd]=""
+  elif [[ -n $TMUX ]]; then
+    ps1[cwd]="at ${bold}${blue}%1~${reset}"
+  else
+    ps1[cwd]="at ${bold}${blue}%~${reset}"
   fi
 
-  ps1[cwd]="${bold}${base0}%1~${default}${nobold}"
-  [[ -n $SSH_CONNECTION && -z $TMUX ]] && ps1[host]="${bold}${magenta}%m${default}${nobold}"
-  [[ -n $VIRTUAL_ENV ]] && ps1[pyenv]=" ${bold}(${cyan}v$(python --version | grep -Po '3(\.\d+)')${default})${nobold}"
+  if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
+    ps1[host]="host ${bold}[${magenta}%m${reset} "
+  fi
 
-  case "$rc" in
-    0) ps1[prompt]="${bold}${green}%#${reset} "   ;;
-    1) ps1[prompt]="${bold}${red}%#${reset} "     ;;
-    *) ps1[prompt]="${bold}${magenta}%#${reset} " ;;
+  if [[ -n $VIRTUAL_ENV ]]; then
+    ps1[pyenv]=" via ${bold}${cyan}$(python --version | grep -Po '\d+\.\d+')${reset}"
+  fi
+
+  case "$_rc" in
+    0) _prompt_color="${green}"   ;;
+    1) _prompt_color="${red}"     ;;
+    *) _prompt_color="${magenta}" ;;
   esac
 
-  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[pyenv]}${ps1[git]}${ps1[k8s]}${eol}${ps1[prompt]}"
+  ps1[prompt]="${bold}${_prompt_color}%#${reset} "
+
+  PROMPT="${eol}${ps1[host]}${ps1[cwd]}${ps1[git]}${ps1[pyenv]}${eol}${ps1[prompt]}"
 }
 
-+vi-extended-git() {
-  [[ -s $(git rev-parse --git-common-dir)/refs/stash ]] && hook_com[staged]+="$"
-  git status --porcelain | grep -q "^?? " 2> /dev/null && hook_com[staged]+="?"
-}
 
-zstyle ':vcs_info:git*' actionformats "%b %S %u%c %a"
-zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' formats "%b %S %u%c"
-zstyle ':vcs_info:git*' stagedstr "+"
-zstyle ':vcs_info:git*' unstagedstr "*"
-zstyle ':vcs_info:git*+set-message:*' hooks extended-git
-
-
+zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa --color always --classify -1 $realpath'
+zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
 zstyle ':completion:*' menu select                 # Use menu selection for completion
@@ -210,10 +227,8 @@ setopt numericglobsort         # Sort filenames numerically when it makes sense
 setopt pushd_ignore_dups       # Ignore duplices in the directory stack
 setopt rcexpandparam           # Array expension with parameters
 
-cdpath=("$HOME/Development" "$HOME/Development/Projects")
-
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz compinit zmv zcalc vcs_info edit-command-line run-help && compinit
+autoload -Uz compinit bashcompinit zmv zcalc vcs_info edit-command-line run-help
+compinit -C && bashcompinit
 zle -N edit-command-line
 
 bindkey -e
@@ -259,5 +274,5 @@ eval "$(keychain --eval --ignore-missing --quiet
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   vscwd="$(basename $(pwd))"
-  tmux -L "$vscwd" -f ~/.config/tmux/minimal.conf new-session -A -s "$vscwd"
+  tmux -L "$vscwd" -f ~/.config/tmux/vscode.conf new-session -A -s "$vscwd"
 fi

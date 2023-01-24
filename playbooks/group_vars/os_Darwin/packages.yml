@@ -12,7 +12,6 @@ taps:
 brew_packages:
   cli:
     - asciinema
-    - awscli
     - bandwhich
     - bash
     - bash-completion@2
@@ -36,6 +35,7 @@ brew_packages:
     - gawk
     - gh
     - ghostscript
+    - git-absorb
     - git-delta
     - glances
     - glow
@@ -69,6 +69,7 @@ brew_packages:
     - ocrmypdf
     - p7zip
     - par
+    - pdfgrep
     - pluto
     - prettyping
     - pwgen
@@ -98,7 +99,6 @@ brew_packages:
   gui:
     - 1password
     - 1password-cli
-    - alacritty
     - appcleaner
     - balenaetcher
     - bbedit
@@ -108,16 +108,15 @@ brew_packages:
     - fantastical
     - firefox
     - google-cloud-sdk
-    - hiddenbar
     - iina
     - joplin
-    - jumpcut
     - keepassxc
     - keepingyouawake
     - kindle
+    - kitty
     - libreoffice
     - logi-options-plus
-    - macdown
+    - maccy
     - microsoft-auto-update
     - microsoft-office
     - minecraft
@@ -136,6 +135,7 @@ brew_packages:
     - tor-browser
     - visual-studio-code
     - vlc
+    - waterfox
     - zoom
   virt:
     - multipass

@@ -21,7 +21,7 @@
   excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
   pager = delta
-{% if 'MacOSX' in ansible_distribution %}
+{% if 'Darwin' in ansible_system %}
   fsmonitor = true
 {% endif -%}
 [delta]
@@ -52,3 +52,5 @@
   format = ssh
 [gpg "ssh"]
   allowedSignersFile = {{ git_allowed_signers_file }}
+[commit]
+  gpgsign = true

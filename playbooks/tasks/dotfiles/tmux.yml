@@ -14,12 +14,13 @@
   loop:
     - tmux
     - minimal
+    - vscode
 
 - name: Check for battery
   ansible.builtin.stat:
     path: /sys/class/power_supply/BAT0
   register: battery
-  when: "'Fedora' in ansible_distribution"
+  when: "'Linux' in ansible_system"
 
 - name: Install tmux script
   vars:
@@ -29,8 +30,3 @@
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
 
-- name: Remove work-related tmuxp session
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.config/tmuxp/work.yml"
-    state: absent
-  when: not work_system

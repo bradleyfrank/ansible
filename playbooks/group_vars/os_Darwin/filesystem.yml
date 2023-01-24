@@ -10,3 +10,4 @@ pip_exec: "{{ homebrew_prefix }}/bin/pip3.{{ ansible_python['version']['minor'] 
 root_home: /var/root
 sudoers: /private/etc/sudoers.d/99_ansible
 user_group: staff
+zsh_exec: "{{ homebrew_prefix }}/bin/zsh"

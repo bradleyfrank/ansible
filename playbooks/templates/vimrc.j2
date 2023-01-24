@@ -20,15 +20,15 @@ let g:netrw_winsize = 30
 let g:solarized_statusline = "flat"
 let g:solarized_termtrans = 1
 let g:vim_json_conceal = 0
+let g:vim_markdown_conceal = 0
 
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
-nnoremap q <c-v>
 
 set rtp+=/usr/local/bin/fzf
 set background=light
 set backspace=indent,eol,start
-{% if 'MacOSX' in ansible_distribution -%}
+{% if 'Darwin' in ansible_system -%}
 set clipboard=unnamed
 {% endif -%}
 set colorcolumn=100
@@ -41,6 +41,7 @@ set mouse=a
 set nofixendofline  " prevents automatic newline at EOF
 set novisualbell noerrorbells
 set number
+set pastetoggle=<C-p>
 set scrolloff=4
 set showmatch
 set term=screen-256color

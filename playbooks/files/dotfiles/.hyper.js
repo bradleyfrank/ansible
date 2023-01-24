@@ -1,7 +1,7 @@
 module.exports = {
   config: {
     updateChannel: "stable",
-    fontSize: "14",
+    fontSize: "13",
     fontFamily: "SauceCodeProNerdFontComplete-Regular",
     fontWeight: "normal",
     fontWeightBold: "bold",

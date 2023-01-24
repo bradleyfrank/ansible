@@ -52,6 +52,7 @@ dnf_packages:
     - p7zip-plugins
     - par
     - perf
+    - pdfgrep
     - podman
     - pwgen
     - python3
@@ -79,7 +80,6 @@ dnf_packages:
     - zsh-syntax-highlighting
   gui:
     - 1password  # 1password-gui
-    - alacritty
     - asciinema
     - audacious
     - calibre
@@ -94,6 +94,7 @@ dnf_packages:
     - google-noto-sans-mono-fonts
     - google-noto-serif-fonts
     - keepassxc
+    - kitty
     - libreoffice
     - mediawriter
     - nextcloud-client

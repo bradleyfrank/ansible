@@ -12,11 +12,14 @@ xcode-select --version &> /dev/null || xcode-select --install
 brew update
 brew upgrade
 brew leaves --installed-as-dependency | xargs | xargs --no-run-if-empty brew uninstall
+brew autoremove
 brew cleanup
-
-krew upgrade
 
 bat cache --clear
 bat cache --build
 
+kubectl krew update
+kubectl krew upgrade
+
 gcloud components update --quiet
+

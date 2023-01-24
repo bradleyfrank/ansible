@@ -44,6 +44,7 @@ apt_packages:
     - p7zip-*
     - par
     - perf-tools-unstable
+    - pdfgrep
     - podman
     - pwgen
     - python3
@@ -84,6 +85,7 @@ apt_packages:
     - ghostwriter
     - google-chrome-stable
     - keepassxc
+    - kitty
     - libreoffice
     - makemkv-bin
     - makemkv-oss

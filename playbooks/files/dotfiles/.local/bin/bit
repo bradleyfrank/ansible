@@ -63,7 +63,7 @@ bit_pull() {
   git fetch origin --prune
   new_branch_name="$(
     git for-each-ref --format='%(refname:short)' refs/remotes \
-      | cut --delimiter / --fields 2 \
+      | cut --delimiter / --fields 2- \
       | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
       | grep "$new_branch_name" \
       | fzf_bit --no-multi --preview='git log --pretty=reference origin/{}'
