@@ -17,6 +17,8 @@
   tags: [packages, dnf, apt]
 
 - name: Install flatpak packages
+  when: "'gui' in system_type"
+  tags: [packages, flatpak]
   block:
     - name: Install flatpak remotes
       community.general.flatpak_remote:
@@ -34,8 +36,6 @@
         method: user
         remote: "{{ item['remote'] | default('flathub') }}"
       loop: "{{ flatpak_packages }}"
-  when: "'gui' in system_type"
-  tags: [packages, flatpak]
 
 - name: Start packagekit
   ansible.builtin.systemd:
@@ -56,6 +56,7 @@
   vars:
     arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
     filename: "krew-{{ ansible_system | lower }}_{{ arch }}"
+  tags: [packages, github_release]
   block:
     - name: Get latest version of Krew
       community.general.github_release:
@@ -81,9 +82,9 @@
       ansible.builtin.command:
         cmd: "{{ github_release_temp_dir }}/{{ filename }} install krew"
         creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
-  tags: [packages, github_release]
 
 - name: Install jqp
+  tags: [packages, github_release]
   block:
     - name: Get latest version of jqp
       community.general.github_release:
@@ -112,9 +113,9 @@
         dest: "{{ ansible_user_dir }}/.local/bin/jqp"
         mode: 0755
         remote_src: true
-  tags: [packages, github_release]
 
 - name: Install K9s
+  tags: [packages, github_release]
   block:
     - name: Get latest version of K9s
       community.general.github_release:
@@ -143,4 +144,3 @@
         dest: "{{ ansible_user_dir }}/.local/bin/k9s"
         mode: 0755
         remote_src: true
-  tags: [packages, github_release]

@@ -38,7 +38,7 @@ export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
 export LESS_TERMCAP_me=$'\E[0m'         # "
 export LESS_TERMCAP_se=$'\E[0m'         # "
-export LESS_TERMCAP_so=$'\E[01;47;34m'  # "
+export LESS_TERMCAP_so=$'\E[01;104;97m' # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
@@ -99,7 +99,7 @@ alias glances='glances --theme-white'
 alias isodate='date --iso-8601=seconds'
 alias mkpasswd='pwgen 16 1 -ABcny1'
 alias mp='multipass'
-alias mux='tmuxp load -y notes projects{% if work_system %} work{% endif %}'
+alias mux='tmuxp load -y projects{% if work_system %} work{% endif %}'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'

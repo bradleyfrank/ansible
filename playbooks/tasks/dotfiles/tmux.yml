@@ -29,4 +29,3 @@
     src: tmux-status.bash.j2
     dest: "{{ ansible_user_dir }}/.local/bin/tmux-status"
     mode: 0755
-

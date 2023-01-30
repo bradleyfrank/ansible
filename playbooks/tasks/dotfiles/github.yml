@@ -16,7 +16,9 @@
     - upload_ssh_key_github
   tags: github
 
-- name: Clone repositories
+- name: Clone all personal repositories
+  when: clone_personal_repos
+  tags: github_repos
   block:
     - name: Query GitHub API for my repositories
       ansible.builtin.uri:
@@ -24,6 +26,7 @@
         headers:
           Authorization: "token {{ github['personal_token'] }}"
       register: github_repos
+
     - name: Create Git project directories
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
@@ -32,6 +35,7 @@
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
+
     - name: Clone my GitHub repositories
       vars:
         base_url: "https://{{ github['personal_token'] }}@github.com"
@@ -44,6 +48,7 @@
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
+
     - name: Update remote origin to SSH url
       community.general.git_config:
         repo: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
@@ -53,16 +58,39 @@
       loop: "{{ github_repos['json']['items'] }}"
       loop_control:
         label: "{{ item['name'] }}"
-  when: clone_personal_repos
-  tags: github_repos
 
-- name: Clone reference Git repositories
-  ansible.builtin.git:
-    repo: "{{ item['https_url'] }}"
-    dest: "{{ ansible_user_dir }}/Development/Reference/{{ item['name'] }}"
-    depth: '1'
-    version: "{{ item['version'] | default('master') }}"
+- name: Only clone notes repository
+  when: not clone_personal_repos
+  tags: [github_repos, notes]
+  block:
+    - name: Clone notes repo
+      vars:
+        base_url: "https://{{ github['personal_token'] }}@github.com"
+      ansible.builtin.git:
+        repo: "{{ base_url }}/{{ github['username'] }}/notes-etc"
+        version: main
+        dest: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main"
+        accept_hostkey: true
+        update: false
+
+    - name: Update remote origin to SSH url
+      community.general.git_config:
+        repo: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main"
+        scope: local
+        name: remote.origin.url
+        value: "git@github.com:{{ github['username'] }}/notes-etc.git"
+
+- name: Download references
+  vars:
+    http: https://raw.githubusercontent.com
+    path: "{{ item['owner'] }}/{{ item['repo'] }}/{{ item['branch'] }}/{{ item['file'] }}"
+    ext: "{{ item['file'] | splitext | last }}"
+    file: "{{ item['repo'] | splitext | first | replace('-', '_') + ext }}"
+  ansible.builtin.get_url:
+    url: "{{ http }}/{{ path }}"
+    dest: "{{ ansible_user_dir }}/Development/Reference/{{ file }}"
+    mode: 0644
   loop: "{{ git_reference_repos }}"
   loop_control:
-    label: "{{ item['name'] }}"
+    label: "{{ item['repo'] }}"
   tags: [github_repos, git_ref_repos]

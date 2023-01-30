@@ -1,21 +1,22 @@
 ---
 
 git_reference_repos:
-  - https_url: https://github.com/dylanaraps/pure-bash-bible.git
-    name: pure-bash-bible
-  - https_url: https://github.com/jlevy/the-art-of-command-line.git
-    name: the-art-of-command-line
-  - https_url: https://github.com/majamin/oneliners.txt.git
-    name: oneliners
-  - https_url: https://github.com/munki/macadmin-scripts.git
-    name: macadmin-scripts
-    version: main
-  - https_url: https://github.com/6mile/DevSecOps-Playbook.git
-    name: devsecops-playbook
-    version: main
-  - https_url: https://github.com/gto76/python-cheatsheet.git
-    name: python-cheatsheet
-    version: main
+  - owner: dylanaraps
+    repo: pure-bash-bible
+    branch: master
+    file: README.md
+  - owner: jlevy
+    repo: the-art-of-command-line
+    branch: master
+    file: README.md
+  - owner: majamin
+    repo: oneliners.txt
+    branch: master
+    file: oneliners.txt
+  - owner: gto76
+    repo: python-cheatsheet
+    branch: main
+    file: README.md
 
 krew_plugins:
   x86_64:

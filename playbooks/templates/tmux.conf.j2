@@ -1,5 +1,5 @@
-{% macro popup(key, name, path) -%}
-bind '{{ key }}' display-popup -E -w 45% -h 85% -b rounded -S "fg=colour234" "tmux -L {{ name }} -f ~/.config/tmux/minimal.conf new-session -A -s {{ name }} -c {{ path }}"
+{% macro popup(key, name, path, cmd) -%}
+bind '{{ key }}' display-popup -E -w 45% -h 85% -b rounded -S "fg=colour234" "tmux -L {{ name }} -f ~/.config/tmux/minimal.conf new-session -A -s {{ name }} -c {{ path }}{% if cmd %} {{ cmd }}{% endif %}"
 {%- endmacro %}
 set -g allow-rename on
 set -g base-index 1
@@ -63,8 +63,11 @@ bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
 bind 'D' run-shell -b "tmux-utils dump-pane"
 bind 'O' run-shell -b "tmux-utils open-project"
-{{ popup("N", "notes", "~/Development/Projects/notes-etc/main") }}
-{{ popup("P", "popup", "~/") }}
+{% if "tmux" in item -%}
+{{ popup("N", "notes", "~/Development/Reference", "'vim Notes.md'") }}
+{{ popup("R", "reference", "~/Development/Reference", "") }}
+{{ popup("P", "popup", "~/", "") }}
+{% endif -%}
 bind 'c' new-window -c "~/"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history
