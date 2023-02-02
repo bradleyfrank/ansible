@@ -14,6 +14,8 @@
   tags: [root, shell]
 
 - name: Configure shells
+  become: true
+  tags: shell
   block:
     - name: Make additional shells available
       ansible.builtin.blockinfile:
@@ -25,8 +27,6 @@
       ansible.builtin.user:
         name: "{{ ansible_user_id }}"
         shell: "{{ homebrew_prefix }}/bin/zsh"
-  become: true
-  tags: shell
 
 - name: Fix permissions for zsh
   ansible.builtin.file:
@@ -42,7 +42,7 @@
   community.general.osx_defaults:
     domain: "{{ item['domain'] }}"
     key: "{{ item['key'] }}"
-    type: "{{ item['type'] | default(omit) }}"
+    type: "{{ item['type'] }}"
     value: "{{ item['value'] }}"
   loop: "{{ defaults }}"
   loop_control:

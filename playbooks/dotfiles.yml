@@ -24,9 +24,9 @@
         mode: 0755
       tags: always
 
-# ============================================================================
-#  dotfiles and command line configuration
-# ----------------------------------------------------------------------------
+    # ============================================================================
+    #  dotfiles and command line configuration
+    # ----------------------------------------------------------------------------
 
     - name: Create ~/Development folder structure
       ansible.builtin.file:
@@ -91,9 +91,9 @@
       ansible.builtin.import_tasks: tasks/dotfiles/k8s.yml
       tags: [core, k8s]
 
-# ============================================================================
-#  assets and modules
-# ----------------------------------------------------------------------------
+    # ============================================================================
+    #  assets and modules
+    # ----------------------------------------------------------------------------
 
     - name: Ensure fonts directory exists
       ansible.builtin.file:
@@ -113,6 +113,13 @@
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
       tags: github
 
+    - name: Symlink notes file
+      ansible.builtin.file:
+        src: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main/README.md"
+        dest: "{{ ansible_user_dir }}/Development/Reference/Notes.md"
+        state: link
+      tags: core
+
     - name: Install Python packages
       ansible.builtin.pip:
         executable: "{{ pip_exec }}"
@@ -120,9 +127,9 @@
         extra_args: --user
       tags: python
 
-# ============================================================================
-#  gui apps configuration
-# ----------------------------------------------------------------------------
+    # ============================================================================
+    #  gui apps configuration
+    # ----------------------------------------------------------------------------
 
     - name: Import misc macOS app tasks
       ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
@@ -144,9 +151,9 @@
         label: "{{ app }}"
       tags: icons
 
-# ============================================================================
-#  zsh and completions
-# ----------------------------------------------------------------------------
+    # ============================================================================
+    #  zsh and completions
+    # ----------------------------------------------------------------------------
 
     - name: Import Zsh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml

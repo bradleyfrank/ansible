@@ -46,6 +46,7 @@ module.exports = {
     defaultSSHApp: true,
     quickEdit: false,
     macOptionSelectionMode: "force",
+    webLinksActivationKey: "shift",
     webGLRenderer: true,
   },
   plugins: ["hyper-solarized-light"],

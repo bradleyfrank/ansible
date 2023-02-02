@@ -154,6 +154,7 @@ defaults:
   - name: Save screenshots to ~/Downloads
     domain: com.apple.screencapture
     key: location
+    type: string
     value: '{{ ansible_user_dir }}/Downloads'
 
   - name: Set expose hot corner bottom-left (application windows)

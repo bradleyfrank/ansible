@@ -47,7 +47,7 @@
   tags: ssh
 
 - name: Secure SSH settings
-  import_role:
+  ansible.builtin.import_role:
     name: devsec.hardening.ssh_hardening
   become: true
   tags: [ssh, security]
