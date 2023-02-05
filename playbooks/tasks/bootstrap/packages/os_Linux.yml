@@ -128,7 +128,8 @@
       vars:
         slug: derailed/k9s
         version: "{{ k9s_latest_release['tag'] }}"
-        filename: "k9s_{{ ansible_system }}_{{ ansible_machine }}.tar.gz"
+        arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
+        filename: "k9s_{{ ansible_system }}_{{ arch }}.tar.gz"
       ansible.builtin.get_url:
         url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
         dest: "{{ github_release_temp_dir }}/k9s.tar.gz"
