@@ -25,7 +25,7 @@ let g:vim_markdown_conceal = 0
 map <C-n> :NERDTreeToggle<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-set rtp+=/usr/local/bin/fzf
+set rtp+={{ fzf_bin }}
 set background=light
 set backspace=indent,eol,start
 {% if 'Darwin' in ansible_system -%}
