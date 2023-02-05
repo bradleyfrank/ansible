@@ -175,7 +175,7 @@ precmd() {
   fi
 
   if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
-    ps1[host]="host ${bold}[${magenta}%m${reset} "
+    ps1[host]="host ${bold}${magenta}%m${reset} "
   fi
 
   if [[ -n $VIRTUAL_ENV ]]; then
