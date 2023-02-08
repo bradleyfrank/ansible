@@ -44,6 +44,7 @@ pypi_packages:
   - beets
   - diceware
   - edir
+  - eyed3
   - Jinja2
   - tmuxp
   - virtualenv

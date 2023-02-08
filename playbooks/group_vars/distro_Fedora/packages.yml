@@ -15,6 +15,7 @@ dnf_packages:
     - dua-cli
     - exa
     - fd-find
+    - fdkaac
     - fdupes
     - ffmpeg
     - figlet
@@ -37,6 +38,7 @@ dnf_packages:
     - jo
     - keychain
     - kubectl  # google-cloud-sdk
+    - lame
     - libmp4v2
     - libvirt-client
     - libxcrypt-compat  # google-cloud-sdk
