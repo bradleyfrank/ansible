@@ -77,7 +77,7 @@
 
 - name: Run Nix installer
   ansible.builtin.script:
-    chdir: "{{ /tmp/nix/nix-{{ nix_release['json'][0]['name'] }}-linux"
+    chdir: "tmp/nix/nix-{{ nix_release['json'][0]['name'] }}-{{ ansible_machine }}-linux"
     cmd: install --no-daemon --yes --no-modify-profile
     creates: nix
   tags: [packages, nix]
