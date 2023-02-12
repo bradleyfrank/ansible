@@ -83,8 +83,11 @@
 
 - name: Cleanup Nix installer
   ansible.builtin.file:
-    path: /tmp/nix*
+    path: "{{ item }}"
     state: absent
+  loop:
+    - /tmp/nix
+    - /tmp/nix.tar.xz
   tags: [packages, nix]
 
 - name: Install Nix packages
