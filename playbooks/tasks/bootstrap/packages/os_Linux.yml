@@ -76,10 +76,9 @@
   tags: [packages, nix]
 
 - name: Run Nix installer
-  ansible.builtin.script:
+  ansible.builtin.shell:
     chdir: "/tmp/nix/nix-{{ nix_release['json'][0]['name'] }}-{{ ansible_machine }}-linux"
-    cmd: install --no-daemon --yes --no-modify-profile
-    creates: nix
+    cmd: ./install --no-daemon --yes --no-modify-profile
   tags: [packages, nix]
 
 - name: Create temp download directory
