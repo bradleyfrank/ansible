@@ -76,9 +76,10 @@
   tags: [packages, nix]
 
 - name: Run Nix installer
-  ansible.builtin.shell:
+  ansible.builtin.command:
     chdir: "/tmp/nix/nix-{{ nix_release['json'][0]['name'] }}-{{ ansible_machine }}-linux"
     cmd: ./install --no-daemon --yes --no-modify-profile
+    creates: /nix
   tags: [packages, nix]
 
 - name: Cleanup Nix installer
@@ -95,5 +96,5 @@
     pkgs: "{{ nix_packages | map('regex_replace', '^(.*)$', 'nixpkgs.\\1') | list | join(' ') }}"
   ansible.builtin.command:
     cmd: "{{ ansible_user_dir }}/.nix-profile/bin/nix-env -iA {{ pkgs }}"
+  changed_when: false
   tags: [packages, nix]
-
