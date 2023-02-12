@@ -91,7 +91,9 @@
   tags: [packages, nix]
 
 - name: Install Nix packages
+  vars:
+    pkgs: "{{ nix_packages | map('regex_replace', '^(.*)$', 'nixpkgs.\\1') | list | join(' ') }}"
   ansible.builtin.command:
-    cmd: "nix-env -iA {{ pkgs }}"
+    cmd: "{{ ansible_user_dir }}/.nix-profile/bin/nix-env -iA {{ pkgs }}"
   tags: [packages, nix]
 
