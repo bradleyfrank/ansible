@@ -40,7 +40,7 @@ flatpak_packages:
   - name: us.zoom.Zoom
 
 nix_packages:
+  - glyr
   - jqp
   - k9s
   - krew
-
