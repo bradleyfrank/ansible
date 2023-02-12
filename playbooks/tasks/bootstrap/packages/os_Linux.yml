@@ -64,7 +64,7 @@
     version: "{{ nix_release['json'][0]['name'] }}"
     filename: "nix-{{ version }}-{{ ansible_machine }}-linux.tar.xz"
   ansible.builtin.get_url:
-    url: "https://release.nixos.org/nix/nix-{{ version }}/{{ filename }}"
+    url: "https://releases.nixos.org/nix/nix-{{ version }}/{{ filename }}"
     dest: /tmp/nix.tar.xz
     mode: 0755
   tags: [packages, nix]
@@ -73,12 +73,14 @@
   ansible.builtin.unarchive:
     src: /tmp/nix.tar.xz
     dest: /tmp/nix
+  tags: [packages, nix]
 
 - name: Run Nix installer
   ansible.builtin.script:
     chdir: /tmp/nix
     cmd: install --no-daemon --yes --no-modify-profile
     creates: nix
+  tags: [packages, nix]
 
 - name: Create temp download directory
   ansible.builtin.file:
