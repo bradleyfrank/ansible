@@ -44,6 +44,42 @@
   become: true
   tags: always
 
+- name: Get latest Nix version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/NixOS/nix/tags
+    headers:
+      Authorization: "token {{ github['personal_token'] }}"
+  register: nix_release
+  tags: [packages, nix]
+
+- name: Create temp Nix directory
+  ansible.builtin.file:
+    path: /tmp/nix
+    state: directory
+    mode: 0755
+  tags: [packages, nix]
+
+- name: Download Nix installer
+  vars:
+    version: "{{ nix_release['json'][0]['name'] }}"
+    filename: "nix-{{ version }}-{{ ansible_machine }}-linux.tar.xz"
+  ansible.builtin.get_url:
+    url: "https://release.nixos.org/nix/nix-{{ version }}/{{ filename }}"
+    dest: /tmp/nix.tar.xz
+    mode: 0755
+  tags: [packages, nix]
+
+- name: Extract Nix installer
+  ansible.builtin.unarchive:
+    src: /tmp/nix.tar.xz
+    dest: /tmp/nix
+
+- name: Run Nix installer
+  ansible.builtin.script:
+    chdir: /tmp/nix
+    cmd: install --no-daemon --yes --no-modify-profile
+    creates: nix
+
 - name: Create temp download directory
   ansible.builtin.file:
     path: "{{ github_release_temp_dir }}"
