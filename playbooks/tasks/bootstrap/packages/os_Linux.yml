@@ -52,13 +52,6 @@
   register: nix_release
   tags: [packages, nix]
 
-- name: Create temp Nix directory
-  ansible.builtin.file:
-    path: /tmp/nix
-    state: directory
-    mode: 0755
-  tags: [packages, nix]
-
 - name: Download Nix installer
   vars:
     version: "{{ nix_release['json'][0]['name'] }}"
@@ -66,6 +59,13 @@
   ansible.builtin.get_url:
     url: "https://releases.nixos.org/nix/nix-{{ version }}/{{ filename }}"
     dest: /tmp/nix.tar.xz
+    mode: 0755
+  tags: [packages, nix]
+
+- name: Create temp Nix directory
+  ansible.builtin.file:
+    path: /tmp/nix
+    state: directory
     mode: 0755
   tags: [packages, nix]
 
@@ -81,104 +81,14 @@
     cmd: ./install --no-daemon --yes --no-modify-profile
   tags: [packages, nix]
 
-- name: Create temp download directory
+- name: Cleanup Nix installer
   ansible.builtin.file:
-    path: "{{ github_release_temp_dir }}"
-    state: directory
-    mode: 0755
-  notify: Remove GitHub downloads
-  tags: [packages, github_release]
+    path: /tmp/nix*
+    state: absent
+  tags: [packages, nix]
 
-- name: Install Krew
-  vars:
-    arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
-    filename: "krew-{{ ansible_system | lower }}_{{ arch }}"
-  tags: [packages, github_release]
-  block:
-    - name: Get latest version of Krew
-      community.general.github_release:
-        user: kubernetes-sigs
-        repo: krew
-        action: latest_release
-        token: "{{ github['personal_token'] }}"
-      register: krew_latest_release
-    - name: Download latest version of Krew
-      vars:
-        slug: kubernetes-sigs/krew
-        version: "{{ krew_latest_release['tag'] }}"
-      ansible.builtin.get_url:
-        url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}.tar.gz"
-        dest: "{{ github_release_temp_dir }}/krew.tar.gz"
-        mode: 0644
-    - name: Extract Krew archive
-      ansible.builtin.unarchive:
-        src: "{{ github_release_temp_dir }}/krew.tar.gz"
-        dest: "{{ github_release_temp_dir }}"
-        mode: 0755
-    - name: Install Krew
-      ansible.builtin.command:
-        cmd: "{{ github_release_temp_dir }}/{{ filename }} install krew"
-        creates: "{{ ansible_user_dir }}/.krew/bin/kubectl-krew"
+- name: Install Nix packages
+  ansible.builtin.command:
+    cmd: "nix-env -iA {{ pkgs }}"
+  tags: [packages, nix]
 
-- name: Install jqp
-  tags: [packages, github_release]
-  block:
-    - name: Get latest version of jqp
-      community.general.github_release:
-        user: noahgorstein
-        repo: jqp
-        action: latest_release
-        token: "{{ github['personal_token'] }}"
-      register: jqp_latest_release
-    - name: Download latest version of Krew
-      vars:
-        slug: noahgorstein/jqp
-        version: "{{ jqp_latest_release['tag'] }}"
-        filename: "jqp_{{ version | replace('v', '', 1) }}_{{ ansible_system }}_{{ ansible_machine }}.tar.gz"
-      ansible.builtin.get_url:
-        url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
-        dest: "{{ github_release_temp_dir }}/jqp.tar.gz"
-        mode: 0644
-    - name: Extract jqp archive
-      ansible.builtin.unarchive:
-        src: "{{ github_release_temp_dir }}/jqp.tar.gz"
-        dest: "{{ github_release_temp_dir }}"
-        mode: 0755
-    - name: Copy jqp binary
-      ansible.builtin.copy:
-        src: "{{ github_release_temp_dir }}/jqp"
-        dest: "{{ ansible_user_dir }}/.local/bin/jqp"
-        mode: 0755
-        remote_src: true
-
-- name: Install K9s
-  tags: [packages, github_release]
-  block:
-    - name: Get latest version of K9s
-      community.general.github_release:
-        user: derailed
-        repo: k9s
-        action: latest_release
-        token: "{{ github['personal_token'] }}"
-      register: k9s_latest_release
-    - name: Download latest version of K9s
-      vars:
-        slug: derailed/k9s
-        version: "{{ k9s_latest_release['tag'] }}"
-        arch: "{{ 'amd64' if ansible_machine == 'x86_64' else ansible_machine }}"
-        filename: "k9s_{{ ansible_system }}_{{ arch }}.tar.gz"
-      ansible.builtin.get_url:
-        url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ filename }}"
-        dest: "{{ github_release_temp_dir }}/k9s.tar.gz"
-        mode: 0644
-    - name: Extract K9s archive
-      ansible.builtin.unarchive:
-        src: "{{ github_release_temp_dir }}/k9s.tar.gz"
-        dest: "{{ github_release_temp_dir }}"
-        mode: 0755
-    - name: Copy K9s binary
-      ansible.builtin.copy:
-        src: "{{ github_release_temp_dir }}/k9s"
-        dest: "{{ ansible_user_dir }}/.local/bin/k9s"
-        mode: 0755
-        remote_src: true
