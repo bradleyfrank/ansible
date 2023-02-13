@@ -9,7 +9,8 @@ PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-
 {% if 'arm64' in ansible_machine %}
 PATH="$PATH:{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin"
 {% endif %}
-{% elif 'Ubuntu' in ansible_distribution %}
+{% else %}
+PATH="$PATH:$HOME/.nix-profile/bin"
 PATH="$PATH:/snap/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
@@ -22,6 +23,8 @@ MANPATH="$MANPATH:{{ gnuman['path'] }}"
 {% if 'arm64' in ansible_machine %}
 MANPATH="$MANPATH:{{ homebrew_prefix }}/share/man"
 {% endif %}
+{% else %}
+MANPATH="$MANPATH:$HOME/.nix-profile/share/man"
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
@@ -46,6 +49,9 @@ export CHTSH_QUERY_OPTIONS="style=vs"
 export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:166,hl+:166:bold --reverse --height=50% --multi --info inline"
 export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=37"
+{% if 'Linux' in ansible_system %}
+export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
+{% endif %}
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
 export CLOUDSDK_PYTHON=/usr/bin/python3
@@ -61,7 +67,10 @@ export HOMEBREW_REPOSITORY={{ homebrew_prefix }}/Homebrew
 export INFOPATH={{ homebrew_prefix }}/share/info:"${INFOPATH:-}"
 export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
 {% elif 'Fedora' in ansible_distribution %}
+export NIX_SSL_CERT_FILE=/etc/pki/tls/certs/ca-bundle.crt
 export HELPDIR=/usr/share/zsh/{{ ansible_facts.packages['zsh'][0]['version'] }}/help
+{% elif 'Ubuntu' in ansible_distribution %}
+export NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 {% endif %}
 
 
