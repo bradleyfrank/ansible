@@ -1,6 +1,6 @@
 PATH="$HOME/.local/bin"
 PATH="$PATH:$HOME/.krew/bin"
-{% if 'MacOSX' in ansible_distribution %}
+{% if 'Darwin' in ansible_system %}
 {% for gnubin in homebrew_gnubin['files'] -%}
 PATH="$PATH:{{ gnubin['path'] }}"
 {% endfor %}
@@ -9,7 +9,7 @@ PATH="$PATH:{{ homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-
 {% if 'arm64' in ansible_machine %}
 PATH="$PATH:{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin"
 {% endif %}
-{% else %}
+{% elif 'Linux' in ansible_system %}
 PATH="$PATH:$HOME/.nix-profile/bin"
 PATH="$PATH:/snap/bin"
 {% endif %}
@@ -23,7 +23,7 @@ MANPATH="$MANPATH:{{ gnuman['path'] }}"
 {% if 'arm64' in ansible_machine %}
 MANPATH="$MANPATH:{{ homebrew_prefix }}/share/man"
 {% endif %}
-{% else %}
+{% elif 'Linux' in ansible_system %}
 MANPATH="$MANPATH:$HOME/.nix-profile/share/man"
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
@@ -35,8 +35,10 @@ export MANPATH
 export FPATH
 export EDITOR=vim
 export VISUAL=vim
-export DIRSTACKSIZE=10                  # Max directories in auto_pushd stack
-export DOCKER_BUILDKIT=1                # Build containers in parallel
+export CHTSH_QUERY_OPTIONS="style=vs"
+export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
+export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:166,hl+:166:bold --reverse --height=50% --multi --info inline"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
 export LESS_TERMCAP_me=$'\E[0m'         # "
@@ -45,13 +47,8 @@ export LESS_TERMCAP_so=$'\E[01;104;97m' # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export LESS=-r                          # "
-export CHTSH_QUERY_OPTIONS="style=vs"
-export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:166,hl+:166:bold --reverse --height=50% --multi --info inline"
-export PRE_COMMIT_COLOR=never           # Colors are incompatible with solarized-light
+export PRE_COMMIT_COLOR=never  # Colors are incompatible with solarized-light
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=37"
-{% if 'Linux' in ansible_system %}
-export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
-{% endif %}
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
 export CLOUDSDK_PYTHON=/usr/bin/python3
@@ -65,12 +62,14 @@ export HOMEBREW_NO_INSTALL_UPGRADE=1
 export HOMEBREW_PREFIX={{ homebrew_prefix }}
 export HOMEBREW_REPOSITORY={{ homebrew_prefix }}/Homebrew
 export INFOPATH={{ homebrew_prefix }}/share/info:"${INFOPATH:-}"
-export SHELL_SESSIONS_DISABLE=1         # See /etc/zshrc_Apple_Terminal
+export SHELL_SESSIONS_DISABLE=1  # See /etc/zshrc_Apple_Terminal
 {% elif 'Fedora' in ansible_distribution %}
 export NIX_SSL_CERT_FILE=/etc/pki/tls/certs/ca-bundle.crt
+export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
 export HELPDIR=/usr/share/zsh/{{ ansible_facts.packages['zsh'][0]['version'] }}/help
 {% elif 'Ubuntu' in ansible_distribution %}
 export NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
 {% endif %}
 
 
@@ -124,6 +123,9 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 {% endif %}
 {% if 'Ubuntu' in ansible_distribution %}
 alias bat='batcat'
+{% endif %}
+{% if work_system -%}
+alias infractl='docker compose run --rm infractl'
 {% endif %}
 
 cdf() { cd $(dirs -lp | fzf --no-multi); }
@@ -279,7 +281,6 @@ complete -o nospace -C /usr/local/bin/vault vault
 eval "$(dircolors $HOME/.dir_colors)"
 eval "$(keychain --eval --ignore-missing --quiet
 {%- if 'MacOSX' in ansible_distribution %} --inherit any
-{%- else %}
 {%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
 
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
