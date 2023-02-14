@@ -66,8 +66,9 @@ bit_pull() {
       | cut --delimiter / --fields 2- \
       | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
       | grep "$new_branch_name" \
-      | fzf_bit --no-multi --preview='git log --pretty=reference origin/{}'
+      | fzf_bit --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
   )"
+  [[ -z $new_branch_name ]] && exit 0
   repo_branch_path="$repo_base_path/$new_branch_name"
   # TODO: Fix path!
   git worktree add "$repo_branch_path"
@@ -90,7 +91,7 @@ bit_delete() {
     git worktree list --porcelain \
       | grep --extended-regexp '^worktree' \
       | awk '{print $2}' \
-      | fzf_bit --multi --preview='git log {} --' --delimiter / --with-nth -1
+      | fzf_bit --multi --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
   )"
 }
 
@@ -110,9 +111,9 @@ bit_clone() {
             }
           }
         }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-        | fzf_bit --no-multi --preview='git log --pretty=reference origin/{}'
+        | fzf_bit --no-multi --preview='git log --oneline --decorate --color {-1} --'
     )"
-    [[ -z $gh_repo ]] && { echo "No valid repository url provided." >&2; exit 1; }
+    [[ -z $gh_repo ]] && exit 0
     repo_url="git@github.com:${gh_repo}.git"
     repo_name="$(basename "$gh_repo")"
   elif git ls-remote --quiet "$1" 2> /dev/null; then
