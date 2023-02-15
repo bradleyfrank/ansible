@@ -4,6 +4,7 @@ font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
 fzf_bin: /usr/local/bin/fzf
 glow_config_path: "{{ ansible_user_dir }}/.config/glow"
 k9s_config_path: "{{ ansible_user_dir }}/.config"
+krew_exec: "{{ ansible_user_dir }}/.nix-profile/bin/krew"
 path: "{{ ansible_user_dir }}/.local/bin:{{ ansible_env['PATH'] }}"
 python_user_path: "{{ ansible_user_dir }}/.local/bin"
 pip_exec: /usr/bin/pip3

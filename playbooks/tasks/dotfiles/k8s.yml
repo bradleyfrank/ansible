@@ -1,9 +1,7 @@
 ---
 
 - name: Install Krew plugins
-  environment:
-    PATH: "{{ ansible_user_dir }}/.krew/bin:{{ path }}"
-  ansible.builtin.command: "kubectl krew install {{ krew_plugins[ansible_architecture] | join(' ') }}"
+  ansible.builtin.command: "{{ krew_exec }} install {{ krew_plugins[ansible_architecture] | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install['stdout']"
   tags: krew

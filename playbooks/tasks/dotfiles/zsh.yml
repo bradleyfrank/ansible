@@ -34,6 +34,11 @@
   when: "'Darwin' in ansible_system"
   register: zsh_version
 
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  when: "'Linux' in ansible_system"
+
 - name: Find Homebrew gnubin directories
   ansible.builtin.find:
     paths: "{{ homebrew_prefix }}/opt"
