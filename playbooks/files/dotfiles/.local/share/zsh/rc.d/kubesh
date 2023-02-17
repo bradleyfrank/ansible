@@ -160,7 +160,7 @@ ksecret() {
     ns="$(_k_namespace "$ctx" "${arg_ns[2]}")"
     secret="$(kubectl --context "$ctx" --namespace "$ns" get secrets --output name | grep "${1:-}" | _fzf_k --no-multi)"
     while read -r key; do
-        cmd="kubectl --context $ctx --namespace $ns get secret $secret --output json \
+        cmd="kubectl --context $ctx --namespace $ns get $secret --output json \
             | jq -r --arg key $key '.data[\$key]|@base64d'"
         echo -e "\n${green}${ctx}/${ns}/${secret}/${key}${nc}\n\n${yellow}$(_save_and_exec "$cmd")${nc}\n"
     done <<< "$(kubectl --context "$ctx" --namespace "$ns" get "$secret" --output json \
