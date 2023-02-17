@@ -22,14 +22,16 @@ let g:solarized_termtrans = 1
 let g:vim_json_conceal = 0
 let g:vim_markdown_conceal = 0
 
-map <C-n> :NERDTreeToggle<CR>
+map <C-n> :Lexplore<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-set rtp+={{ fzf_bin }}
 set background=light
 set backspace=indent,eol,start
-{% if 'Darwin' in ansible_system -%}
+{% if 'MacOSX' in ansible_distribution -%}
 set clipboard=unnamed
+set rtp+={{ homebrew_prefix }}/opt/fzf
+{% elif 'Ubuntu' in ansible_distribution -%}
+set rtp+=/usr/share/doc/fzf/examples/
 {% endif -%}
 set colorcolumn=100
 set cursorline

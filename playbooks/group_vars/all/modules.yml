@@ -59,8 +59,6 @@ vim_extensions:
     repo: https://github.com/vim-airline/vim-airline-themes.git
   - name: vim-gitgutter
     repo: https://github.com/airblade/vim-gitgutter.git
-  - name: nerdtree
-    repo: https://github.com/preservim/nerdtree.git
   - name: indentLine
     repo: https://github.com/Yggdroot/indentLine.git
   - name: vim-terraform
@@ -69,6 +67,8 @@ vim_extensions:
     repo: https://github.com/lifepillar/vim-solarized8.git
   - name: vim-jinja2-syntax
     repo: https://github.com/Glench/Vim-Jinja2-Syntax.git
+  - name: fzf.vim
+    repo: https://github.com/junegunn/fzf.vim.git
 
 zsh_completions:
   - name: kubectl
