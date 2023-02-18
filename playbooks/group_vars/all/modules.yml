@@ -19,24 +19,11 @@ git_reference_repos:
     file: README.md
 
 krew_plugins:
-  x86_64:
-    - cert-manager
-    - config-cleanup
-    - deprecations
-    - doctor
-    - get-all
-    - neat
-    - score
-    - sniff
-    - stern
-  arm64:
-    - cert-manager
-    - deprecations
-    - get-all
-    - neat
-    - score
-    - sniff
-    - stern
+  - cert-manager
+  - deprecations
+  - get-all
+  - neat
+  - stern
 
 pypi_packages:
   - archivebox

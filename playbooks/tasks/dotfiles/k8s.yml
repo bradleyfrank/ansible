@@ -1,7 +1,7 @@
 ---
 
 - name: Install Krew plugins
-  ansible.builtin.command: "{{ krew_exec }} install {{ krew_plugins[ansible_architecture] | join(' ') }}"
+  ansible.builtin.command: "{{ krew_exec }} install {{ krew_plugins | join(' ') }}"
   register: kubectl_krew_install
   changed_when: "'Installed plugin' in kubectl_krew_install['stdout']"
   tags: krew
