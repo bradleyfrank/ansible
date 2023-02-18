@@ -37,7 +37,7 @@ export EDITOR=vim
 export VISUAL=vim
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
-export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:166,hl+:166:bold --reverse --height=50% --multi --info inline"
+export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:33,hl+:33:bold --reverse --height=50% --multi --info inline"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
@@ -205,7 +205,7 @@ precmd() {
 }
 
 
-zstyle ':fzf-tab:*' default-color $'\033[90m'
+zstyle ':fzf-tab:*' default-color $'\033[0;37m'
 zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa --color always --classify -1 $realpath'
 zstyle ':completion:*:descriptions' format '[%d]'
