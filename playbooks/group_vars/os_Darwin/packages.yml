@@ -99,6 +99,7 @@ brew_packages:
   gui:
     - 1password
     - 1password-cli
+    - alacritty
     - appcleaner
     - balenaetcher
     - bbedit

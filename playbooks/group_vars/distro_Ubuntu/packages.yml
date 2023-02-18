@@ -75,6 +75,7 @@ apt_packages:
     - zsh-syntax-highlighting
   gui:
     - 1password
+    - alacritty
     - asciinema
     - audacious
     - calibre
