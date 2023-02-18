@@ -18,7 +18,7 @@
 
 - name: Generate Zsh completions
   environment:
-    PATH: "{{ ansible_user_dir }}/.krew/bin:{{ path }}"
+    PATH: "{{ ansible_user_dir }}/.krew/bin:{{ ansible_user_dir }}/.nix-profile/bin:{{ path }}"
   ansible.builtin.shell: "{{ item['command'] }} > {{ zsh['site_functions'] }}/_{{ item['name'] }}"
   changed_when: false
   loop: "{{ zsh_completions }}"
