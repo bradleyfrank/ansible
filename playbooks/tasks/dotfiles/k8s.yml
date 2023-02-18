@@ -1,9 +1,11 @@
 ---
 
 - name: Install Krew plugins
-  ansible.builtin.command: "{{ krew_exec }} install {{ krew_plugins | join(' ') }}"
-  register: kubectl_krew_install
-  changed_when: "'Installed plugin' in kubectl_krew_install['stdout']"
+  ansible.builtin.command: "{{ krew_exec }} install {{ item }}"
+  loop: "{{ krew_plugins }}"
+  register: cmd_result
+  changed_when: "'Installed plugin' in cmd_result['stdout']"
+  failed_when: "'does not exist in the plugin index' in cmd_result['stdout']"
   tags: krew
 
 - name: Install k9s configs

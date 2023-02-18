@@ -20,6 +20,7 @@ git_reference_repos:
 
 krew_plugins:
   - cert-manager
+  - deprecations
   - get-all
   - neat
   - stern
