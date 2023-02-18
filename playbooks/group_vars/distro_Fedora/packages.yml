@@ -60,7 +60,6 @@ dnf_packages:
     - python3
     - python3-devel
     - rdfind
-    - reptyr
     - ripgrep
     - ruby
     - ShellCheck
