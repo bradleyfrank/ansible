@@ -13,6 +13,7 @@ dnf_packages:
     - dnf-plugin-system-upgrade
     - dnf-utils
     - dua-cli
+    - duf
     - exa
     - fd-find
     - fdkaac

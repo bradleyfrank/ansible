@@ -23,6 +23,8 @@ brew_packages:
     - dict
     - dog
     - dua-cli
+    - duf
+    - dust
     - eye-d3
     - exa
     - fd

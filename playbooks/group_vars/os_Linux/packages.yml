@@ -40,6 +40,7 @@ flatpak_packages:
   - name: us.zoom.Zoom
 
 nix_packages:
+  - du-dust
   - glyr
   - jqp
   - k9s

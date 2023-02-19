@@ -11,7 +11,9 @@ apt_packages:
     - borgbackup
     - ca-certificates  # gcloud
     - dictd
+    - duf
     - exa
+    - fd-find
     - fdupes
     - ffmpeg
     - figlet
