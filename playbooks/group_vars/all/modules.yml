@@ -41,7 +41,6 @@ pypi_packages:
 vim_extensions:
   - name: vim-airline
     repo: https://github.com/vim-airline/vim-airline.git
-    version: v0.11
   - name: vim-airline-themes
     repo: https://github.com/vim-airline/vim-airline-themes.git
   - name: vim-gitgutter
@@ -56,6 +55,8 @@ vim_extensions:
     repo: https://github.com/Glench/Vim-Jinja2-Syntax.git
   - name: fzf.vim
     repo: https://github.com/junegunn/fzf.vim.git
+  - name: vim-fugitive
+    repo: https://github.com/tpope/vim-fugitive.git
 
 zsh_completions:
   - name: kubectl

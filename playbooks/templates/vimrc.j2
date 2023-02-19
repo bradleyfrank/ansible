@@ -16,6 +16,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:indentLine_char = '│'
 let g:indentLine_color_term = 254
 let g:is_posix = 1
+let g:netrw_browse_split = 4
 let g:netrw_winsize = 30
 let g:solarized_statusline = "flat"
 let g:solarized_termtrans = 1
@@ -59,10 +60,3 @@ set tabstop=2 softtabstop=2 shiftwidth=2
 if exists('$TMUX')
   set ttymouse=xterm2
 endif
-
-" use hybrid line numbering by default with automatic toggling
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END

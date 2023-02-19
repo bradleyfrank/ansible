@@ -64,7 +64,7 @@ bind 'C' new-window -c "#{pane_current_path}"
 bind 'D' run-shell -b "tmux-utils dump-pane"
 bind 'O' run-shell -b "tmux-utils open-project"
 {% if "tmux" in item -%}
-{{ popup("N", "notes", "~/Development/Reference", "'vim Notes.md'") }}
+{{ popup("N", "notes", "~/Development/Projects/notes-etc/main", "'vim README.md'") }}
 {{ popup("R", "reference", "~/Development/Reference", "") }}
 {{ popup("P", "popup", "~/", "") }}
 {% endif -%}
