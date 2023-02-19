@@ -62,6 +62,7 @@ bind '%' split-window -h -c "#{pane_current_path}"
 bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
 bind 'D' run-shell -b "tmux-utils dump-pane"
+bind 'M' choose-tree -Z "move-pane -t %%"
 bind 'O' run-shell -b "tmux-utils open-project"
 {% if "tmux" in item -%}
 {{ popup("N", "notes", "~/Development/Projects/notes-etc/main", "'vim README.md'") }}

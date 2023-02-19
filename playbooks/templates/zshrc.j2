@@ -208,7 +208,7 @@ precmd() {
 }
 
 
-zstyle ':fzf-tab:*' default-color $'\033[0;30m'
+zstyle ':fzf-tab:*' default-color $'\033[38;5;240m'
 zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa --color always --classify -1 $realpath'
 zstyle ':completion:*:descriptions' format '[%d]'
