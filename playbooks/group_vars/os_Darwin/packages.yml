@@ -104,7 +104,6 @@ brew_packages:
     - alacritty
     - appcleaner
     - balenaetcher
-    - bbedit
     - calibre
     - chromium
     - expressions

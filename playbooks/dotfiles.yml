@@ -128,28 +128,13 @@
       tags: python
 
     # ============================================================================
-    #  gui apps configuration
+    #  mac apps configuration
     # ----------------------------------------------------------------------------
 
-    - name: Import misc macOS app tasks
+    - name: Import macOS app tasks
       ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
       when: "'Darwin' in ansible_system"
-      tags: [bbedit, stats]
-
-    - name: Set app squircle icons
-      vars:
-        app: "/Applications/{{ item['path'] | splitext | first }}.app"
-      ansible.builtin.command: "{{ homebrew_prefix }}/bin/fileicon set {{ app }} {{ item['src'] }}"
-      register: cmd_fileicon_set
-      changed_when: false
-      failed_when:
-        - "'you do not have read permissions' in cmd_fileicon_set.stderr"
-        - "'file not found or not a (readable) regular file' in cmd_fileicon_set.stderr"
-      when: "'Darwin' in ansible_system"
-      loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
-      loop_control:
-        label: "{{ app }}"
-      tags: icons
+      tags: [icons, stats]
 
     # ============================================================================
     #  zsh and completions

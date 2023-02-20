@@ -69,6 +69,7 @@ bind 'O' run-shell -b "tmux-utils open-project"
 {{ popup("R", "reference", "~/Development/Reference", "") }}
 {{ popup("P", "popup", "~/", "") }}
 {% endif -%}
+bind 'W' choose-tree -Zs "move-window -t %%"
 bind 'c' new-window -c "~/"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history

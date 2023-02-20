@@ -12,6 +12,7 @@
       - .k9s
       - .infractl/orm
       - .local/bin/aptsearch
+      - .local/bin/bbedit
       - .local/bin/branch
       - .local/bin/clone
       - .local/bin/diff-so-fancy
@@ -48,6 +49,7 @@
         - zoxide
       casks:
         - anylist
+        - bbedit
         - firefox-developer-edition
         - firefox-nightly
         - hiddenbar
