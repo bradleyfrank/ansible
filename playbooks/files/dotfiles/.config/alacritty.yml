@@ -45,4 +45,4 @@ colors:
     white: '0xfdf6e3'
 cursor:
   style:
-    shape: Beam
+    shape: Block
