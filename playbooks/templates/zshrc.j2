@@ -1,5 +1,8 @@
 PATH="$HOME/.local/bin"
 PATH="$PATH:$HOME/.krew/bin"
+{% if work_system %}
+PATH="$PATH:/opt/bin"
+{% endif %}
 {% if 'Darwin' in ansible_system %}
 {% for gnubin in homebrew_gnubin['files'] -%}
 PATH="$PATH:{{ gnubin['path'] }}"
@@ -12,9 +15,6 @@ PATH="$PATH:{{ homebrew_prefix }}/bin:{{ homebrew_prefix }}/sbin"
 {% elif 'Linux' in ansible_system %}
 PATH="$PATH:$HOME/.nix-profile/bin"
 PATH="$PATH:/snap/bin"
-{% endif %}
-{% if work_system %}
-PATH="$PATH:/opt/bin"
 {% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
