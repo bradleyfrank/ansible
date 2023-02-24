@@ -111,7 +111,7 @@ bit_clone() {
             }
           }
         }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-        | fzf_bit --no-multi --preview='git log --oneline --decorate --color {-1} --'
+        | fzf_bit --no-multi --preview='GLAMOUR_STYLE=light GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {1}'
     )"
     [[ -z $gh_repo ]] && exit 0
     repo_url="git@github.com:${gh_repo}.git"
