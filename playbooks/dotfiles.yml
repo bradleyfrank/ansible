@@ -3,6 +3,23 @@
 - name: Install and configure dotfiles on localhost
   hosts: localhost
 
+  vars:
+
+    directories:
+      - path: "{{ ansible_user_dir }}/Development/Projects"
+      - path: "{{ ansible_user_dir }}/Development/Build"
+      - path: "{{ ansible_user_dir }}/Development/Scratch"
+      - path: "{{ ansible_user_dir }}/Development/Reference"
+      - path: "{{ ansible_user_dir }}/Development/Logs"
+      - path: "{{ ansible_user_dir }}/.ssh"
+      - path: "{{ ansible_user_dir }}/.config/tmux"
+      - path: "{{ ansible_user_dir }}/.vim/pack/default/start"
+      - path: "{{ backups_dir }}"
+      - path: "{{ font_dir }}"
+        mode: "0700"
+      - path: "{{ glow_config_path }}"
+      - path: "{{ zsh_site_functions }}"
+
   handlers:
 
     - name: Process backups
@@ -17,85 +34,39 @@
 
   tasks:
 
-    - name: Ensure backup directory exists
+    - name: Create all dotfile directories
       ansible.builtin.file:
-        path: "{{ backups_dir }}"
+        path: "{{ item['path'] }}"
         state: directory
-        mode: 0755
+        mode: "{{ item['mode'] | default('0755') }}"
+      loop: "{{ directories }}"
       tags: always
 
-    # ============================================================================
-    #  dotfiles and command line configuration
-    # ----------------------------------------------------------------------------
-
-    - name: Create ~/Development folder structure
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/Development/{{ item }}"
-        state: directory
-        mode: 0755
-      loop: ['Projects', 'Build', 'Scratch', 'Reference', 'Logs']
-      tags: core
-
-    - name: Install dotfiles
-      ansible.posix.synchronize:
-        src: dotfiles/
-        dest: "{{ ansible_user_dir }}/"
-        compress: false
-        owner: false
-        group: false
-      tags: [core, dotfiles]
-
-    - name: Install themes for bat
-      ansible.builtin.command: "{{ bat_exec }} cache --build"
-      changed_when: false
-      tags: [core, bat]
-
-    - name: Ensure glow config directory exists
-      ansible.builtin.file:
-        path: "{{ glow_config_path }}"
-        state: directory
-        mode: 0755
-      tags: [core, glow]
-
-    - name: Install glow configs
-      ansible.builtin.copy:
-        src: apps/glow/
-        dest: "{{ glow_config_path }}/"
-        mode: 0644
-      tags: [core, glow]
-
-    - name: Install cheat script
-      ansible.builtin.get_url:
-        url: https://cht.sh/:cht.sh
-        dest: "{{ ansible_user_dir }}/.local/bin/cht"
-        mode: 0755
-      tags: [core, cheat]
+    - name: Import core dotfiles tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/dotfiles.yml
+      tags: dotfiles
 
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
-      tags: [core, ssh]
+      tags: ssh
 
-    - name: Include git tasks  # must follow ssh key creation
+    - name: Import git tasks  # must follow ssh key creation
       ansible.builtin.import_tasks: tasks/dotfiles/git.yml
-      tags: [core, git]
+      tags: git
 
     - name: Import tmux tasks
       ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
-      tags: [core, tmux]
+      tags: tmux
 
     - name: Import vim tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
-      tags: [core, vim]
+      tags: vim
 
-    - name: Include k8s tasks
+    - name: Import k8s tasks
       ansible.builtin.import_tasks: tasks/dotfiles/k8s.yml
-      tags: [core, k8s]
+      tags: k8s
 
-    # ============================================================================
-    #  assets and modules
-    # ----------------------------------------------------------------------------
-
-    - name: Include font tasks
+    - name: Import font tasks
       ansible.builtin.import_tasks: tasks/dotfiles/fonts.yml
       tags: fonts
 
@@ -103,12 +74,14 @@
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
       tags: github
 
-    - name: Symlink notes file
-      ansible.builtin.file:
-        src: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main/README.md"
-        dest: "{{ ansible_user_dir }}/Development/Reference/Notes.md"
-        state: link
-      tags: core
+    - name: Import macOS app tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
+      when: "'Darwin' in ansible_system"
+      tags: [icons, stats]
+
+    - name: Import zsh tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
+      tags: [zsh, dotfiles]
 
     - name: Install Python packages
       ansible.builtin.pip:
@@ -116,20 +89,3 @@
         name: "{{ pypi_packages }}"
         extra_args: --user
       tags: python
-
-    # ============================================================================
-    #  mac apps configuration
-    # ----------------------------------------------------------------------------
-
-    - name: Import macOS app tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
-      when: "'Darwin' in ansible_system"
-      tags: [icons, stats]
-
-    # ============================================================================
-    #  zsh and completions
-    # ----------------------------------------------------------------------------
-
-    - name: Import Zsh tasks
-      ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
-      tags: [core, zsh, dotfiles]

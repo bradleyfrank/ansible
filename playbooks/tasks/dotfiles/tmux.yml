@@ -1,11 +1,5 @@
 ---
 
-- name: Ensure ~/.config/tmux directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.config/tmux"
-    state: directory
-    mode: 0755
-
 - name: Install tmux config
   ansible.builtin.template:
     src: tmux.conf.j2

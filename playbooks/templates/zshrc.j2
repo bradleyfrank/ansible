@@ -273,7 +273,7 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% for plugin in zsh_plugins %}
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
 {% endfor %}
-for rc in {{ zsh['rc.d'] }}/*; do source "$rc"; done
+for rc in {{ zshrcd }}/*; do source "$rc"; done
 
 
 {% if work_system -%}

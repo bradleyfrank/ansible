@@ -1,12 +1,5 @@
 ---
 
-- name: Ensure fonts directory exists
-  ansible.builtin.file:
-    path: "{{ font_dir }}"
-    state: directory
-    mode: 0700
-  tags: fonts
-
 - name: Get latest version of Nerd Fonts
   community.general.github_release:
     user: ryanoasis
