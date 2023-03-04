@@ -8,16 +8,16 @@ window:
   startup_mode: Maximized
 font:
   normal:
-    family: SauceCodePro Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Light
   bold:
-    family: SauceCodePro Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Semibold
   italic:
-    family: SauceCodePro Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Italic
   bold_italic:
-    family: SauceCodePro Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Bold Italic
   size: 13
   AppleFontSmooting: true

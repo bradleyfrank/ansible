@@ -1,5 +1,9 @@
 ---
 
+nerd_fonts:
+  - JetBrainsMono
+  - SourceCodePro
+
 git_reference_repos:
   - owner: dylanaraps
     repo: pure-bash-bible
