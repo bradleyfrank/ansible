@@ -21,8 +21,7 @@
     dest: /etc/dracut.conf.d/ble.conf
     mode: 0644
   become: true
-  when:
-    - "'gui' in system_type"
+  when: "'gui' in system_type"
   tags: hardware
 
 - name: Regnerate dracut for bluetooth support
@@ -30,8 +29,7 @@
     cmd: dracut --regenerate-all --force --verbose
   become: true
   changed_when: false
-  when:
-    - "'gui' in system_type"
+  when: "'gui' in system_type"
   tags: hardware
 
 - name: Symlink lcdfilter conf for better fonts
