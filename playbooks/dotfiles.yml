@@ -97,7 +97,7 @@
 
     - name: Include font tasks
       ansible.builtin.import_tasks: tasks/dotfiles/fonts.yml
-      tags: [fonts]
+      tags: fonts
 
     - name: Import GitHub tasks
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
