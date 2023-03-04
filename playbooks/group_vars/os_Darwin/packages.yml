@@ -23,6 +23,8 @@ brew_packages:
     - dict
     - dog
     - dua-cli
+    - duf
+    - dust
     - eye-d3
     - exa
     - fd
@@ -99,9 +101,9 @@ brew_packages:
   gui:
     - 1password
     - 1password-cli
+    - alacritty
     - appcleaner
     - balenaetcher
-    - bbedit
     - calibre
     - chromium
     - expressions

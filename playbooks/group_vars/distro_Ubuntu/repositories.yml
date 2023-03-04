@@ -71,3 +71,9 @@ repos:
     key: https://apt.fury.io/charmcli/gpg.key
     keyring: /usr/share/keyrings/charmcli.gpg
     system_type: [gui, cli]
+
+  - name: alacritty
+    repo: ppa:mmstick76/alacritty
+    keyserver: keyserver.ubuntu.com
+    id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
+    system_type: [gui]

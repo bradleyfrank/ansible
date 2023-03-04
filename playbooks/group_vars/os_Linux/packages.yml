@@ -38,3 +38,10 @@ flatpak_packages:
   - name: sh.cider.Cider
   - name: tv.plex.PlexDesktop
   - name: us.zoom.Zoom
+
+nix_packages:
+  - du-dust
+  - glyr
+  - jqp
+  - k9s
+  - krew

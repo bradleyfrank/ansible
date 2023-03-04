@@ -11,7 +11,9 @@ apt_packages:
     - borgbackup
     - ca-certificates  # gcloud
     - dictd
+    - duf
     - exa
+    - fd-find
     - fdupes
     - ffmpeg
     - figlet
@@ -51,7 +53,6 @@ apt_packages:
     - python3-dev
     - python3-pip
     - python3-venv
-    - reptyr
     - ripgrep
     - ruby
     - shellcheck
@@ -75,6 +76,7 @@ apt_packages:
     - zsh-syntax-highlighting
   gui:
     - 1password
+    - alacritty
     - asciinema
     - audacious
     - calibre

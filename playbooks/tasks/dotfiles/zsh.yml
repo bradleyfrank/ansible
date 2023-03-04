@@ -1,11 +1,5 @@
 ---
 
-- name: Create site-functions directory
-  ansible.builtin.file:
-    path: "{{ zsh['site_functions'] }}"
-    state: directory
-    mode: 0755
-
 - name: Install zsh plugins
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
@@ -18,8 +12,8 @@
 
 - name: Generate Zsh completions
   environment:
-    PATH: "{{ ansible_user_dir }}/.krew/bin:{{ path }}"
-  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh['site_functions'] }}/_{{ item['name'] }}"
+    PATH: "{{ ansible_user_dir }}/.krew/bin:{{ ansible_user_dir }}/.nix-profile/bin:{{ path }}"
+  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh_site_functions }}/_{{ item['name'] }}"
   changed_when: false
   loop: "{{ zsh_completions }}"
   loop_control:
@@ -33,6 +27,11 @@
   changed_when: false
   when: "'Darwin' in ansible_system"
   register: zsh_version
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  when: "'Linux' in ansible_system"
 
 - name: Find Homebrew gnubin directories
   ansible.builtin.find:

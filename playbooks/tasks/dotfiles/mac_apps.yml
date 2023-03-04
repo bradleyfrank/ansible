@@ -1,17 +1,5 @@
 ---
 
-- name: Install BBEdit cli tool
-  ansible.builtin.copy:
-    src: /Applications/BBEdit.app/Contents/Helpers/bbedit_tool
-    dest: "{{ ansible_user_dir }}/.local/bin/bbedit"
-    mode: 0755
-
-- name: Install BBEdit color themes
-  ansible.builtin.copy:
-    src: apps/bbedit/
-    dest: "{{ ansible_user_dir }}/Library/Containers/com.barebones.bbedit/Data/Library/Application Support/BBEdit/Color Schemes/"
-    mode: 0755
-
 - name: Get Stats version
   environment:
     PATH: "{{ path }}"
@@ -19,12 +7,14 @@
     cmd: brew info --cask stats --json=v2 | jq -r '.casks[].installed'
   changed_when: false
   register: stats_version
+  tags: stats
 
 - name: Copy Stats xml config
   ansible.builtin.template:
     src: stats.xml.j2
     dest: /tmp/eu.exelban.Stats.xml
     mode: 0644
+  tags: stats
 
 - name: Generate Stats plist config
   vars:
@@ -33,3 +23,19 @@
   ansible.builtin.command:
     cmd: "plutil -convert binary1 {{ stats_xml }} -o {{ stats_plist }}"
   changed_when: false
+  tags: stats
+
+- name: Set app squircle icons
+  vars:
+    app: "/Applications/{{ item['path'] | splitext | first }}.app"
+  ansible.builtin.command: "{{ homebrew_prefix }}/bin/fileicon set {{ app }} {{ item['src'] }}"
+  register: cmd_fileicon_set
+  changed_when: false
+  failed_when:
+    - "'you do not have read permissions' in cmd_fileicon_set.stderr"
+    - "'file not found or not a (readable) regular file' in cmd_fileicon_set.stderr"
+  when: "'Darwin' in ansible_system"
+  loop: "{{ lookup('community.general.filetree', 'macOS/icons/') }}"
+  loop_control:
+    label: "{{ app }}"
+  tags: icons

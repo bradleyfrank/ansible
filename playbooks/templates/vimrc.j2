@@ -16,22 +16,27 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:indentLine_char = '│'
 let g:indentLine_color_term = 254
 let g:is_posix = 1
+let g:netrw_browse_split = 4
 let g:netrw_winsize = 30
 let g:solarized_statusline = "flat"
 let g:solarized_termtrans = 1
 let g:vim_json_conceal = 0
 let g:vim_markdown_conceal = 0
 
-map <C-n> :NERDTreeToggle<CR>
+map <C-n> :Lexplore<CR>
+map <C-u> :Buf<CR>
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-set rtp+=/usr/local/bin/fzf
 set background=light
 set backspace=indent,eol,start
-{% if 'Darwin' in ansible_system -%}
+{% if 'MacOSX' in ansible_distribution -%}
 set clipboard=unnamed
+set rtp+={{ homebrew_prefix }}/opt/fzf
+{% elif 'Ubuntu' in ansible_distribution -%}
+set rtp+=/usr/share/doc/fzf/examples/
 {% endif -%}
 set colorcolumn=100
+set conceallevel=0
 set cursorline
 set foldmethod=syntax
 set hlsearch incsearch
@@ -56,10 +61,3 @@ set tabstop=2 softtabstop=2 shiftwidth=2
 if exists('$TMUX')
   set ttymouse=xterm2
 endif
-
-" use hybrid line numbering by default with automatic toggling
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END

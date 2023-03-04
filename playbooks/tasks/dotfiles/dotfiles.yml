@@ -1,0 +1,24 @@
+---
+- name: Install dotfiles
+  ansible.posix.synchronize:
+    src: dotfiles/
+    dest: "{{ ansible_user_dir }}/"
+    compress: false
+    owner: false
+    group: false
+
+- name: Install themes for bat
+  ansible.builtin.command: "{{ bat_exec }} cache --build"
+  changed_when: false
+
+- name: Install glow configs
+  ansible.builtin.copy:
+    src: apps/glow/
+    dest: "{{ glow_config_path }}/"
+    mode: 0644
+
+- name: Install cheat script
+  ansible.builtin.get_url:
+    url: https://cht.sh/:cht.sh
+    dest: "{{ ansible_user_dir }}/.local/bin/cht"
+    mode: 0755

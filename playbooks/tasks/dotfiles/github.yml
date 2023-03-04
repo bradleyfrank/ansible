@@ -94,3 +94,10 @@
   loop_control:
     label: "{{ item['repo'] }}"
   tags: [github_repos, git_ref_repos]
+
+- name: Symlink notes file
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main/README.md"
+    dest: "{{ ansible_user_dir }}/Development/Reference/Notes.md"
+    state: link
+  tags: core

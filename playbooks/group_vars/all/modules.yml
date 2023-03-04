@@ -1,5 +1,9 @@
 ---
 
+nerd_fonts:
+  - JetBrainsMono
+  - SourceCodePro
+
 git_reference_repos:
   - owner: dylanaraps
     repo: pure-bash-bible
@@ -19,24 +23,11 @@ git_reference_repos:
     file: README.md
 
 krew_plugins:
-  x86_64:
-    - cert-manager
-    - config-cleanup
-    - deprecations
-    - doctor
-    - get-all
-    - neat
-    - score
-    - sniff
-    - stern
-  arm64:
-    - cert-manager
-    - deprecations
-    - get-all
-    - neat
-    - score
-    - sniff
-    - stern
+  - cert-manager
+  - deprecations
+  - get-all
+  - neat
+  - stern
 
 pypi_packages:
   - archivebox
@@ -44,6 +35,7 @@ pypi_packages:
   - beets
   - diceware
   - edir
+  - eyed3
   - Jinja2
   - tmuxp
   - virtualenv
@@ -53,13 +45,10 @@ pypi_packages:
 vim_extensions:
   - name: vim-airline
     repo: https://github.com/vim-airline/vim-airline.git
-    version: v0.11
   - name: vim-airline-themes
     repo: https://github.com/vim-airline/vim-airline-themes.git
   - name: vim-gitgutter
     repo: https://github.com/airblade/vim-gitgutter.git
-  - name: nerdtree
-    repo: https://github.com/preservim/nerdtree.git
   - name: indentLine
     repo: https://github.com/Yggdroot/indentLine.git
   - name: vim-terraform
@@ -68,6 +57,10 @@ vim_extensions:
     repo: https://github.com/lifepillar/vim-solarized8.git
   - name: vim-jinja2-syntax
     repo: https://github.com/Glench/Vim-Jinja2-Syntax.git
+  - name: fzf.vim
+    repo: https://github.com/junegunn/fzf.vim.git
+  - name: vim-fugitive
+    repo: https://github.com/tpope/vim-fugitive.git
 
 zsh_completions:
   - name: kubectl

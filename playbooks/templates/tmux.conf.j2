@@ -5,6 +5,7 @@ set -g allow-rename on
 set -g base-index 1
 set -g default-command "${SHELL}"
 set -g default-terminal "screen-256color"
+set -g detach-on-destroy off
 set -g history-limit 10000
 set -g message-command-style "fg=colour234"
 set -g message-style "fg=colour234"
@@ -62,12 +63,14 @@ bind '%' split-window -h -c "#{pane_current_path}"
 bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
 bind 'D' run-shell -b "tmux-utils dump-pane"
+bind 'M' choose-tree -Z "move-pane -t %%"
 bind 'O' run-shell -b "tmux-utils open-project"
 {% if "tmux" in item -%}
-{{ popup("N", "notes", "~/Development/Reference", "'vim Notes.md'") }}
+{{ popup("N", "notes", "~/Development/Projects/notes-etc/main", "'vim README.md'") }}
 {{ popup("R", "reference", "~/Development/Reference", "") }}
 {{ popup("P", "popup", "~/", "") }}
 {% endif -%}
+bind 'W' choose-tree -Zs "move-window -t %%"
 bind 'c' new-window -c "~/"
 bind 'h' select-layout even-vertical
 bind 'k' clear-history

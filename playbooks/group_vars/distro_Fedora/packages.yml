@@ -13,8 +13,10 @@ dnf_packages:
     - dnf-plugin-system-upgrade
     - dnf-utils
     - dua-cli
+    - duf
     - exa
     - fd-find
+    - fdkaac
     - fdupes
     - ffmpeg
     - figlet
@@ -37,6 +39,7 @@ dnf_packages:
     - jo
     - keychain
     - kubectl  # google-cloud-sdk
+    - lame
     - libmp4v2
     - libvirt-client
     - libxcrypt-compat  # google-cloud-sdk
@@ -58,7 +61,6 @@ dnf_packages:
     - python3
     - python3-devel
     - rdfind
-    - reptyr
     - ripgrep
     - ruby
     - ShellCheck
@@ -80,6 +82,7 @@ dnf_packages:
     - zsh-syntax-highlighting
   gui:
     - 1password  # 1password-gui
+    - alacritty
     - asciinema
     - audacious
     - calibre

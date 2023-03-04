@@ -9,12 +9,6 @@
   register: _backup_vimrc
   notify: Process backups
 
-- name: Create vim extensions directory path
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.vim/pack/default/start"
-    state: directory
-    mode: 0755
-
 - name: Install vim extensions
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"

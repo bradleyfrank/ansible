@@ -1,0 +1,53 @@
+---
+
+- name: Get latest version of Nerd Fonts
+  community.general.github_release:
+    user: ryanoasis
+    repo: nerd-fonts
+    action: latest_release
+    token: "{{ github['personal_token'] }}"
+  register: nerd_fonts_latest_release
+
+- name: Get latest installed Nerd Fonts version
+  set_fact:
+    nerd_font_version: v0.0.0
+  when: nerd_font_version is undefined
+
+- name: Download latest version of Nerd Fonts
+  vars:
+    slug: ryanoasis/nerd-fonts
+    version: "{{ nerd_fonts_latest_release['tag'] }}"
+  ansible.builtin.get_url:
+    url: "https://github.com/{{ slug }}/releases/download/{{ version }}/{{ item }}.zip"
+    dest: "/tmp/{{ item }}.zip"
+    mode: 0644
+  when: version != nerd_font_version
+  loop: "{{ nerd_fonts }}"
+
+- name: Extract Nerd Fonts
+  vars:
+    version: "{{ nerd_fonts_latest_release['tag'] }}"
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ item }}.zip"
+    dest: "{{ font_dir }}/"
+  when: version != nerd_font_version
+  loop: "{{ nerd_fonts }}"
+
+- name: Find Windows-only fonts
+  ansible.builtin.find:
+    paths: "{{ font_dir }}"
+    patterns: "*Windows Compatible*"
+  register: windows_fonts
+
+- name: Delete Windows-only fonts
+  ansible.builtin.file:
+    path: "{{ item['path'] }}"
+    state: absent
+  loop: "{{ windows_fonts['files'] }}"
+  loop_control:
+    label: "{{ item['path'] | basename }}"
+
+- name: Set Nerd Fonts version fact
+  set_fact:
+    nerd_font_version: "{{ nerd_fonts_latest_release['tag'] }}"
+    cacheable: true
