@@ -8,13 +8,15 @@
     backup: true
   register: _backup_vimrc
   notify: Process backups
+  tags: vim
 
 - name: Install vim extensions
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
     dest: "{{ ansible_user_dir }}/.vim/pack/default/start/{{ item['name'] }}"
-    depth: '1'
+    depth: "1"
     version: "{{ item['version'] | default(omit) }}"
   loop: "{{ vim_extensions }}"
   loop_control:
     label: "{{ item['name'] }}"
+  tags: vim

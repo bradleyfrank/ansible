@@ -5,6 +5,7 @@
     path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
     state: touch
     mode: 0600
+  tags: ssh
 
 - name: Create SSH key
   community.crypto.openssh_keypair:
@@ -16,9 +17,11 @@
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
+  tags: ssh
 
 - name: Install SSH configs
   ansible.builtin.copy:
     src: "ssh/{{ 'work' if work_system else 'home' }}.config"
     dest: "{{ ansible_user_dir }}/.ssh/config"
     mode: 0644
+  tags: ssh

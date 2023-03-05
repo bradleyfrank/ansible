@@ -9,6 +9,7 @@
   loop: "{{ zsh_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
+  tags: zsh
 
 - name: Generate Zsh completions
   environment:
@@ -18,7 +19,7 @@
   loop: "{{ zsh_completions }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [kubectl, stern, k9s]
+  tags: [zsh, kubectl, stern, k9s]
 
 - name: Get zsh version
   environment:
@@ -27,11 +28,13 @@
   changed_when: false
   when: "'Darwin' in ansible_system"
   register: zsh_version
+  tags: zsh
 
 - name: Gather the package facts
   ansible.builtin.package_facts:
     manager: auto
   when: "'Linux' in ansible_system"
+  tags: zsh
 
 - name: Find Homebrew gnubin directories
   ansible.builtin.find:
@@ -43,6 +46,7 @@
     follow: true
   when: "'Darwin' in ansible_system"
   register: homebrew_gnubin
+  tags: zsh
 
 - name: Find Homebrew gnuman directories
   ansible.builtin.find:
@@ -54,6 +58,7 @@
     follow: true
   when: "'Darwin' in ansible_system"
   register: homebrew_gnuman
+  tags: zsh
 
 - name: Apply zshrc template
   vars:
@@ -65,8 +70,10 @@
     backup: true
   register: _backup_zshrc
   notify: Process backups
+  tags: zsh
 
 - name: Refresh zcompdump
+  tags: zsh
   block:
     - name: Delete zcompdump
       ansible.builtin.file:
