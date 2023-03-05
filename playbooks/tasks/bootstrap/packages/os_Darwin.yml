@@ -27,4 +27,5 @@
   ansible.builtin.command: "{{ homebrew_prefix }}/bin/mas install {{ item }}"
   loop: "{{ mas_packages }}"
   when: install_mas_apps
+  changed_when: false
   tags: [packages, mas]

@@ -6,11 +6,11 @@
   register: cmd_result
   changed_when: "'Installed plugin' in cmd_result['stdout']"
   failed_when: "'does not exist in the plugin index' in cmd_result['stdout']"
-  tags: krew
+  tags: [k8s, krew]
 
 - name: Install k9s configs
   ansible.builtin.copy:
     src: apps/k9s
     dest: "{{ k9s_config_path }}/"
     mode: 0644
-  tags: k9s
+  tags: [k8s, k9s]

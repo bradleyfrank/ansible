@@ -40,48 +40,40 @@
         state: directory
         mode: "{{ item['mode'] | default('0755') }}"
       loop: "{{ directories }}"
+      loop_control:
+        label: "{{ item['path'] }}"
       tags: always
 
     - name: Import core dotfiles tasks
       ansible.builtin.import_tasks: tasks/dotfiles/dotfiles.yml
-      tags: dotfiles
 
     - name: Import ssh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
-      tags: ssh
 
     - name: Import git tasks  # must follow ssh key creation
       ansible.builtin.import_tasks: tasks/dotfiles/git.yml
-      tags: git
 
     - name: Import tmux tasks
       ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
-      tags: tmux
 
     - name: Import vim tasks
       ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
-      tags: vim
 
     - name: Import k8s tasks
       ansible.builtin.import_tasks: tasks/dotfiles/k8s.yml
-      tags: k8s
 
     - name: Import font tasks
       ansible.builtin.import_tasks: tasks/dotfiles/fonts.yml
-      tags: fonts
 
     - name: Import GitHub tasks
       ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-      tags: github
 
     - name: Import macOS app tasks
       ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
       when: "'Darwin' in ansible_system"
-      tags: [icons, stats]
 
     - name: Import zsh tasks
       ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
-      tags: [zsh, dotfiles]
 
     - name: Install Python packages
       ansible.builtin.pip:

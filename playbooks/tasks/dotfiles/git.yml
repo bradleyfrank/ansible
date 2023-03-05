@@ -10,6 +10,7 @@
     backup: true
   register: _backup_gitconfig
   notify: Process backups
+  tags: git
 
 - name: Create allowed signers file
   vars:
@@ -18,3 +19,4 @@
     content: "{{ email }} {{ pubkey_content[0] }} {{ pubkey_content[1] }}"
     dest: "{{ git_allowed_signers_file }}"
     mode: 0644
+  tags: git

@@ -18,7 +18,7 @@
 
 - name: Clone all personal repositories
   when: clone_personal_repos
-  tags: github_repos
+  tags: github
   block:
     - name: Query GitHub API for my repositories
       ansible.builtin.uri:
@@ -61,7 +61,7 @@
 
 - name: Only clone notes repository
   when: not clone_personal_repos
-  tags: [github_repos, notes]
+  tags: github
   block:
     - name: Clone notes repo
       vars:
@@ -93,11 +93,11 @@
   loop: "{{ git_reference_repos }}"
   loop_control:
     label: "{{ item['repo'] }}"
-  tags: [github_repos, git_ref_repos]
+  tags: github
 
 - name: Symlink notes file
   ansible.builtin.file:
     src: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main/README.md"
     dest: "{{ ansible_user_dir }}/Development/Reference/Notes.md"
     state: link
-  tags: core
+  tags: github
