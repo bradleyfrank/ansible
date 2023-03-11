@@ -13,7 +13,7 @@
     passphrase: "{{ item['value'] }}"
     type: "{{ item['key'] }}"
     size: 4096
-    comment: "{{ ansible_user_id }}@{{ ansible_hostname }} {{ ansible_date_time['date'] }}"
+    comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"

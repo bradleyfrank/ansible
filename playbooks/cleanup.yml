@@ -6,6 +6,7 @@
   vars:
     dotfiles:
       - .ansible_vault_password
+      - .ansible/vault
       - .config/alacritty
       - .config/p10k.zsh
       - .dotfiles

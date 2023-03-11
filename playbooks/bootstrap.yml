@@ -11,11 +11,6 @@
         state: absent
       become: true
 
-    - name: Remove GitHub downloads
-      ansible.builtin.file:
-        path: "{{ github_release_temp_dir }}"
-        state: absent
-
     - name: Restart dock to apply changes
       ansible.builtin.command: killall Dock
       changed_when: false
@@ -56,6 +51,10 @@
       ansible.builtin.include_tasks: "tasks/bootstrap/system/os_{{ ansible_system }}.yml"
       tags: always
 
-- name: Import dotfile playbook
+- name: Import dotfiles playbook
   ansible.builtin.import_playbook: dotfiles.yml
   tags: dotfiles
+
+- name: Import secrets playbook
+  ansible.builtin.import_playbook: secrets.yml
+  tags: secrets

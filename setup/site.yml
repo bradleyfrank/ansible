@@ -8,13 +8,15 @@
     default_hostname: "{{ current_hostname if current_hostname is defined else '' }}"
     default_email: "{{ current_email if current_email is defined else '' }}"
     default_mas: "{{ true if 'Darwin' in system_type else false }}"
-    vault_password_file: "{{ ansible_user_dir }}/.ansible/vault"
+    default_vault_password: "{{ lookup('community.general.random_words',
+      numwords=5, delimiter='-', case='capitalize') }}"
 
   vars_prompt:
     - name: vault_password
-      prompt: Enter vault password
+      prompt: Create vault password
       unsafe: true
       confirm: true
+      default: "{{ default_vault_password }}"
     - name: hostname
       prompt: Enter system hostname
       private: false
@@ -39,26 +41,40 @@
       prompt: Install employer settings and scripts (True|False)
       private: false
       default: false
+    - name: gh_token_personal
+      prompt: GitHub token (personal)
+      private: true
+      confirm: true
+      default: "None"
+    - name: gh_token_work
+      prompt: GitHub token (work)
+      private: true
+      confirm: true
+      default: "None"
 
   tasks:
     - name: Create vault file
       ansible.builtin.copy:
         content: "{{ vault_password }}"
-        dest: "{{ vault_password_file }}"
+        dest: "{{ ansible_user_dir }}/.ansible/vault"
         mode: 0400
 
-    - name: Generate SSH key passphrases
-      vars:
-        passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
-      ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
-      loop: [rsa, ed25519]
-      changed_when: false
-      register: ssh_keys
-
     - name: Create inventory
+      vars:
+        rsa_encrypted: "{{ lookup('community.general.random_words',
+          numwords=5, delimiter='-', case='capitalize') |
+          ansible.builtin.vault(vault_password) }}"
+        ed25519_encrypted: "{{ lookup('community.general.random_words',
+          numwords=5, delimiter='-', case='capitalize') |
+          ansible.builtin.vault(vault_password) }}"
+        gh_token_personal_encrypted: "{{ gh_token_personal |
+          ansible.builtin.vault(vault_password) }}"
+        gh_token_work_encrypted: "{{ gh_token_work |
+          ansible.builtin.vault(vault_password) }}"
       ansible.builtin.template:
         src: inventory.yml.j2
         dest: "{{ ansible_user_dir }}/.ansible/inventory.yml"
+        decrypt: false
         mode: 0755
 
 - name: Import Ansible galaxy playbook

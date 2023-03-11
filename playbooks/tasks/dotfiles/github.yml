@@ -2,18 +2,34 @@
 
 - name: Register SSH key with Github
   vars:
-    github_keys:
-      - "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
-      - "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
-    pubkey: "{{ lookup('first_found', github_keys, errors='ignore') }}"
+    pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
   community.general.github_key:
     name: "{{ ansible_user_id }}@{{ ansible_hostname }}"
-    pubkey: "{{ lookup('file', pubkey) }}"
+    pubkey: "{{ lookup('ansible.builtin.file', pubkey) }}"
     state: present
     token: "{{ github['personal_token'] }}"
   when:
     - pubkey
     - upload_ssh_key_github
+  tags: github
+
+- name: Register SSH signing key with Github
+  vars:
+    pubkey: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
+    key_contents: "{{ lookup('ansible.builtin.file', pubkey) | split(' ') }}"
+    body:
+      key: "{{ key_contents[0] }} {{ key_contents[1] }}"
+      title: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+  ansible.builtin.uri:
+    url: https://api.github.com/user/ssh_signing_keys
+    method: POST
+    body: "{{ body | to_nice_json }}"
+    body_format: json
+    status_code: [201]
+    headers:
+      Authorization: "Bearer {{ github['personal_token'] }}"
+      Accept: "application/vnd.github+json"
+      X-GitHub-Api-Version: "2022-11-28"
   tags: github
 
 - name: Clone all personal repositories
@@ -22,7 +38,7 @@
   block:
     - name: Query GitHub API for my repositories
       ansible.builtin.uri:
-        url: "https://api.github.com/search/repositories?q=user:{{ github['username'] }}+archived:false"
+        url: "https://api.github.com/search/repositories?q=user:bradleyfrank+archived:false"
         headers:
           Authorization: "token {{ github['personal_token'] }}"
       register: github_repos
@@ -40,7 +56,7 @@
       vars:
         base_url: "https://{{ github['personal_token'] }}@github.com"
       ansible.builtin.git:
-        repo: "{{ base_url }}/{{ github['username'] }}/{{ item['clone_url'] | basename }}"
+        repo: "{{ base_url }}/bradleyfrank/{{ item['clone_url'] | basename }}"
         version: "{{ item['default_branch'] }}"
         dest: "{{ ansible_user_dir }}/Development/Projects/{{ item['name'] }}/{{ item['default_branch'] }}"
         accept_hostkey: true
@@ -67,7 +83,7 @@
       vars:
         base_url: "https://{{ github['personal_token'] }}@github.com"
       ansible.builtin.git:
-        repo: "{{ base_url }}/{{ github['username'] }}/notes-etc"
+        repo: "{{ base_url }}/bradleyfrank/notes-etc"
         version: main
         dest: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main"
         accept_hostkey: true
@@ -78,7 +94,7 @@
         repo: "{{ ansible_user_dir }}/Development/Projects/notes-etc/main"
         scope: local
         name: remote.origin.url
-        value: "git@github.com:{{ github['username'] }}/notes-etc.git"
+        value: "git@github.com:bradleyfrank/notes-etc.git"
 
 - name: Download references
   vars:
