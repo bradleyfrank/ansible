@@ -5,7 +5,7 @@
     user: ryanoasis
     repo: nerd-fonts
     action: latest_release
-    token: "{{ github['personal_token'] }}"
+    token: "{{ github_token['personal'] }}"
   register: nerd_fonts_latest_release
   tags: fonts
 

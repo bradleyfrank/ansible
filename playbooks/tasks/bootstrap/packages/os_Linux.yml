@@ -48,7 +48,7 @@
   ansible.builtin.uri:
     url: https://api.github.com/repos/NixOS/nix/tags
     headers:
-      Authorization: "token {{ github['personal_token'] }}"
+      Authorization: "token {{ github_token['personal'] }}"
   register: nix_release
   tags: [packages, nix]
 

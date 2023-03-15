@@ -7,7 +7,7 @@
     name: "{{ ansible_user_id }}@{{ ansible_hostname }}"
     pubkey: "{{ lookup('ansible.builtin.file', pubkey) }}"
     state: present
-    token: "{{ github['personal_token'] }}"
+    token: "{{ github_token['personal'] }}"
   when:
     - pubkey
     - upload_ssh_key_github
@@ -27,7 +27,7 @@
     body_format: json
     status_code: [201]
     headers:
-      Authorization: "Bearer {{ github['personal_token'] }}"
+      Authorization: "Bearer {{ github_token['personal'] }}"
       Accept: "application/vnd.github+json"
       X-GitHub-Api-Version: "2022-11-28"
   tags: github
@@ -40,7 +40,7 @@
       ansible.builtin.uri:
         url: "https://api.github.com/search/repositories?q=user:bradleyfrank+archived:false"
         headers:
-          Authorization: "token {{ github['personal_token'] }}"
+          Authorization: "token {{ github_token['personal'] }}"
       register: github_repos
 
     - name: Create Git project directories
@@ -54,7 +54,7 @@
 
     - name: Clone my GitHub repositories
       vars:
-        base_url: "https://{{ github['personal_token'] }}@github.com"
+        base_url: "https://{{ github_token['personal'] }}@github.com"
       ansible.builtin.git:
         repo: "{{ base_url }}/bradleyfrank/{{ item['clone_url'] | basename }}"
         version: "{{ item['default_branch'] }}"
@@ -81,7 +81,7 @@
   block:
     - name: Clone notes repo
       vars:
-        base_url: "https://{{ github['personal_token'] }}@github.com"
+        base_url: "https://{{ github_token['personal'] }}@github.com"
       ansible.builtin.git:
         repo: "{{ base_url }}/bradleyfrank/notes-etc"
         version: main
