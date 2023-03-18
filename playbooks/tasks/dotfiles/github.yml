@@ -57,7 +57,7 @@
 
     - name: Clone my GitHub repositories
       vars:
-        base_url: "https://{{ github_token['personal'] }}@github.com"
+        base_url: "https://oauth2:{{ github_token['personal'] }}@github.com"
       ansible.builtin.git:
         repo: "{{ base_url }}/bradleyfrank/{{ item['clone_url'] | basename }}"
         version: "{{ item['default_branch'] }}"
@@ -84,7 +84,7 @@
   block:
     - name: Clone notes repo
       vars:
-        base_url: "https://{{ github_token['personal'] }}@github.com"
+        base_url: "https://oauth2:{{ github_token['personal'] }}@github.com"
       ansible.builtin.git:
         repo: "{{ base_url }}/bradleyfrank/notes-etc"
         version: main
