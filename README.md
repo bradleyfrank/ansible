@@ -39,7 +39,7 @@ Post-bootstrap, the playbook `secrets.yml` will print out the unencrypted Vault 
 ## Running
 
 ```shell
-curl -sO https://bbdm.franklybrad.com/install
+curl -sO https://dotfiles.franklybrad.com/install
 ```
 
 _Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and will skip the setup prompts._
