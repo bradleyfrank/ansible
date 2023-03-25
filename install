@@ -7,6 +7,7 @@ ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
 HOMEBREW_INSTALL=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+VAULT_ID="$HOME/.ansible/vault"
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
@@ -72,6 +73,6 @@ EOF
 ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml --extra-vars "@setup/extra-vars.yml"
 
 case $ANSIBLE_REPO_PLAYBOOK in
-  bootstrap) ansible-playbook --ask-become-pass playbooks/bootstrap.yml ;;
-  dotfiles)  ansible-playbook playbooks/dotfiles.yml ;;
+  bootstrap) ansible-playbook --vault-password-file "$VAULT_ID" --ask-become-pass playbooks/bootstrap.yml ;;
+  dotfiles)  ansible-playbook --vault-password-file "$VAULT_ID" playbooks/dotfiles.yml ;;
 esac

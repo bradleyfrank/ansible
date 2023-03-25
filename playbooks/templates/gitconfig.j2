@@ -44,10 +44,8 @@
   name = {{ ansible_user_gecos }}
   email = {{ email }}
   signingkey = {{ pubkey_content[0] }} {{ pubkey_content[1] }}
-{% if work_system -%}
-[url "https://api:{{ github['work_token'] | trim('\n') }}@github.com/"]
-  insteadOf = https://github.com/
-{% endif -%}
+[url "https://api:{{ github_token['work'] | trim('\n') | default('<pat>') }}@github.com/oreillymedia"]
+  insteadOf = https://github.com/oreillymedia
 [gpg]
   format = ssh
 [gpg "ssh"]

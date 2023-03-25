@@ -104,7 +104,7 @@ alias lt='exa --color always --classify --long --all --sort time'
 
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
-alias dotfiles='ansible-playbook playbooks/dotfiles.yml'
+alias dotfiles='ansible-playbook --ask-vault-password playbooks/dotfiles.yml'
 alias e='extract'
 alias glances='glances --theme-white'
 alias isodate='date --iso-8601=seconds'

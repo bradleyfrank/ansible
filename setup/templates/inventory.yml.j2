@@ -12,13 +12,20 @@ local:
         localhost
   vars:
     ansible_connection: local
+    created: {{ ansible_date_time['date'] }}
     email: {{ email }}
     hostname: {{ hostname }}
     work_system: {{ work_system }}
     clone_personal_repos: {{ clone_personal_repos }}
     upload_ssh_key_github: {{ upload_ssh_key_github }}
     install_mas_apps: {{ install_mas_apps }}
+    github_token:
+      personal: !vault |
+        {{ gh_token_personal_encrypted | indent(width=8, first=true) | trim }}
+      work: !vault |
+        {{ gh_token_work_encrypted | indent(width=8, first=true) | trim }}
     ssh_keys:
-  {% for item in ssh_keys['results'] %}
-  {{ item['stdout'] | indent(width=2, first=True) }}
-  {% endfor %}
+      rsa: !vault |
+        {{ rsa_encrypted | indent(width=8, first=true) | trim }}
+      ed25519: !vault |
+        {{ ed25519_encrypted | indent(width=8, first=true) | trim }}

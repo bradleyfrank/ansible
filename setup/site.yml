@@ -1,65 +1,10 @@
 ---
 
-- name: Bootstrap Ansible settings
+- name: Bootstrap Ansible
   hosts: localhost
 
-  vars:
-    system_type: "{{ current_system if current_system is defined else 'None' }}"
-    default_hostname: "{{ current_hostname if current_hostname is defined else '' }}"
-    default_email: "{{ current_email if current_email is defined else '' }}"
-    default_mas: "{{ true if 'Darwin' in system_type else false }}"
-    vault_password_file: "{{ ansible_user_dir }}/.ansible/vault"
-
-  vars_prompt:
-    - name: vault_password
-      prompt: Enter vault password
-      unsafe: true
-      confirm: true
-    - name: hostname
-      prompt: Enter system hostname
-      private: false
-      default: "{{ default_hostname }}"
-    - name: email
-      prompt: Enter email address
-      private: false
-      default: "{{ default_email }}"
-    - name: clone_personal_repos
-      prompt: Clone all personal GitHub repos (True|False)
-      private: false
-      default: true
-    - name: upload_ssh_key_github
-      prompt: Upload SSH key to Github (True|False)
-      private: false
-      default: true
-    - name: install_mas_apps
-      prompt: Install apps from Mac App Store (True|False)
-      private: false
-      default: "{{ default_mas }}"
-    - name: work_system
-      prompt: Install employer settings and scripts (True|False)
-      private: false
-      default: false
-
-  tasks:
-    - name: Create vault file
-      ansible.builtin.copy:
-        content: "{{ vault_password }}"
-        dest: "{{ vault_password_file }}"
-        mode: 0400
-
-    - name: Generate SSH key passphrases
-      vars:
-        passphrase: "{{ lookup('password', ansible_user_dir + '/.ssh/id_' + item + '.passphrase') }}"
-      ansible.builtin.command: "ansible-vault encrypt_string '{{ passphrase }}' --vault-password-file '{{ vault_password_file }}' --name {{ item }}"
-      loop: [rsa, ed25519]
-      changed_when: false
-      register: ssh_keys
-
-    - name: Create inventory
-      ansible.builtin.template:
-        src: inventory.yml.j2
-        dest: "{{ ansible_user_dir }}/.ansible/inventory.yml"
-        mode: 0755
+- name: Import inventory playbook
+  ansible.builtin.import_playbook: inventory.yml
 
 - name: Import Ansible galaxy playbook
   ansible.builtin.import_playbook: collections.yml

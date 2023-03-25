@@ -1,7 +1,6 @@
 ---
 
 backups_dir: "{{ ansible_user_dir }}/.ansible/backups"
-github_release_temp_dir: /tmp/github_release
 git_allowed_signers_file: "{{ ansible_user_dir }}/.ssh/allowed_signers"
 git_public_signing_key: "{{ ansible_user_dir }}/.ssh/id_ed25519.pub"
 zsh_site_functions: "{{ ansible_user_dir }}/.local/share/zsh/site-functions"

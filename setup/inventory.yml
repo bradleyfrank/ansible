@@ -1,0 +1,78 @@
+---
+
+- name: Create host inventory
+  hosts: localhost
+
+  vars:
+    system_type: "{{ current_system if current_system is defined else 'None' }}"
+    default_hostname: "{{ current_hostname if current_hostname is defined else '' }}"
+    default_email: "{{ current_email if current_email is defined else '' }}"
+    default_mas: "{{ true if 'Darwin' in system_type else false }}"
+    default_vault_password: "{{ lookup('community.general.random_words',
+      numwords=5, delimiter='-', case='capitalize') }}"
+
+  vars_prompt:
+    - name: vault_password
+      prompt: Create vault password
+      unsafe: true
+      confirm: true
+      default: "{{ default_vault_password }}"
+    - name: hostname
+      prompt: Enter system hostname
+      private: false
+      default: "{{ default_hostname }}"
+    - name: email
+      prompt: Enter email address
+      private: false
+      default: "{{ default_email }}"
+    - name: clone_personal_repos
+      prompt: Clone all personal GitHub repos (True|False)
+      private: false
+      default: true
+    - name: upload_ssh_key_github
+      prompt: Upload SSH key to Github (True|False)
+      private: false
+      default: true
+    - name: install_mas_apps
+      prompt: Install apps from Mac App Store (True|False)
+      private: false
+      default: "{{ default_mas }}"
+    - name: work_system
+      prompt: Install employer settings and scripts (True|False)
+      private: false
+      default: false
+    - name: gh_token_personal
+      prompt: GitHub token (personal)
+      private: true
+      confirm: true
+      default: "None"
+    - name: gh_token_work
+      prompt: GitHub token (work)
+      private: true
+      confirm: true
+      default: "None"
+
+  tasks:
+    - name: Create vault file
+      ansible.builtin.copy:
+        content: "{{ vault_password }}"
+        dest: "{{ ansible_user_dir }}/.ansible/vault"
+        mode: 0400
+
+    - name: Create inventory
+      vars:
+        rsa_encrypted: "{{ lookup('community.general.random_words',
+          numwords=5, delimiter='-', case='capitalize') |
+          ansible.builtin.vault(vault_password) }}"
+        ed25519_encrypted: "{{ lookup('community.general.random_words',
+          numwords=5, delimiter='-', case='capitalize') |
+          ansible.builtin.vault(vault_password) }}"
+        gh_token_personal_encrypted: "{{ gh_token_personal |
+          ansible.builtin.vault(vault_password) }}"
+        gh_token_work_encrypted: "{{ gh_token_work |
+          ansible.builtin.vault(vault_password) }}"
+      ansible.builtin.template:
+        src: inventory.yml.j2
+        dest: "{{ ansible_user_dir }}/.ansible/inventory.yml"
+        decrypt: false
+        mode: 0755
