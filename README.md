@@ -21,7 +21,7 @@ The playbooks are designed with _no assumed prior knowledge of the system_, in c
 
 3. **Bootstrapping the system:** (`playbooks/bootstrap.yml`) The `bootstrap` playbook is run to pull in additional software, configure the OS and applications, and setup the user environment (e.g. terminal, desktop, etc). _This playbook requires `sudo` access for both macOS and Linux._
 
-The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it's own periodically as user preferences and settings grow, adjust, or change. It can be run initially without the `bootstrap` playbook, for example on a shared server, but it assumes all prerequisite packages are installed. _This playbook should never require `sudo` access._
+4. The `dotfiles` playbook is imported by `bootstrap`, and is meant to be run on it's own periodically as user preferences and settings grow, adjust, or change. It can be run initially without the `bootstrap` playbook, for example on a shared server, but it assumes all prerequisite packages are installed. _This playbook should never require `sudo` access._
 
 ### Vaulted secrets
 
@@ -63,7 +63,7 @@ sh install [-g git_branch] [-d]
 
 ### Post-bootstrap tasks
 
-* Record the Vault passphrase
+* Record and delete the Vault passphrase (`~/.ansible/vault`)
 * Record the SSH passphrases
 * A full reboot
 * To install Logi Options+ for macOS, run `open -a "~/Downloads/logioptionsplus_installer.app"`
