@@ -8,9 +8,20 @@
     pubkey: "{{ lookup('ansible.builtin.file', pubkey) }}"
     state: present
     token: "{{ github_token['personal'] }}"
-  when:
-    - pubkey
-    - upload_ssh_key_github
+  when: [pubkey, upload_ssh_key_github]
+  tags: github
+
+- name: Fetch GitHub SSH signing keys
+  ansible.builtin.uri:
+    url: https://api.github.com/user/ssh_signing_keys
+    method: GET
+    status_code: [200]
+    headers:
+      Authorization: "Bearer {{ github_token['personal'] }}"
+      Accept: "application/vnd.github+json"
+      X-GitHub-Api-Version: "2022-11-28"
+  register: github_ssh_signing_keys
+  when: upload_ssh_key_github
   tags: github
 
 - name: Register SSH signing key with Github
@@ -20,6 +31,8 @@
     body:
       key: "{{ key_contents[0] }} {{ key_contents[1] }}"
       title: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+    key_uploaded: "{{ lookup('ansible.utils.index_of',
+      github_ssh_signing_keys['json'], 'eq', body['title'], 'title') }}"
   ansible.builtin.uri:
     url: https://api.github.com/user/ssh_signing_keys
     method: POST
@@ -30,9 +43,7 @@
       Authorization: "Bearer {{ github_token['personal'] }}"
       Accept: "application/vnd.github+json"
       X-GitHub-Api-Version: "2022-11-28"
-  when:
-    - pubkey
-    - upload_ssh_key_github
+  when: [pubkey, upload_ssh_key_github, not key_uploaded]
   tags: github
 
 - name: Clone all personal repositories
