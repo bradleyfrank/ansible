@@ -4,7 +4,7 @@
   environment:
     PATH: "{{ path }}"
   ansible.builtin.shell:
-    cmd: brew info --cask stats --json=v2 | jq -r '.casks[].installed'
+    cmd: set -o pipefail && brew info --cask stats --json=v2 | jq -r '.casks[].installed'
   changed_when: false
   register: stats_version
   tags: stats
