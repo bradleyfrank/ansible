@@ -21,7 +21,7 @@ The playbooks are designed with _no assumed prior knowledge of the system_, in c
 
 3. **Bootstrapping the system:** (`playbooks/bootstrap.yml`) The bootstrap playbook is run to pull in additional software, configure the OS and applications, and setup the user environment (e.g. terminal, desktop, etc). _This playbook requires `sudo` access on both macOS and Linux._
 
-4. Configuring dotfiles: (`playbooks/dotfiles.yml`) The dotfiles playbook is imported by the bootstrap playbook, and is meant to be run on its own periodically as user preferences and settings grow, adjust, or change. It can be run initially without bootstrapping, but it assumes all prerequisite packages are installed. _This playbook should never require `sudo` access._
+4. **Configuring dotfiles**: (`playbooks/dotfiles.yml`) The dotfiles playbook is imported by the bootstrap playbook, and is meant to be run on its own periodically as user preferences and settings grow, adjust, or change. It can be run initially without bootstrapping, but it assumes all prerequisite packages are installed. _This playbook should never require `sudo` access._
 
 ### Vaulted secrets
 
