@@ -125,7 +125,6 @@ brew_packages:
     - signal
     - sony-ps-remote-play
     - spotify
-    - stats
     - transmission
     - transmit
     - tor-browser
