@@ -20,7 +20,7 @@ set -g status on
 set -g status-right "#[fg=colour61,bold]#{session_name} #[fg=default]@ #[fg=colour125]#h#[nobold]"
 set -g window-status-current-format "#[fg=colour231,bg=colour33,bold] #I: #W #[nobold]"
 set -g window-status-format "#[fg=colour33,bg=colour254,bold] #I: #W #[nobold]"
-{% if "extra" in item -%}
+{% elif "extra" in item -%}
 set -g pane-active-border-style "bg=default,#{?window_zoomed_flag,fg=colour61,#{?pane_synchronized,fg=colour37,fg=colour166}}"
 set -g pane-border-format " #[bold,fg=colour231,#{?window_zoomed_flag,bg=colour61,#{?pane_synchronized,bg=colour37,#{?pane_active,bg=colour166,bg=colour245}}}] #{?window_zoomed_flag,Z,#P} \
 #[#{?window_zoomed_flag,fg=colour61,#{?pane_synchronized,fg=colour37,#{?pane_active,fg=colour166,fg=colour245}}},bg=default,nobold] \
@@ -75,6 +75,7 @@ bind 'O' run-shell -b "tmux-utils open-project"
 {{ popup("R", "reference", "~/Development/Reference", "") }}
 {{ popup("P", "popup", "~/", "") }}
 {% endif -%}
+bind 'S' command-prompt -p "New session: "  "new-session -A -s '%%'"
 bind 'W' choose-tree -Zs "move-window -t %%"
 bind 'c' new-window -c "~/"
 bind 'h' select-layout even-vertical
