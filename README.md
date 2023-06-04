@@ -74,7 +74,7 @@ The following commands should be run from the top level of the repository.
 * Update dotfiles: `ansible-playbook playbooks/dotfiles.yml --ask-vault-password`
 * Regenerate `~/.ansible/inventory.yml`: `ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml`
 * Update Ansible Galaxy collections: `ansible-playbook setup/collections.yml`
-* Show vaulted secrets: `ansible-playbook playbook/secrets.yml --ask-vault-password`
+* Show vaulted secrets: `ansible-playbook playbooks/secrets.yml --ask-vault-password`
 
 ## Reusability
 
