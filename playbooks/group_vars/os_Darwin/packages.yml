@@ -107,6 +107,7 @@ brew_packages:
     - firefox
     - google-cloud-sdk
     - iina
+    - itsycal
     - keepassxc
     - keepingyouawake
     - kindle
@@ -149,3 +150,4 @@ mas_packages:
   - 1516894961  # Codye
   - 1320666476  # Wipr
   - 1303222628  # Paprika Recipe Manager 3
+  - 1549370672  # Save to Raindrop.io

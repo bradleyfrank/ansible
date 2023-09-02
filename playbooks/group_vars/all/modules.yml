@@ -48,6 +48,7 @@ vim_extensions:
   - name: vim-airline-themes
     repo: https://github.com/vim-airline/vim-airline-themes.git
   - name: vim-gitgutter
+    version: main
     repo: https://github.com/airblade/vim-gitgutter.git
   - name: indentLine
     repo: https://github.com/Yggdroot/indentLine.git
