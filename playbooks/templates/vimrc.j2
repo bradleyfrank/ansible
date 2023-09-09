@@ -19,6 +19,7 @@ let g:airline_section_z = '%3p%% %3l/%L:%3v'
 let g:indentLine_char = '│'
 let g:indentLine_color_term = 254
 let g:is_posix = 1
+let g:mapleader = ","
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 30
 let g:solarized_statusline = "flat"
@@ -27,9 +28,11 @@ let g:vim_json_conceal = 0
 let g:vim_markdown_conceal = 0
 
 map <C-n> :Lexplore<CR>
-map <C-u> :Buf<CR>
 map <Leader>s :set spell!<CR>
-nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+nnoremap <Leader>b :Buf<CR>
+nnoremap <Space> :nohlsearch<CR>
+nnoremap H :bp<CR>
+nnoremap L :bn<CR>
 
 set background=light
 set backspace=indent,eol,start
