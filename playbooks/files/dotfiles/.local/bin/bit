@@ -8,6 +8,10 @@
 # Requires: tmux, git, fzf, gh
 #
 
+PROJECTS_DIR="$HOME/Development/Projects"
+TMUX_OPEN_IN="window"
+
+
 usage() {
   if [[ "$1" =~ (branch|all) ]]; then
     echo "bit branch [-n <name>] [-p|-w]"
@@ -28,16 +32,19 @@ usage() {
   fi
 
   if [[ "$1" =~ (clone|all) ]]; then
-    echo "bit clone [<url>]"
+    echo "bit clone [-n <url>]"
+    echo "  -n  Repository URL"
   fi
 }
 
+
 in_git_repo() {
-  if ! git_toplevel_path="$(git rev-parse --show-toplevel 2> /dev/null)" 2> /dev/null; then
+  if [[ $GIT_TOPLEVEL_PATH != "null" ]]; then
     echo "Must be in a Git repository" >&2
     return 1
   fi
 }
+
 
 fzf_bit() {
   if [[ -n $TMUX ]]; then
@@ -47,19 +54,21 @@ fzf_bit() {
   fi
 }
 
+
 bit_branch() {
+  local new_branch_name repo_branch_path; new_branch_name="$1"
   in_git_repo || exit 1
-  repo_base_path="$(dirname "$git_toplevel_path")"
-  cd "$git_toplevel_path" || exit 1
-  [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$git_toplevel_path")"
-  repo_branch_path="$repo_base_path/$new_branch_name"
+  cd "$GIT_TOPLEVEL_PATH" || exit 1
+  [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$GIT_TOPLEVEL_PATH")"
+  repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$new_branch_name"
   git worktree add "$repo_branch_path"
   open_in_tmux
 }
 
+
 bit_pull() {
+  local new_branch_name repo_branch_path; new_branch_name="$1"
   in_git_repo || exit 1
-  repo_base_path="$(dirname "$git_toplevel_path")"
   git fetch origin --prune
   new_branch_name="$(
     git for-each-ref --format='%(refname:short)' refs/remotes \
@@ -69,7 +78,7 @@ bit_pull() {
       | fzf_bit --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
   )"
   [[ -z $new_branch_name ]] && exit 0
-  repo_branch_path="$repo_base_path/$new_branch_name"
+  repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$new_branch_name"
   # TODO: Fix path!
   git worktree add "$repo_branch_path"
   cd "$repo_branch_path" || exit 1
@@ -79,12 +88,13 @@ bit_pull() {
   open_in_tmux
 }
 
+
 bit_delete() {
   local worktree
   in_git_repo || exit 1
   while read -r worktree; do
     [[ -z $worktree ]] && { echo "No worktree(s) selected." >&2; exit 1; }
-    [[ "$worktree" == "$git_toplevel_path" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
+    [[ "$worktree" == "$GIT_TOPLEVEL_PATH" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
     git worktree remove --force "$worktree"
     git branch --delete --force "$(basename "$worktree")"
   done <<< "$(
@@ -95,8 +105,9 @@ bit_delete() {
   )"
 }
 
+
 bit_clone() {
-  local gh_repo repo_url tmp_repo; repo_url="$1"
+  local gh_repo repo_url tmp_repo org_name gh_repo repo_branch_path; repo_url="$1"
 
   if [[ -z $repo_url ]]; then
     org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | fzf_bit --no-multi)"
@@ -123,19 +134,20 @@ bit_clone() {
     exit 1
   fi
 
-  repo_base_path="$projects_dir/$repo_name"
-  mkdir --parents "$repo_base_path" || exit 1
+  mkdir --parents "$PROJECTS_DIR/$repo_name" || exit 1
   tmp_repo="$(mktemp --directory)"
   git clone "$repo_url" "$tmp_repo/$repo_name"
   cd "$tmp_repo/$repo_name" || exit 1
-  repo_branch_path="$repo_base_path/$(git branch --show-current)"
+  repo_branch_path="$PROJECTS_DIR/$repo_name/$(git branch --show-current)"
   mv --no-target-directory "$tmp_repo/$repo_name" "$repo_branch_path"
-  open_in_tmux
+  open_in_tmux "$repo_branch_path"
 }
 
+
 open_in_tmux() {
+  local repo_branch_path; repo_branch_path="$1"
   if [[ -n $TMUX ]]; then
-    case $open_in in
+    case $TMUX_OPEN_IN in
       window) tmux-utils open-project -d "$repo_branch_path" ;;
       pane)   tmux split-window -h -c "$repo_branch_path" ;;
     esac
@@ -146,11 +158,7 @@ open_in_tmux() {
 
 
 main() {
-  local OPTIND subcommand
-  local projects_dir open_in git_toplevel_path org_name repo_name repo_base_path repo_branch_path
-
-  projects_dir="$HOME/Development/Projects"
-  open_in="window"
+  local OPTIND subcommand target
 
   while getopts "h" opt; do
     case "$opt" in
@@ -164,20 +172,22 @@ main() {
   while getopts ':hn:pw' flag; do
     case "$flag" in
       h) usage "$subcommand"; exit 0 ;;
-      n) new_branch_name="$OPTARG" ;;
-      p) open_in="pane" ;;
-      w) open_in="window" ;;
+      n) target="$OPTARG" ;;
+      p) TMUX_OPEN_IN="pane" ;;
+      w) TMUX_OPEN_IN="window" ;;
       :) echo "Must supply an argument to -$OPTARG." >&2; usage "$subcommand"; exit 1 ;;
-     \?) echo "Invalid option: $OPTARG" >&2; usage "$subcommand"; exit 1 ;;
+     \?) echo "Invalid option: -$OPTARG" >&2; usage "$subcommand"; exit 1 ;;
     esac
   done
 
+  GIT_TOPLEVEL_PATH="$(git rev-parse --show-toplevel 2> /dev/null || echo "null")"
+
   case "$subcommand" in
-    create) echo "Use 'branch' instead." ;;
-    branch) bit_branch     ;;
-      pull) bit_pull       ;;
-    delete) bit_delete     ;;
-     clone) bit_clone "$1" ;;
+    branch) bit_branch "$target" ;;
+      pull) bit_pull "$target" ;;
+    delete) bit_delete ;;
+     clone) bit_clone "$target" ;;
+         *) usage ;;
   esac
 }
 
