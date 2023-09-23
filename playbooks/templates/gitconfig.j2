@@ -1,7 +1,5 @@
 [alias]
   co = checkout
-  diff-staged = diff --staged
-  diff-upstream = !git fetch origin && git diff master origin/master
   graph = log --oneline --decorate --graph --all
   history = log --full-history --
   last = log -1 HEAD --stat
@@ -12,7 +10,6 @@
   showtag = !git --no-pager tag -l --sort=v:refname | tail -n -1
   std = stash drop
   stp = stash pop
-  stu = stash --include-untracked
   tags = tag -l --sort=v:refname
   unstage = reset HEAD --
   upstream = !git branch --show-current | xargs -I{} git branch --set-upstream-to origin/{} {}
