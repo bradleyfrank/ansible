@@ -25,7 +25,7 @@ brew_packages:
     - duf
     - dust
     - eye-d3
-    - exa
+    - eza
     - fd
     - fdupes
     - ffmpeg

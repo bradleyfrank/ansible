@@ -85,16 +85,16 @@ alias pyun='python3 -m pip uninstall'
 alias pyup='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
   | xargs --no-run-if-empty python3 -m pip install --user --upgrade'
 
-alias l='exa --color always --classify'
-alias la='exa --color always --classify --all'
-alias lc='exa --color always --classify --long --all --grid'
-alias ld='exa --color always --classify --long --all --only-dirs'
-alias lg='exa --color always --classify --long --all --git'
-alias ll='exa --color always --classify --long --all --group'
-alias lp='exa --color always --classify --long --all --no-permissions --octal-permissions'
-alias lS='exa --color always --classify --long --all --group-directories-first --sort size'
+alias l='eza --color always --classify'
+alias la='eza --color always --classify --all'
+alias lc='eza --color always --classify --long --all --grid'
+alias ld='eza --color always --classify --long --all --only-dirs'
+alias lg='eza --color always --classify --long --all --git'
+alias ll='eza --color always --classify --long --all --group'
+alias lp='eza --color always --classify --long --all --no-permissions --octal-permissions'
+alias lS='eza --color always --classify --long --all --group-directories-first --sort size'
 alias ls='ls --color --classify --human-readable'
-alias lt='exa --color always --classify --long --all --sort time'
+alias lt='eza --color always --classify --long --all --sort time'
 
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
@@ -206,14 +206,14 @@ zstyle ':vcs_info:git*+set-message:*' hooks format
 
 zstyle ':fzf-tab:*' default-color $'\033[38;5;240m'
 zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa --color always --classify -1 $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color always --classify -1 $realpath'
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
 zstyle ':completion:*' menu select                 # Use menu selection for completion
 zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
 zstyle ':completion:*' rehash true                 # Auto find new executables in path
-zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
+zstyle ':completion:*' accept-ezact '*(N)'         # Speed up completions
 zstyle ':completion:*' use-cache on                # "
 zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 
@@ -261,8 +261,8 @@ source /usr/share/fzf/shell/key-bindings.zsh
 {% elif 'Ubuntu' in ansible_distribution %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
-source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/ezamples/completion.zsh
+source /usr/share/doc/fzf/ezamples/key-bindings.zsh
 {% endif %}
 {% for plugin in zsh_plugins %}
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
