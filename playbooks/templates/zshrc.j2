@@ -134,7 +134,7 @@ tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 gcommon() { cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .); }
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
-gstash() { git stash push --git-dir "$(git rev-parse --git-common-dir)" --work-tree "$(git rev-parse --show-toplevel)" "$@"; }
+gstash() { git --git-dir "$(git rev-parse --git-common-dir)" --work-tree "$(git rev-parse --show-toplevel)" stash push "$@"; }
 
 precmd() {
   typeset    _rc=$? _prompt_color
