@@ -41,7 +41,7 @@ export VISUAL=vim
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
 export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:33,hl+:33:bold --reverse --height=50% --multi --info inline"
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+export KEYTIMEOUT=1
 export LESS="-R --mouse"
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
 export LESS_TERMCAP_md=$'\E[01;32m'     # "
@@ -51,6 +51,7 @@ export LESS_TERMCAP_so=$'\E[01;104;97m' # "
 export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export PRE_COMMIT_COLOR=never  # Colors are incompatible with solarized-light
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=37"
 {% if 'MacOSX' in ansible_distribution %}
 export CLICOLOR=1
@@ -244,8 +245,8 @@ zle -N edit-command-line
 bindkey -e
 bindkey '^X^E' edit-command-line
 bindkey '\033' edit-command-line
-bindkey '^[[1;5D' backward-word
-bindkey '^[[1;5C' forward-word
+bindkey '^[\[' backward-word
+bindkey '^[\]' forward-word
 
 
 {% if 'MacOSX' in ansible_distribution %}
@@ -271,8 +272,8 @@ for rc in {{ zshrcd }}/*; do source "$rc"; done
 
 
 {% if work_system -%}
-complete -o nospace -C /usr/local/bin/terraform terraform
-complete -o nospace -C /usr/local/bin/vault vault
+complete -o nospace -C terraform terraform
+complete -o nospace -C vault vault
 
 
 {% endif %}
@@ -280,8 +281,3 @@ eval "$(dircolors $HOME/.dir_colors)"
 eval "$(keychain --eval --ignore-missing --quiet
 {%- if 'MacOSX' in ansible_distribution %} --inherit any
 {%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
-
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  vscwd="$(basename $(pwd))"
-  tmux -L "$vscwd" -f ~/.config/tmux/vscode.conf new-session -A -s "$vscwd"
-fi
