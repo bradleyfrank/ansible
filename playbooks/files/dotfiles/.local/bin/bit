@@ -62,7 +62,7 @@ bit_branch() {
   [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$GIT_TOPLEVEL_PATH")"
   repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$new_branch_name"
   git worktree add "$repo_branch_path"
-  open_in_tmux
+  open_in_tmux "$repo_branch_path"
 }
 
 
@@ -85,7 +85,7 @@ bit_pull() {
   git branch --set-upstream-to origin/"$new_branch_name" "$new_branch_name"
   git pull
   git reset --hard origin/"$new_branch_name"
-  open_in_tmux
+  open_in_tmux "$repo_branch_path"
 }
 
 
