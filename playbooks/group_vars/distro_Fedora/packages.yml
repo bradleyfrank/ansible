@@ -14,7 +14,7 @@ dnf_packages:
     - dnf-utils
     - dua-cli
     - duf
-    - exa
+    - eza
     - fd-find
     - fdkaac
     - fdupes

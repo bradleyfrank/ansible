@@ -9,8 +9,7 @@
 #
 
 _get_window_name() {
-  local cwd base_cwd repo window_name username icon_git icon_folder icon_home
-  icon_git=$'\ue725' icon_folder=$'\uf74a' icon_home=$'\uf7db'
+  local cwd base_cwd repo window_name username
   cwd="$1" base_cwd="$(basename "$cwd")"
 
   pushd "$cwd" &> /dev/null || exit 1
@@ -20,13 +19,13 @@ _get_window_name() {
     else
       repo="$base_cwd"
     fi
-    window_name="${icon_git} ${repo} (${branch_name})"
+    window_name="${repo} (${branch_name})"
   else
     username="$(id --user --name)"
     if [[ "$base_cwd" == "$username" ]]; then
-      window_name="${icon_home} ${username}"
+      window_name="${username}"
     else
-      window_name="${icon_folder} ${base_cwd}"
+      window_name="${base_cwd}"
     fi
   fi
   popd &> /dev/null || exit 1
@@ -38,7 +37,7 @@ _get_project_dir() {
   find "${HOME}/Development/Projects" -mindepth 2 -maxdepth 2 -type d \
     | fzf-tmux -p --ansi -i --height=50% --reverse -0 --inline-info --border rounded --no-multi \
       --delimiter / --with-nth -2,-1 \
-      --preview="exa --color always --classify --icons --no-user --no-permissions --long --all --git {} --"
+      --preview="exa --color always --classify --no-user --no-permissions --long --all --git {} --"
 }
 
 rename_window() {
@@ -77,13 +76,12 @@ dump_pane() {
 }
 
 git_branch() {
-  local git_branch icon_git cwd; cwd="$1"
-  icon_git=$'\ue725'
+  local git_branch cwd; cwd="$1"
   cd "$cwd" || exit
   if git_branch="$(git branch --show-current 2>/dev/null)"; then
-    echo -e "#[fg=colour64]${icon_git} ${git_branch}#[fg=default]"
+    echo -e "#[fg=colour64]${git_branch}#[fg=default]"
   else
-    echo -e "#[fg=colour64]${icon_git} n/a#[fg=default]"
+    echo -e "#[fg=colour64]n/a#[fg=default]"
   fi
 }
 

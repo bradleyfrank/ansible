@@ -12,7 +12,7 @@ apt_packages:
     - ca-certificates  # gcloud
     - dictd
     - duf
-    - exa
+    - eza
     - fd-find
     - fdupes
     - ffmpeg
