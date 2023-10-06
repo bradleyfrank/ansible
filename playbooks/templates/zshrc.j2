@@ -82,6 +82,7 @@ unalias run-help
 {% endif %}
 alias help='run-help'  # help topics path set via $HELPDIR
 
+alias pyin='python3 -m pip install --user'
 alias pyun='python3 -m pip uninstall'
 alias pyup='python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
   | xargs --no-run-if-empty python3 -m pip install --user --upgrade'
