@@ -214,7 +214,7 @@ zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand alias
 zstyle ':completion:*' menu select                 # Use menu selection for completion
 zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
 zstyle ':completion:*' rehash true                 # Auto find new executables in path
-zstyle ':completion:*' accept-ezact '*(N)'         # Speed up completions
+zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
 zstyle ':completion:*' use-cache on                # "
 zstyle ':completion:*' cache-path ~/.zsh/cache     # "
 
@@ -256,8 +256,8 @@ source /usr/share/fzf/shell/key-bindings.zsh
 {% elif 'Ubuntu' in ansible_distribution %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/doc/fzf/ezamples/completion.zsh
-source /usr/share/doc/fzf/ezamples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
 {% for plugin in zsh_plugins %}
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
