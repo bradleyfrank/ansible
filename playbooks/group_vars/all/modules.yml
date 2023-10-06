@@ -87,3 +87,6 @@ zsh_plugins:
   - name: fzf-tab
     repo: https://github.com/Aloxaf/fzf-tab
     source: fzf-tab.plugin.zsh
+  - name: zsh-vi-mode
+    repo: https://github.com/jeffreytse/zsh-vi-mode.git
+    source: zsh-vi-mode.plugin.zsh

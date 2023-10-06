@@ -135,7 +135,7 @@ tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 
 gcommon() { cd $(git rev-parse --git-common-dir | xargs dirname | xargs realpath --relative-to .); }
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
-gstash() { git --git-dir "$(git rev-parse --git-common-dir)" --work-tree "$(git rev-parse --show-toplevel)" stash push "$@"; }
+gstash() { git --git-dir "$(git rev-parse --git-common-dir)" --work-tree "$(git rev-parse --show-toplevel)" stash "$@"; }
 
 precmd() {
   typeset    _rc=$? _prompt_color
@@ -241,12 +241,6 @@ setopt rcexpandparam           # Array expension with parameters
 autoload -Uz compinit bashcompinit zmv zcalc vcs_info edit-command-line run-help
 compinit -C && bashcompinit
 zle -N edit-command-line
-
-bindkey -e
-bindkey '^X^E' edit-command-line
-bindkey '\033' edit-command-line
-bindkey '^[\[' backward-word
-bindkey '^[\]' forward-word
 
 
 {% if 'MacOSX' in ansible_distribution %}
