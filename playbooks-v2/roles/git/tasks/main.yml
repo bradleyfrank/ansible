@@ -16,6 +16,14 @@
     mode: "0755"
   tags: [git, config]
 
+- name: Enable fsmonitor daemon
+  community.general.ini_file:
+    path: "{{ gitconfig_path }}"
+    section: "core"
+    option: "fsmonitor"
+    value: "true"
+  when: enable_fsmonitor
+
 - name: Create allowed signers file
   ansible.builtin.template:
     src: allowed_signers.j2
