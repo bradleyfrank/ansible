@@ -56,15 +56,4 @@
     - gnome_desktop
   tags: desktop
 
-- name: Generate host keys
-  ansible.builtin.command:
-    cmd: ssh-keygen -A
-    creates: /etc/ssh/ssh_host_*_key
-  become: true
-  tags: ssh
 
-- name: Secure SSH settings
-  ansible.builtin.import_role:
-    name: devsec.hardening.ssh_hardening
-  become: true
-  tags: [ssh, security]

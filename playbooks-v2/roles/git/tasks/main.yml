@@ -1,0 +1,24 @@
+---
+# tasks file for git
+
+# TODO: support for GPG signing key
+
+- name: Read public SSH key for signing key
+  ansible.builtin.set_fact:
+    signing_key: "{{ lookup('file', signing_key_file) | split }}"
+  when: signing_key_type == "ssh"
+  tags: [git, config, signing]
+
+- name: Install gitconfig
+  ansible.builtin.template:
+    src: gitconfig.j2
+    dest: "{{ gitconfig_path }}"
+    mode: "0755"
+  tags: [git, config]
+
+- name: Create allowed signers file
+  ansible.builtin.template:
+    src: allowed_signers.j2
+    dest: "{{ allowed_signers }}"
+    mode: "0644"
+  tags: [git, signing]

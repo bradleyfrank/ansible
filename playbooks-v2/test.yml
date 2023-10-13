@@ -1,0 +1,10 @@
+---
+
+- name: Test
+  hosts: localhost
+
+  tasks:
+
+  - name: Test Git
+    ansible.builtin.import_role:
+      name: git

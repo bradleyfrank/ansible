@@ -1,0 +1,52 @@
+---
+# tasks file for ssh
+
+- name: Ensure SSH directory is present
+  ansible.builtin.file:
+    mode: "0755"
+    path: "{{ ansible_facts['user_dir'] }}/.ssh"
+    state: "directory"
+  tags: [ssh, permissions]
+
+- name: Set proper permissions on ~/.ssh/authorized_keys
+  ansible.builtin.file:
+    mode: "0600"
+    path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+    state: "touch"
+  tags: [ssh, permissions]
+
+- name: Create SSH key
+  community.crypto.openssh_keypair:
+    comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+    passphrase: "{{ item['value'] }}"
+    path: "{{ ansible_user_dir }}/.ssh/id_{{ item['key'] }}"
+    size: 4096
+    type: "{{ item['key'] }}"
+  loop: "{{ ssh_keys | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
+  tags: [ssh, user_keys]
+
+- name: Create SSH config
+  ansible.builtin.template:
+    dest: "{{ ansible_user_dir }}/.ssh/config"
+    mode: "0644"
+    src: "config.j2"
+  tags: [ssh, config]
+
+- name: Create host keys
+  community.crypto.openssh_keypair:
+    path: "/etc/ssh/ssh_host_{{ item }}_key"
+    type: "{{ item }}"
+  loop: ["rsa", "ed25519", "ecdsa"]
+  loop_control:
+    label: "{{ item }}"
+  when: ansible_facts['system'] == "Linux"
+  tags: [ssh, host_keys]
+
+- name: Secure SSH settings
+  ansible.builtin.import_role:
+    name: devsec.hardening.ssh_hardening
+  become: true
+  when: ansible_facts['system'] == "Linux"
+  tags: [ssh, security]

@@ -1,0 +1,9 @@
+ssh_config:
+  memory-alpha:
+    - "HostName 192.168.1.40"
+  all:
+    - "CanonicalizeHostname yes"
+    - "IdentityFile ~/.ssh/id_ed25519"
+    - "ServerAliveCountMax 4"
+    - "ServerAliveInterval 15"
+    - "User bfrank"

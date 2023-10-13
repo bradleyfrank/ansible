@@ -11,13 +11,10 @@
       - path: "{{ ansible_user_dir }}/Development/Scratch"
       - path: "{{ ansible_user_dir }}/Development/Reference"
       - path: "{{ ansible_user_dir }}/Development/Logs"
-      - path: "{{ ansible_user_dir }}/.ssh"
       - path: "{{ ansible_user_dir }}/.config/tmux"
       - path: "{{ ansible_user_dir }}/.vim/pack/default/start"
-      - path: "{{ backups_dir }}"
       - path: "{{ font_dir }}"
         mode: "0700"
-      - path: "{{ glow_config_path }}"
       - path: "{{ zsh_site_functions }}"
 
   handlers:

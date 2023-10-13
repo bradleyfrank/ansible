@@ -1,0 +1,6 @@
+{% for item in gitconfig %}
+[{{ item['section'] }}]
+{% for config in item['configs'] %}
+  {{ config }}
+{% endfor %}
+{% endfor %}
