@@ -89,7 +89,7 @@ open_project() {
 
 
 move_windows() {
-  local OPTIND current_session _index _window _key; current_session="$1"
+  local OPTIND current_session session window window_to_move _index _window _key; current_session="$1"
   local -A tmux_windows
 
   [[ -z $current_session ]] && current_session="$(tmux display-message -p "#{session_name}")"
@@ -100,12 +100,14 @@ move_windows() {
       _window="$(awk -F ':' '{print $2}' <<< "$window")"
       _key="${session}: ${_window}"
       tmux_windows["$_key"]="${session}:${_index}"
-    done <<< "$(tmux list-windows -F "#{window_index}:#{window_name}" -t "$session")"
-  done <<< "$(tmux list-sessions -F "#{session_name}" -f "#{!=:#{session_name},${current_session}}")"
+    done < <(tmux list-windows -F "#{window_index}:#{window_name}" -t "$session")
+  done < <(tmux list-sessions -F "#{session_name}" -f "#{!=:#{session_name},${current_session}}")
 
-  while read -r window; do
-    tmux move-window -s "${tmux_windows["$window"]}" -d
-  done <<< "$(_tmux_fzf --multi <<< "$(printf "%s\n" "${!tmux_windows[@]}" | sort)")"
+  [[ ${#tmux_windows} -eq 0 ]] && return 1
+
+  while read -r window_to_move; do
+    tmux move-window -s "${tmux_windows["$window_to_move"]}" -d
+  done < <(_tmux_fzf --multi <<< "$(printf "%s\n" "${!tmux_windows[@]}" | sort)")
 }
 
 
