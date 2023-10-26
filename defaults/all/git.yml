@@ -1,7 +1,5 @@
 ---
 
-enable_fsmonitor: true
-
 gitconfig:
   - section: "alias"
     configs:

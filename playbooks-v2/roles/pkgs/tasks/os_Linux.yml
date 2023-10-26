@@ -1,0 +1,100 @@
+---
+
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  tags: always
+
+- name: Include distro-specific package tasks
+  ansible.builtin.include_tasks: "tasks/bootstrap/packages/distro_{{ ansible_distribution }}.yml"
+  tags: always
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  tags: [packages, dnf, apt]
+
+- name: Install flatpak packages
+  when: "'gui' in system_type"
+  tags: [packages, flatpak]
+  block:
+    - name: Install flatpak remotes
+      community.general.flatpak_remote:
+        name: "{{ item['name'] }}"
+        state: present
+        flatpakrepo_url: "{{ item['url'] }}"
+        method: user
+      loop: "{{ flatpak_remotes }}"
+      loop_control:
+        label: "{{ item['name'] }}"
+    - name: Install flatpak packages
+      community.general.flatpak:
+        name: "{{ item['name'] }}"
+        state: present
+        method: user
+        remote: "{{ item['remote'] | default('flathub') }}"
+      loop: "{{ flatpak_packages }}"
+
+- name: Start packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: started
+  become: true
+  tags: always
+
+- name: Get latest Nix version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/NixOS/nix/tags
+    headers:
+      Authorization: "token {{ github_token['personal'] }}"
+  register: nix_release
+  tags: [packages, nix]
+
+- name: Download Nix installer
+  vars:
+    version: "{{ nix_release['json'][0]['name'] }}"
+    filename: "nix-{{ version }}-{{ ansible_machine }}-linux.tar.xz"
+  ansible.builtin.get_url:
+    url: "https://releases.nixos.org/nix/nix-{{ version }}/{{ filename }}"
+    dest: /tmp/nix.tar.xz
+    mode: 0755
+  tags: [packages, nix]
+
+- name: Create temp Nix directory
+  ansible.builtin.file:
+    path: /tmp/nix
+    state: directory
+    mode: 0755
+  tags: [packages, nix]
+
+- name: Extract Nix installer
+  ansible.builtin.unarchive:
+    src: /tmp/nix.tar.xz
+    dest: /tmp/nix
+  tags: [packages, nix]
+
+- name: Run Nix installer
+  ansible.builtin.command:
+    chdir: "/tmp/nix/nix-{{ nix_release['json'][0]['name'] }}-{{ ansible_machine }}-linux"
+    cmd: ./install --no-daemon --yes --no-modify-profile
+    creates: /nix
+  tags: [packages, nix]
+
+- name: Cleanup Nix installer
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /tmp/nix
+    - /tmp/nix.tar.xz
+  tags: [packages, nix]
+
+- name: Install Nix packages
+  vars:
+    pkgs: "{{ nix_packages | map('regex_replace', '^(.*)$', 'nixpkgs.\\1') | list | join(' ') }}"
+  ansible.builtin.command:
+    cmd: "{{ ansible_user_dir }}/.nix-profile/bin/nix-env -iA {{ pkgs }}"
+  changed_when: false
+  tags: [packages, nix]

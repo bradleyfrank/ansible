@@ -1,0 +1,36 @@
+---
+
+
+- name: Include package manager tasks
+  ansible.builtin.include_tasks: "pkg_mgr/{{ ansible['pkg_mgr'] }}.yml"
+  tags: [always]
+
+- name: Install Homebrew taps
+  community.general.homebrew_tap:
+    name: "{{ taps }}"
+  tags: [packages, taps]
+
+- name: Install Homebrew formulas
+  community.general.homebrew:
+    name: "{{ brew_packages['cli'] }}"
+  tags: [packages, formulas]
+
+- name: Install Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ brew_packages['gui'] }}"
+    accept_external_apps: true
+  tags: [packages, casks]
+
+- name: Install Homebrew casks for virtualization
+  community.general.homebrew_cask:
+    name: "{{ brew_packages['virt'] }}"
+    accept_external_apps: true
+  when: ansible_model is match('Mac')  # skips installing casks in a virtual machine
+  tags: [packages, casks]
+
+- name: Install Mac App Store apps
+  ansible.builtin.command: "{{ homebrew_prefix }}/bin/mas install {{ item }}"
+  loop: "{{ mas_packages }}"
+  when: install_mas_apps
+  changed_when: false
+  tags: [packages, mas]
