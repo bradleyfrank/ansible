@@ -89,10 +89,10 @@ open_project() {
 
 
 move_windows() {
-  local OPTIND current_session _index _window _key
+  local OPTIND current_session _index _window _key; current_session="$1"
   local -A tmux_windows
 
-  current_session="$(tmux display-message -p "#{session_name}")"
+  [[ -z $current_session ]] && current_session="$(tmux display-message -p "#{session_name}")"
 
   while read -r session; do
     while read -r window; do

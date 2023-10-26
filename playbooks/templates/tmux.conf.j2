@@ -66,11 +66,11 @@ bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
 {% endif -%}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
-bind -n C-v send-prefix                                     # controls nested tmux
 bind '%' split-window -h -c "#{pane_current_path}"
 bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
 bind 'D' run-shell -b "tmux-utils dump-pane"
+bind 'G' run-shell -b "tmux-utils move-windows #{session_name}"
 bind 'M' choose-tree -Z "move-pane -t %%"
 bind 'O' run-shell -b "tmux-utils open-project"
 {% if "tmux" in item -%}
