@@ -107,7 +107,7 @@ move_windows() {
 
   while read -r window_to_move; do
     tmux move-window -s "${tmux_windows["$window_to_move"]}" -d
-  done < <(_tmux_fzf --multi <<< "$(printf "%s\n" "${!tmux_windows[@]}" | sort)")
+  done < <(printf "%s\n" "${!tmux_windows[@]}" | sort | _tmux_fzf --multi)
 }
 
 
