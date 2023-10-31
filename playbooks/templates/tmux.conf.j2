@@ -69,26 +69,25 @@ bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling spee
 bind '%' split-window -h -c "#{pane_current_path}"
 bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
-bind 'D' run-shell -b "tmux-utils dump-pane"
-bind 'G' run-shell -b "tmux-utils move-windows #{session_name}"
+bind 'D' run-shell -b "bmux dump-pane"
+bind 'G' run-shell -b "bmux move-windows #{session_name}"
+bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
 bind 'M' choose-tree -Z "move-pane -t %%"
-bind 'O' run-shell -b "tmux-utils open-project"
+bind 'O' run-shell -b "bmux open-project"
 {% if "tmux" in item -%}
 {{ popup("N", "notes", "~/Development/Projects/notes-etc/main", "'vim README.md'") }}
 {{ popup("R", "reference", "~/Development/Reference", "") }}
 {{ popup("P", "popup", "~/", "") }}
 {% endif -%}
-bind 'S' command-prompt -p "New session: "  "new-session -A -s '%%'"
+bind 'S' run-shell -b "bmux open-project -s"
+bind 'T' run-shell -b "bmux select-layout"
 bind 'W' choose-tree -Zs "move-window -t %%"
 bind 'c' new-window -c "~/"
-bind 'h' select-layout even-vertical
 bind 'k' clear-history
-bind 'r' run-shell -b "tmux-utils rename-window #{pane_current_path}"
-bind 't' select-layout tiled
+bind 'r' run-shell -b "bmux rename-window #{pane_current_path}"
 {% if "tmux" in item -%}
 bind 'u' source-file "~/.config/tmux/tmux.conf"
 {% elif "minimal" in item -%}
 bind 'u' source-file "~/.config/tmux/minimal.conf"
 {% endif -%}
-bind 'v' select-layout even-horizontal
 bind 'y' set synchronize-panes
