@@ -1,0 +1,22 @@
+---
+
+- name: Install flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item['name'] }}"
+    state: "present"
+    flatpakrepo_url: "{{ item['url'] }}"
+    method: "user"
+  loop: "{{ flatpak_remotes }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+
+- name: Install flatpak packages
+  community.general.flatpak:
+    name: "{{ item['name'] }}"
+    state: "present"
+    method: "user"
+    remote: "{{ item['remote'] | default('flathub') }}"
+  loop: "{{ flatpak_packages }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+

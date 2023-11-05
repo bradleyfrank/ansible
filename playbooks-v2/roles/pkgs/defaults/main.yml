@@ -1,0 +1,16 @@
+---
+
+packagekit_enabled: true
+
+install_pkgs_homebrew: true
+install_pkgs_mas: true
+
+packages: []
+flatpaks: []
+homebrew_taps: []
+homebrew_formulas: []
+homebrew_casks: []
+mas_apps: []
+
+accept_external_casks: true
+
