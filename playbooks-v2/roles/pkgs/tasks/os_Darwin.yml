@@ -3,14 +3,17 @@
 - name: Include package manager tasks
   ansible.builtin.include_tasks:
     file: "managers/homebrew.yml"
-    apply:
-      tags: [packages, homebrew]
   tags: always
 
-- name: Install Mac App Store apps
-  ansible.builtin.mas:
-    id: "{{ mas_apps }}"
-    upgrade_all: true
-  when: install_pkgs_mas
-  tags: [packages, mas]
+- name: Install Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ pkgs_homebrew_casks }}"
+    accept_external_apps: "{{ pkgs_accept_external_casks }}"
+  tags: [packages, casks]
 
+- name: Install Mac App Store apps
+  community.general.mas:
+    id: "{{ pkgs_mas_apps }}"
+    upgrade_all: true
+  when: mas_apps | length > 0
+  tags: [packages, mas]

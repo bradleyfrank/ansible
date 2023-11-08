@@ -1,10 +1,37 @@
 ---
 
 - name: Test
+  gather_facts: false
   hosts: localhost
 
-  tasks:
+  vars:
+    packages: []
+    dnf: False
+    #    repos:
+    #      - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
+    #        description: 1Password GUI
+    #        baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
+    #        gpgkey: https://downloads.1password.com/linux/keys/1password.asc
+    #        cleanup: ["/etc/yum.repos.d/1password.repo"]
+    #
+    #      - name: gh-cli
+    #        description: packages for the GitHub CLI
+    #        baseurl: https://cli.github.com/packages/rpm
+    #        gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059
+    #
+    #      - name: google-chrome
+    #        description: Google Chrome
+    #        baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    #        gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+    #        cleanup: ["/etc/yum.repos.d/chrome.repo"]
 
-  - name: Test Git
-    ansible.builtin.import_role:
-      name: git
+  tasks:
+    - name: dnf
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+      when: packages | length > 0
+    #    - name: test
+    #      ansible.builtin.debug:
+    #        msg: "{{ item[0]['name'] }}: {{ item[1] }}"
+    #      loop: "{{ repos | subelements('cleanup', skip_missing=True) }}"
+

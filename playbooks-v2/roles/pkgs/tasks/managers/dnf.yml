@@ -1,0 +1,55 @@
+---
+
+- name: Install gpg keys
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: "present"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  tags: [repos, dnf, gpg]
+
+- name: Install repositories
+  ansible.builtin.yum_repository:
+    name: "{{ item['name'] }}"
+    description: "{{ item['description'] }}"
+    baseurl: "{{ item['baseurl'] | default(omit) }}"
+    metalink: "{{ item['metalink'] | default(omit) }}"
+    includepkgs: "{{ item['includepkgs'] | default(omit) }}"
+    exclude: "{{ item['exclude'] | default(omit) }}"
+    gpgcheck: "{{ item['gpgcheck'] | default(true) }}"
+    gpgkey: "{{ item['gpgkey'] }}"
+    repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
+    skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  tags: [repos, dnf]
+
+- name: Update dnf cache
+  ansible.builtin.dnf:
+    update_cache: true
+  tags: always
+
+- name: Install cli packages
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages['cli'] }}"
+    state: "present"
+  become: true
+  tags: [packages, dnf, cli]
+
+- name: Install gui packages
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages['gui'] }}"
+    state: "present"
+  become: true
+  tags: [packages, dnf, gui]
+
+- name: Install Desktop Environment or Window Manager packages
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages[XDG_CURRENT_DESKTOP] | default([]) }}"
+    state: "present"
+  become: true
+  tags: [packages, dnf, desktop_environment, window_manager]

@@ -12,8 +12,6 @@
 - name: Include distro-specific package managers
   ansible.builtin.include_tasks:
     file: "managers/{{ ansible['pkg_mgr'].yml }}"
-    apply:
-      tags: [packages]
   tags: always
 
 - name: Gather package facts
@@ -24,15 +22,10 @@
 - name: Include Flakpak packages
   ansible.builtin.include_tasks:
     file: "managers/flatpak.yml"
-    apply:
-      tags: [packages, flatpak]
   tags: always
 
 - name: Include Homebrew packages
   ansible.builtin.include_tasks:
     file: "managers/homebrew.yml"
-    apply:
-      tags: [packages, homebrew]
-  when: install_pkgs_homebrow
+  when: (pkgs_homebrew_taps | length > 0) or (pkgs_homebrew_formulas | length > 0)
   tags: always
-

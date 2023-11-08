@@ -1,45 +1,43 @@
 ---
 
 flatpak_remotes:
-  - name: flathub
-    url: https://flathub.org/repo/flathub.flatpakrepo
-  - name: elementary
-    url: https://flatpak.elementary.io/repo.flatpakrepo
+  flathub: "https://flathub.org/repo/flathub.flatpakrepo"
+  elementary: "https://flatpak.elementary.io/repo.flatpakrepo"
 
 flatpak_packages:
-  - name: app.drey.EarTag
-  - name: app.drey.Warp
-  - name: com.felipekinoshita.Wildcard
-  - name: com.github.avojak.warble
-    remote: elementary
-  - name: com.github.fabiocolacio.marker
-  - name: com.github.geigi.cozy
-  - name: com.github.huluti.Curtail
-  - name: com.github.johnfactotum.Foliate
-  - name: com.github.junrrein.PDFSlicer
-  - name: com.github.liferooter.textpieces
-  - name: com.github.phase1geo.annotator
-    remote: elementary
-  - name: com.github.rajsolai.textsnatcher
-  - name: com.makemkv.MakeMKV
-  - name: com.plexamp.Plexamp
-  - name: com.spotify.Client
-  - name: fr.romainvigier.MetadataCleaner
-  - name: io.bassi.Amberol
-  - name: io.github.diegoivan.pdf_metadata_editor
-  - name: io.github.seadve.Kooha
-  - name: io.gitlab.news_flash.NewsFlash
-  - name: io.posidon.Paper
-  - name: net.cozic.joplin_desktop
-  - name: org.gnome.gitlab.somas.Apostrophe
-  - name: org.nickvision.tagger
-  - name: org.ppsspp.PPSSPP
-  - name: org.signal.Signal
-  - name: re.sonny.Junction
-  - name: re.sonny.Tangram
-  - name: sh.cider.Cider
-  - name: tv.plex.PlexDesktop
-  - name: us.zoom.Zoom
+  flathub:
+    - app.drey.EarTag
+    - app.drey.Warp
+    - com.felipekinoshita.Wildcard
+    - com.github.avojak.warble
+    - com.github.fabiocolacio.marker
+    - com.github.geigi.cozy
+    - com.github.huluti.Curtail
+    - com.github.johnfactotum.Foliate
+    - com.github.junrrein.PDFSlicer
+    - com.github.liferooter.textpieces
+    - com.github.rajsolai.textsnatcher
+    - com.makemkv.MakeMKV
+    - com.plexamp.Plexamp
+    - com.spotify.Client
+    - fr.romainvigier.MetadataCleaner
+    - io.bassi.Amberol
+    - io.github.diegoivan.pdf_metadata_editor
+    - io.github.seadve.Kooha
+    - io.gitlab.news_flash.NewsFlash
+    - io.posidon.Paper
+    - net.cozic.joplin_desktop
+    - org.gnome.gitlab.somas.Apostrophe
+    - org.nickvision.tagger
+    - org.ppsspp.PPSSPP
+    - org.signal.Signal
+    - re.sonny.Junction
+    - re.sonny.Tangram
+    - sh.cider.Cider
+    - tv.plex.PlexDesktop
+    - us.zoom.Zoom
+  elementary:
+    - com.github.phase1geo.annotator
 
 nix_packages:
   - du-dust

@@ -1,0 +1,59 @@
+---
+
+- name: Install gpg keys
+  ansible.builtin.apt_key:
+    url: "{{ item['key'] | default(omit) }}"
+    keyring: "{{ item['keyring'] | default(omit) }}"
+    id: "{{ item['id'] | default(omit) }}"
+    keyserver: "{{ item['keyserver'] | default(omit) }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  tags: [repos, apt, gpg]
+
+- name: Install repositories
+  ansible.builtin.apt_repository:
+    repo: "{{ item['repo'] }}"
+    filename: "{{ item['name'] }}"
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  tags: [repos, apt]
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  tags: always
+
+- name: Install cli packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages['cli'] }}"
+    state: "present"
+    autoclean: true
+    autoremove: true
+    install_recommends: true
+    dpkg_options: force-overwrite  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
+  become: true
+  tags: [packages, apt, cli]
+
+- name: Install gui packages
+  ansible.builtin.apt:
+    name: "{{ apt_packages['gui'] }}"
+    state: present
+    autoclean: true
+    autoremove: true
+    install_recommends: true
+  become: true
+  tags: [packages, apt, gui]
+
+- name: Install Desktop Environment or Window Manager packages
+  ansible.builtin.apt:
+    name: "{{ dnf_packages[XDG_CURRENT_DESKTOP] | default([]) }}"
+    state: "present"
+    autoclean: true
+    autoremove: true
+    install_recommends: true
+  become: true
+  tags: [packages, apt, desktop_environment, window_manager]

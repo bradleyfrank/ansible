@@ -6,6 +6,5 @@
     state: "started"
     enabled: true
   become: true
-  when: packagekit_enabled
+  when: pkgs_packagekit_enabled
   tags: always
-

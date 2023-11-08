@@ -46,6 +46,7 @@ bootstrap_linux() {
   esac
 
   [ -n "$INSTALL_HOMEBREW_LINUX" ] && install_homebrew
+  printf "\nXDG_CURRENT_DESKTOP: %s\n" "$XDG_CURRENT_DESKTOP"
 }
 
 while getopts ':bdg:' opt; do

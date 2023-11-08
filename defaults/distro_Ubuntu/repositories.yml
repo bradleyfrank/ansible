@@ -7,7 +7,6 @@ repos:
       https://packages.microsoft.com/repos/vscode stable main
     key: https://packages.microsoft.com/keys/microsoft.asc
     keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
-    system_type: [gui]
 
   - name: 1password
     repo: >
@@ -15,24 +14,20 @@ repos:
       https://downloads.1password.com/linux/debian/amd64 stable main
     key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
     keyring: /usr/share/keyrings/1password-archive-keyring.gpg
-    system_type: [gui]
 
   - name: google-chrome
     repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
-    system_type: [gui]
 
   - name: nextcloud
     repo: ppa:nextcloud-devs/client
     keyserver: keyserver.ubuntu.com
     id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
-    system_type: [gui]
 
   - name: makemkv
     repo: ppa:heyarje/makemkv-beta
     keyserver: keyserver.ubuntu.com
     id: 94B56C64CA7278ECFC34E8808540356019F7E55B
-    system_type: [gui, cli]
 
   - name: gh-cli
     repo: >
@@ -40,7 +35,6 @@ repos:
       https://cli.github.com/packages stable main
     key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
     keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
-    system_type: [gui, cli]
 
   - name: kubernetes
     repo: >
@@ -48,7 +42,6 @@ repos:
       https://apt.kubernetes.io/ kubernetes-xenial main
     key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     keyring: /usr/share/keyrings/kubernetes-archive-keyring.gpg
-    system_type: [gui, cli]
 
   - name: gcloud
     repo: >
@@ -56,7 +49,6 @@ repos:
       https://packages.cloud.google.com/apt cloud-sdk main
     key: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     keyring: /usr/share/keyrings/cloud.google.gpg
-    system_type: [gui, cli]
 
   - name: hashicorp
     repo: >
@@ -64,16 +56,13 @@ repos:
       https://apt.releases.hashicorp.com {{ ansible_lsb['codename'] }} main
     key: https://apt.releases.hashicorp.com/gpg
     keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    system_type: [gui, cli]
 
   - name: charm
     repo: deb [trusted=yes] https://repo.charm.sh/apt/ /
     key: https://apt.fury.io/charmcli/gpg.key
     keyring: /usr/share/keyrings/charmcli.gpg
-    system_type: [gui, cli]
 
   - name: alacritty
     repo: ppa:mmstick76/alacritty
     keyserver: keyserver.ubuntu.com
     id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
-    system_type: [gui]
