@@ -1,2 +1,7 @@
 ---
-# vars file for zsh
+
+zsh_homebrew_bin: "{{ homebrew_prefix }}/bin/zsh"
+zsh_chmod_directories:
+  - "{{ homebrew_prefix }}/share"
+  - "{{ homebrew_prefix }}/share/zsh"
+  - "{{ homebrew_prefix }}/share/zsh/site-functions"

@@ -1,2 +1,49 @@
 ---
-# tasks file for zsh
+
+- name: Set Homebrew prefix
+  when: homebrew_prefix is undefined
+  tags: always
+  block:
+    - name: Include system defaults
+      ansible.builtin.include_vars:
+        file: "{{ ansible['system'] }}.yml"
+    - name: Set Homebrew prefix
+      ansible.builtin.set_fact:
+        homebrew_prefix: "{{ zsh_homebrew_prefix }}"
+        cacheable: true
+
+- name: Is Homebrew Zsh installed?
+  when: bin_path is undefined
+  tags: always
+  block:
+    - name: Check Homebrew Cellar for Zsh
+      ansible.builtin.stat:
+        path: "{{ homebrew_prefix }}/Cellar/zsh"
+        get_checksum: false
+      register: z
+    - name: Set Zsh bin path
+      ansible.builtin.set_fact:
+        bin_path: "{{ zsh_homebrew_bin if z['stat']['exists'] else zsh_default_bin }}"
+
+- name: Configure Zsh for MacOS
+  when: ansible['system'] == "Darwin"
+  tags: [zsh, homebrew]
+  block:
+    - name: Add Homebrew Zsh to available shells
+      ansible.builtin.blockinfile:
+        path: "/etc/shells"
+        block: |
+          {{ homebrew_prefix }}/bin/zsh
+    - name: Fix Homebrew Zsh folder permissions
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: "0755"
+      loop: "{{ zsh_chmod_directories }}"
+
+- name: Set Zsh as default shell
+  ansible.builtin.user:
+    name: "{{ ansible['user_id'] }}"
+    shell: "{{ bin_path }}"
+  become: true
+  when: ansible['user_shell'] != bin_path
+  tags: [zsh, user]

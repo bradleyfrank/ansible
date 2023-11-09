@@ -6,38 +6,6 @@
     use: macos
   become: true
 
-- name: Make newer bash default for root
-  ansible.builtin.user:
-    name: root
-    shell: "{{ homebrew_prefix }}/bin/bash"
-  become: true
-  tags: [root, shell]
-
-- name: Configure shells
-  become: true
-  tags: shell
-  block:
-    - name: Make additional shells available
-      ansible.builtin.blockinfile:
-        path: /etc/shells
-        block: |
-          {{ homebrew_prefix }}/bin/bash
-          {{ homebrew_prefix }}/bin/zsh
-    - name: Make zsh default for user
-      ansible.builtin.user:
-        name: "{{ ansible_user_id }}"
-        shell: "{{ homebrew_prefix }}/bin/zsh"
-
-- name: Fix permissions for zsh
-  ansible.builtin.file:
-    path: "{{ item }}"
-    mode: 0755
-  loop:
-    - "{{ homebrew_prefix }}/share"
-    - "{{ homebrew_prefix }}/share/zsh"
-    - "{{ homebrew_prefix }}/share/zsh/site-functions"
-  tags: shell
-
 - name: Set macOS default settings
   community.general.osx_defaults:
     domain: "{{ item['domain'] }}"
