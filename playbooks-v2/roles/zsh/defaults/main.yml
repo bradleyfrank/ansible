@@ -1,2 +1,42 @@
 ---
 
+zsh_prefer_homebrew: true
+
+zsh_plugin_dir: "{{ ansible['user_dir'] }}/.local/share"
+zsh_rcd: "{{ ansible['user_dir'] }}/.zshrc.d"
+zsh_site_functions: "{{ ansible['user_dir'] }}/.local/share/zsh/site-functions"
+
+zsh_completions: []
+zsh_plugins: []
+
+zsh_rc_order:
+  - paths
+  - exports
+  - aliases
+  - functions
+  - zstyle
+  - parameters
+  - setopts
+  - autoloads
+  - sources
+  - completions
+  - eval
+
+zsh_rc_sections:
+  paths:
+    PATH: ["$HOME/.local/bin", "/usr/local/bin", "/usr/local/sbin", "/usr/bin", "/usr/sbin", "/sbin"]
+    MANPATH: ["$HOME/.local/share/man", "/usr/local/share/man", "/usr/share/man"]
+  exports: ["PATH", "MANPATH"]
+  aliases:
+    cp: "cp -i"
+    ll: "ls -la"
+  functions: {}
+  zstyle:
+    vcs_info:
+      - "enable git"
+    vcs_info:git:
+      - "check-for-changes true"
+      - "actionformats '%S%c%u%a'"
+      - "formats '%S%c%u'"
+    vcs_info:git*+set-message:
+      - "hooks format"
