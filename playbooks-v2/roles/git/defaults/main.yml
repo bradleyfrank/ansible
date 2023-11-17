@@ -1,8 +1,7 @@
 ---
-# defaults file for git
 
-enable_fsmonitor: true
-gitconfig_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
-signing_key_type: "ssh"
-signing_key_file: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519.pub"
-allowed_signers_path: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers }}"
+git_enable_fsmonitor: true
+git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
+git_signing_key_type: "ssh"
+git_signing_key_file: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519.pub"
+git_allowed_signers_file: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers }}"

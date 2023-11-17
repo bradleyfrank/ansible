@@ -24,14 +24,14 @@
         homebrew_zsh_installed: "{{ brew_zsh_stat['stat']['exists'] }}"
 
 - name: Set Zsh bin path
-  when: bin_path is undefined
   ansible.builtin.set_fact:
     bin_path: "{{ zsh_homebrew_bin if (homebrew_zsh_installed and zsh_prefer_homebrew) else zsh_default_bin }}"
+  when: bin_path is undefined
   tags: always
 
 - name: Configure Homebrew Zsh for MacOS
   when: (ansible['system'] == "Darwin") and (zsh_prefer_homebrew) and (homebrew_zsh_installed)
-  tags: [zsh, config]
+  tags: [zsh]
   block:
     - name: Add Homebrew Zsh to available shells
       ansible.builtin.blockinfile:
@@ -68,7 +68,7 @@
   loop: "{{ zsh_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [zsh]
+  tags: [zsh, dotfiles]
 
 - name: Generate Zsh completions
   ansible.builtin.shell: "{{ item['command'] }} > {{ zsh_site_functions }}/_{{ item['name'] }}"
@@ -76,5 +76,29 @@
   loop: "{{ zsh_completions }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [zsh]
+  tags: [zsh, dotfiles]
 
+- name: Apply zshrc template
+  vars:
+    template:
+      - "{{ inventory_dir }}/templates/zshrc.j2 }}"
+      - "zshrc.j2"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    dest: "{{ ansible['user_dir'] }}/.zshrc"
+    mode: "0644"
+  tags: [zsh, dotfiles]
+
+- name: Refresh zcompdump
+  tags: [zsh, dotfiles]
+  when: zsh_manage_zcompdump
+  block:
+    - name: Delete zcompdump
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.zcompdump"
+        state: absent
+    - name: Generate zcompdump
+      ansible.builtin.shell:
+        cmd: "autoload -Uz compinit && compinit"
+        executable: "{{ zsh_exec }}"
+        creates: "{{ ansible_user_dir }}/.zcompdump"

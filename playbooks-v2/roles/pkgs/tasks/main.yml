@@ -1,6 +1,6 @@
 ---
-# tasks file for pkgs
 
 - name: Include os-specific package tasks
-  ansible.builtin.include_tasks: "os_{{ ansible['system'] }}.yml"
+  ansible.builtin.include_tasks:
+    file: "os_{{ ansible['system'] }}.yml"
   tags: always

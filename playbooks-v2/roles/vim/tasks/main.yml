@@ -1,0 +1,23 @@
+---
+
+- name: Install vim config
+  vars:
+    template:
+      - "{{ inventory_dir }}/templates/vimrc.j2 }}"
+      - "vimrc.j2"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    dest: "{{ ansible['user_dir'] }}/.vimrc"
+    mode: "0644"
+  tags: [vim, config, dotfiles]
+
+- name: Install vim extensions
+  ansible.builtin.git:
+    repo: "{{ item['repo'] }}"
+    dest: "{{ vim_extensions_dir }}"
+    depth: "1"
+    version: "{{ item['version'] | default(omit) }}"
+  loop: "{{ vim_extensions }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: [vim, extensions, dotfiles]

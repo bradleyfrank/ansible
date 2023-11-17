@@ -10,7 +10,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [repos, apt, gpg]
+  tags: [repos]
 
 - name: Install repositories
   ansible.builtin.apt_repository:
@@ -20,7 +20,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [repos, apt]
+  tags: [repos]
 
 - name: Update apt cache
   ansible.builtin.apt:
@@ -36,7 +36,7 @@
     install_recommends: true
     dpkg_options: force-overwrite  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
   become: true
-  tags: [packages, apt, cli]
+  tags: [packages, cli]
 
 - name: Install gui packages
   ansible.builtin.apt:
@@ -46,7 +46,7 @@
     autoremove: true
     install_recommends: true
   become: true
-  tags: [packages, apt, gui]
+  tags: [packages, gui]
 
 - name: Install Desktop Environment or Window Manager packages
   ansible.builtin.apt:
@@ -56,4 +56,4 @@
     autoremove: true
     install_recommends: true
   become: true
-  tags: [packages, apt, desktop_environment, window_manager]
+  tags: [packages, desktop_environment, window_manager]

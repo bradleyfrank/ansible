@@ -1,0 +1,16 @@
+---
+
+ssh_manage_host_keys: true
+ssh_harden_security: true
+
+ssh_config:
+  - host: "*"
+    args:
+      CanonicalizeHostname: "yes"
+      ServerAliveCountMax: "4"
+      ServerAliveInterval: "15"
+
+ssh_host_keys:
+  - "rsa"
+  - "ed25519"
+  - "ecdsa"

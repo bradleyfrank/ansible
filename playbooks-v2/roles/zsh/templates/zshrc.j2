@@ -1,0 +1,22 @@
+PATH="${HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+MANPATH="$HOME/.local/share/man:/usr/local/share/man:/usr/share/man"
+
+{% if homebrew_zsh_installed and zsh_prefer_homebrew %} PATH="{{ bin_path }}:${PATH}" {% endif %}
+{% if ansible['distribution'] == 'Ubuntu' %} PATH="${HOME}/snap/bin:${PATH}" {% endif %}
+
+export PATH
+export MANPATH
+
+alias ll='ls -la'
+alias cp='cp -i'
+
+zstyle ':completion:*' rehash true
+
+HISTFILE=~/.zsh_history
+
+setopt autocd
+setopt nobeep
+setopt numericglobsort
+
+autoload -Uz compinit vcs_info run-help
+compinit -C

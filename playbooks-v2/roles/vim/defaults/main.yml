@@ -1,0 +1,4 @@
+---
+
+vim_rc: "{{ ansible['user_dir'] }}/.vimrc"
+vim_extensions_dir: "{{ ansible['user_dir'] }}/.vim/pack/default/start"
