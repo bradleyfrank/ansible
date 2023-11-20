@@ -1,0 +1,5 @@
+---
+
+tmux_package_name: "tmux"
+tmux_prefer_homebrew: false
+tmux_rc: "{{ ansible['user_dir'] }}/.tmux.conf"

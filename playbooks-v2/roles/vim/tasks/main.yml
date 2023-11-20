@@ -3,7 +3,7 @@
 - name: Install vim config
   vars:
     template:
-      - "{{ inventory_dir }}/templates/vimrc.j2 }}"
+      - "{{ inventory_dir }}/templates/vimrc.j2"
       - "vimrc.j2"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', template) }}"
