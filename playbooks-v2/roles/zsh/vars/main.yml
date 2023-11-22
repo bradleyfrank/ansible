@@ -5,4 +5,4 @@ zsh_chmod_directories:
   - "{{ homebrew_prefix }}/share/zsh"
   - "{{ homebrew_prefix }}/share/zsh/site-functions"
 
-zsh_homebrew_bin: "{{ homebrew_prefix }}/bin/zsh"
+zsh_homebrew_bin: "{{ zsh_homebrew_prefix }}/bin/zsh"

@@ -1,5 +1,6 @@
 ---
 
+zsh_homebrew_prefix: ""
 zsh_prefer_homebrew: true
 zsh_manage_zcompdump: true
 

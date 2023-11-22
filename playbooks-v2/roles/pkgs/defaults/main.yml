@@ -1,13 +1,15 @@
 ---
 
-pkgs_prefer_homebrew: false
 pkgs_accept_external_casks: true
+pkgs_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
 pkgs_packagekit_enabled: true
+pkgs_prefer_homebrew: false
 
-pkgs_packages: []
-pkgs_flatpak_remotes: []
+pkgs_binaries: []
 pkgs_flatpak_packages: []
-pkgs_homebrew_taps: []
-pkgs_homebrew_formulas: []
+pkgs_flatpak_remotes: []
 pkgs_homebrew_casks: []
+pkgs_homebrew_formulas: []
+pkgs_homebrew_taps: []
 pkgs_mas_apps: []
+pkgs_packages: []

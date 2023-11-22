@@ -10,3 +10,11 @@
   ansible.builtin.include_tasks:
     file: "system/{{ ansible_facts['system'] }}"
   tags: always
+
+- name: Download binaries
+  ansible.builtin.get_url:
+    url: "{{ item['url'] }}"
+    dest: "{{ pkgs_binary_install_path }}/{{ item['name'] }}"
+    mode: "0755"
+  loop: "{{ pkg_binaries }}"
+  tags: [packages, binaries, dotfiles]
