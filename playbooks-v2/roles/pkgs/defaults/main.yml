@@ -1,10 +1,12 @@
 ---
 
+pkgs_prefer_homebrew: false
 pkgs_accept_external_casks: true
 pkgs_packagekit_enabled: true
 
 pkgs_packages: []
-pkgs_flatpaks: []
+pkgs_flatpak_remotes: []
+pkgs_flatpak_packages: []
 pkgs_homebrew_taps: []
 pkgs_homebrew_formulas: []
 pkgs_homebrew_casks: []

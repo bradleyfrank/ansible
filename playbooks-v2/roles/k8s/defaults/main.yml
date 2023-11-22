@@ -1,0 +1,12 @@
+---
+
+k8s_packages:
+  - kubectl
+  - krew
+  - k9s
+
+k8s_krew_plugins:
+  - cert-manager
+  - get-all
+  - neat
+  - stern

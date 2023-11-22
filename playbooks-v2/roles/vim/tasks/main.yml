@@ -7,7 +7,7 @@
       - "vimrc.j2"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', template) }}"
-    dest: "{{ ansible['user_dir'] }}/.vimrc"
+    dest: "{{ ansible_facts['user_dir'] }}/.vimrc"
     mode: "0644"
   tags: [vim, config, dotfiles]
 

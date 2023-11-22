@@ -1,0 +1,4 @@
+---
+
+icons_homebrew_prefix: "/opt/homebrew"
+icons_path: "{{ inventory_dir }}/files/icons"

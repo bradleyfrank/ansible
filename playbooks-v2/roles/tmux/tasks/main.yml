@@ -7,7 +7,7 @@
     name: "pkgs"
     apply:
       tags: [tmux]
-  when: (ansible['system'] == "Linux") and (not tmux_prefer_homebrew)
+  when: (ansible_facts['system'] == "Linux") and (not tmux_prefer_homebrew)
   tags: [tmux]
 
 - name: Install tmux (via Homebrew)
@@ -17,7 +17,7 @@
     name: "pkgs"
     apply:
       tags: [tmux]
-  when: (ansible['system'] == "Darwin") or (tmux_prefer_homebrew)
+  when: (ansible_facts['system'] == "Darwin") or (tmux_prefer_homebrew)
   tags: [tmux]
 
 - name: Template tmux config

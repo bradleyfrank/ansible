@@ -1,5 +1,25 @@
 ---
 
+- name: Install zsh (via OS package manager)
+  vars:
+    pkgs_packages: "zsh"
+  ansible.builtin.include_role:
+    name: "pkgs"
+    apply:
+      tags: [zsh]
+  when: (ansible['system'] == "Linux") and (not zsh_prefer_homebrew)
+  tags: [zsh]
+
+- name: Install zsh (via Homebrew)
+  vars:
+    pkgs_homebrew_formulas: "zsh"
+  ansible.builtin.include_role:
+    name: "pkgs"
+    apply:
+      tags: [zsh]
+  when: (ansible['system'] == "Darwin") or (zsh_prefer_homebrew)
+  tags: [zsh]
+
 - name: Set Homebrew prefix
   when: homebrew_prefix is undefined
   tags: always

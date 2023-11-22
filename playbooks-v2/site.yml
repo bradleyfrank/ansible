@@ -12,7 +12,7 @@
 - name: Set desktop environment
   ansible.builtin.set_fact:
     XDG_CURRENT_DESKTOP: "{{ (ansible_env['XDG_CURRENT_DESKTOP'] | lower)"
-  when: ansible['system'] == "Linux"
+  when: ansible_facts['system'] == "Linux"
   tags: always
 
 - name: Update all packages
@@ -22,7 +22,7 @@
     update_cache: true
     install_weak_deps: true
   become: true
-  when: ansible['pkg_mgr'] == "dnf"
+  when: ansible_facts['pkg_mgr'] == "dnf"
   tags: [update]
 
 - name: Update system
@@ -35,6 +35,6 @@
     cache_valid_time: 3600
     install_recommends: true
   become: true
-  when: ansible['pkg_mgr'] == "apt"
+  when: ansible_facts['pkg_mgr'] == "apt"
   tags: [update]
 

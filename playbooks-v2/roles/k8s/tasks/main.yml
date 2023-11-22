@@ -1,0 +1,46 @@
+---
+
+- name: Try installing packages via Homebrew
+  tags: [k8s, k9s, krew]
+  block:
+    - name: Install k8s
+      vars:
+        pkgs_homebrew_formulas: "{{ k8s_packages }}"
+      ansible.builtin.include_role:
+        name: "pkgs"
+        apply:
+          tags: [k8s, k9s, krew]
+  rescue:
+    - name: Fail if Homebrew isn't installed
+      ansible.builtin.fail:
+        msg: "Homebrew is required to install these packages."
+
+- name: Load per-OS variables
+  tags: always
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts['system'] }}.yml"
+
+- name: Template k9s config
+  vars:
+    template:
+      - "{{ inventory_dir }}/templates/k9s.{{ item }}.yml.j2"
+      - "k9s.{{ item }}.yml.j2"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    dest: "{{ k8s_k9s_config }}/{{ item }}.yml"
+    mode: "0644"
+  loop: [config, skin]
+  loop_control:
+    label: "{{ item }}"
+  when: "'k9s' in k8s_packages"
+  tags: [k8s, k9s, dotfiles]
+
+- name: Install krew plugins
+  ansible.builtin.command:
+    cmd: "{{ krew_exec }} install {{ item }}"
+  loop: "{{ krew_plugins }}"
+  register: cmd_result
+  changed_when: "'Installed plugin' in cmd_result['stdout']"
+  failed_when: "'does not exist in the plugin index' in cmd_result['stdout']"
+  when: "('krew' in k8s_packages) and (k8s_krew_plugins | length > 0)"
+  tags: [k8s, krew, dotfiles]

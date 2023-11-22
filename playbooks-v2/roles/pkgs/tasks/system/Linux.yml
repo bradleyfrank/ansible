@@ -1,0 +1,25 @@
+---
+
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: "packagekit"
+    state: "stopped"
+    enabled: false
+  become: true
+  notify: Start packagekit
+  tags: always
+
+- name: Include distro repository setup
+  ansible.builtin.include_tasks:
+    file: "repos_{{ ansible_facts['pkg_mgr'].yml }}"
+  tags: always
+
+- name: Include distro-specific package managers
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr_{{ ansible_facts['pkg_mgr'].yml }}"
+  tags: always
+
+- name: Include Flakpak packages
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr_flatpak.yml"
+  tags: always

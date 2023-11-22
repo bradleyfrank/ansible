@@ -1,6 +1,12 @@
 ---
 
-- name: Include os-specific package tasks
+- name: Include Homebrew tasks
   ansible.builtin.include_tasks:
-    file: "os_{{ ansible['system'] }}.yml"
+    file: "pkg_mgr/homebrew.yml"
+  when: (ansible_facts['system'] == "Darwin") or (pkgs_prefer_homebrew)
+  tags: always
+
+- name: Include system-specific tasks
+  ansible.builtin.include_tasks:
+    file: "system/{{ ansible_facts['system'] }}"
   tags: always
