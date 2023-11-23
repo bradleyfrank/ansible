@@ -1,0 +1,30 @@
+---
+
+- name: Install dotfiles
+  ansible.posix.synchronize:
+    src: "{{ dots_files_source }}/"
+    dest: "{{ ansible_facts['user_dir'] }}/"
+    compress: false
+    owner: false
+    group: false
+  tags: [dotfiles]
+
+- name: Render dotfile templates
+  ansible.builtin.template:
+    src: "{{ dots_templates_source }}/"
+    dest: "{{ item['dest'] }}"
+    mode: "{{ item['mode'] | default('0644') }}"
+  loop: "{{ dots_templates }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: [dotfiles]
+
+- name: Post-processing
+  ansible.builtin.command:
+    cmd: "{{ item['cmd'] }}"
+    creates: "{{ item['creates'] | default(omit) }}"
+    removes: "{{ item['removes'] | default(omit) }}"
+  changed_when: "{{ item['changed_when'] | default(false) }}"
+  failed_when: "{{ item['failed_when'] | default(omit) }}"
+  loop: "{{ dots_post_processing }}"
+  tags: [dotfiles]

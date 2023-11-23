@@ -1,6 +1,0 @@
----
-
-- name: Include package manager repo setup
-  ansible.bulltin.include_tasks:
-    name: "{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: always

@@ -1,3 +1,4 @@
 ---
 
 logi_homebrew_prefix: "/opt/homebrew"
+logi_copy_location: "{{ ansible_facts['user_dir'] }}/Downloads"

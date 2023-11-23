@@ -1,0 +1,23 @@
+---
+
+- name: Install Logi Options+
+  community.general.homebrew:
+    name: "logi-options-plus"
+  tags: [logi]
+
+- name: Find Logi installer
+  ansible.builtin.find:
+    paths: "{{ logi_homebrew_prefix }}/Caskroom/logi-options-plus"
+    follow: true
+    recurse: true
+    patterns: "logioptionsplus_installer.app"
+    file_type: directory
+  register: logioptionsplus_installer
+  tags: [logi]
+
+- name: Copy Logi installer
+  ansible.builtin.copy:
+    src: "{{ logioptionsplus_installer['files'][0]['path'] }}"
+    dest: "{{ logi_copy_location }}"
+    mode: "0755"
+  tags: [logi]
