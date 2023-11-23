@@ -4,11 +4,11 @@
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
     state: "present"
-  loop: "{{ repos }}"
+  loop: "{{ repos_dnf }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [repos]
+  tags: [packages, repos]
 
 - name: Install repositories
   ansible.builtin.yum_repository:
@@ -22,11 +22,11 @@
     gpgkey: "{{ item['gpgkey'] }}"
     repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
     skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
-  loop: "{{ repos }}"
+  loop: "{{ repos_dnf }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [repos]
+  tags: [packages, repos]
 
 - name: Update dnf cache
   ansible.builtin.dnf:

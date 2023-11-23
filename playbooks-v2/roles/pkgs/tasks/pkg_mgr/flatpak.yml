@@ -1,9 +1,11 @@
 ---
+
 - name: Install flatpak
   ansible.builtin.package:
     name: "flatpak"
     state: "present"
   become: true
+  tags: [packages, flatpak]
 
 - name: Install flatpak remotes
   community.general.flatpak_remote:

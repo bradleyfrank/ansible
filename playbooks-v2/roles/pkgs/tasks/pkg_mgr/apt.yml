@@ -6,22 +6,21 @@
     keyring: "{{ item['keyring'] | default(omit) }}"
     id: "{{ item['id'] | default(omit) }}"
     keyserver: "{{ item['keyserver'] | default(omit) }}"
-  loop: "{{ repos }}"
+  loop: "{{ pkgs_apt_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [repos]
+  tags: [packages, repos]
 
 - name: Install repositories
   ansible.builtin.apt_repository:
     repo: "{{ item['repo'] }}"
     filename: "{{ item['name'] }}"
-  loop: "{{ repos }}"
+  loop: "{{ pkgs_apt_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [repos]
-
+  tags: [packages, repos]
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true

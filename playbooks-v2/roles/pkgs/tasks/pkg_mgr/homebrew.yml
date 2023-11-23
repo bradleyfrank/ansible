@@ -3,7 +3,7 @@
 - name: Install Homebrew taps
   community.general.homebrew_tap:
     name: "{{ pkgs_homebrew_taps }}"
-  tags: [packages, homebrew, taps]
+  tags: [packages, repos]
 
 - name: Install Homebrew formulas
   community.general.homebrew:

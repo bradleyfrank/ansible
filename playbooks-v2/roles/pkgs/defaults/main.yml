@@ -7,9 +7,12 @@ pkgs_prefer_homebrew: false
 
 pkgs_binaries: []
 pkgs_flatpak_packages: []
-pkgs_flatpak_remotes: []
 pkgs_homebrew_casks: []
 pkgs_homebrew_formulas: []
-pkgs_homebrew_taps: []
 pkgs_mas_apps: []
 pkgs_packages: []
+
+pkgs_apt_repos: []
+pkgs_dnf_repos: []
+pkgs_flatpak_remotes: []
+pkgs_homebrew_taps: []

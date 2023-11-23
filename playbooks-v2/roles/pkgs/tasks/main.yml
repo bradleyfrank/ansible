@@ -1,14 +1,36 @@
 ---
 
-- name: Include Homebrew tasks
-  ansible.builtin.include_tasks:
-    file: "pkg_mgr/homebrew.yml"
-  when: (ansible_facts['system'] == "Darwin") or (pkgs_prefer_homebrew)
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: "packagekit"
+    state: "stopped"
+    enabled: false
+  become: true
+  when: ansible_facts['system'] == "Linux"
+  notify: Start packagekit
   tags: always
 
-- name: Include system-specific tasks
+- name: Include distro-specific package managers
   ansible.builtin.include_tasks:
-    file: "system/{{ ansible_facts['system'] }}"
+    file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
+  tags: always
+
+- name: Install Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ pkgs_homebrew_casks }}"
+    accept_external_apps: "{{ pkgs_accept_external_casks }}"
+  tags: [packages, homebrew, casks]
+
+- name: Install Mac App Store apps
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/mas.yml"
+  when: (ansible_facts['system'] == "Darwin") and (pkgs_mas_apps | length > 0)
+  tags: always
+
+- name: Include Flakpak packages
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr_flatpak.yml"
+  when: ansible_facts['system'] == "Linux"
   tags: always
 
 - name: Download binaries
@@ -16,5 +38,5 @@
     url: "{{ item['url'] }}"
     dest: "{{ pkgs_binary_install_path }}/{{ item['name'] }}"
     mode: "0755"
-  loop: "{{ pkg_binaries }}"
+  loop: "{{ pkgs_binaries }}"
   tags: [packages, binaries, dotfiles]
