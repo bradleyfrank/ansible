@@ -1,0 +1,59 @@
+---
+
+- name: Get latest release version of Nerd Fonts
+  community.general.github_release:
+    user: "{{ fonts_github_user }}"
+    repo: "{{ fonts_github_repo }}"
+    action: latest_release
+    token: "{{ fonts_github_token | default(omit) }}"
+  register: fonts_github_latest_release
+  tags: [fonts, dotfiles]
+
+- name: Get installed version
+  ansible.builtin.set_fact:
+    fonts_current_version: "v0.0.0"
+  when: fonts_current_version is undefined
+  tags: [fonts, dotfiles]
+
+- name: Install newer fonts
+  when: "fonts_current_version is version(fonts_latest_version '<')"
+  tags: [fonts, dotfiles]
+  block:
+    - name: Include font install tasks
+      ansible.builtin.include_tasks:
+        file: "fonts.yml"
+      loop: "{{ fonts_to_install }}"
+    - name: Set latest version
+      vars:
+        fonts_latest_version: "{{ fonts_github_latest_release['tag'] }}"
+      ansible.builtin.set_fact:
+        fonts_current_version: "{{ fonts_latest_version }}"
+        cacheable: true
+
+- name: Remove Windows-only fonts
+  when: fonts_remove_windows_fonts
+  tags: [fonts, dotfiles]
+  block:
+    - name: Find Windows-only fonts
+      ansible.builtin.find:
+        paths: "{{ fonts_dir }}"
+        patterns: "*Windows Compatible*"
+      register: fonts_found_windows_only
+    - name: Delete Windows-only fonts
+      ansible.builtin.file:
+        path: "{{ item['path'] }}"
+        state: "absent"
+      loop: "{{ fonts_found_windows_only['files'] }}"
+      loop_control:
+        label: "{{ item['path'] | basename }}"
+
+- name: Symlink lcdfilter conf for better fonts
+  ansible.builtin.file:
+    src: "/usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf"
+    dest: "/etc/fonts/conf.d/11-lcdfilter-default.conf"
+    owner: "root"
+    group: "root"
+    state: "link"
+  become: true
+  when: ansible_facts['distribution'] == "Fedora"
+  tags: [fonts, become]

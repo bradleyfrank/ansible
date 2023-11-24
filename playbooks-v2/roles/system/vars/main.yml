@@ -1,0 +1,5 @@
+---
+
+system_macos_firewall_cmd: "/usr/libexec/ApplicationFirewall/socketfilterfw"
+system_macos_user_library: "{{ ansible_facts['user_dir'] }}/Library"
+system_macos_hidden_xattr: "0000000000000000400000000000000000000000000000000000000000000000"

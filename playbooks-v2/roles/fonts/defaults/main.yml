@@ -1,0 +1,8 @@
+---
+
+fonts_github_user: "ryanoasis"
+fonts_github_repo: "nerd-fonts"
+
+fonts_to_install: []
+
+fonts_remove_windows_fonts: true

@@ -1,0 +1,96 @@
+---
+
+- name: Set macOS default settings
+  community.general.osx_defaults:
+    domain: "{{ item['domain'] }}"
+    key: "{{ item['key'] }}"
+    type: "{{ item['type'] }}"
+    value: "{{ item['value'] }}"
+  loop: "{{ system_macos_defaults }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  notify: Restart MacOS dock
+
+- name: Set launchd services
+  community.general.launchd:
+    name: "{{ name }}"
+    state: "{{ state }}"
+  loop: "{{ system_macos_launchd | dict2items(key_name='name', value_name='state') }}"
+  loop_control:
+    lable: "{{ name }}"
+  tags: [system, mac_settings, launchd]
+
+- name: Put display to sleep after X minutes
+  ansible.builtin.command:
+    cmd: "pmset displaysleep {{ system_macos_sleep_display }}"
+  changed_when: false
+  become: true
+  tags: [system, mac_settings, pmset, become]
+
+- name: Put computer to sleep after X minutes
+  ansible.builtin.command:
+    cmd: "pmset sleep {{ system_macos_sleep_computer }}"
+  changed_when: false
+  become: true
+  tags: [system, mac_settings, pmset, become]
+
+- name: Set firewall state
+  tags: [system, mac_settings, firewall, become]
+  block:
+    - name: Enable firewall
+      ansible.builtin.command:
+        cmd: "{{ system_macos_firewall_cmd }} --setglobalstate on"
+      changed_when: false
+      become: true
+      when: system_macos_firewall_enabled
+    - name: Disable firewall
+      ansible.builtin.command:
+        cmd: "{{ system_macos_firewall_cmd }} --setglobalstate off"
+      changed_when: false
+      become: true
+      when: not system_macos_firewall_enabled
+
+- name: Set Gatekeeper state
+  tags: [system, mac_settings, gatekeeper, become]
+  block:
+    - name: Enable Gatekeeper
+      ansible.builtin.command:
+        cmd: "spctl --master-enable"
+      changed_when: false
+      become: true
+      when: system_macos_gatekeeper_enabled
+    - name: Disable Gatekeeper
+      ansible.builtin.command:
+        cmd: "spctl --master-disable"
+      changed_when: false
+      become: true
+      when: not system_macos_gatekeeper_enabled
+
+- name: Set ~/Library hidden state
+  tags: [system, mac_settings, library, become]
+  block:
+    - name: Unhide ~/Library
+      ansible.builtin.shell: |
+        chflags nohidden ~/Library
+        xattr -d com.apple.FinderInfo ~/Library
+      changed_when: false
+      when: system_macos_unhide_user_library
+    - name: Hide ~/Library
+      ansible.builtin.shell: |
+        chflags hidden ~/Library
+        xattr -wx com.apple.FinderInfo "{{ system_macos_hidden_xattr }}" ~/Library
+      changed_when: false
+      when: not system_macos_unhide_user_library
+
+- name: Set /Volumes hidden state
+  tags: [system, mac_settings, volumes, become]
+  become: true
+	block:
+    - name: Unhide ~/Volumes
+      ansible.builtin.shell: "chflags nohidden /Volumes"
+      changed_when: false
+      when: system_macos_unhide_volumes
+    - name: Hide ~/Volumes
+      ansible.builtin.shell: "chflags hidden /Volumes"
+      changed_when: false
+      when: not system_macos_unhide_volumes

@@ -1,11 +1,4 @@
 ---
-
-- name: Set hostname
-  ansible.builtin.hostname:
-    name: "{{ hostname }}"
-  become: true
-  tags: hostname
-
 - name: Set user shell to zsh and add to group 'cdrom'
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
@@ -32,19 +25,6 @@
   when: "'gui' in system_type"
   tags: hardware
 
-- name: Symlink lcdfilter conf for better fonts
-  ansible.builtin.file:
-    src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
-    dest: /etc/fonts/conf.d/11-lcdfilter-default.conf
-    owner: root
-    group: root
-    state: link
-  become: true
-  when:
-    - "'gui' in system_type"
-    - "'Fedora' in ansible_distribution"
-  tags: fonts
-
 - name: Apply Gnome settings
   community.general.dconf:
     key: "{{ item['key'] }}"
@@ -55,5 +35,3 @@
   when:
     - gnome_desktop
   tags: desktop
-
-

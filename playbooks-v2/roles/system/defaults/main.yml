@@ -1,0 +1,15 @@
+---
+
+system_hostname: "{{ ansible_facts['hostname'] }}"
+
+system_macos_defaults: {}
+system_macos_launchd: {}
+system_gnome_settings: {}
+
+system_macos_sleep_display: 15
+system_macos_sleep_computer: 30
+system_macos_firewall_enabled: true
+system_macos_gatekeeper_enabled: true
+system_macos_locate_enabled: true
+system_macos_unhide_user_library: true
+system_macos_unhide_volumes: true
