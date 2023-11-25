@@ -5,7 +5,7 @@
     name: "{{ system_hostname }}"
   become: true
   when: system_hostname != ansible_facts['hostname']
-  tags: [system, hostname, become]
+  tags: [system, hostname]
 
 - name: Include system-specific tasks
   ansible.builtin.include_tasks:

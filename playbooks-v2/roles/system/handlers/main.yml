@@ -5,3 +5,9 @@
     cmd: "killall Dock"
   changed_when: false
   become: true
+
+- name: Regenerate Dracut
+  ansible.builtin.command:
+    cmd: "dracut --regenerate-all --force"
+  changed_when: false
+  become: true

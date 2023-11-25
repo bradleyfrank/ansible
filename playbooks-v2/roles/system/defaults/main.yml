@@ -2,14 +2,14 @@
 
 system_hostname: "{{ ansible_facts['hostname'] }}"
 
-system_macos_defaults: {}
-system_macos_launchd: {}
-system_gnome_settings: {}
-
-system_linux_has_desktop: true
 system_linux_add_dns_fallback: true
 system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]
+system_linux_gnome_desktop: true
+system_linux_gnome_settings: {}
+system_linux_dracut_settings: []
 
+system_macos_defaults: {}
+system_macos_launchd: {}
 system_macos_sleep_display: 15
 system_macos_sleep_computer: 30
 system_macos_firewall_enabled: true
