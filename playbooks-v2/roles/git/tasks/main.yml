@@ -21,6 +21,7 @@
     section: "core"
     option: "fsmonitor"
     value: "true"
+    mode: "0755"
   when: git_enable_fsmonitor
 
 - name: Create allowed signers file

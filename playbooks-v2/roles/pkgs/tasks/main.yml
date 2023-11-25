@@ -29,7 +29,7 @@
 
 - name: Include Flakpak packages
   ansible.builtin.include_tasks:
-    file: "pkg_mgr_flatpak.yml"
+    file: "pkg_mgr/flatpak.yml"
   when: ansible_facts['system'] == "Linux"
   tags: always
 
