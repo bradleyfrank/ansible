@@ -9,7 +9,8 @@
   loop: "{{ system_macos_defaults }}"
   loop_control:
     label: "{{ item['name'] }}"
-  notify: Restart MacOS dock
+  notify: Restart macOS dock
+  tags: [system, mac_settings, defaults]
 
 - name: Set launchd services
   community.general.launchd:
@@ -25,14 +26,14 @@
     cmd: "pmset displaysleep {{ system_macos_sleep_display }}"
   changed_when: false
   become: true
-  tags: [system, mac_settings, pmset, become]
+  tags: [system, mac_settings, sleep, become]
 
 - name: Put computer to sleep after X minutes
   ansible.builtin.command:
     cmd: "pmset sleep {{ system_macos_sleep_computer }}"
   changed_when: false
   become: true
-  tags: [system, mac_settings, pmset, become]
+  tags: [system, mac_settings, sleep, become]
 
 - name: Set firewall state
   tags: [system, mac_settings, firewall, become]
@@ -67,30 +68,33 @@
       when: not system_macos_gatekeeper_enabled
 
 - name: Set ~/Library hidden state
-  tags: [system, mac_settings, library, become]
+  tags: [system, mac_settings, library]
   block:
     - name: Unhide ~/Library
-      ansible.builtin.shell: |
-        chflags nohidden ~/Library
-        xattr -d com.apple.FinderInfo ~/Library
+      ansible.builtin.shell:
+        cmd: |
+          chflags nohidden ~/Library
+          xattr -d com.apple.FinderInfo ~/Library
       changed_when: false
       when: system_macos_unhide_user_library
     - name: Hide ~/Library
-      ansible.builtin.shell: |
-        chflags hidden ~/Library
-        xattr -wx com.apple.FinderInfo "{{ system_macos_hidden_xattr }}" ~/Library
+      ansible.builtin.shell:
+        cmd: |
+          chflags hidden ~/Library
+          xattr -wx com.apple.FinderInfo "{{ system_macos_hidden_xattr }}" ~/Library
       changed_when: false
       when: not system_macos_unhide_user_library
 
 - name: Set /Volumes hidden state
-  tags: [system, mac_settings, volumes, become]
-  become: true
-	block:
+  tags: [system, mac_settings, volumes]
+  block:
     - name: Unhide ~/Volumes
-      ansible.builtin.shell: "chflags nohidden /Volumes"
+      ansible.builtin.command:
+        cmd: "chflags nohidden /Volumes"
       changed_when: false
       when: system_macos_unhide_volumes
     - name: Hide ~/Volumes
-      ansible.builtin.shell: "chflags hidden /Volumes"
+      ansible.builtin.command:
+        cmd: "chflags hidden /Volumes"
       changed_when: false
       when: not system_macos_unhide_volumes

@@ -11,11 +11,6 @@
         state: absent
       become: true
 
-    - name: Restart dock to apply changes
-      ansible.builtin.command: killall Dock
-      changed_when: false
-      become: true
-
   tasks:
 
     - name: Add temporary passwordless sudo permissions
@@ -27,18 +22,6 @@
       become: true
       notify: Remove passwordless sudo permissions
 
-    - name: Add DNS fallback
-      ansible.builtin.lineinfile:
-        path: /etc/systemd/resolved.conf
-        regexp: '^#?FallbackDNS='
-        line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
-      become: true
-      when: "'Linux' in ansible_system"
-
-    - name: Include os-specific package tasks
-      ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
-      tags: always
-
     - name: Install root dotfiles
       ansible.builtin.copy:
         src: root/
@@ -46,15 +29,3 @@
         mode: 0644
       become: true
       tags: [root, dotfiles]
-
-    - name: Configure system settings
-      ansible.builtin.include_tasks: "tasks/bootstrap/system/os_{{ ansible_system }}.yml"
-      tags: always
-
-- name: Import dotfiles playbook
-  ansible.builtin.import_playbook: dotfiles.yml
-  tags: dotfiles
-
-- name: Import secrets playbook
-  ansible.builtin.import_playbook: secrets.yml
-  tags: secrets

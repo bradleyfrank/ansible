@@ -7,4 +7,3 @@
     enabled: true
   become: true
   when: pkgs_packagekit_enabled
-  tags: always

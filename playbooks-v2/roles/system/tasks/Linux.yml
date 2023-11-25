@@ -1,0 +1,20 @@
+---
+
+# TODO: Support for LMDE/Debian
+- name: Add DNS fallback
+  ansible.builtin.lineinfile:
+    path: "/etc/systemd/resolved.conf"
+    regexp: "^#?FallbackDNS="
+    line: "FallbackDNS={{ system_linux_dns_fallback | join(' ') }}"
+  when: system_linux_add_dns_fallback
+  become: true
+  tags: [system, linux_settings, dns, become]
+
+- name: Apply Gnome settings
+  community.general.dconf:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+  loop: "{{ system_linux_gnome_common | dict2items }}"
+  loop_control:
+    lable: "{{ name }}"
+  when: (system_linux_has_desktop) and ("gnome" in ansible_facts['env']['XDG_CURRENT_DESKTOP'])

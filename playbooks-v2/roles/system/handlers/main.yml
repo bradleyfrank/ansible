@@ -1,0 +1,7 @@
+---
+
+- name: Restart macOS dock
+  ansible.builtin.command:
+    cmd: "killall Dock"
+  changed_when: false
+  become: true
