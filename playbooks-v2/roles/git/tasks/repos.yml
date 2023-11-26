@@ -1,0 +1,18 @@
+---
+
+- name: Create git directories
+  ansible.builtin.file:
+    path: "{{ git_repo_dir_prefix }}/{{ git_repo_dir_suffix }}"
+    state: "directory"
+    mode: "0755"
+  tags: [git, repos, dotfiles]
+
+- name: Clone GitHub repositories
+  ansible.builtin.git:
+    repo: "{{ git_repo_url }}"
+    version: "{{ git_repo_branch }}"
+    dest: "{{ git_repo_dir_prefix }}/{{ git_repo_dir_suffix }}"
+    accept_hostkey: true
+    key_file: "{{ git_ssh_key_private | default(omit) }}"
+    update: "{{ git_repo_update | default(false) }}"
+  tags: [git, repos, dotfiles]

@@ -1,0 +1,39 @@
+---
+
+- name: Read public SSH key for signing key
+  ansible.builtin.set_fact:
+    signing_key: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split }}"
+  when: git_signing_key_type == "ssh"
+  tags: [git, dotfiles]
+
+- name: Install gitconfig
+  vars:
+    template:
+      - "{{ inventory_dir }}/templates/gitconfig.j2"
+      - "gitconfig.j2"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    dest: "{{ git_config_path }}"
+    mode: "0755"
+  tags: [git, config]
+
+- name: Enable fsmonitor daemon
+  community.general.ini_file:
+    path: "{{ git_config_path }}"
+    section: "core"
+    option: "fsmonitor"
+    value: "true"
+    mode: "0755"
+  when: git_config_enable_fsmonitor
+  tags: [git, dotfiles]
+
+- name: Create allowed signers file
+  vars:
+    template:
+      - "{{ inventory_dir }}/templates/allowed_signers.j2"
+      - "allowed_signers.j2"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    dest: "{{ git_signing_allowed_signers }}"
+    mode: "0644"
+  tags: [git, signing]

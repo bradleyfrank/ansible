@@ -1,0 +1,49 @@
+---
+
+- name: Register SSH key with Github
+  community.general.github_key:
+    name: "{{ git_ssh_key_name }}"
+    pubkey: "{{ lookup('ansible.builtin.file', git_ssh_key_public) }}"
+    state: "present"
+    token: "{{ git_github_token }}"
+  when: git_ssh_key_upload
+  tags: [github, dotfiles, git_ssh_key]
+
+- name: Get list of existing GitHub SSH signing keys
+  ansible.builtin.uri:
+    url: "{{ git_api_signing_key_url }}"
+    method: "GET"
+    status_code: [200]
+    headers:
+      Authorization: "Bearer {{ git_github_token }}"
+      Accept: "{{ git_github_api_headers_accept }}"
+      X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
+  register: git_ssh_signing_keys
+  when: (git_signing_key_upload) and (not git_ssh_signing_key_uploaded)
+  tags: [github, dotfiles, git_signing_key]
+
+- name: Set signing key upload status
+  ansible.builtin.set_fact:
+    git_ssh_signing_key_uploaded: "{{ lookup('ansible.utils.index_of',
+      git_ssh_signing_keys['json'], 'eq', body['title'], 'title') }}"
+    cacheable: true
+  tags: [github, dotfiles, git_signing_key]
+
+- name: Register SSH signing key with Github
+  vars:
+    key_contents: "{{ lookup('ansible.builtin.file', git_ssh_signing_key_path) | split(' ') }}"
+    body:
+      key: "{{ key_contents[0] }} {{ key_contents[1] }}"
+      title: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
+  ansible.builtin.uri:
+    url: "{{ git_api_signing_key_url }}"
+    method: "POST"
+    body: "{{ body | to_nice_json }}"
+    body_format: "json"
+    status_code: [201]
+    headers:
+      Authorization: "Bearer {{ git_github_token }}"
+      Accept: "{{ git_github_api_headers_accept }}"
+      X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
+  when: (git_ssh_signing_key_upload) and (not git_ssh_signing_key_uploaded)
+  tags: [github, dotfiles, git_signing_key]
