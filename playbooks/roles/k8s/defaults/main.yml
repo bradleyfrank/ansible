@@ -1,5 +1,7 @@
 ---
 
+k8s_krew_bin: "{{ k8s_homebrew_prefix }}/bin/kubectl krew"
+
 k8s_packages:
   - kubectl
   - krew

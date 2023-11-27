@@ -1,0 +1,8 @@
+---
+
+- name: Test playbook
+  hosts: localhost
+  tasks:
+    - name: Print debug messages
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts['pkg_mgr'] }}"

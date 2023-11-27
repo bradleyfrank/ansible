@@ -14,11 +14,11 @@
 - name: Include repo tasks
   vars:
     git_repo_url: "{{ item['url'] }}"
-    git_repo_name: "{{ git_repo_url | split('.') | first }}"
+    git_repo_name: "{{ item['url'] | split('.') | first }}"
     git_repo_branch: "{{ item['branch'] | default('main') }}"
     git_repo_dir_prefix: "{{ git_clone_repos_path }}/{{ git_repo_name }}"
     git_repo_dir_suffix: "{{ git_repo_branch if git_clone_repos_as_worktrees else '' }}/"
-    git_repo_update: "{{ item['update'] }}"
+    git_repo_update: "{{ item['update'] | default(false) }}"
   ansible.builtin.include_tasks:
     file: "repos.yml"
   loop: "{{ git_clone_repos }}"

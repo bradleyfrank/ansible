@@ -2,7 +2,7 @@ PATH="${HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/
 MANPATH="$HOME/.local/share/man:/usr/local/share/man:/usr/share/man"
 
 {% if homebrew_zsh_installed and zsh_prefer_homebrew %} PATH="{{ bin_path }}:${PATH}" {% endif %}
-{% if ansible['distribution'] == 'Ubuntu' %} PATH="${HOME}/snap/bin:${PATH}" {% endif %}
+{% if ansible_facts['distribution'] == 'Ubuntu' %} PATH="${HOME}/snap/bin:${PATH}" {% endif %}
 
 export PATH
 export MANPATH

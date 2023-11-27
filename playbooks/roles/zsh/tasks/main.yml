@@ -1,34 +1,26 @@
 ---
 
-- name: Include system defaults
+- name: Load per-OS variables
   ansible.builtin.include_vars:
-    file: "{{ ansible['system'] }}.yml"
+    file: "{{ ansible_facts['system'] }}.yml"
   tags: always
 
 - name: Set Homebrew prefix
   ansible.builtin.set_fact:
     zsh_homebrew_prefix: "{{ zsh_default_homebrew_prefix }}"
-  when: zsh_homebrew_prefix | length == 0
+  when: zsh_homebrew_prefix is undefined
   tags: always
 
 - name: Install zsh (via OS package manager)
-  vars:
-    pkgs_packages: "zsh"
-  ansible.builtin.include_role:
-    name: "pkgs"
-    apply:
-      tags: [zsh]
-  when: (ansible['system'] == "Linux") and (not zsh_prefer_homebrew)
+  ansible.builtin.package:
+    name: "zsh"
+  when: (ansible_facts['system'] == "Linux") and (not zsh_prefer_homebrew)
   tags: [zsh, install]
 
 - name: Install zsh (via Homebrew)
-  vars:
-    pkgs_homebrew_formulas: "zsh"
-  ansible.builtin.include_role:
-    name: "pkgs"
-    apply:
-      tags: [zsh]
-  when: (ansible['system'] == "Darwin") or (zsh_prefer_homebrew)
+  ansible.builtin.homebrew:
+    name: "zsh"
+  when: (ansible_facts['system'] == "Darwin") or (zsh_prefer_homebrew)
   tags: [zsh, install]
 
 - name: Set Zsh bin path
@@ -38,7 +30,7 @@
   tags: always
 
 - name: Configure Homebrew Zsh for MacOS
-  when: (ansible['system'] == "Darwin") and (zsh_prefer_homebrew)
+  when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
   tags: [zsh]
   block:
     - name: Add Homebrew Zsh to available shells
@@ -61,10 +53,10 @@
 
 - name: Set Zsh as default shell
   ansible.builtin.user:
-    name: "{{ ansible['user_id'] }}"
+    name: "{{ ansible_facts['user_id'] }}"
     shell: "{{ zsh_bin_path }}"
   become: true
-  when: ansible['user_shell'] != zsh_bin_path
+  when: ansible_facts['user_shell'] != zsh_bin_path
   tags: [zsh]
 
 - name: Install Zsh plugins
@@ -93,7 +85,7 @@
       - "zshrc.j2"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', template) }}"
-    dest: "{{ ansible['user_dir'] }}/.zshrc"
+    dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     mode: "0644"
   tags: [zsh, dotfiles]
 

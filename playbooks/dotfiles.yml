@@ -1,0 +1,80 @@
+---
+
+- name: Install and configure dotfiles on localhost
+  hosts: localhost
+
+  vars:
+
+    directories:
+      - path: "{{ ansible_user_dir }}/Development/Projects"
+      - path: "{{ ansible_user_dir }}/Development/Build"
+      - path: "{{ ansible_user_dir }}/Development/Scratch"
+      - path: "{{ ansible_user_dir }}/Development/Reference"
+      - path: "{{ ansible_user_dir }}/Development/Logs"
+      - path: "{{ ansible_user_dir }}/.config/tmux"
+      - path: "{{ ansible_user_dir }}/.vim/pack/default/start"
+      - path: "{{ font_dir }}"
+        mode: "0700"
+      - path: "{{ zsh_site_functions }}"
+
+  handlers:
+
+    - name: Process backups
+      vars:
+        backup_var: "{{ lookup('vars', item) }}"
+      ansible.builtin.include_tasks: handlers/backups.yml
+      when: backup_var['backup_file'] is defined
+      loop: "{{ query('varnames', '^_backup_.+$') }}"
+      loop_control:
+        label: "{{ item | replace('_backup_', '') }}"
+      tags: ['always', 'backups']
+
+  tasks:
+
+    - name: Create all dotfile directories
+      ansible.builtin.file:
+        path: "{{ item['path'] }}"
+        state: directory
+        mode: "{{ item['mode'] | default('0755') }}"
+      loop: "{{ directories }}"
+      loop_control:
+        label: "{{ item['path'] }}"
+      tags: always
+
+    - name: Import core dotfiles tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/dotfiles.yml
+
+    - name: Import ssh tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
+
+    - name: Import git tasks  # must follow ssh key creation
+      ansible.builtin.import_tasks: tasks/dotfiles/git.yml
+
+    - name: Import tmux tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/tmux.yml
+
+    - name: Import vim tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
+
+    - name: Import k8s tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/k8s.yml
+
+    - name: Import font tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/fonts.yml
+
+    - name: Import GitHub tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/github.yml
+
+    - name: Import macOS app tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/mac_apps.yml
+      when: "'Darwin' in ansible_system"
+
+    - name: Import zsh tasks
+      ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
+
+    - name: Install Python packages
+      ansible.builtin.pip:
+        executable: "{{ pip_exec }}"
+        name: "{{ pypi_packages }}"
+        extra_args: --user
+      tags: python

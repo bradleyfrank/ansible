@@ -3,4 +3,4 @@
 dots_post_processing: []
 dots_files_source: "{{ inventory_dir }}/files/dotfiles"
 dots_templates: []
-dots_templates_source: "{{ inventory_dir }}/templates"
+dots_templates_source: "{{ inventory_dir }}/templates/dotfiles"

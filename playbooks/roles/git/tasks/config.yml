@@ -17,16 +17,6 @@
     mode: "0755"
   tags: [git, config]
 
-- name: Enable fsmonitor daemon
-  community.general.ini_file:
-    path: "{{ git_config_path }}"
-    section: "core"
-    option: "fsmonitor"
-    value: "true"
-    mode: "0755"
-  when: git_config_enable_fsmonitor
-  tags: [git, dotfiles]
-
 - name: Create allowed signers file
   vars:
     template:

@@ -3,13 +3,9 @@
 - name: Try installing packages via Homebrew
   tags: [k8s, k9s, krew]
   block:
-    - name: Install k8s
-      vars:
-        pkgs_homebrew_formulas: "{{ k8s_packages }}"
-      ansible.builtin.include_role:
-        name: "pkgs"
-        apply:
-          tags: [k8s, k9s, krew]
+    - name: Install k8s packages
+      ansible.builtin.homebrew:
+        name: "{{ k8s_packages }}"
   rescue:
     - name: Fail if Homebrew isn't installed
       ansible.builtin.fail:
@@ -19,6 +15,13 @@
   tags: always
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
+  tags: always
+
+- name: Set Homebrew prefix
+  ansible.builtin.set_fact:
+    zsh_homebrew_prefix: "{{ k8s_default_homebrew_prefix }}"
+  when: k8s_homebrew_prefix is undefined
+  tags: always
 
 - name: Template k9s config
   vars:
@@ -37,7 +40,7 @@
 
 - name: Install krew plugins
   ansible.builtin.command:
-    cmd: "{{ krew_exec }} install {{ item }}"
+    cmd: "{{ k8s_krew_bin }} install {{ item }}"
   loop: "{{ krew_plugins }}"
   register: cmd_result
   changed_when: "'Installed plugin' in cmd_result['stdout']"

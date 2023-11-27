@@ -1,0 +1,110 @@
+---
+
+- name: Remove files, folder, and packages
+  hosts: localhost
+
+  vars:
+    dotfiles:
+      - .ansible_vault_password
+      - .ansible/vault
+      - .config/alacritty
+      - .config/p10k.zsh
+      - .dotfiles
+      - .k9s
+      - .infractl/orm
+      - .local/bin/aptsearch
+      - .local/bin/bbedit
+      - .local/bin/branch
+      - .local/bin/clone
+      - .local/bin/diff-so-fancy
+      - .local/bin/gcp-kubeconfigs
+      - .local/bin/gcpkonfig
+      - .local/bin/ghpr
+      - .local/bin/keygen
+      - .local/bin/lib
+      - .local/bin/numware
+      - .local/bin/orm
+      - .local/bin/tmux-dump-pane
+      - .local/bin/ytdl
+      - .local/config/tmuxp/main.yml
+      - .local/config/glow.yml
+      - .local/opt/bbdm
+      - .local/share/fubectl
+      - .local/share/icons
+      - .local/share/kubectl
+      - .local/share/zsh/rc.d/cmarks
+      - .local/share/zsh-functions
+      - .local/share/zsh-completions
+      - .local/share/zshrc
+      - .tmux.conf
+
+    homebrew:
+      formulas:
+        - awscli
+        - diff-so-fancy
+        - ffsend
+        - hstr
+        - tmux-mem-cpu-load
+        - yq
+        - youtube-dl
+        - zoxide
+      casks:
+        - anylist
+        - bbedit
+        - firefox-developer-edition
+        - firefox-nightly
+        - hiddenbar
+        - jumpcut
+        - qownnotes
+        - macdown
+        - notion
+        - openshot-video-editor
+        - parallels
+        - stay
+        - sublime-text
+        - typora
+        - virtualbox
+        - vivaldi
+        - xquartz
+
+    flatpaks:
+      - name: com.github.fabiocolacio.marker
+      - name: com.github.geigi.cozy
+      - name: com.github.johnfactotum.Foliate
+      - name: com.github.PintaProject.Pinta
+      - name: com.gitlab.newsflash
+      - name: com.spotify.Client
+      - name: org.gabmus.hydrapaper
+      - name: org.gnome.Connections
+      - name: org.gnome.Games
+      - name: org.gnome.gitlab.somas.Apostrophe
+      - name: org.gnome.gThumb
+      - name: org.gnome.TextEditor
+
+  tasks:
+    - name: Remove files
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/{{ item }}"
+        state: absent
+      loop: "{{ dotfiles }}"
+
+    - name: Uninstall Homebrew formulas
+      community.general.homebrew:
+        name: "{{ homebrew['formulas'] }}"
+        state: absent
+      when: "'Darwin' in ansible_system"
+
+    - name: Uninstall Homebrew casks
+      community.general.homebrew_cask:
+        name: "{{ homebrew['casks'] }}"
+        state: absent
+      when: "'Darwin' in ansible_system"
+
+    - name: Remove flatpak packages
+      community.general.flatpak:
+        name: "{{ item['name'] }}"
+        state: absent
+        method: user
+        remote: "{{ item['remote'] | default('flathub') }}"
+      loop: "{{ flatpaks }}"
+      when: "'Linux' in ansible_system"
