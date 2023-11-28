@@ -1,6 +1,0 @@
-{% for host in ssh_config -%}
-Host {{ host['host'] }}
-{% for config, value in host['args'] -%}
-  {{ config }}: {{ value }}
-
-{% endfor %}

@@ -11,7 +11,6 @@
   ansible.builtin.file:
     mode: "0600"
     path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
-    state: "touch"
   tags: [ssh, dotfiles]
 
 - name: Create SSH key
@@ -28,9 +27,11 @@
 
 - name: Create SSH config
   ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', ssh_template_config) }}"
     dest: "{{ ansible_facts['user_dir'] }}/.ssh/config"
     mode: "0644"
-    src: "config.j2"
+    force: "{{ ssh_manage_config_force }}"
+  when: ssh_manage_config
   tags: [ssh, dotfiles]
 
 - name: Create host keys
