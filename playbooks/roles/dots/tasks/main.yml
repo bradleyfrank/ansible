@@ -24,7 +24,6 @@
     cmd: "{{ item['cmd'] }}"
     creates: "{{ item['creates'] | default(omit) }}"
     removes: "{{ item['removes'] | default(omit) }}"
-  changed_when: "{{ item['changed_when'] | default(false) }}"
-  failed_when: "{{ item['failed_when'] | default(omit) }}"
+  changed_when: false
   loop: "{{ dots_post_processing }}"
   tags: [dotfiles]

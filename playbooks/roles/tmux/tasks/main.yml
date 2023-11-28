@@ -1,22 +1,15 @@
 ---
 
 - name: Install tmux (via OS package manager)
-  vars:
-    pkgs_packages: "{{ tmux_package }}"
-  ansible.builtin.include_role:
-    name: "pkgs"
-    apply:
-      tags: [tmux]
+  ansible.builtin.package:
+    name: "tmux"
+  become: true
   when: (ansible_facts['system'] == "Linux") and (not tmux_prefer_homebrew)
   tags: [tmux]
 
 - name: Install tmux (via Homebrew)
-  vars:
-    pkgs_homebrew_formulas: "{{ tmux_package }}"
-  ansible.builtin.include_role:
-    name: "pkgs"
-    apply:
-      tags: [tmux]
+  ansible.builtin.homebrew:
+    name: "tmux"
   when: (ansible_facts['system'] == "Darwin") or (tmux_prefer_homebrew)
   tags: [tmux]
 
@@ -24,7 +17,7 @@
   vars:
     template:
       - "{{ inventory_dir }}/templates/tmux.config.j2"
-      - "tmux.conf.j2"
+      - "templates/tmux.conf.j2"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', template) }}"
     dest: "{{ tmux_rc_file }}"

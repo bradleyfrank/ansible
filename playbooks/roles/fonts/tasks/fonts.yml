@@ -2,16 +2,14 @@
 
 - name: Download latest version of Nerd Fonts
   vars:
-    slug: "{{ fonts_github_user }}/{{ fonts_github_repo }}"
+    url_prefix: "https://github.com/{{ fonts_github_user }}/{{ fonts_github_repo }}"
   ansible.builtin.get_url:
-    url: "https://github.com/{{ slug }}/releases/download/{{ fonts_latest_version }}/{{ item }}.zip"
+    url: "{{ url_prefix }}/releases/download/{{ fonts_latest_version }}/{{ item }}.zip"
     dest: "/tmp/{{ item }}.zip"
     mode: "0644"
   tags: [fonts]
 
 - name: Extract Nerd Fonts
-  vars:
-    version: "{{ nerd_fonts_latest_release['tag'] }}"
   ansible.builtin.unarchive:
     src: "/tmp/{{ item }}.zip"
     dest: "{{ fonts_dir }}/"

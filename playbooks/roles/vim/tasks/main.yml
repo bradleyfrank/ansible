@@ -1,10 +1,21 @@
 ---
 
+- name: Load per-OS variables
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts['system'] }}.yml"
+  tags: always
+
+- name: Set Homebrew prefix
+  ansible.builtin.set_fact:
+    vim_homebrew_prefix: "{{ vim_default_homebrew_prefix }}"
+  when: vim_homebrew_prefix is undefined
+  tags: always
+
 - name: Install vim config
   vars:
     template:
       - "{{ inventory_dir }}/templates/vimrc.j2"
-      - "vimrc.j2"
+      - "templates/vimrc.j2"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', template) }}"
     dest: "{{ ansible_facts['user_dir'] }}/.vimrc"
@@ -14,7 +25,7 @@
 - name: Install vim extensions
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
-    dest: "{{ vim_extensions_dir }}"
+    dest: "{{ vim_extensions_dir }}/{{ item['name'] }}"
     depth: "1"
     version: "{{ item['version'] | default(omit) }}"
   loop: "{{ vim_extensions }}"

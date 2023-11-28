@@ -16,7 +16,7 @@
   vars:
     icons_app: "/Applications/{{ item['path'] | splitext | first }}.app"
   ansible.builtin.command:
-    cmd: "{{ icons_homebrew_prefix }}/bin/fileicon set {{ app }} {{ item['src'] }}"
+    cmd: "{{ icons_homebrew_prefix }}/bin/fileicon set {{ icons_app }} {{ item['src'] }}"
   register: cmd_fileicon_set
   changed_when: false
   failed_when:
@@ -25,5 +25,5 @@
   loop: "{{ lookup('community.general.filetree', icons_path + '/') }}"
   loop_control:
     label: "{{ icons_app }}"
-  when: (ansible_facts['system'] == "Darwin") and (stat_icons_dir['exists'])
+  when: (ansible_facts['system'] == "Darwin") and (stat_icons_dir['stat']['exists'])
   tags: [icons]

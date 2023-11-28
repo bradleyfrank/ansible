@@ -8,7 +8,7 @@ system_linux_gnome_desktop: true
 system_linux_gnome_settings: {}
 system_linux_dracut_settings: []
 
-system_macos_defaults: {}
+system_macos_defaults: []
 system_macos_launchd: {}
 system_macos_sleep_display: 15
 system_macos_sleep_computer: 30

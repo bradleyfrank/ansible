@@ -26,6 +26,7 @@
     cmd: "pmset displaysleep {{ system_macos_sleep_display }}"
   changed_when: false
   become: true
+  when: system_macos_sleep_display >= 0
   tags: [system, mac_settings, sleep]
 
 - name: Put computer to sleep after X minutes
@@ -33,6 +34,7 @@
     cmd: "pmset sleep {{ system_macos_sleep_computer }}"
   changed_when: false
   become: true
+  when: system_macos_sleep_computer >= 0
   tags: [system, mac_settings, sleep]
 
 - name: Set firewall state

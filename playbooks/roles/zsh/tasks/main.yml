@@ -1,16 +1,5 @@
 ---
 
-- name: Load per-OS variables
-  ansible.builtin.include_vars:
-    file: "{{ ansible_facts['system'] }}.yml"
-  tags: always
-
-- name: Set Homebrew prefix
-  ansible.builtin.set_fact:
-    zsh_homebrew_prefix: "{{ zsh_default_homebrew_prefix }}"
-  when: zsh_homebrew_prefix is undefined
-  tags: always
-
 - name: Install zsh (via OS package manager)
   ansible.builtin.package:
     name: "zsh"
@@ -18,45 +7,36 @@
   tags: [zsh, install]
 
 - name: Install zsh (via Homebrew)
-  ansible.builtin.homebrew:
+  community.general.homebrew:
     name: "zsh"
   when: (ansible_facts['system'] == "Darwin") or (zsh_prefer_homebrew)
   tags: [zsh, install]
 
-- name: Set Zsh bin path
-  ansible.builtin.set_fact:
-    zsh_bin_path: "{{ zsh_prefer_homebrew | ternary(zsh_homebrew_bin, zsh_default_bin) }}"
-  when: zsh_bin_path | length == 0
-  tags: always
+- name: Include tasks for setting vars
+  ansible.builtin.import_tasks:
+    file: "vars.yml"
 
 - name: Configure Homebrew Zsh for MacOS
   when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
+  become: true
   tags: [zsh]
   block:
     - name: Add Homebrew Zsh to available shells
-      ansible.builtin.blockinfile:
+      ansible.builtin.lineinfile:
         path: "/etc/shells"
-        block: |
-          {{ zsh_homebrew_prefix }}/bin/zsh
+        line: "{{ zsh_homebrew_prefix }}/bin/zsh"
     - name: Fix Homebrew Zsh folder permissions
       ansible.builtin.file:
         path: "{{ item }}"
         mode: "0755"
       loop: "{{ zsh_chmod_directories }}"
 
-- name: Get current Zsh version
-  ansible.builtin.command:
-    cmd: "{{ zsh_bin_path }}/zsh --version"
-  register: cmd_zsh_version
-  changed_when: false
-  tags: always
-
 - name: Set Zsh as default shell
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
     shell: "{{ zsh_bin_path }}"
-  become: true
   when: ansible_facts['user_shell'] != zsh_bin_path
+  become: true
   tags: [zsh]
 
 - name: Install Zsh plugins
@@ -79,12 +59,8 @@
   tags: [zsh, dotfiles]
 
 - name: Apply zshrc template
-  vars:
-    template:
-      - "{{ inventory_dir }}/templates/zshrc.j2 }}"
-      - "zshrc.j2"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    src: "{{ lookup('ansible.builtin.first_found', zsh_template_zshrc) }}"
     dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     mode: "0644"
   tags: [zsh, dotfiles]
@@ -100,5 +76,5 @@
     - name: Generate zcompdump
       ansible.builtin.shell:
         cmd: "autoload -Uz compinit && compinit"
-        executable: "{{ zsh_exec }}"
+        executable: "{{ zsh_bin_path }}"
         creates: "{{ ansible_user_dir }}/.zcompdump"

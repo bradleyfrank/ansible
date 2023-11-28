@@ -5,6 +5,14 @@ git_github_token: ""
 
 git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
 
+git_template_gitconfig:
+  - "{{ inventory_dir }}/templates/gitconfig.j2"
+  - "templates/gitconfig.j2"
+
+git_template_allowed_signers:
+  - "{{ inventory_dir }}/templates/allowed_signers.j2"
+  - "templates/allowed_signers.j2"
+
 git_signing_key_upload: true
 git_signing_key_uploaded: false
 git_signing_key_type: "ssh"

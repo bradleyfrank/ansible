@@ -1,12 +1,15 @@
 ---
 
-zsh_homebrew_prefix: ""
 zsh_prefer_homebrew: true
 zsh_manage_zcompdump: true
 
 zsh_plugin_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 zsh_rcd: "{{ ansible_facts['user_dir'] }}/.zshrc.d"
 zsh_site_functions: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/site-functions"
+
+zsh_template_zshrc:
+  - "{{ inventory_dir }}/templates/zshrc.j2"
+  - "templates/zshrc.j2"
 
 zsh_completions: []
 zsh_plugins: []

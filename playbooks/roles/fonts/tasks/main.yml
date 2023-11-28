@@ -1,5 +1,16 @@
 ---
 
+- name: Load per-OS variables
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts['system'] }}.yml"
+  tags: always
+
+- name: Set fonts install directory
+  ansible.builtin.set_fact:
+    fonts_dir: "{{ fonts_default_dir }}"
+  when: fonts_dir is undefined
+  tags: always
+
 - name: Get latest release version of Nerd Fonts
   community.general.github_release:
     user: "{{ fonts_github_user }}"
@@ -16,7 +27,9 @@
   tags: [fonts, dotfiles]
 
 - name: Install newer fonts
-  when: "fonts_current_version is version(fonts_latest_version '<')"
+  vars:
+    fonts_latest_version: "{{ fonts_github_latest_release['tag'] }}"
+  when: "fonts_current_version is version(fonts_latest_version, '<')"
   tags: [fonts, dotfiles]
   block:
     - name: Include font install tasks
@@ -24,28 +37,9 @@
         file: "fonts.yml"
       loop: "{{ fonts_to_install }}"
     - name: Set latest version
-      vars:
-        fonts_latest_version: "{{ fonts_github_latest_release['tag'] }}"
       ansible.builtin.set_fact:
         fonts_current_version: "{{ fonts_latest_version }}"
         cacheable: true
-
-- name: Remove Windows-only fonts
-  when: fonts_remove_windows_fonts
-  tags: [fonts, dotfiles]
-  block:
-    - name: Find Windows-only fonts
-      ansible.builtin.find:
-        paths: "{{ fonts_dir }}"
-        patterns: "*Windows Compatible*"
-      register: fonts_found_windows_only
-    - name: Delete Windows-only fonts
-      ansible.builtin.file:
-        path: "{{ item['path'] }}"
-        state: "absent"
-      loop: "{{ fonts_found_windows_only['files'] }}"
-      loop_control:
-        label: "{{ item['path'] | basename }}"
 
 - name: Symlink lcdfilter conf for better fonts
   ansible.builtin.file:

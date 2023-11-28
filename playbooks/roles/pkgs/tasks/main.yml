@@ -19,6 +19,7 @@
   community.general.homebrew_cask:
     name: "{{ pkgs_homebrew_casks }}"
     accept_external_apps: "{{ pkgs_accept_external_casks }}"
+  when: pkgs_homebrew_casks | length > 0
   tags: [packages, homebrew, casks]
 
 - name: Install Mac App Store apps
