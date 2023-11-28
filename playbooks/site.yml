@@ -39,7 +39,11 @@
     #    - name: Include system role
     #      ansible.builtin.import_role:
     #        name: "system"
+    #
+    #    - name: Include ssh role
+    #      ansible.builtin.import_role:
+    #        name: "ssh"
 
-    - name: Include ssh role
+    - name: Include git role
       ansible.builtin.import_role:
-        name: "ssh"
+        name: "git"

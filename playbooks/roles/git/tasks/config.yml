@@ -2,13 +2,11 @@
 
 - name: Read public SSH key for signing key
   ansible.builtin.set_fact:
-    signing_key: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split }}"
+    git_signing_key: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split }}"
   when: git_signing_key_type == "ssh"
   tags: [git, dotfiles]
 
 - name: Install gitconfig
-  vars:
-    template:
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', git_template_gitconfig) }}"
     dest: "{{ git_config_path }}"
