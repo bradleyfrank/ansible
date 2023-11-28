@@ -29,12 +29,8 @@
   tags: always
 
 - name: Template k9s config
-  vars:
-    template:
-      - "{{ inventory_dir }}/templates/k9s.{{ item }}.yml.j2"
-      - "templates/k9s.{{ item }}.yml.j2"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    src: "{{ lookup('ansible.builtin.first_found', k8s_k9s_template_config) }}"
     dest: "{{ k8s_k9s_config }}/{{ item }}.yml"
     mode: "0644"
   loop: [config, skin]

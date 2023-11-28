@@ -18,7 +18,8 @@
     state: "{{ state }}"
   loop: "{{ system_macos_launchd | dict2items(key_name='name', value_name='state') }}"
   loop_control:
-    lable: "{{ name }}"
+    label: "{{ name }}"
+  when: system_macos_launchd | length > 0
   tags: [system, mac_settings, launchd]
 
 - name: Put display to sleep after X minutes
@@ -76,7 +77,7 @@
       ansible.builtin.shell:
         cmd: |
           chflags nohidden ~/Library
-          xattr -d com.apple.FinderInfo ~/Library
+          xattr -d com.apple.FinderInfo ~/Library || true  # xattr not idempotent
       changed_when: false
       when: system_macos_unhide_user_library
     - name: Hide ~/Library

@@ -14,12 +14,8 @@
   tags: [tmux]
 
 - name: Template tmux config
-  vars:
-    template:
-      - "{{ inventory_dir }}/templates/tmux.config.j2"
-      - "templates/tmux.conf.j2"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', template) }}"
+    src: "{{ lookup('ansible.builtin.first_found', tmux_template_conf) }}"
     dest: "{{ tmux_rc_file }}"
     mode: "0644"
   tags: [tmux, dotfiles]

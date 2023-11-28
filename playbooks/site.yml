@@ -35,3 +35,7 @@
     #    - name: Include Zsh role
     #      ansible.builtin.import_role:
     #        name: "zsh"
+
+    - name: Include system role
+      ansible.builtin.import_role:
+        name: "system"
