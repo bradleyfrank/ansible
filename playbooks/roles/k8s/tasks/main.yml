@@ -28,6 +28,14 @@
   when: k8s_k9s_config is undefined
   tags: always
 
+- name: Ensure k9s config directory exists
+  ansible.builtin.file:
+    path: "{{ k8s_k9s_config }}"
+    state: "directory"
+    mode: "0755"
+  when: "'k9s' in k8s_packages"
+  tags: [k8s, k9s, dotfiles]
+
 - name: Template k9s config
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', k8s_k9s_template_config) }}"

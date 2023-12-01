@@ -11,6 +11,7 @@
   ansible.builtin.file:
     mode: "0600"
     path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
+    state: "touch"
   tags: [ssh, dotfiles]
 
 - name: Create SSH key

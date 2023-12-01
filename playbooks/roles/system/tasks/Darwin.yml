@@ -89,6 +89,7 @@
       when: not system_macos_unhide_user_library
 
 - name: Set /Volumes hidden state
+  become: true
   tags: [system, mac_settings, volumes]
   block:
     - name: Unhide ~/Volumes

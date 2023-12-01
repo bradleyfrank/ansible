@@ -3,6 +3,8 @@ ansible-lint
 bcrypt
 cryptography>=35.0.0
 github3.py
+jmespath
+pexpect
 pre-commit
 psutil
 pyobjc-framework-Cocoa; sys_platform == 'darwin'

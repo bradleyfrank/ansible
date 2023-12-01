@@ -50,6 +50,13 @@
     label: "{{ item['name'] }}"
   tags: [zsh, dotfiles]
 
+- name: Ensure Zsh `site_functions` directory exists
+  ansible.builtin.file:
+    path: "{{ zsh_site_functions }}"
+    state: "directory"
+    mode: "0755"
+  tags: [zsh, dotfiles]
+
 - name: Generate Zsh completions
   ansible.builtin.shell: "{{ item['command'] }} > {{ zsh_site_functions }}/_{{ item['name'] }}"
   changed_when: false

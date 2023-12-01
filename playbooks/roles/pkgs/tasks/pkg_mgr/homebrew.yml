@@ -8,4 +8,5 @@
 - name: Install Homebrew formulas
   community.general.homebrew:
     name: "{{ pkgs_homebrew_formulas }}"
+    upgrade_all: "{{ pkgs_homebrew_formulas_upgrade }}"
   tags: [packages, homebrew, formulas]
