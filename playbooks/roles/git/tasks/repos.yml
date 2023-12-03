@@ -8,8 +8,9 @@
           eval $(ssh-agent -s) > /dev/null
           echo "{\"SSH_AUTH_SOCK\":\"$SSH_AUTH_SOCK\",\"SSH_AGENT_PID\":\"$SSH_AGENT_PID\"}"
       register: git_eval_ssh_agent
+      changed_when: true
     - name: Set SSH_AUTH_SOCK
-      set_fact:
+      ansible.builtin.set_fact:
         ssh_auth_sock: "{{ git_eval_ssh_agent['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
     - name: Add key to ssh-agent
       environment: "{{ git_eval_ssh_agent['stdout'] }}"
@@ -18,47 +19,95 @@
         responses:
           passphrase: "{{ ssh_keys['ed25519'] }}"
 
+- name: Set repository clone destination
+  vars:
+    git_repos_branch: "{{ '/' + item['branch'] | default('main') }}"
+  ansible.builtin.set_fact:
+    git_repos_basedir: "{{ git_repos_branch if git_repos_as_worktrees else '' }}"
+  tags: [git, repos, dotfiles]
+
 - name: Clone repositories
   tags: [git, repos, dotfiles]
-  when: git_clone_repos_as_worktrees
   block:
     - name: Create repository directories by branch
       vars:
         git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+        git_repos_dirname: "{{ git_repos_path }}/{{ git_repo_name }}"
       ansible.builtin.file:
-        path: "{{ git_clone_repos_path }}/{{ git_repo_name }}/{{ item['branch'] | default('main') }}"
+        path: "{{ git_repos_dirname }}{{ git_repos_basedir }}"
         state: "directory"
         mode: "0755"
-      loop: "{{ git_clone_repos }}"
+      loop: "{{ git_repos }}"
       loop_control:
         label: "{{ git_repo_name }}"
     - name: Clone repositories by branch
       vars:
         git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+        git_repos_dirname: "{{ git_repos_path }}/{{ git_repo_name }}"
       ansible.builtin.git:
         repo: "{{ item['url'] }}"
         version: "{{ item['branch'] | default('main') }}"
-        dest: "{{ git_clone_repos_path }}/{{ git_repo_name }}/{{ item['branch'] | default('main') }}"
+        dest: "{{ git_repos_dirname }}{{ git_repos_basedir }}"
         accept_hostkey: true
         key_file: "{{ git_ssh_key_private }}"
         ssh_opts: "-o 'IdentityAgent={{ ssh_auth_sock }}'"
-      loop: "{{ git_clone_repos }}"
+      loop: "{{ git_repos }}"
       loop_control:
         label: "{{ git_repo_name }}"
 
-#- name: Create git directories
-#  ansible.builtin.file:
-#    path: "{{ git_repo_dir_prefix }}/{{ git_repo_dir_suffix }}"
-#    state: "directory"
-#    mode: "0755"
+#- name: Clone repositories
 #  tags: [git, repos, dotfiles]
+#  when: git_repos_as_worktrees
+#  block:
+#    - name: Create repository directories by branch
+#      vars:
+#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+#      ansible.builtin.file:
+#        path: "{{ git_repos_path }}/{{ git_repo_name }}/{{ item['branch'] | default('main') }}"
+#        state: "directory"
+#        mode: "0755"
+#      loop: "{{ git_repos }}"
+#      loop_control:
+#        label: "{{ git_repo_name }}"
+#    - name: Clone repositories by branch
+#      vars:
+#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+#      ansible.builtin.git:
+#        repo: "{{ item['url'] }}"
+#        version: "{{ item['branch'] | default('main') }}"
+#        dest: "{{ git_repos_path }}/{{ git_repo_name }}/{{ item['branch'] | default('main') }}"
+#        accept_hostkey: true
+#        key_file: "{{ git_ssh_key_private }}"
+#        ssh_opts: "-o 'IdentityAgent={{ ssh_auth_sock }}'"
+#      loop: "{{ git_repos }}"
+#      loop_control:
+#        label: "{{ git_repo_name }}"
 #
-#- name: Clone GitHub repositories
-#  ansible.builtin.git:
-#    repo: "{{ git_repo_url }}"
-#    version: "{{ git_repo_branch }}"
-#    dest: "{{ git_repo_dir_prefix }}/{{ git_repo_dir_suffix }}"
-#    accept_hostkey: true
-#    key_file: "{{ git_ssh_key_private | default(omit) }}"
-#    update: "{{ git_repo_update | default(omit) }}"
+#
+#- name: Clone repositories
 #  tags: [git, repos, dotfiles]
+#  when: not git_repos_as_worktrees
+#  block:
+#    - name: Create repository directories by repo
+#      vars:
+#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+#      ansible.builtin.file:
+#        path: "{{ git_repos_path }}/{{ git_repo_name }}"
+#        state: "directory"
+#        mode: "0755"
+#      loop: "{{ git_repos }}"
+#      loop_control:
+#        label: "{{ git_repo_name }}"
+#    - name: Clone repositories by repo
+#      vars:
+#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+#      ansible.builtin.git:
+#        repo: "{{ item['url'] }}"
+#        version: "{{ item['branch'] | default('main') }}"
+#        dest: "{{ git_repos_path }}/{{ git_repo_name }}"
+#        accept_hostkey: true
+#        key_file: "{{ git_ssh_key_private }}"
+#        ssh_opts: "-o 'IdentityAgent={{ ssh_auth_sock }}'"
+#      loop: "{{ git_repos }}"
+#      loop_control:
+#        label: "{{ git_repo_name }}"

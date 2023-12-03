@@ -1,49 +1,20 @@
 ---
 
-- name: Run all the things
+- name: Bootstrap Ansible
   hosts: localhost
-  tasks:
 
-    - name: Include repo and package role
-      ansible.builtin.import_role:
-        name: "pkgs"
+- name: Import inventory playbook
+  ansible.builtin.import_playbook: "inventory.yml"
 
-    - name: Include system role
-      ansible.builtin.import_role:
-        name: "system"
+- name: Import Ansible galaxy playbook
+  ansible.builtin.import_playbook: "collections.yml"
 
-    - name: Include dotfiles role
-      ansible.builtin.import_role:
-        name: "dots"
+- name: Pause to edit host variables
+  ansible.builtin.pause:
+    prompt: "Hit [Enter] to continue"
 
-    - name: Include fonts role
-      ansible.builtin.import_role:
-        name: "fonts"
+- name: Run all roles
+  ansible.builtin.import_playbook: "all.yml"
 
-    - name: Include Logitech role
-      ansible.builtin.import_role:
-        name: "logi"
-
-    - name: Include icons role
-      ansible.builtin.import_role:
-        name: "icons"
-
-    - name: Include vim role
-      ansible.builtin.import_role:
-        name: "vim"
-
-    - name: Include k8s role
-      ansible.builtin.import_role:
-        name: "k8s"
-
-    - name: Include Zsh role
-      ansible.builtin.import_role:
-        name: "zsh"
-
-    - name: Include ssh role
-      ansible.builtin.import_role:
-        name: "ssh"
-
-    - name: Include git role
-      ansible.builtin.import_role:
-        name: "git"
+- name: Import secrets playbook
+  ansible.builtin.import_playbook: "secrets.yml"

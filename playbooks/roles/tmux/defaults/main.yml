@@ -2,7 +2,8 @@
 
 tmux_package_name: "tmux"
 tmux_prefer_homebrew: false
-tmux_rc: "{{ ansible_facts['user_dir'] }}/.tmux.conf"
+tmux_profiles: [tmux]
+tmux_rc_path: "{{ ansible_facts['user_dir'] }}/.config/tmux"
 tmux_template_conf:
-  - "{{ inventory_dir }}/templates/tmux.config.j2"
+  - "{{ inventory_dir }}/templates/tmux.conf.j2"
   - "templates/tmux.conf.j2"

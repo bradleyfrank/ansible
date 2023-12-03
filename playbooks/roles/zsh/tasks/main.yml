@@ -2,13 +2,13 @@
 
 - name: Install zsh (via OS package manager)
   ansible.builtin.package:
-    name: "zsh"
+    name: "{{ zsh_package_name }}"
   when: (ansible_facts['system'] == "Linux") and (not zsh_prefer_homebrew)
   tags: [zsh, install]
 
 - name: Install zsh (via Homebrew)
   community.general.homebrew:
-    name: "zsh"
+    name: "{{ zsh_package_name }}"
   when: (ansible_facts['system'] == "Darwin") or (zsh_prefer_homebrew)
   tags: [zsh, install]
 

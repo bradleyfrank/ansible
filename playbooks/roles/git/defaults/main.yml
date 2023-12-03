@@ -22,6 +22,6 @@ git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }
 git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
 git_ssh_key_public: "{{ git_ssh_key_private }}.pub"
 
-git_clone_repos: []
-git_clone_repos_as_worktrees: false
-git_clone_repos_path: "{{ ansible_facts['user_dir'] }}/"
+git_repos: []
+git_repos_as_worktrees: false
+git_repos_path: "{{ ansible_facts['user_dir'] }}/"

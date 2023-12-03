@@ -2,20 +2,28 @@
 
 - name: Install tmux (via OS package manager)
   ansible.builtin.package:
-    name: "tmux"
+    name: "{{ tmux_package_name }}"
   become: true
   when: (ansible_facts['system'] == "Linux") and (not tmux_prefer_homebrew)
   tags: [tmux]
 
 - name: Install tmux (via Homebrew)
   ansible.builtin.homebrew:
-    name: "tmux"
+    name: "{{ tmux_package_name }}"
   when: (ansible_facts['system'] == "Darwin") or (tmux_prefer_homebrew)
   tags: [tmux]
+
+- name: Ensure tmux config path exists
+  ansible.builtin.file:
+    path: "{{ tmux_rc_path }}"
+    mode: "0755"
+    state: "directory"
+  tags: [tmux, dotfiles]
 
 - name: Template tmux config
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', tmux_template_conf) }}"
-    dest: "{{ tmux_rc_file }}"
-    mode: "0644"
+    dest: "{{ tmux_rc_path }}/{{ item }}.conf"
+    mode: "0755"
+  loop: "{{ tmux_profiles }}"
   tags: [tmux, dotfiles]
