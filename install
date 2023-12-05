@@ -5,9 +5,12 @@ set -o errexit
 ANSIBLE_REPO_PATH="$HOME/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH=main
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
+ANSIBLE_TEMP_INVENTORY="$(mktemp)"
 INSTALL_HOMEBREW_LINUX=true
 HOMEBREW_INSTALL_SCRIPT=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-VAULT_PASSWORD_FILE="$HOME/.ansible/vault"
+VAULT_PASSWORD_FILE="$HOME/.ansible/vault"; export VAULT_PASSWORD_FILE
+
+echo "localhost ansible_connection=local" > "$ANSIBLE_TEMP_INVENTORY"
 
 install_homebrew() {
   case "$NAME" in
@@ -72,5 +75,6 @@ virtualenv venv
 . venv/bin/activate
 pip install --requirement requirements.txt
 
-export VAULT_PASSWORD_FILE
-ansible-playbook --ask-become-pass playbooks/site.yml
+ansible-playbook playbooks/bootstrap.yml
+ansible-playbook playbooks/site.yml --ask-become-pass
+ansible-playbook playbooks/show_secrets.yml --extra_vars "delete_vault_file=true output_to_file=true"
