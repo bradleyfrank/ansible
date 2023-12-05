@@ -1,6 +1,6 @@
 ---
 
-- name: Create host inventory
+- name: Create inventory
   hosts: localhost
 
   vars:

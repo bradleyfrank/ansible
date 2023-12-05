@@ -1,12 +1,12 @@
 ---
 
 - name: Import inventory playbook
-  ansible.builtin.import_playbook: "inventory.yml"
+  ansible.builtin.import_playbook: "build_inventory.yml"
 
 - name: Import Ansible galaxy playbook
-  ansible.builtin.import_playbook: "collections.yml"
+  ansible.builtin.import_playbook: "install_collections.yml"
 
-- name: Bootstrap Ansible
+- name: Pause before executing main playbook
   hosts: localhost
   tasks:
     - name: Pause to edit host variables
@@ -14,7 +14,7 @@
         prompt: "Hit [Enter] to continue"
 
 - name: Run all roles
-  ansible.builtin.import_playbook: "all.yml"
+  ansible.builtin.import_playbook: "run_all_roles.yml"
 
 - name: Import secrets playbook
-  ansible.builtin.import_playbook: "secrets.yml"
+  ansible.builtin.import_playbook: "show_secrets.yml"
