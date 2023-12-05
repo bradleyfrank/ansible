@@ -7,7 +7,7 @@
     - name: Copy Ansible Galaxy requirements
       ansible.builtin.copy:
         src: "requirements.yml"
-        dest: "{{ ansible_user_dir }}/.ansible/requirements.yml"
+        dest: "{{ ansible_facts['user_dir'] }}/.ansible/requirements.yml"
         mode: "0755"
 
     - name: Install Ansible Galaxy collections

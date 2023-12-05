@@ -4,11 +4,10 @@ set -o errexit
 
 ANSIBLE_REPO_PATH="$HOME/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH=main
-ANSIBLE_REPO_PLAYBOOK=bootstrap
 ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
 INSTALL_HOMEBREW_LINUX=true
 HOMEBREW_INSTALL_SCRIPT=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-VAULT_ID="$HOME/.ansible/vault"
+VAULT_PASSWORD_FILE="$HOME/.ansible/vault"
 
 install_homebrew() {
   case "$NAME" in
@@ -46,26 +45,21 @@ bootstrap_linux() {
   esac
 
   [ -n "$INSTALL_HOMEBREW_LINUX" ] && install_homebrew
-  printf "\nXDG_CURRENT_DESKTOP: %s\n" "$XDG_CURRENT_DESKTOP"
 }
 
-while getopts ':bdg:' opt; do
+while getopts ':bg:' opt; do
   case "$opt" in
     b) unset INSTALL_HOMEBREW_LINUX ;;
-    d) ANSIBLE_REPO_PLAYBOOK=dotfiles ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
   esac
 done
 
-if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
-  case $(uname -s) in
-    Darwin) bootstrap_mac ;;
-    Linux)  bootstrap_linux ;;
-    *)      exit 1 ;;
-  esac
-fi
-
+case $(uname -s) in
+  Darwin) bootstrap_mac ;;
+  Linux)  bootstrap_linux ;;
+  *)      exit 1 ;;
+esac
 
 git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
@@ -78,15 +72,5 @@ virtualenv venv
 . venv/bin/activate
 pip install --requirement requirements.txt
 
-cat << EOF > setup/extra-vars.yml
-current_system: "$(uname -s)"
-current_hostname: "$(hostname -s)"
-current_email: "$(id -un)@$(uname -n)"
-EOF
-
-ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml --extra-vars "@setup/extra-vars.yml"
-
-case $ANSIBLE_REPO_PLAYBOOK in
-  bootstrap) ansible-playbook --vault-password-file "$VAULT_ID" --ask-become-pass playbooks/bootstrap.yml ;;
-  dotfiles)  ansible-playbook --vault-password-file "$VAULT_ID" playbooks/dotfiles.yml ;;
-esac
+export VAULT_PASSWORD_FILE
+ansible-playbook --ask-become-pass playbooks/site.yml
