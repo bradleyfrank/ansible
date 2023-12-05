@@ -1,17 +1,17 @@
 ---
 
-- name: Bootstrap Ansible
-  hosts: localhost
-
 - name: Import inventory playbook
   ansible.builtin.import_playbook: "inventory.yml"
 
 - name: Import Ansible galaxy playbook
   ansible.builtin.import_playbook: "collections.yml"
 
-- name: Pause to edit host variables
-  ansible.builtin.pause:
-    prompt: "Hit [Enter] to continue"
+- name: Bootstrap Ansible
+  hosts: localhost
+  tasks:
+    - name: Pause to edit host variables
+      ansible.builtin.pause:
+        prompt: "Hit [Enter] to continue"
 
 - name: Run all roles
   ansible.builtin.import_playbook: "all.yml"

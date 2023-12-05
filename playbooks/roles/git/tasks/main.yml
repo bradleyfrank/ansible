@@ -11,29 +11,6 @@
   when: "'github' in git_providers"
   tags: always
 
-#- name: Create top-level repository directories
-#  vars:
-#    git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
-#  ansible.builtin.file:
-#    path: "{{ git_repos_path }}/{{ git_repo_name }}"
-#    state: "directory"
-#    mode: "0755"
-#  loop: "{{ git_repos }}"
-#  loop_control:
-#    label: "{{ git_repo_name }}"
-#  when: not git_repos_as_worktrees
-#  tags: [git, repos, dotfiles]
-
-#- name: Clone GitHub repositories
-#  ansible.builtin.git:
-#    repo: "{{ git_repo_url }}"
-#    version: "{{ git_repo_branch }}"
-#    dest: "{{ git_repo_dir_prefix }}/{{ git_repo_dir_suffix }}"
-#    accept_hostkey: true
-#    key_file: "{{ git_ssh_key_private | default(omit) }}"
-#    update: "{{ git_repo_update | default(omit) }}"
-#  tags: [git, repos, dotfiles]
-
 - name: Include repo tasks
   ansible.builtin.include_tasks:
     file: "repos.yml"

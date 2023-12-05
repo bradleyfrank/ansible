@@ -7,6 +7,7 @@
     default_vault_password: "{{ lookup('community.general.random_words',
       numwords=5, delimiter='-', case='capitalize') }}"
     host_vars: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/host_vars/{{ system_hostname }}.yml"
+    inventory_branch: "main"
 
   vars_prompt:
     - name: vault_password
@@ -38,7 +39,8 @@
       ansible.builtin.git:
         repo: "{{ git_inventory_repo }}"
         dest: "{{ ansible_facts['user_dir'] }}/.ansible/inventory"
-        mode: "0755"
+        accept_hostkey: true
+        version: "{{ inventory_branch }}"
 
     - name: Create host_vars
       ansible.builtin.template:

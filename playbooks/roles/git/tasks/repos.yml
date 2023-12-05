@@ -29,7 +29,7 @@
 - name: Clone repositories
   tags: [git, repos, dotfiles]
   block:
-    - name: Create repository directories by branch
+    - name: Create repository directories
       vars:
         git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
         git_repos_dirname: "{{ git_repos_path }}/{{ git_repo_name }}"
@@ -40,7 +40,7 @@
       loop: "{{ git_repos }}"
       loop_control:
         label: "{{ git_repo_name }}"
-    - name: Clone repositories by branch
+    - name: Clone repositories
       vars:
         git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
         git_repos_dirname: "{{ git_repos_path }}/{{ git_repo_name }}"
@@ -54,60 +54,3 @@
       loop: "{{ git_repos }}"
       loop_control:
         label: "{{ git_repo_name }}"
-
-#- name: Clone repositories
-#  tags: [git, repos, dotfiles]
-#  when: git_repos_as_worktrees
-#  block:
-#    - name: Create repository directories by branch
-#      vars:
-#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
-#      ansible.builtin.file:
-#        path: "{{ git_repos_path }}/{{ git_repo_name }}/{{ item['branch'] | default('main') }}"
-#        state: "directory"
-#        mode: "0755"
-#      loop: "{{ git_repos }}"
-#      loop_control:
-#        label: "{{ git_repo_name }}"
-#    - name: Clone repositories by branch
-#      vars:
-#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
-#      ansible.builtin.git:
-#        repo: "{{ item['url'] }}"
-#        version: "{{ item['branch'] | default('main') }}"
-#        dest: "{{ git_repos_path }}/{{ git_repo_name }}/{{ item['branch'] | default('main') }}"
-#        accept_hostkey: true
-#        key_file: "{{ git_ssh_key_private }}"
-#        ssh_opts: "-o 'IdentityAgent={{ ssh_auth_sock }}'"
-#      loop: "{{ git_repos }}"
-#      loop_control:
-#        label: "{{ git_repo_name }}"
-#
-#
-#- name: Clone repositories
-#  tags: [git, repos, dotfiles]
-#  when: not git_repos_as_worktrees
-#  block:
-#    - name: Create repository directories by repo
-#      vars:
-#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
-#      ansible.builtin.file:
-#        path: "{{ git_repos_path }}/{{ git_repo_name }}"
-#        state: "directory"
-#        mode: "0755"
-#      loop: "{{ git_repos }}"
-#      loop_control:
-#        label: "{{ git_repo_name }}"
-#    - name: Clone repositories by repo
-#      vars:
-#        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
-#      ansible.builtin.git:
-#        repo: "{{ item['url'] }}"
-#        version: "{{ item['branch'] | default('main') }}"
-#        dest: "{{ git_repos_path }}/{{ git_repo_name }}"
-#        accept_hostkey: true
-#        key_file: "{{ git_ssh_key_private }}"
-#        ssh_opts: "-o 'IdentityAgent={{ ssh_auth_sock }}'"
-#      loop: "{{ git_repos }}"
-#      loop_control:
-#        label: "{{ git_repo_name }}"

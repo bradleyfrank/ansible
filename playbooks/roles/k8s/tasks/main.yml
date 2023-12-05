@@ -4,7 +4,7 @@
   tags: [k8s, k9s, krew]
   block:
     - name: Install k8s packages
-      ansible.builtin.homebrew:
+      community.general.homebrew:
         name: "{{ k8s_packages }}"
   rescue:
     - name: Fail if Homebrew isn't installed
