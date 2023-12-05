@@ -1,0 +1,7 @@
+---
+
+- name: Import inventory playbook
+  ansible.builtin.import_playbook: "build_inventory.yml"
+
+- name: Import Ansible galaxy playbook
+  ansible.builtin.import_playbook: "install_collections.yml"

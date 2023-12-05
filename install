@@ -11,7 +11,7 @@ VAULT_PASSWORD_FILE="$HOME/.ansible/vault"
 
 install_homebrew() {
   case "$NAME" in
-    Fedora*) sudo dnf install -y procps-ng curl file; sudo dnf groupinstall 'Development Tools' ;;
+    Fedora*) sudo dnf install -y procps-ng file @development-tools ;;
     Ubuntu|LMDE) sudo apt-get install -y build-essential procps curl file ;;
     Darwin) sudo softwareupdate --install-rosetta ;;
   esac
