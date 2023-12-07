@@ -8,7 +8,7 @@
   become: true
   when: ansible_facts['system'] == "Linux"
   notify: Start packagekit
-  tags: always
+  tags: [packages, become]
 
 - name: Include distro-specific package managers
   ansible.builtin.include_tasks:
@@ -30,10 +30,9 @@
   tags: [packages, mas]
 
 - name: Include Flakpak packages
-  ansible.builtin.include_tasks:
+  ansible.builtin.import_tasks:
     file: "pkg_mgr/flatpak.yml"
   when: ansible_facts['system'] == "Linux"
-  tags: always
 
 - name: Ensure binary install path exists
   ansible.builtin.file:

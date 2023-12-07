@@ -8,7 +8,7 @@
     line: "FallbackDNS={{ system_linux_dns_fallback | join(' ') }}"
   when: system_linux_add_dns_fallback
   become: true
-  tags: [system, linux_settings, dns]
+  tags: [system, linux_settings, dns, become]
 
 - name: Apply Gnome settings
   community.general.dconf:
@@ -37,4 +37,4 @@
     label: "{{ item['desc'] }}"
   become: true
   notify: Regenerate Dracut
-  tags: [system, linux_settings, dracut]
+  tags: [system, linux_settings, dracut, become]

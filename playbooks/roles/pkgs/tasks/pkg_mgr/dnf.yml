@@ -8,7 +8,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [packages, repos]
+  tags: [packages, repos, become]
 
 - name: Install repositories
   ansible.builtin.yum_repository:
@@ -26,30 +26,30 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  tags: [packages, repos]
+  tags: [packages, repos, become]
 
 - name: Update dnf cache
   ansible.builtin.dnf:
     update_cache: true
-  tags: always
+  tags: [packages, repos]
 
 - name: Install cli packages
   ansible.builtin.dnf:
     name: "{{ dnf_packages['cli'] }}"
     state: "present"
   become: true
-  tags: [packages, cli]
+  tags: [packages, cli, become]
 
 - name: Install gui packages
   ansible.builtin.dnf:
     name: "{{ dnf_packages['gui'] }}"
     state: "present"
   become: true
-  tags: [packages, gui]
+  tags: [packages, gui, become]
 
 - name: Install Desktop Environment or Window Manager packages
   ansible.builtin.dnf:
     name: "{{ dnf_packages[XDG_CURRENT_DESKTOP] | default([]) }}"
     state: "present"
   become: true
-  tags: [packages, desktop_environment, window_manager]
+  tags: [packages, desktop_environment, window_manager, become]

@@ -5,7 +5,7 @@
     name: "flatpak"
     state: "present"
   become: true
-  tags: [packages, flatpak]
+  tags: [packages, flatpak, become]
 
 - name: Install flatpak remotes
   community.general.flatpak_remote:

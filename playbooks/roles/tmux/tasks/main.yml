@@ -5,7 +5,7 @@
     name: "{{ tmux_package_name }}"
   become: true
   when: (ansible_facts['system'] == "Linux") and (not tmux_prefer_homebrew)
-  tags: [tmux]
+  tags: [tmux, become]
 
 - name: Install tmux (via Homebrew)
   community.general.homebrew:

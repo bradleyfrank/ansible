@@ -5,7 +5,7 @@
     mode: "0755"
     path: "{{ ansible_facts['user_dir'] }}/.ssh"
     state: "directory"
-  tags: always
+  tags: [ssh, dotfiles]
 
 - name: Set proper permissions on ~/.ssh/authorized_keys
   ansible.builtin.file:
@@ -24,7 +24,7 @@
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
-  tags: [ssh, dotfiles]
+  tags: [ssh, keys, dotfiles]
 
 - name: Create SSH config
   ansible.builtin.template:
@@ -33,7 +33,7 @@
     mode: "0644"
     force: "{{ ssh_manage_config_force }}"
   when: ssh_manage_config
-  tags: [ssh, dotfiles]
+  tags: [ssh, config, dotfiles]
 
 - name: Create host keys
   community.crypto.openssh_keypair:
@@ -44,11 +44,11 @@
     label: "{{ item }}"
   become: true
   when: (ansible_facts['system'] == "Linux") and (ssh_manage_host_keys)
-  tags: [ssh, host_keys]
+  tags: [ssh, host_keys, become]
 
 - name: Secure SSH settings
   ansible.builtin.import_role:
     name: devsec.hardening.ssh_hardening
   become: true
   when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)
-  tags: [ssh, security]
+  tags: [ssh, security, become]

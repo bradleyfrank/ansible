@@ -1,5 +1,18 @@
 ---
 
+- name: Install vim (via OS package manager)
+  ansible.builtin.package:
+    name: "{{ vim_package_name }}"
+  become: true
+  when: (ansible_facts['system'] == "Linux") and (not vim_prefer_homebrew)
+  tags: [vim, become]
+
+- name: Install vim (via Homebrew)
+  community.general.homebrew:
+    name: "{{ vim_package_name }}"
+  when: (ansible_facts['system'] == "Darwin") or (vim_prefer_homebrew)
+  tags: [vim]
+
 - name: Load per-OS variables
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
