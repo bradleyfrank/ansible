@@ -27,6 +27,7 @@
       confirm: true
     - name: git_inventory_repo
       prompt: "Git repository URL for inventory"
+      private: false
 
   tasks:
     - name: Create vault file
