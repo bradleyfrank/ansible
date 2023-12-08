@@ -3,28 +3,32 @@
 set -o errexit
 
 ANSIBLE_REPO_PATH="$HOME/ansible.$(date +%H%M%S)"
-ANSIBLE_REPO_BRANCH=main
-ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
+ANSIBLE_REPO_BRANCH="main"
+ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_TEMP_INVENTORY="$(mktemp)"
-INSTALL_HOMEBREW_LINUX=true
-HOMEBREW_INSTALL_SCRIPT=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+INSTALL_HOMEBREW_LINUX=1
+HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 VAULT_PASSWORD_FILE="$HOME/.ansible/vault"; export VAULT_PASSWORD_FILE
+
+DISTROS_PKGMGR_APT="debian|ubuntu|lmde|linuxmint|pop"
+DISTROS_PKGMGR_DNF="fedora"
+DISTROS_PKGMGR_BREW="macos"
 
 echo "localhost ansible_connection=local" > "$ANSIBLE_TEMP_INVENTORY"
 
 install_homebrew() {
-  case "$NAME" in
-    Fedora*) sudo dnf install -y procps-ng file @development-tools ;;
-    Ubuntu|LMDE) sudo apt-get install -y build-essential procps curl file ;;
-    Darwin) sudo softwareupdate --install-rosetta ;;
+  case "$ID" in
+    "$DISTROS_PKGMGR_DNF") sudo dnf install -y procps-ng file @development-tools ;;
+    "$DISTROS_PKGMGR_APT") sudo apt-get install -y build-essential procps file ;;
+    "$DISTROS_PKGMGR_BREW") sudo softwareupdate --install-rosetta ;;
   esac
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL $HOMEBREW_INSTALL_SCRIPT)"
 }
 
 bootstrap_mac() {
-  pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
+  if ! pgrep caffeinate >/dev/null; then (caffeinate -d -i -m -u &); fi
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
-  NAME=Darwin install_homebrew
+  ID=macos install_homebrew
   brew install python3 git
 }
 
@@ -33,13 +37,13 @@ bootstrap_linux() {
   # shellcheck disable=SC1091
   . /etc/os-release
 
-  case "$NAME" in
-    Fedora*)
+  case "$ID" in
+    "$DISTROS_PKGMGR_DNF")
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git redhat-lsb-core
       ;;
-    Debian*|Ubuntu|LMDE)
+    "$DISTROS_PKGMGR_APT")
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get install -y python3 python3-pip git lsb-release
@@ -47,7 +51,7 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  [ -n "$INSTALL_HOMEBREW_LINUX" ] && install_homebrew
+  if [ -n "$INSTALL_HOMEBREW_LINUX" ]; then install_homebrew; fi
 }
 
 while getopts ':bg:' opt; do
@@ -72,8 +76,8 @@ PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
 virtualenv venv
 #shellcheck disable=SC1091
 . venv/bin/activate
-pip install --requirement requirements.txt
+pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook playbooks/bootstrap.yml
+ansible-playbook --inventory "$ANSIBLE_TEMP_INVENTORY" playbooks/bootstrap.yml
 ansible-playbook playbooks/site.yml --ask-become-pass
-ansible-playbook playbooks/show_secrets.yml --extra_vars "delete_vault_file=true output_to_file=true"
+ansible-playbook playbooks/show_secrets.yml --extra_vars "output_to_file=true"

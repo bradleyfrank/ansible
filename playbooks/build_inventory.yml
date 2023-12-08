@@ -6,8 +6,8 @@
   vars:
     default_vault_password: "{{ lookup('community.general.random_words',
       numwords=5, delimiter='-', case='capitalize') }}"
+    default_inventory_branch: "main"
     host_vars: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/host_vars/{{ system_hostname }}.yml"
-    inventory_branch: "main"
 
   vars_prompt:
     - name: vault_password
@@ -28,6 +28,10 @@
     - name: git_inventory_repo
       prompt: "Git repository URL for inventory"
       private: false
+    - name: git_inventory_branch
+      prompt: "Repository branch for inventory"
+      private: false
+      default: "{{ default_inventory_branch }}"
 
   tasks:
     - name: Create vault file
@@ -41,7 +45,7 @@
         repo: "{{ git_inventory_repo }}"
         dest: "{{ ansible_facts['user_dir'] }}/.ansible/inventory"
         accept_hostkey: true
-        version: "{{ inventory_branch }}"
+        version: "{{ git_inventory_branch }}"
 
     - name: Create host_vars
       ansible.builtin.template:
