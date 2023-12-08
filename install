@@ -6,9 +6,10 @@ ANSIBLE_REPO_PATH="$HOME/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_TEMP_INVENTORY="$(mktemp)"
-INSTALL_HOMEBREW_LINUX=1
-HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 VAULT_PASSWORD_FILE="$HOME/.ansible/vault"; export VAULT_PASSWORD_FILE
+
+HOMEBREW_INSTALL_ON_LINUX=1
+HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 DISTROS_PKGMGR_APT="debian|ubuntu|lmde|linuxmint|pop"
 DISTROS_PKGMGR_DNF="fedora"
@@ -51,12 +52,12 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  if [ -n "$INSTALL_HOMEBREW_LINUX" ]; then install_homebrew; fi
+  if [ -n "$HOMEBREW_INSTALL_ON_LINUX" ]; then install_homebrew; fi
 }
 
 while getopts ':bg:' opt; do
   case "$opt" in
-    b) unset INSTALL_HOMEBREW_LINUX ;;
+    b) unset HOMEBREW_INSTALL_ON_LINUX ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
   esac
