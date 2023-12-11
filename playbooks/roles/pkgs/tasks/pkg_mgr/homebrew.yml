@@ -3,10 +3,12 @@
 - name: Install Homebrew taps
   community.general.homebrew_tap:
     name: "{{ pkgs_homebrew_taps }}"
+  when: pkgs_homebrew_taps | length > 0
   tags: [packages, repos]
 
 - name: Install Homebrew formulas
   community.general.homebrew:
     name: "{{ pkgs_homebrew_formulas }}"
     upgrade_all: "{{ pkgs_homebrew_formulas_upgrade }}"
+  when: pkgs_homebrew_formulas | length > 0
   tags: [packages, homebrew, formulas]

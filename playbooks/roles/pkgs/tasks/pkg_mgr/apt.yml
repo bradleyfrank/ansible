@@ -30,7 +30,7 @@
 
 - name: Install cli packages
   ansible.builtin.apt:
-    name: "{{ apt_packages['cli'] }}"
+    name: "{{ pkgs_apt_packages['cli'] }}"
     state: "present"
     autoclean: true
     autoremove: true
@@ -41,7 +41,7 @@
 
 - name: Install gui packages
   ansible.builtin.apt:
-    name: "{{ apt_packages['gui'] }}"
+    name: "{{ pkgs_apt_packages['gui'] }}"
     state: present
     autoclean: true
     autoremove: true
@@ -51,10 +51,15 @@
 
 - name: Install Desktop Environment or Window Manager packages
   ansible.builtin.apt:
-    name: "{{ dnf_packages[XDG_CURRENT_DESKTOP] | default([]) }}"
+    name: "{{ pkgs_apt_packages[XDG_CURRENT_DESKTOP] | default([]) }}"
     state: "present"
     autoclean: true
     autoremove: true
     install_recommends: true
   become: true
   tags: [packages, desktop_environment, window_manager, become]
+
+- name: Include Homebrew tasks
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/homebrew.yml"
+  tags: always

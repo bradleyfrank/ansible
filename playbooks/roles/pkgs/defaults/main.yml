@@ -3,7 +3,6 @@
 pkgs_accept_external_casks: true
 pkgs_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
 pkgs_packagekit_enabled: true
-pkgs_prefer_homebrew: false
 
 pkgs_mas_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:~/.local/bin:~/bin"
 pkgs_homebrew_formulas_upgrade: true
