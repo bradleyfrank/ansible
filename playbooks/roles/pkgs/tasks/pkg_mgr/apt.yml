@@ -35,7 +35,7 @@
     autoclean: true
     autoremove: true
     install_recommends: true
-    dpkg_options: force-overwrite  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
+    dpkg_options: "force-overwrite"  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
   become: true
   tags: [packages, cli, become]
 
@@ -49,10 +49,11 @@
   become: true
   tags: [packages, gui, become]
 
-- name: Install Desktop Environment / Window Manager packages
-    current_desktop: "{{ ansible_facts['XDG_CURRENT_DESKTOP'] | lower | default() }}"
+- name: Install Desktop Environment or Window Manager packages
+  vars:
+    current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower ) }}"
   ansible.builtin.apt:
-    name: "{{ pkgs_apt_packages[current_desktop] }}"
+    name: "{{ pkgs_dnf_packages[current_desktop] | default([]) }}"
     state: "present"
     autoclean: true
     autoremove: true

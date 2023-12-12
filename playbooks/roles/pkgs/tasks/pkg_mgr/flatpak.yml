@@ -13,7 +13,7 @@
     state: "present"
     flatpakrepo_url: "{{ item['url'] }}"
     method: "user"
-  loop: "{{ pkgs_flatpak_remotes | dict2items(key_name='name', value_name='url') }}"
+  loop: "{{ pkgs_flatpak_remotes }}"
   loop_control:
     label: "{{ item['name'] }}"
   tags: [packages, flatpak]
@@ -23,7 +23,7 @@
     name: "{{ item['name'] }}"
     state: "present"
     method: "user"
-    remote: "{{ item['remote'] | default(omit) }}"
+    remote: "{{ item['remote'] }}"
   loop: "{{ pkgs_flatpak_packages | dict2items(key_name='remote', value_name='package') }}"
   loop_control:
     label: "{{ item['remote'] }}"

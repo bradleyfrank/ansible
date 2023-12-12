@@ -48,9 +48,10 @@
   tags: [packages, gui, become]
 
 - name: Install Desktop Environment or Window Manager packages
-    current_desktop: "{{ ansible_facts['XDG_CURRENT_DESKTOP'] | lower | default() }}"
+  vars:
+    current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower ) }}"
   ansible.builtin.dnf:
-    name: "{{ pkgs_dnf_packages[current_desktop] }}"
+    name: "{{ pkgs_dnf_packages[current_desktop] | default([]) }}"
     state: "present"
   become: true
   tags: [packages, desktop_environment, window_manager, become]
