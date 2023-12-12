@@ -20,7 +20,7 @@
 
 - name: Install flatpak packages
   community.general.flatpak:
-    name: "{{ item['name'] }}"
+    name: "{{ item['package'] }}"
     state: "present"
     method: "user"
     remote: "{{ item['remote'] }}"
