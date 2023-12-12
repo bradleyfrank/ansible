@@ -51,7 +51,7 @@
 
 - name: Install Desktop Environment or Window Manager packages
   vars:
-    current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower ) }}"
+    current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
   ansible.builtin.apt:
     name: "{{ pkgs_dnf_packages[current_desktop] | default([]) }}"
     state: "present"
