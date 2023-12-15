@@ -1,11 +1,10 @@
 ---
 
-# TODO: Support for LMDE/Debian
-- name: Add DNS fallback
-  ansible.builtin.lineinfile:
-    path: "/etc/systemd/resolved.conf"
-    regexp: "^#?FallbackDNS="
-    line: "FallbackDNS={{ system_linux_dns_fallback | join(' ') }}"
+- name: Add DNS fallback (systemd-resolved)
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
+    dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
+    mode: "0644"
   when: system_linux_add_dns_fallback
   become: true
   tags: [system, linux_settings, dns, become]

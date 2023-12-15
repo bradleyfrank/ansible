@@ -2,6 +2,10 @@
 
 system_hostname: "{{ ansible_facts['hostname'] }}"
 
+system_template_resolved:
+  - "{{ inventory_dir }}/templates/resolved.conf.j2"
+  - "templates/resolved.conf.j2"
+
 system_linux_add_dns_fallback: true
 system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]
 system_linux_gnome_desktop: true
