@@ -15,7 +15,7 @@
     value: "{{ item['value'] }}"
   loop: "{{ system_linux_gnome_settings | dict2items }}"
   loop_control:
-    lable: "{{ name }}"
+    label: "{{ name }}"
   tags: [system, linux_settings, dconf]
   when: system_linux_gnome_desktop
 

@@ -46,9 +46,10 @@
   when: (ansible_facts['system'] == "Linux") and (ssh_manage_host_keys)
   tags: [ssh, host_keys, become]
 
-- name: Secure SSH settings
-  ansible.builtin.import_role:
-    name: devsec.hardening.ssh_hardening
-  become: true
+- name: Load SSH hardening tasks
+  ansible.builtin.include_tasks:
+    file: "hardening.yml"
+    apply:
+      tags: [ssh, hardening]
   when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)
-  tags: [ssh, security, become]
+  tags: [ssh, hardening]
