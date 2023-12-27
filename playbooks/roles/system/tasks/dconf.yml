@@ -7,3 +7,4 @@
   loop: "{{ dconf_settings | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
+  tags: [system, linux_settings, dconf]
