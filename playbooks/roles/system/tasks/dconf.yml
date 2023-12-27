@@ -6,6 +6,6 @@
     value: "{{ dconf['value'] }}"
   loop: "{{ dconf_settings | dict2items }}"
   loop_control:
-    label: "{{ item['key'] }}"
+    label: "{{ dconf['key'] }}"
     loop_var: "dconf"
   tags: [system, linux_settings, dconf]
