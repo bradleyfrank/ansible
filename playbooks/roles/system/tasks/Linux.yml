@@ -9,15 +9,18 @@
   become: true
   tags: [system, linux_settings, dns, become]
 
-- name: Apply Gnome settings
-  community.general.dconf:
-    key: "{{ item['key'] }}"
-    value: "{{ item['value'] }}"
-  loop: "{{ system_linux_gnome_settings | dict2items }}"
+- name: Iterate through dconf settings
+  vars:
+    dconf_prefix: "{{ item['path'] }}"
+    dconf_settings: "{{ item['keys'] }}"
+  ansible.builtin.include_tasks:
+    file: "dconf.yml"
+  loop: "{{ system_linux_dconf_defaults \
+      | community.general.lists_mergeby(system_linux_dconf_distro, 'path', recursive=True) }}"
   loop_control:
-    label: "{{ name }}"
+    label: "{{ dconf_prefix }}"
+  when: system_linux_apply_dconf
   tags: [system, linux_settings, dconf]
-  when: system_linux_gnome_desktop
 
 - name: Apply Dracut settings
   ansible.builtin.lineinfile:

@@ -1,0 +1,9 @@
+---
+
+- name: Apply dconf settings
+  community.general.dconf:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+  loop: "{{ dconf_settings | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
