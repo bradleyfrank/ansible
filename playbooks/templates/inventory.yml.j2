@@ -4,7 +4,7 @@ local:
   hosts:
     localhost
   children:
-    os_{{ ansible_system }}:
+    system_{{ ansible_system }}:
       hosts:
         localhost
     distro_{{ ansible_distribution }}:
