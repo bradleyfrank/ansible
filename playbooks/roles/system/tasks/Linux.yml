@@ -9,21 +9,12 @@
   become: true
   tags: [system, linux_settings, dns, become]
 
-#- name: Generate dconf settings
-#  ansible.builtin.set_fact:
-#    system_linux_dconf_defaults: "{{ system_linux_dconf_defaults | items2dict }}"
-#    system_linux_dconf_distro: "{{ system_linux_dconf_distro | items2dict }}"
-#    system_linux_dconf_settings: "{{ system_linux_dconf_defaults \
-#      | ansible.builtin.combine(system_linux_dconf_distro, recursive=True) }}"
-#  tags: [system, linux_settings, dconf]
-
-- name: Iterate through dconf settings
+- name: Load dconf tasks
   vars:
     dconf_prefix: "{{ item['path'] }}"
     dconf_settings: "{{ item['keys'] }}"
   ansible.builtin.include_tasks:
     file: "dconf.yml"
-  #loop: "{{ system_linux_dconf_settings | dict2items }}"
   loop: "{{ system_linux_dconf_defaults \
       | community.general.lists_mergeby(system_linux_dconf_distro, 'path', recursive=True) }}"
   loop_control:
