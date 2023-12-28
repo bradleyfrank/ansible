@@ -15,6 +15,7 @@
     system_linux_dconf_distro: "{{ system_linux_dconf_distro | items2dict }}"
     system_linux_dconf_settings: "{{ system_linux_dconf_defaults \
       | ansible.builtin.combine(system_linux_dconf_distro, recursive=True) }}"
+  tags: [system, linux_settings, dconf]
 
 - name: Iterate through dconf settings
   vars:
