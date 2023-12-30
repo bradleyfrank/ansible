@@ -1,11 +1,11 @@
 ---
 
-- name: "Apply dconf settings in path {{ dconf_prefix }}"
+- name: Apply dconf settings
   community.general.dconf:
     key: "{{ dconf_prefix }}/{{ dconf['key'] }}"
     value: "{{ dconf['value'] }}"
   loop: "{{ dconf_settings | dict2items }}"
   loop_control:
-    label: "{{ dconf['key'] }}"
+    label: "{{ dconf_prefix }}/{{ dconf['key'] }}"
     loop_var: "dconf"
   tags: [system, linux_settings, dconf]
