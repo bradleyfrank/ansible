@@ -2,7 +2,7 @@
 Host {{ host['host'] }}
 {% filter indent(width=4, first=True) %}
 {% for config, value in host['args'].items() -%}
-  {{ config }}: {{ value }}
+  {{ config }} {{ value }}
 {% endfor %}
 {% endfilter %}
 
