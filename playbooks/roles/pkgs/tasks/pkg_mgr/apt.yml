@@ -60,8 +60,3 @@
     install_recommends: true
   become: true
   tags: [packages, desktop_environment, window_manager, become]
-
-- name: Include Homebrew tasks
-  ansible.builtin.include_tasks:
-    file: "pkg_mgr/homebrew.yml"
-  tags: always

@@ -2,18 +2,21 @@
 
 - name: Start ssh-agent
   tags: [git, repos, dotfiles]
+  notify: Stop ssh-agent
   block:
     - name: Start ssh-agent
-      ansible.builtin.shell: |
+      ansible.builtin.shell:
+        cmd: |
           eval $(ssh-agent -s) > /dev/null
           echo "{\"SSH_AUTH_SOCK\":\"$SSH_AUTH_SOCK\",\"SSH_AGENT_PID\":\"$SSH_AGENT_PID\"}"
-      register: git_eval_ssh_agent
+      register: eval_ssh_agent
       changed_when: true
     - name: Set SSH_AUTH_SOCK
       ansible.builtin.set_fact:
-        ssh_auth_sock: "{{ git_eval_ssh_agent['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
+        ssh_auth_sock: "{{ eval_ssh_agent['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
+        ssh_agent_pid: "{{ eval_ssh_agent['stdout'] | from_json | json_query('SSH_AGENT_PID') }}"
     - name: Add key to ssh-agent
-      environment: "{{ git_eval_ssh_agent['stdout'] }}"
+      environment: "{{ eval_ssh_agent['stdout'] }}"
       ansible.builtin.expect:
         command: "ssh-add {{ git_ssh_key_private }}"
         responses:

@@ -3,13 +3,13 @@
 - name: Load per-OS variables
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
-  tags: always
+  tags: [fonts, dotfiles]
 
 - name: Set fonts install directory
   ansible.builtin.set_fact:
     fonts_dir: "{{ fonts_default_dir }}"
   when: fonts_dir is undefined
-  tags: always
+  tags: [fonts, dotfiles]
 
 - name: Get latest release version of Nerd Fonts
   community.general.github_release:

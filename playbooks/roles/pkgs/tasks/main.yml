@@ -13,7 +13,21 @@
 - name: Include distro-specific package managers
   ansible.builtin.include_tasks:
     file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: always
+  when: ansible_facts['system'] == "Linux"
+  tags: [packages, dotfiles]
+
+- name: Install Homebrew taps
+  community.general.homebrew_tap:
+    name: "{{ pkgs_homebrew_taps }}"
+  when: pkgs_homebrew_taps | length > 0
+  tags: [packages, homebrew, repos]
+
+- name: Install Homebrew formulas
+  community.general.homebrew:
+    name: "{{ pkgs_homebrew_formulas }}"
+    upgrade_all: "{{ pkgs_homebrew_formulas_upgrade }}"
+  when: pkgs_homebrew_formulas | length > 0
+  tags: [packages, homebrew, formulas]
 
 - name: Install Homebrew casks
   community.general.homebrew_cask:

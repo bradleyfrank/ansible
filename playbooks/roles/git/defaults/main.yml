@@ -1,6 +1,5 @@
 ---
 
-git_providers: [github]
 git_github_token: ""
 git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
 
@@ -8,20 +7,16 @@ git_template_gitconfig:
   - "{{ inventory_dir }}/templates/gitconfig.j2"
   - "templates/gitconfig.j2"
 
-git_template_allowed_signers:
-  - "{{ inventory_dir }}/templates/allowed_signers.j2"
-  - "templates/allowed_signers.j2"
-
-git_signing_key_upload: true
-git_signing_key_type: "ssh"
-git_signing_key_file: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519.pub"
-git_signing_allowed_signers: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers }}"
-
 git_ssh_key_upload: true
 git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
 git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
 git_ssh_key_public: "{{ git_ssh_key_private }}.pub"
 
+git_signing_key_upload: true
+git_signing_key_type: "ssh"
+git_signing_key_file: "{{ git_ssh_key_public }}"
+git_signing_allowed_signers: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers }}"
+
 git_repos: []
 git_repos_as_worktrees: false
-git_repos_path: "{{ ansible_facts['user_dir'] }}/"
+git_repos_path: "{{ ansible_facts['user_dir'] }}/Git/"  # include trailing slash

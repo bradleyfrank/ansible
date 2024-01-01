@@ -7,9 +7,9 @@
     state: "present"
     token: "{{ git_github_token }}"
   when: git_ssh_key_upload
-  tags: [github, dotfiles, git_ssh_key]
+  tags: [github, keys]
 
-- name: Get list of existing GitHub SSH signing keys
+- name: Get list of existing Github SSH signing keys
   ansible.builtin.uri:
     url: "{{ git_github_api_signing_key_url }}"
     method: "GET"
@@ -20,7 +20,7 @@
       X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
   register: git_ssh_signing_keys
   when: git_signing_key_upload
-  tags: [github, dotfiles, git_signing_key]
+  tags: [github, signing]
 
 - name: Register SSH signing key with Github
   vars:
@@ -40,4 +40,4 @@
       X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
   when: "(git_signing_key_upload) and
     (body['key'] not in git_ssh_signing_keys['json'] | map(attribute='key'))"
-  tags: [github, dotfiles, git_signing_key]
+  tags: [github, signing]

@@ -16,13 +16,13 @@
 - name: Load per-OS variables
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
-  tags: always
+  tags: [vim, dotfiles]
 
 - name: Set Homebrew prefix
   ansible.builtin.set_fact:
     vim_homebrew_prefix: "{{ vim_default_homebrew_prefix }}"
   when: vim_homebrew_prefix is undefined
-  tags: always
+  tags: [vim, dotfiles]
 
 - name: Install vim config
   ansible.builtin.template:
