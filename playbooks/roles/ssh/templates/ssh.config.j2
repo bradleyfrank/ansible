@@ -1,6 +1,6 @@
 {% for host in ssh_config -%}
 Host {{ host['host'] }}
-{% filter indent(width=4, first=True) %}
+{% filter indent(width=2, first=True) %}
 {% for config, value in host['args'].items() -%}
   {{ config }} {{ value }}
 {% endfor %}

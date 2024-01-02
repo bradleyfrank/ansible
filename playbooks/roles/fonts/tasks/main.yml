@@ -11,6 +11,13 @@
   when: fonts_dir is undefined
   tags: [fonts, dotfiles]
 
+- name: Ensure fonts directory exists
+  ansible.builtin.file:
+    path: "{{ fonts_dir }}"
+    state: "directory"
+    mode: "0644"
+  tags: [fonts, dotfiles]
+
 - name: Get latest release version of Nerd Fonts
   community.general.github_release:
     user: "{{ fonts_github_user }}"
