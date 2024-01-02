@@ -1,29 +1,7 @@
 ---
 
-- name: Install `fileicon`
-  community.general.homebrew:
-    name: "fileicon"
-    state: "present"
-  tags: [icons]
-
-- name: Check if custom icons are present
-  ansible.builtin.stat:
-    path: "{{ icons_path }}"
-  register: stat_icons_dir
-  tags: [icons]
-
-- name: Set app squircle icons
-  vars:
-    icons_app: "/Applications/{{ item['path'] | splitext | first }}.app"
-  ansible.builtin.command:
-    cmd: "{{ icons_homebrew_prefix }}/bin/fileicon set {{ icons_app }} {{ item['src'] }}"
-  register: cmd_fileicon_set
-  changed_when: false
-  failed_when:
-    - "'you do not have read permissions' in cmd_fileicon_set['stderr']"
-    - "'file not found or not a (readable) regular file' in cmd_fileicon_set['stderr']"
-  loop: "{{ lookup('community.general.filetree', icons_path + '/') }}"
-  loop_control:
-    label: "{{ icons_app }}"
-  when: (ansible_facts['system'] == "Darwin") and (stat_icons_dir['stat']['exists'])
+- name: Include icon tasks
+  ansible.builtin.include_tasks:
+    file: "icons.yml"
+  when: ansible_facts['system'] == "Darwin"
   tags: [icons]

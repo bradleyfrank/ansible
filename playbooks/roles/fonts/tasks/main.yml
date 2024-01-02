@@ -15,7 +15,7 @@
   ansible.builtin.file:
     path: "{{ fonts_dir }}"
     state: "directory"
-    mode: "0644"
+    mode: "0755"
   tags: [fonts, dotfiles]
 
 - name: Get latest release version of Nerd Fonts
