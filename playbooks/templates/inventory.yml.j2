@@ -12,8 +12,8 @@ local:
         localhost
   vars:
     ansible_connection: local
-    git_github_token:
-      {{ git_github_token_encrypted | indent(width=6, first=true) | trim }}
+    git_github_token: !vault |
+      {{ github_token_encrypted | indent(width=6, first=true) | trim }}
     ssh_keys:
       rsa: !vault |
         {{ rsa_encrypted | indent(width=8, first=true) | trim }}

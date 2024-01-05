@@ -23,7 +23,6 @@
       private: false
     - name: git_github_token
       prompt: "GitHub token"
-      private: true
       confirm: true
     - name: git_inventory_repo
       prompt: "Git repository URL for inventory"
