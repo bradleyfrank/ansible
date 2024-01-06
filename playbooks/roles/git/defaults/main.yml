@@ -8,7 +8,7 @@ git_template_gitconfig:
   - "templates/gitconfig.j2"
 
 git_ssh_authorized_keys_github: true
-git_ssh_authorized_keys_search: "[*]"
+git_ssh_authorized_keys_match: "[*]"
 
 git_ssh_key_upload: true
 git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"

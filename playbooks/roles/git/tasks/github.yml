@@ -1,27 +1,26 @@
 ---
 
-- name: Get list of existing Github SSH keys
-  ansible.builtin.uri:
-    url: "{{ git_github_api_ssh_key_url }}"
-    method: "GET"
-    status_code: [200]
-    headers:
-      Authorization: "Bearer {{ git_github_token }}"
-      Accept: "{{ git_github_api_headers_accept }}"
-      X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
-  register: git_ssh_keys
+- name: Add public SSH keys from Github to `authorized_keys`
+  tags: [github, keys, authorized_keys]
   when: git_ssh_authorized_keys_github
-  tags: [github, keys, authorized_hosts]
-
-- name: Add keys to `authorized_keys` from Github
-  ansible.builtin.authorized_key:
-    user: "{{ ansible_facts['user_id'] }}"
-    key: "{{ item['key'] }} {{ item['title'] }}"
-  loop: "{{ git_ssh_keys['json'] | community.general.json_query(git_ssh_authorized_keys_search) }}"
-  loop_control:
-    label: "{{ item['title'] }}"
-  when: git_ssh_authorized_keys_github
-  tags: [github, keys, authorized_hosts]
+  block:
+    - name: Get list of existing Github SSH keys
+      ansible.builtin.uri:
+        url: "{{ git_github_api_ssh_key_url }}"
+        method: "GET"
+        status_code: [200]
+        headers:
+          Authorization: "Bearer {{ git_github_token }}"
+          Accept: "{{ git_github_api_headers_accept }}"
+          X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
+      register: git_ssh_keys
+    - name: Add matching public keys to `authorized_keys`
+      ansible.posix.authorized_key:
+        user: "{{ ansible_facts['user_id'] }}"
+        key: "{{ item['key'] }} {{ item['title'] }}"
+      loop: "{{ git_ssh_keys['json'] | community.general.json_query(git_ssh_authorized_keys_match) }}"
+      loop_control:
+        label: "{{ item['title'] }}"
 
 - name: Register SSH key with Github
   community.general.github_key:
