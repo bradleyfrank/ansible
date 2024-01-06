@@ -7,6 +7,9 @@ git_template_gitconfig:
   - "{{ inventory_dir }}/templates/gitconfig.j2"
   - "templates/gitconfig.j2"
 
+git_ssh_authorized_keys_github: true
+git_ssh_authorized_keys_search: "[*]"
+
 git_ssh_key_upload: true
 git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
 git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
