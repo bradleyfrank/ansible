@@ -1,0 +1,23 @@
+---
+
+ssh_manage_config: true
+ssh_manage_config_force: false
+ssh_template_config:
+  - "{{ inventory_dir }}/templates/ssh.config.j2"
+  - "templates/ssh.config.j2"
+
+ssh_manage_host_keys: true
+ssh_harden_security: true
+
+ssh_config:
+  - host: "*"
+    args:
+      CanonicalizeHostname: "yes"
+      ServerAliveCountMax: "4"
+      ServerAliveInterval: "15"
+      User: "{{ ansible_facts['user_id'] }}"
+
+ssh_host_keys:
+  - "rsa"
+  - "ed25519"
+  - "ecdsa"

@@ -1,0 +1,22 @@
+---
+
+pkgs_accept_external_casks: true
+pkgs_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
+pkgs_packagekit_enabled: true
+
+pkgs_mas_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:~/.local/bin:~/bin"
+pkgs_homebrew_formulas_upgrade: true
+pkgs_homebrew_casks_upgrade: true
+
+pkgs_apt_repos: []
+pkgs_dnf_repos: []
+pkgs_flatpak_remotes: []
+pkgs_homebrew_taps: []
+
+pkgs_apt_packages: {}
+pkgs_binaries: []
+pkgs_dnf_packages: {}
+pkgs_flatpak_packages: {}
+pkgs_homebrew_casks: []
+pkgs_homebrew_formulas: []
+pkgs_mas_apps: []

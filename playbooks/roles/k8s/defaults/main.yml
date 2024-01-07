@@ -1,0 +1,18 @@
+---
+
+k8s_krew_bin: "{{ k8s_homebrew_prefix }}/bin/kubectl krew"
+
+k8s_packages:
+  - kubectl
+  - krew
+  - k9s
+
+k8s_krew_plugins:
+  - cert-manager
+  - get-all
+  - neat
+  - stern
+
+k8s_k9s_template_config:
+  - "{{ inventory_dir }}/templates/k9s.{{ item }}.yml.j2"
+  - "templates/k9s.{{ item }}.yml.j2"

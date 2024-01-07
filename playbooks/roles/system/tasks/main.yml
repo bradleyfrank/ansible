@@ -1,0 +1,13 @@
+---
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ system_hostname }}"
+  become: true
+  when: system_hostname != ansible_facts['hostname']
+  tags: [system, hostname, become]
+
+- name: Include system-specific tasks
+  ansible.builtin.include_tasks:
+    file: "{{ ansible_facts['system'] }}.yml"
+  tags: [system, hostname, become]

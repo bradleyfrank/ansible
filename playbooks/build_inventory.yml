@@ -1,0 +1,72 @@
+---
+
+- name: Create inventory
+  hosts: localhost
+
+  vars:
+    default_vault_password: "{{ lookup('community.general.random_words',
+      numwords=5, delimiter='-', case='capitalize') }}"
+    default_inventory_branch: "main"
+    host_vars: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/host_vars/{{ system_hostname }}.yml"
+
+  vars_prompt:
+    - name: vault_password
+      prompt: "Create vault password"
+      unsafe: true
+      confirm: true
+      default: "{{ default_vault_password }}"
+    - name: system_hostname
+      prompt: "Enter system hostname"
+      private: false
+    - name: email_address
+      prompt: "Enter email address"
+      private: false
+    - name: git_github_token
+      prompt: "GitHub token"
+      confirm: true
+    - name: git_inventory_repo
+      prompt: "Git repository URL for inventory"
+      private: false
+    - name: git_inventory_branch
+      prompt: "Repository branch for inventory"
+      private: false
+      default: "{{ default_inventory_branch }}"
+
+  tasks:
+    - name: Create vault file
+      ansible.builtin.copy:
+        content: "{{ vault_password }}"
+        dest: "{{ ansible_user_dir }}/.ansible/vault"
+        mode: "0400"
+
+    - name: Clone inventory repository
+      ansible.builtin.git:
+        repo: "{{ git_inventory_repo }}"
+        dest: "{{ ansible_facts['user_dir'] }}/.ansible/inventory"
+        accept_hostkey: true
+        version: "{{ git_inventory_branch }}"
+
+    - name: Create host_vars
+      ansible.builtin.template:
+        src: "host_vars.yml.j2"
+        dest: "{{ host_vars }}"
+        mode: "0755"
+
+    - name: Symlink host_vars
+      ansible.builtin.file:
+        src: "{{ host_vars }}"
+        path: "{{ host_vars | dirname }}/localhost.yml"
+        state: "link"
+
+    - name: Create inventory
+      vars:
+        rsa_encrypted: "{{ lookup('community.general.random_words',
+          numwords=5, delimiter='-', case='capitalize') | ansible.builtin.vault(vault_password) }}"
+        ed25519_encrypted: "{{ lookup('community.general.random_words',
+          numwords=5, delimiter='-', case='capitalize') | ansible.builtin.vault(vault_password) }}"
+        github_token_encrypted: "{{ git_github_token | ansible.builtin.vault(vault_password) }}"
+      ansible.builtin.template:
+        src: "inventory.yml.j2"
+        dest: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/inventory.yml"
+        decrypt: false
+        mode: "0755"

@@ -1,0 +1,4 @@
+---
+
+k8s_default_homebrew_prefix: "/home/linuxbrew/.linuxbrew"
+k8s_default_k9s_config: "{{ ansible_facts['user_dir'] }}/.config/k9s"

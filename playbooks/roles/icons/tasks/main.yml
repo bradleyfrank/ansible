@@ -1,0 +1,7 @@
+---
+
+- name: Include icon tasks
+  ansible.builtin.include_tasks:
+    file: "icons.yml"
+  when: ansible_facts['system'] == "Darwin"
+  tags: [icons]

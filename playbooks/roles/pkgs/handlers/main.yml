@@ -1,0 +1,9 @@
+---
+
+- name: Start packagekit
+  ansible.builtin.systemd:
+    name: "packagekit"
+    state: "started"
+    enabled: true
+  become: true
+  when: pkgs_packagekit_enabled
