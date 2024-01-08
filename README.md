@@ -43,7 +43,7 @@ Upon completion:
 
 2. **Install Ansible requirements**: the `install_requirements` playbook installs the necessary Ansible collections and roles.
 
-3. **Create localhost inventory**: the `build_inventory` playbook generates a `host_vars` file (for non-sensitive variables) and a localhost inventory file (for encrypted secrets). The playbook also prompts the user for host-specific variables:
+3. **Create localhost inventory**: the `build_inventory` playbook generates a host_vars file (for non-sensitive variables) and a localhost inventory file (for encrypted secrets). The playbook also prompts the user for host-specific variables:
 
     1. A vault passphrase for encrypting secrets
     2. The system hostname
