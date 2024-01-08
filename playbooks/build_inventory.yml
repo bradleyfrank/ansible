@@ -36,7 +36,7 @@
     - name: Create vault file
       ansible.builtin.copy:
         content: "{{ vault_password }}"
-        dest: "{{ ansible_user_dir }}/.ansible/vault"
+        dest: "{{ ansible_facts['user_dir'] }}/.ansible/vault"
         mode: "0400"
 
     - name: Clone inventory repository

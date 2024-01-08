@@ -16,7 +16,7 @@
 
 - name: Create SSH key
   community.crypto.openssh_keypair:
-    comment: "{{ ansible_user_id }}@{{ ansible_hostname }}"
+    comment: "{{ ansible_facts['user_id'] }}@{{ ansible_hostname }}"
     passphrase: "{{ item['value'] }}"
     path: "{{ ansible_facts['user_dir'] }}/.ssh/id_{{ item['key'] }}"
     size: 4096
