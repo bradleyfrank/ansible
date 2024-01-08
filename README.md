@@ -28,8 +28,8 @@ Ansible playbooks and roles for bootstrapping macOS and Linux workstations, and 
       -g  Specify the git branch of this repo to run (default: main)
     ```
 
-    > [!IMPORTANT]
-    > Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and will skip setup prompts.
+> [!IMPORTANT]
+> Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and will skip setup prompts.
 
 Upon completion:
 
@@ -78,8 +78,8 @@ By default, these are the variables that are encrypted and saved to the inventor
 
 Use the playbook `show_secrets.yml` to decrypt and print these secrets. This playbook runs last if using the `install` script.
 
-    > [!WARNING]
-    > By default the `show_secrets` playbook will also remove `~/.ansible/vault` as a safety precaution. It is recommended to store the raw values in a secure password manager.
+> [!WARNING]
+> By default the `show_secrets` playbook will also remove `~/.ansible/vault` as a safety precaution. It is recommended to store the raw values in a secure password manager.
 
 ## Managing Dotfiles
 
