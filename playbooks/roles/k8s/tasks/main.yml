@@ -50,7 +50,7 @@
 - name: Install krew plugins
   ansible.builtin.command:
     cmd: "{{ k8s_krew_bin }} install {{ item }}"
-  loop: "{{ krew_plugins }}"
+  loop: "{{ k8s_krew_plugins }}"
   register: cmd_krew_install
   changed_when: "'Installed plugin' in cmd_krew_install['stdout']"
   failed_when: "'does not exist in the plugin index' in cmd_krew_install['stdout']"

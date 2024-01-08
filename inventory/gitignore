@@ -1,0 +1,7 @@
+/cache
+/collections
+/inventory.yml
+/roles
+/secrets.yml
+/tmp
+/host_vars/localhost.yml
