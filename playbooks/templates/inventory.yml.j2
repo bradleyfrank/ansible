@@ -4,10 +4,10 @@ local:
   hosts:
     localhost
   children:
-    system_{{ ansible_system }}:
+    {{ ansible_system }}:
       hosts:
         localhost
-    distro_{{ ansible_distribution }}:
+    {{ ansible_distribution }}:
       hosts:
         localhost
   vars:

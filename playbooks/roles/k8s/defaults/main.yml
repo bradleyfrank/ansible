@@ -9,6 +9,7 @@ k8s_packages:
 
 k8s_krew_plugins:
   - cert-manager
+  - deprecations
   - get-all
   - neat
   - stern
