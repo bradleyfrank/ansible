@@ -10,7 +10,7 @@ Ansible playbooks and roles for bootstrapping macOS and Linux workstations, and 
    2. **Fedora Server edition**
    3. **Ubuntu Desktop LTS** (flavors may work but are unsupported)
    4. **Ubuntu Server LTS**
-   5. Linux Mint Debian Edition
+   5. **Linux Mint Debian Edition**
 
 ## Running the Playbooks
 
@@ -21,29 +21,29 @@ Ansible playbooks and roles for bootstrapping macOS and Linux workstations, and 
 3. (Optional) Create an inventory repository (see below)
 4. Download and run the install script:
 
-  ```shell
-  curl -sO https://dotfiles.franklybrad.com/install
-  sh install [-b] [-g git_branch]
-    -b  Skip installing Homebrew on Linux (default: install)
-    -g  Specify the git branch of this repo to run (default: main)
-  ```
+    ```shell
+    curl -sO https://dotfiles.franklybrad.com/install
+    sh install [-b] [-g git_branch]
+      -b  Skip installing Homebrew on Linux (default: install)
+      -g  Specify the git branch of this repo to run (default: main)
+    ```
 
-> [!IMPORTANT]
-> Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and will skip setup prompts.
+    > [!IMPORTANT]
+    > Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and will skip setup prompts.
 
 Upon completion:
 
 1. Record any secrets (e.g. Vault and SSH key passphrases)
-2. A full reboot
+2. Perform a full reboot
 3. To install Logi Options+ for macOS, run `open -a "~/Downloads/logioptionsplus_installer.app"`
 
 ### Setup Workflow
 
 1. **Bootstrapping the OS:** the `install` script installs the necessary packages to check out the repository and run Ansible; this includes Homebrew, Python, and Git. _This script requires `sudo` access on Linux only._ Once setup, the script also runs the subsequent Ansible playbooks.
 
-2. Install Ansible requirements: the `install_requirements` playbook installs the necessary Ansible collections and roles.
+2. **Install Ansible requirements**: the `install_requirements` playbook installs the necessary Ansible collections and roles.
 
-3. Create localhost inventory: the `build_inventory` playbook generates a `host_vars` file (for non-sensitive variables) and a localhost inventory file (for encrypted secrets). The playbook also prompts the user for host-specific variables:
+3. **Create localhost inventory**: the `build_inventory` playbook generates a `host_vars` file (for non-sensitive variables) and a localhost inventory file (for encrypted secrets). The playbook also prompts the user for host-specific variables:
 
     1. A vault passphrase for encrypting secrets
     2. The system hostname
@@ -52,7 +52,7 @@ Upon completion:
     5. The URL of the inventory repository
     6. The branch of the inventory repository to use
 
-4. System bootstrap: Runs the `site.yml` playbook to execute all roles. When run from the `install` script, a temporary `vault` file is created and prompts only for the become password.
+4. **System bootstrap**: Runs the `site.yml` playbook to execute all roles. When run from the `install` script, a temporary `vault` file is created and prompts only for the become password.
 
 ## Building Your Inventory
 
@@ -60,13 +60,13 @@ You can create an inventory repository prior to running the playbooks. Hosts are
 
 The `inventory/` directory is a template to get started. It has the following layout:
 
-    - `files/`: static dotfiles
-    - `group_vars/`: configurations based on system type and distribution
-    - `host_vars/`: configurations for specific systems
-    - `templates/`: dynamic dotfiles
-    - `.gitignore`: ignore certain Ansible-created files
+  * `files/`: static dotfiles
+  * `group_vars/`: configurations based on system type and distribution
+  * `host_vars/`: configurations for specific systems
+  * `templates/`: dynamic dotfiles
+  * `.gitignore`: ignore certain Ansible-created files
 
-The `host_vars` file created by the `build_inventory` playbook is meant to be committed to the inventory repo. The inventory file assigns the host groups, along with containing vaulted secrets.
+The host_vars file created by the `build_inventory` playbook is meant to be committed to the inventory repo. The inventory file assigns the host groups, along with containing vaulted secrets.
 
 ## Vaulted Secrets
 
@@ -76,7 +76,10 @@ By default, these are the variables that are encrypted and saved to the inventor
 2. ed25519 SSH key passphrase
 3. GitHub personal access token
 
-Use the playbook `show_secrets.yml` to decrypt and print these secrets. By default the playbook will also remove `~/.ansible/vault` as a safety precaution. It is recommended to store the raw values in a secure password manager.
+Use the playbook `show_secrets.yml` to decrypt and print these secrets. This playbook runs last if using the `install` script.
+
+    > [!WARNING]
+    > By default the `show_secrets` playbook will also remove `~/.ansible/vault` as a safety precaution. It is recommended to store the raw values in a secure password manager.
 
 ## Managing Dotfiles
 
