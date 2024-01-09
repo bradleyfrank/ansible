@@ -40,10 +40,18 @@
   become: true
   tags: [zsh, become]
 
+- name: Ensure supplemental Zsh directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop: [zsh_functions_dir, zsh_plugins_dir, zsh_rcd_dir]
+  tags: [zsh, dotfiles]
+
 - name: Install Zsh plugins
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
-    dest: "{{ zsh_plugin_dir }}/{{ item['name'] }}"
+    dest: "{{ zsh_plugins_dir }}/{{ item['name'] }}"
     depth: 1
     version: "{{ item['version'] | default(omit) }}"
   loop: "{{ zsh_plugins }}"
@@ -51,15 +59,8 @@
     label: "{{ item['name'] }}"
   tags: [zsh, dotfiles]
 
-- name: Ensure Zsh `site_functions` directory exists
-  ansible.builtin.file:
-    path: "{{ zsh_site_functions }}"
-    state: "directory"
-    mode: "0755"
-  tags: [zsh, dotfiles]
-
 - name: Generate Zsh completions
-  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh_site_functions }}/_{{ item['name'] }}"
+  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
   changed_when: false
   loop: "{{ zsh_completions }}"
   loop_control:
