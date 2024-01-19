@@ -1,5 +1,12 @@
 ---
 
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
+    state: "directory"
+  loop: "{{ dots_folders }}"
+  tags: [dots, dotfiles]
+
 - name: Install dotfiles
   ansible.posix.synchronize:
     src: "{{ dots_files_source }}/"
@@ -7,7 +14,7 @@
     compress: false
     owner: false
     group: false
-  tags: [dotfiles]
+  tags: [dots, dotfiles]
 
 - name: Render dotfile templates
   ansible.builtin.template:
@@ -17,7 +24,7 @@
   loop: "{{ dots_templates }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [dotfiles]
+  tags: [dots, dotfiles]
 
 - name: Post-processing
   ansible.builtin.command:
@@ -26,4 +33,4 @@
     removes: "{{ item['removes'] | default(omit) }}"
   changed_when: false
   loop: "{{ dots_post_processing }}"
-  tags: [dotfiles]
+  tags: [dots, dotfiles]

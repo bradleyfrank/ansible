@@ -1,5 +1,6 @@
 ---
 
+dots_folders: []
 dots_post_processing: []
 dots_files_source: "{{ inventory_dir }}/files/dotfiles"
 dots_templates: []

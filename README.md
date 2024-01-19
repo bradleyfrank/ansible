@@ -6,11 +6,11 @@ Ansible playbooks and roles for bootstrapping macOS and Linux workstations, and 
 
 1. **macOS systems** `x86_64`, `arm64`
 2. **Linux systems** `x86_64`
-   1. **Fedora Workstation edition** (spins may work but are unsupported)
-   2. **Fedora Server edition**
-   3. **Ubuntu Desktop LTS** (flavors may work but are unsupported)
-   4. **Ubuntu Server LTS**
-   5. **Linux Mint Debian Edition**
+    1. **Fedora Workstation edition** (spins may work but are unsupported)
+    2. **Fedora Server edition**
+    3. **Ubuntu Desktop LTS** (flavors may work but are unsupported)
+    4. **Ubuntu Server LTS**
+    5. **Linux Mint Debian Edition**
 
 ## Running the Playbooks
 
