@@ -24,7 +24,7 @@
 - name: Configure Homebrew Zsh for MacOS
   when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
   become: true
-  tags: [zsh, become]
+  tags: [zsh, shell, become]
   block:
     - name: Add Homebrew Zsh to available shells
       ansible.builtin.lineinfile:
@@ -42,7 +42,7 @@
     shell: "{{ zsh_bin_path }}"
   when: ansible_facts['user_shell'] != zsh_bin_path
   become: true
-  tags: [zsh, become]
+  tags: [zsh, shell, become]
 
 - name: Install Zsh plugins
   ansible.builtin.git:
@@ -53,25 +53,26 @@
   loop: "{{ zsh_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [zsh, dotfiles]
+  tags: [zsh, zsh_plugins, dotfiles]
 
 - name: Generate Zsh completions
-  ansible.builtin.shell: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
+  ansible.builtin.shell:
+    cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
   changed_when: false
   loop: "{{ zsh_completions }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [zsh, dotfiles]
+  tags: [zsh, completions, dotfiles]
 
 - name: Apply zshrc template
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', zsh_template_zshrc) }}"
     dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     mode: "0644"
-  tags: [zsh, dotfiles]
+  tags: [zsh, zshrc, dotfiles]
 
 - name: Refresh zcompdump
-  tags: [zsh, dotfiles]
+  tags: [zsh, zcompdump, dotfiles]
   when: zsh_manage_zcompdump
   block:
     - name: Delete zcompdump
