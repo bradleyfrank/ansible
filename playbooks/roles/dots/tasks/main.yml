@@ -18,8 +18,8 @@
 
 - name: Render dotfile templates
   ansible.builtin.template:
-    src: "{{ dots_templates_source }}/"
-    dest: "{{ item['dest'] }}"
+    src: "{{ dots_templates_source }}/{{ item['name'] }}"
+    dest: "{{ item['dest'] }}/{{ item['name'] | split('.') | first }}"
     mode: "{{ item['mode'] | default('0644') }}"
   loop: "{{ dots_templates }}"
   loop_control:
