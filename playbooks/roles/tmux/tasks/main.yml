@@ -27,3 +27,14 @@
     mode: "0755"
   loop: "{{ tmux_profiles }}"
   tags: [tmux, dotfiles]
+
+- name: Install tmux plugins
+  ansible.builtin.git:
+    repo: "{{ item['repo'] }}"
+    dest: "{{ tmux_plugins_dir }}/{{ item['name'] }}"
+    depth: 1
+    version: "{{ item['version'] | default(omit) }}"
+  loop: "{{ tmux_plugins }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  tags: [tmux, tmux_plugins, dotfiles]
