@@ -34,3 +34,5 @@
   changed_when: false
   loop: "{{ dots_post_processing }}"
   tags: [dots, dotfiles]
+  loop_control:
+    label: "{{ item['name'] }}"
