@@ -4,6 +4,7 @@
   ansible.builtin.file:
     path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
     state: "directory"
+    mode: "0755"
   loop: "{{ dots_folders }}"
   tags: [dots, dotfiles]
 
@@ -19,7 +20,7 @@
 - name: Render dotfile templates
   ansible.builtin.template:
     src: "{{ dots_templates_source }}/{{ item['name'] }}"
-    dest: "{{ item['dest'] }}/{{ item['name'] | splitext | first }}"
+    dest: "{{ item['dest'] }}/{{ item['rename'] | default(item['name'] | splitext | first) }}"
     mode: "{{ item['mode'] | default('0644') }}"
   loop: "{{ dots_templates }}"
   loop_control:
