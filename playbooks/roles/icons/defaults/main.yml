@@ -1,4 +1,7 @@
 ---
 
+icons_app_paths:
+  - "/Applications"
+  - "{{ ansible_facts['user_dir'] }}/Applications"
 icons_homebrew_prefix: "/opt/homebrew"
 icons_path: "{{ inventory_dir }}/files/icons"

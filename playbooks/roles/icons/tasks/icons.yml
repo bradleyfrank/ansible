@@ -1,22 +1,10 @@
 ---
 
-- name: Install `fileicon`
-  community.general.homebrew:
-    name: "fileicon"
-    state: "present"
-  tags: [icons]
-
-- name: Check if custom icons are present
-  ansible.builtin.stat:
-    path: "{{ icons_path }}"
-  register: stat_icons_dir
-  tags: [icons]
-
-- name: Set app squircle icons
+- name: Set app icons
   vars:
-    icons_app: "/Applications/{{ item['path'] | splitext | first }}.app"
+    icons_app: "{{ path }}/{{ app['path'] | splitext | first }}.app"
   ansible.builtin.command:
-    cmd: "{{ icons_homebrew_prefix }}/bin/fileicon set {{ icons_app }} {{ item['src'] }}"
+    cmd: "{{ icons_homebrew_prefix }}/bin/fileicon set {{ icons_app }} {{ app['src'] }}"
   register: cmd_fileicon_set
   changed_when: false
   failed_when:
@@ -25,4 +13,5 @@
   loop: "{{ lookup('community.general.filetree', icons_path + '/') }}"
   loop_control:
     label: "{{ icons_app }}"
+    loop_var: app
   tags: [icons]

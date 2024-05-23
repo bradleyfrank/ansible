@@ -27,7 +27,7 @@
     name: "{{ pkgs_homebrew_formulas }}"
     upgrade_all: "{{ pkgs_homebrew_formulas_upgrade }}"
   when: pkgs_homebrew_formulas | length > 0
-  tags: [packages, homebrew, formulas]
+  tags: [packages, homebrew, formulas, install]
 
 - name: Install Homebrew casks
   community.general.homebrew_cask:

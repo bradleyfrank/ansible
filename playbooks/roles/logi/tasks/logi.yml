@@ -3,7 +3,7 @@
 - name: Install Logi Options+
   community.general.homebrew:
     name: "logi-options-plus"
-  tags: [logi]
+  tags: [logi, install]
 
 - name: Find Logi installer
   ansible.builtin.find:

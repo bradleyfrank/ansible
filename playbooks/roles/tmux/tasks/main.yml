@@ -11,7 +11,7 @@
   community.general.homebrew:
     name: "{{ tmux_package_name }}"
   when: (ansible_facts['system'] == "Darwin") or (tmux_prefer_homebrew)
-  tags: [tmux]
+  tags: [tmux, install]
 
 - name: Ensure tmux config path exists
   ansible.builtin.file:

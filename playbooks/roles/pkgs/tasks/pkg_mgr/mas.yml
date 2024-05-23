@@ -3,7 +3,7 @@
 - name: Install mas formula
   community.general.homebrew:
     name: "mas"
-  tags: [packages, mas]
+  tags: [packages, mas, install]
 
 - name: Install apps via mas
   environment:

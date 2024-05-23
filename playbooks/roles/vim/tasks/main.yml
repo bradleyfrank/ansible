@@ -11,7 +11,7 @@
   community.general.homebrew:
     name: "{{ vim_package_name }}"
   when: (ansible_facts['system'] == "Darwin") or (vim_prefer_homebrew)
-  tags: [vim]
+  tags: [vim, install]
 
 - name: Load per-OS variables
   ansible.builtin.include_vars:

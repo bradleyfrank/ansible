@@ -1,7 +1,7 @@
 ---
 
 - name: Try installing packages via Homebrew
-  tags: [k8s, kubectl, k9s, krew]
+  tags: [k8s, kubectl, k9s, krew, install]
   block:
     - name: Install K8s packages
       community.general.homebrew:
