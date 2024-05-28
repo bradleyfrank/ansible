@@ -18,7 +18,7 @@ Ansible playbooks and roles for bootstrapping macOS and Linux workstations, and 
 2. Create a GitHub fine-grained token with the following account permissions:
     * Git SSH keys: Read and write
     * SSH signing keys: Read and write
-3. (Optional) Create an inventory repository (see below)
+3. Create an inventory repository (see below)
 4. Download and run the install script:
 
     ```shell
@@ -54,16 +54,16 @@ Upon completion:
 
 4. **System bootstrap**: Runs the `site.yml` playbook to execute all roles. When run from the `install` script, a temporary `vault` file is created and prompts only for the become password.
 
-## Building Your Inventory
+## Building Inventory
 
 You can create an inventory repository prior to running the playbooks. Hosts are assigned to groups based on the system type and distribution, giving flexibility to variable precedent. The group names are based on the Ansible facts `system` and `distribution`; the `all` group is also available. See [Splitting Out Host and Group Specific Data](https://docs.ansible.com/ansible/2.7/user_guide/intro_inventory.html#splitting-out-host-and-group-specific-data) for more information.
 
 The `inventory/` directory is a template to get started. It has the following layout:
 
-  * `files/`: static dotfiles
+  * `files/`: static files
   * `group_vars/`: configurations based on system type and distribution
   * `host_vars/`: configurations for specific systems
-  * `templates/`: dynamic dotfiles
+  * `templates/`: dynamic files
   * `.gitignore`: ignore certain Ansible-created files
 
 The host_vars file created by the `build_inventory` playbook is meant to be committed to the inventory repo. The inventory file assigns the host groups, along with containing vaulted secrets.
@@ -83,9 +83,9 @@ Use the playbook `show_secrets.yml` to decrypt and print these secrets. This pla
 
 ## Managing Dotfiles
 
-Tasks that do not require sudo access are tagged with `dotfiles`. Likewise, tasks that do require sudo access are tagged with `become`. This allows playbook runs that don't need a become password. For example:
+Tasks that do not require sudo access are tagged with `dotfiles`. Likewise, tasks that do require sudo access are tagged with `become`. For convenience, Homebrew tasks are tagged `install`. This allows playbook runs that don't need a become password. For example:
 
 ```shell
 ansible-playbook -J playbooks/site.yml --tags dotfiles
-ansible-playbook -J playbooks/site.yml --tags zsh --skip-tags become
+ansible-playbook -J playbooks/site.yml --tags zsh --skip-tags become,install
 ```
