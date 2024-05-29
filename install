@@ -6,6 +6,7 @@ ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_INVENTORY="${HOME}/.ansible/inventory/host_vars/localhost.yml"
+ANSIBLE_VAULT_FILE="${HOME}/.ansible/vault"
 
 INVENTORY_EDIT_MESSAGE="Save and quit to continue running the install script."
 VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"; export VAULT_PASSWORD_FILE
@@ -78,5 +79,9 @@ pip install --no-cache-dir --requirement requirements.txt
 ansible-playbook playbooks/install_requirements.yml
 ansible-playbook playbooks/build_inventory.yml
 vim -c "e ${ANSIBLE_REPO_INVENTORY}|redraw|echom '${INVENTORY_EDIT_MESSAGE}'"
-ansible-playbook playbooks/site.yml --ask-become-pass
-ansible-playbook playbooks/show_secrets.yml --extra_vars "output_to_file=true"
+ansible-playbook playbooks/site.yml \
+  --ask-become-pass \
+  --vault-pass-file "$ANSIBLE_VAULT_FILE"
+ansible-playbook playbooks/show_secrets.yml \
+  --extra_vars "output_to_file=true" \
+  --vault-pass-file "$ANSIBLE_VAULT_FILE"
