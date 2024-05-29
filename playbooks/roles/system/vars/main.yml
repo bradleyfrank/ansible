@@ -2,3 +2,6 @@
 
 system_macos_firewall_cmd: "/usr/libexec/ApplicationFirewall/socketfilterfw"
 system_macos_hidden_xattr: "0000000000000000400000000000000000000000000000000000000000000000"
+system_packages:
+  apt: ["dconf-cli", "dracut"]
+  dnf: ["dconf", "dracut"]
