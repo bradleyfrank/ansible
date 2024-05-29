@@ -1,11 +1,5 @@
 ---
 
-- name: Install vim (via OS package manager)
-  ansible.builtin.package:
-    name: "dconf"
-  become: true
-  tags: [system, linux_settings, dconf, become]
-
 - name: Apply dconf settings
   community.general.dconf:
     key: "{{ dconf_prefix }}/{{ dconf['key'] }}"

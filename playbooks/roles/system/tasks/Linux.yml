@@ -16,6 +16,14 @@
       dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
       mode: "0644"
 
+- name: Install dconf and dracut
+  ansible.builtin.package:
+    name:
+      - "dracut"
+      - "dconf"
+  become: true
+  tags: [system, linux_settings, dconf, become]
+
 - name: Load dconf tasks
   vars:
     dconf_prefix: "{{ item['path'] }}"
