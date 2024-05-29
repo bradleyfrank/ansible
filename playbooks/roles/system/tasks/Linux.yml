@@ -9,6 +9,7 @@
     ansible.builtin.file:
       path: "/etc/systemd/resolved.conf.d"
       mode: "0755"
+      state: "directory"
   - name: Add DNS fallback for systemd-resolved
     ansible.builtin.template:
       src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
