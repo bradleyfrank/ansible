@@ -1,13 +1,19 @@
 ---
 
-- name: Add DNS fallback (systemd-resolved)
-  ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
-    dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
-    mode: "0644"
-  when: system_linux_add_dns_fallback
+- name: Add DNS fallback
   become: true
   tags: [system, linux_settings, dns, become]
+  when: system_linux_add_dns_fallback
+  block:
+  - name: Ensure 'resolved' conf directory exists
+    ansible.builtin.file:
+      path: "/etc/systemd/resolved.conf.d"
+      mode: "0755"
+  - name: Add DNS fallback for systemd-resolved
+    ansible.builtin.template:
+      src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
+      dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
+      mode: "0644"
 
 - name: Load dconf tasks
   vars:

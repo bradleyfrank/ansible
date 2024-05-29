@@ -35,7 +35,6 @@
     autoclean: true
     autoremove: true
     install_recommends: true
-    dpkg_options: "force-overwrite"  # bugs.launchpad.net/ubuntu/+source/rust-bat/+bug/1868517
   become: true
   tags: [packages, cli, become]
 
@@ -47,6 +46,7 @@
     autoremove: true
     install_recommends: true
   become: true
+  when: pkgs_desktop_present
   tags: [packages, gui, become]
 
 - name: Install Desktop Environment or Window Manager packages
@@ -59,4 +59,5 @@
     autoremove: true
     install_recommends: true
   become: true
+  when: pkgs_desktop_present
   tags: [packages, desktop_environment, window_manager, become]

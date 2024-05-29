@@ -1,5 +1,11 @@
 ---
 
+- name: Determine if desktop is present
+  ansible.builtin.set_fact:
+    pkgs_desktop_present: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined }}"
+  when: ansible_facts['system'] == "Linux"
+  tags: [fonts, dotfiles]
+
 - name: Stop packagekit
   ansible.builtin.systemd:
     name: "packagekit"
@@ -46,7 +52,7 @@
 - name: Include Flakpak packages
   ansible.builtin.import_tasks:
     file: "pkg_mgr/flatpak.yml"
-  when: ansible_facts['system'] == "Linux"
+  when: (ansible_facts['system'] == "Linux") and (pkgs_desktop_present)
 
 - name: Ensure binary install path exists
   ansible.builtin.file:
