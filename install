@@ -6,13 +6,14 @@ ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_INVENTORY="${HOME}/.ansible/inventory/host_vars/localhost.yml"
-ANSIBLE_VAULT_FILE="${HOME}/.ansible/vault"
-
-INVENTORY_EDIT_MESSAGE="Save and quit to continue running the install script."
-VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"; export VAULT_PASSWORD_FILE
 
 HOMEBREW_INSTALL_ON_LINUX=1
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+
+export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
+export ANSIBLE_LOCALHOST_WARNING="False"
+export ANSIBLE_INVENTORY_UNPARSED_WARNING="False"
+
 
 install_homebrew() {
   case "$ID" in
@@ -52,8 +53,9 @@ bootstrap_linux() {
   if [ -n "$HOMEBREW_INSTALL_ON_LINUX" ]; then install_homebrew; fi
 }
 
-while getopts ':bg:' opt; do
+while getopts ':hbg:' opt; do
   case "$opt" in
+    h) echo "[-h] | [-b] [-g <branch>] [-p <playbook>]" ;;
     b) unset HOMEBREW_INSTALL_ON_LINUX ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
@@ -78,10 +80,6 @@ pip install --no-cache-dir --requirement requirements.txt
 
 ansible-playbook playbooks/install_requirements.yml
 ansible-playbook playbooks/build_inventory.yml
-vim -c "e ${ANSIBLE_REPO_INVENTORY}|redraw|echom '${INVENTORY_EDIT_MESSAGE}'"
-ansible-playbook playbooks/site.yml \
-  --ask-become-pass \
-  --vault-pass-file "$ANSIBLE_VAULT_FILE"
-ansible-playbook playbooks/show_secrets.yml \
-  --extra_vars "output_to_file=true" \
-  --vault-pass-file "$ANSIBLE_VAULT_FILE"
+vim -c "e ${ANSIBLE_REPO_INVENTORY}|redraw|echom 'Save and quit to continue running the install script.'"
+ansible-playbook playbooks/site.yml --ask-become-pass
+ansible-playbook playbooks/show_secrets.yml --extra_vars "output_to_file=true"
