@@ -1,7 +1,7 @@
 ---
 
 - name: "Start ssh-agent"
-  tags: [git, repos, dotfiles]
+  tags: [git, repos]
   notify: Stop ssh-agent
   block:
     - name: "Start ssh-agent"
@@ -27,10 +27,10 @@
     git_repos_branch: "{{ '/' + item['branch'] | default('main') }}"
   ansible.builtin.set_fact:
     git_repos_basedir: "{{ git_repos_branch if git_repos_as_worktrees else '' }}"
-  tags: [git, repos, dotfiles]
+  tags: [git, repos]
 
 - name: "Clone repositories"
-  tags: [git, repos, dotfiles]
+  tags: [git, repos]
   block:
     - name: "Create repository directories"
       vars:
