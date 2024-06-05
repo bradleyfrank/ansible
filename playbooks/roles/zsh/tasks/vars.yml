@@ -1,24 +1,24 @@
 ---
 
-- name: Load per-OS variables
+- name: "Load per-OS variables"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
   tags: [zsh, dotfiles]
 
-- name: Set Homebrew prefix
+- name: "Set Homebrew prefix"
   ansible.builtin.set_fact:
     zsh_homebrew_prefix: "{{ zsh_default_homebrew_prefix }}"
   when: zsh_homebrew_prefix is undefined
   tags: [zsh, dotfiles]
 
-- name: Get current Zsh version
+- name: "Get current Zsh version"
   ansible.builtin.command:
     cmd: "{{ zsh_bin_path }} --version"
   register: cmd_zsh_version
   changed_when: false
   tags: [zsh, dotfiles]
 
-- name: Set current Zsh version
+- name: "Set current Zsh version"
   vars:
     cmd_zsh_version_split: "{{ cmd_zsh_version['stdout'] | split }}"
   ansible.builtin.set_fact:

@@ -1,22 +1,22 @@
 ---
 
-- name: Add DNS fallback
+- name: "Add DNS fallback"
   become: true
   tags: [system, linux_settings, dns, become]
   when: system_linux_add_dns_fallback
   block:
-  - name: Ensure 'resolved' conf directory exists
+  - name: "Ensure 'resolved' conf directory exists"
     ansible.builtin.file:
       path: "/etc/systemd/resolved.conf.d"
       mode: "0755"
       state: "directory"
-  - name: Add DNS fallback for systemd-resolved
+  - name: "Add DNS fallback for systemd-resolved"
     ansible.builtin.template:
       src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
       dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
       mode: "0644"
 
-- name: Install system utility packages
+- name: "Install system utility packages"
   vars:
     pkg_mgr: "{{ ansible_facts['pkg_mgr'] }}"
   ansible.builtin.package:
@@ -24,7 +24,7 @@
   become: true
   tags: [system, linux_settings, dconf, become]
 
-- name: Load dconf tasks
+- name: "Load dconf tasks"
   vars:
     dconf_prefix: "{{ item['path'] }}"
     dconf_settings: "{{ item['keys'] }}"
@@ -37,7 +37,7 @@
   when: system_linux_apply_dconf
   tags: [system, linux_settings, dconf]
 
-- name: Apply Dracut settings
+- name: "Apply Dracut settings"
   ansible.builtin.lineinfile:
     create: "{{ item['create'] | default(true) }}"
     mode: "0644"

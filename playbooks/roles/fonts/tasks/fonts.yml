@@ -1,6 +1,6 @@
 ---
 
-- name: Download latest version of Nerd Fonts
+- name: "Download latest version of Nerd Fonts"
   vars:
     url_prefix: "https://github.com/{{ fonts_github_user }}/{{ fonts_github_repo }}"
   ansible.builtin.get_url:
@@ -9,13 +9,13 @@
     mode: "0644"
   tags: [fonts]
 
-- name: Extract Nerd Fonts
+- name: "Extract Nerd Fonts"
   ansible.builtin.unarchive:
     src: "/tmp/{{ item }}.zip"
     dest: "{{ fonts_dir }}/"
   tags: [fonts]
 
-- name: Delete zip file
+- name: "Delete zip file"
   ansible.builtin.file:
     state: "absent"
     path: "/tmp/{{ item }}.zip"

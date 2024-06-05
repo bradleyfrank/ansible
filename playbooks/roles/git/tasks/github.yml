@@ -1,10 +1,10 @@
 ---
 
-- name: Add public SSH keys from Github to `authorized_keys`
+- name: "Add public SSH keys from Github to `authorized_keys`"
   tags: [github, keys, authorized_keys]
   when: git_ssh_authorized_keys_github
   block:
-    - name: Get list of existing Github SSH keys
+    - name: "Get list of existing Github SSH keys"
       ansible.builtin.uri:
         url: "{{ git_github_api_ssh_key_url }}"
         method: "GET"
@@ -14,7 +14,7 @@
           Accept: "{{ git_github_api_headers_accept }}"
           X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
       register: git_ssh_keys
-    - name: Add matching public keys to `authorized_keys`
+    - name: "Add matching public keys to `authorized_keys`"
       ansible.posix.authorized_key:
         user: "{{ ansible_facts['user_id'] }}"
         key: "{{ item['key'] }} {{ item['title'] }}"
@@ -22,7 +22,7 @@
       loop_control:
         label: "{{ item['title'] }}"
 
-- name: Register SSH key with Github
+- name: "Register SSH key with Github"
   community.general.github_key:
     name: "{{ git_ssh_key_name }}"
     pubkey: "{{ lookup('ansible.builtin.file', git_ssh_key_public) }}"
@@ -31,7 +31,7 @@
   when: git_ssh_key_upload
   tags: [github, keys]
 
-- name: Get list of existing Github SSH signing keys
+- name: "Get list of existing Github SSH signing keys"
   ansible.builtin.uri:
     url: "{{ git_github_api_signing_key_url }}"
     method: "GET"
@@ -44,7 +44,7 @@
   when: git_signing_key_upload
   tags: [github, signing]
 
-- name: Register SSH signing key with Github
+- name: "Register SSH signing key with Github"
   vars:
     key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
     body:

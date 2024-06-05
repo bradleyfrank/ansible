@@ -1,6 +1,6 @@
 ---
 
-- name: Apply dconf settings
+- name: "Apply dconf settings"
   community.general.dconf:
     key: "{{ dconf_prefix }}/{{ dconf['key'] }}"
     value: "{{ dconf['value'] }}"

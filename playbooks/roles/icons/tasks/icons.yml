@@ -1,6 +1,6 @@
 ---
 
-- name: Set app icons
+- name: "Set app icons"
   vars:
     icons_app: "{{ path }}/{{ app['path'] | splitext | first }}.app"
   ansible.builtin.command:

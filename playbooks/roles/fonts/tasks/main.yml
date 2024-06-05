@@ -1,24 +1,24 @@
 ---
 
-- name: Load per-OS variables
+- name: "Load per-OS variables"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
   tags: [fonts, dotfiles]
 
-- name: Set fonts install directory
+- name: "Set fonts install directory"
   ansible.builtin.set_fact:
     fonts_dir: "{{ fonts_default_dir }}"
   when: fonts_dir is undefined
   tags: [fonts, dotfiles]
 
-- name: Ensure fonts directory exists
+- name: "Ensure fonts directory exists"
   ansible.builtin.file:
     path: "{{ fonts_dir }}"
     state: "directory"
     mode: "0755"
   tags: [fonts, dotfiles]
 
-- name: Get latest release version of Nerd Fonts
+- name: "Get latest release version of Nerd Fonts"
   community.general.github_release:
     user: "{{ fonts_github_user }}"
     repo: "{{ fonts_github_repo }}"
@@ -27,28 +27,28 @@
   register: fonts_github_latest_release
   tags: [fonts, dotfiles]
 
-- name: Get installed version
+- name: "Get installed version"
   ansible.builtin.set_fact:
     fonts_current_version: "v0.0.0"
   when: fonts_current_version is undefined
   tags: [fonts, dotfiles]
 
-- name: Install newer fonts
+- name: "Install newer fonts"
   vars:
     fonts_latest_version: "{{ fonts_github_latest_release['tag'] }}"
   when: "fonts_current_version is version(fonts_latest_version, '<')"
   tags: [fonts, dotfiles]
   block:
-    - name: Include font install tasks
+    - name: "Include font install tasks"
       ansible.builtin.include_tasks:
         file: "fonts.yml"
       loop: "{{ fonts_to_install }}"
-    - name: Set latest version
+    - name: "Set latest version"
       ansible.builtin.set_fact:
         fonts_current_version: "{{ fonts_latest_version }}"
         cacheable: true
 
-- name: Symlink lcdfilter conf for better fonts
+- name: "Symlink lcdfilter conf for better fonts"
   ansible.builtin.file:
     src: "/usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf"
     dest: "/etc/fonts/conf.d/11-lcdfilter-default.conf"

@@ -1,34 +1,34 @@
 ---
 
-- name: Try installing packages via Homebrew
+- name: "Try installing packages via Homebrew"
   tags: [k8s, kubectl, k9s, krew, install]
   block:
-    - name: Install K8s packages
+    - name: "Install K8s packages"
       community.general.homebrew:
         name: "{{ k8s_packages }}"
   rescue:
-    - name: Fail if Homebrew isn't installed
+    - name: "Fail if Homebrew isn't installed"
       ansible.builtin.fail:
         msg: "Homebrew is required to install these packages."
 
-- name: Load per-OS variables
+- name: "Load per-OS variables"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
   tags: [k8s, kubectl, k9s, krew, dotfiles]
 
-- name: Set Homebrew prefix
+- name: "Set Homebrew prefix"
   ansible.builtin.set_fact:
     k8s_homebrew_prefix: "{{ k8s_default_homebrew_prefix }}"
   when: k8s_homebrew_prefix is undefined
   tags: [k8s, kubectl, k9s, krew, dotfiles]
 
-- name: Set k9s config path
+- name: "Set k9s config path"
   ansible.builtin.set_fact:
     k8s_k9s_config: "{{ k8s_default_k9s_config }}"
   when: k8s_k9s_config is undefined
   tags: [k8s, k9s, dotfiles]
 
-- name: Ensure k9s config directory exists
+- name: "Ensure k9s config directory exists"
   ansible.builtin.file:
     path: "{{ k8s_k9s_config }}"
     state: "directory"
@@ -36,7 +36,7 @@
   when: "'k9s' in k8s_packages"
   tags: [k8s, k9s, dotfiles]
 
-- name: Template k9s config
+- name: "Template k9s config"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', k8s_k9s_template_config) }}"
     dest: "{{ k8s_k9s_config }}/{{ item }}.yml"
@@ -47,7 +47,7 @@
   when: "'k9s' in k8s_packages"
   tags: [k8s, k9s, dotfiles]
 
-- name: Install krew plugins
+- name: "Install krew plugins"
   ansible.builtin.command:
     cmd: "{{ k8s_krew_bin }} install {{ item }}"
   loop: "{{ k8s_krew_plugins }}"

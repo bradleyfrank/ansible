@@ -1,11 +1,11 @@
 ---
 
-- name: Install mas formula
+- name: "Install mas formula"
   community.general.homebrew:
     name: "mas"
   tags: [packages, mas, install]
 
-- name: Install apps via mas
+- name: "Install apps via mas"
   environment:
     PATH: "{{ pkgs_mas_path }}:{{ ansible_facts['env']['PATH'] }}"
   community.general.mas:

@@ -1,6 +1,6 @@
 ---
 
-- name: Install gpg keys
+- name: "Install gpg keys"
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
     state: "present"
@@ -10,7 +10,7 @@
   become: true
   tags: [packages, repos, become]
 
-- name: Install repositories
+- name: "Install repositories"
   ansible.builtin.yum_repository:
     name: "{{ item['name'] }}"
     description: "{{ item['description'] }}"
@@ -28,19 +28,19 @@
   become: true
   tags: [packages, repos, become]
 
-- name: Update dnf cache
+- name: "Update dnf cache"
   ansible.builtin.dnf:
     update_cache: true
   tags: [packages, repos]
 
-- name: Install cli packages
+- name: "Install cli packages"
   ansible.builtin.dnf:
     name: "{{ dnf_packages['cli'] }}"
     state: "present"
   become: true
   tags: [packages, cli, become]
 
-- name: Install gui packages
+- name: "Install gui packages"
   ansible.builtin.dnf:
     name: "{{ dnf_packages['gui'] }}"
     state: "present"
@@ -48,7 +48,7 @@
   when: pkgs_desktop_present
   tags: [packages, gui, become]
 
-- name: Install Desktop Environment or Window Manager packages
+- name: "Install Desktop Environment or Window Manager packages"
   vars:
     current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
   ansible.builtin.dnf:

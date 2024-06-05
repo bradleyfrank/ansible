@@ -1,6 +1,6 @@
 ---
 
-- name: Start packagekit
+- name: "Start packagekit"
   ansible.builtin.systemd:
     name: "packagekit"
     state: "started"

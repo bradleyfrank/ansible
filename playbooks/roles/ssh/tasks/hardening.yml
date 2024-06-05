@@ -1,15 +1,15 @@
 ---
 
-- name: Load SSH hardening vars
+- name: "Load SSH hardening vars"
   ansible.builtin.include_vars:
     file: "ssh_hardening.yml"
 
-- name: Set SSH hardening vars for LMDE
+- name: "Set SSH hardening vars for LMDE"
   ansible.builtin.set_fact:
     os_vars: "{{ ssh_hardening['Debian'] }}"
   when: ansible_facts['distribution'] == "LMDE"
 
-- name: Secure SSH settings
+- name: "Secure SSH settings"
   ansible.builtin.import_role:
     name: devsec.hardening.ssh_hardening
   become: true

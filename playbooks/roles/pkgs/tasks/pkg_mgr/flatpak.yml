@@ -1,13 +1,13 @@
 ---
 
-- name: Install flatpak
+- name: "Install flatpak"
   ansible.builtin.package:
     name: "flatpak"
     state: "present"
   become: true
   tags: [packages, flatpak, become]
 
-- name: Install flatpak remotes
+- name: "Install flatpak remotes"
   community.general.flatpak_remote:
     name: "{{ item['name'] }}"
     state: "present"
@@ -18,7 +18,7 @@
     label: "{{ item['name'] }}"
   tags: [packages, flatpak]
 
-- name: Install flatpak packages
+- name: "Install flatpak packages"
   community.general.flatpak:
     name: "{{ item['package'] }}"
     state: "present"

@@ -1,13 +1,13 @@
 ---
 
-- name: Include local config tasks
+- name: "Include local config tasks"
   ansible.builtin.import_tasks:
     file: "config.yml"
 
-- name: Include Github tasks
+- name: "Include Github tasks"
   ansible.builtin.import_tasks:
     file: "github.yml"
 
-- name: Include repo tasks
+- name: "Include repo tasks"
   ansible.builtin.import_tasks:
     file: "repos.yml"

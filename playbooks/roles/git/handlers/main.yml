@@ -1,6 +1,6 @@
 ---
 
-- name: Stop ssh-agent
+- name: "Stop ssh-agent"
   ansible.builtin.command:
     cmd: "ssh-agent -k"
   environment:

@@ -1,42 +1,42 @@
 ---
 
-- name: Install zsh (via OS package manager)
+- name: "Install zsh (via OS package manager)"
   ansible.builtin.package:
     name: "{{ zsh_package_name }}"
   become: true
   when: (ansible_facts['system'] == "Linux") and (not zsh_prefer_homebrew)
   tags: [zsh, install, become]
 
-- name: Install zsh (via Homebrew)
+- name: "Install zsh (via Homebrew)"
   community.general.homebrew:
     name: "{{ zsh_package_name }}"
   when: (ansible_facts['system'] == "Darwin") or (zsh_prefer_homebrew)
   tags: [zsh, install]
 
-- name: Include tasks for setting vars
+- name: "Include tasks for setting vars"
   ansible.builtin.import_tasks:
     file: "vars.yml"
 
-- name: Include tasks for managing supplemental directories
+- name: "Include tasks for managing supplemental directories"
   ansible.builtin.import_tasks:
     file: "dirs.yml"
 
-- name: Configure Homebrew Zsh for MacOS
+- name: "Configure Homebrew Zsh for MacOS"
   when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
   become: true
   tags: [zsh, shell, become]
   block:
-    - name: Add Homebrew Zsh to available shells
+    - name: "Add Homebrew Zsh to available shells"
       ansible.builtin.lineinfile:
         path: "/etc/shells"
         line: "{{ zsh_homebrew_prefix }}/bin/zsh"
-    - name: Fix Homebrew Zsh folder permissions
+    - name: "Fix Homebrew Zsh folder permissions"
       ansible.builtin.file:
         path: "{{ item }}"
         mode: "0755"
       loop: "{{ zsh_chmod_directories }}"
 
-- name: Set Zsh as default shell
+- name: "Set Zsh as default shell"
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
     shell: "{{ zsh_bin_path }}"
@@ -44,7 +44,7 @@
   become: true
   tags: [zsh, shell, become]
 
-- name: Install Zsh plugins
+- name: "Install Zsh plugins"
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
     dest: "{{ zsh_plugins_dir }}/{{ item['name'] }}"
@@ -55,7 +55,7 @@
     label: "{{ item['name'] }}"
   tags: [zsh, zsh_plugins, dotfiles]
 
-- name: Generate Zsh completions
+- name: "Generate Zsh completions"
   ansible.builtin.shell:
     cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
   changed_when: false
@@ -64,22 +64,22 @@
     label: "{{ item['name'] }}"
   tags: [zsh, completions, dotfiles]
 
-- name: Apply zshrc template
+- name: "Apply zshrc template"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', zsh_template_zshrc) }}"
     dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     mode: "0644"
   tags: [zsh, zshrc, dotfiles]
 
-- name: Refresh zcompdump
+- name: "Refresh zcompdump"
   tags: [zsh, zcompdump, dotfiles]
   when: zsh_manage_zcompdump
   block:
-    - name: Delete zcompdump
+    - name: "Delete zcompdump"
       ansible.builtin.file:
         path: "{{ ansible_facts['user_dir'] }}/.zcompdump"
         state: absent
-    - name: Generate zcompdump
+    - name: "Generate zcompdump"
       ansible.builtin.shell:
         cmd: "autoload -Uz compinit && compinit"
         executable: "{{ zsh_bin_path }}"
