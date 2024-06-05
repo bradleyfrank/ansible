@@ -1,6 +1,6 @@
 ---
 
-- name: "Download latest version of Nerd Fonts"
+- name: "Download version {{ fonts_latest_version }} of {{ item }} fonts"
   vars:
     url_prefix: "https://github.com/{{ fonts_github_user }}/{{ fonts_github_repo }}"
   ansible.builtin.get_url:

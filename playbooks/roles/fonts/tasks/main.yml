@@ -39,6 +39,12 @@
   when: "fonts_current_version is version(fonts_latest_version, '<')"
   tags: [fonts, dotfiles]
   block:
+    - name: "Show installed font version"
+      ansible.builtin.debug:
+        msg: "Installed Nerd Fonts version is {{ fonts_current_version }}"
+    - name: "Show latest font version"
+      ansible.builtin.debug:
+        msg: "Latest Nerd Fonts version is {{ fonts_latest_version }}"
     - name: "Include font install tasks"
       ansible.builtin.include_tasks:
         file: "fonts.yml"
