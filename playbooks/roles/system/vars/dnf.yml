@@ -1,0 +1,2 @@
+system_pkg_dracut: "dracut"
+system_pkg_dconf: "dconf"
