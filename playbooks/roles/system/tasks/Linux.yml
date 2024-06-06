@@ -24,7 +24,7 @@
 - name: "Apple dconf settings"
   become: true
   tags: [system, linux_settings, dconf, become]
-  when: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined }}"
+  when: ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined
   block:
     - name: "Install dconf package"
       ansible.builtin.package:
@@ -43,7 +43,7 @@
 - name: "Apply Dracut settings"
   become: true
   tags: [system, linux_settings, dracut, become]
-  when: "{{ system_linux_dracut_settings | length > 0 }}"
+  when: system_linux_dracut_settings | length > 0
   block:
     - name: "Install dracut package"
       ansible.builtin.package:

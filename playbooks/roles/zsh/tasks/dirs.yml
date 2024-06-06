@@ -14,7 +14,7 @@
   register: zsh_rcd_find
   tags: [zsh, zsh_dirs, dotfiles]
 
-- name: "Touch placeholder file for zshrc.d"
+- name: "Touch placeholder file for Zsh configs"
   ansible.builtin.file:
     path: "{{ zsh_rcd_dir }}/zshrc"
     state: "touch"
