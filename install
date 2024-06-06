@@ -5,14 +5,11 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-ANSIBLE_REPO_INVENTORY="${HOME}/.ansible/inventory/host_vars/localhost.yml"
+ANSIBLE_REPO_HOSTVARS="${HOME}/.ansible/inventory/host_vars/localhost.yml"
+ANSIBLE_REPO_INVENTORY="$(mktemp)"
 
 HOMEBREW_INSTALL_ON_LINUX=1
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-
-export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
-export ANSIBLE_LOCALHOST_WARNING="False"
-export ANSIBLE_INVENTORY_UNPARSED_WARNING="False"
 
 
 install_homebrew() {
@@ -24,12 +21,14 @@ install_homebrew() {
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL $HOMEBREW_INSTALL_SCRIPT)"
 }
 
+
 bootstrap_mac() {
   if ! pgrep caffeinate >/dev/null; then (caffeinate -d -i -m -u &); fi
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ID=macos install_homebrew
   brew install python3 git
 }
+
 
 bootstrap_linux() {
   sudo systemctl stop packagekit
@@ -52,6 +51,7 @@ bootstrap_linux() {
 
   if [ -n "$HOMEBREW_INSTALL_ON_LINUX" ]; then install_homebrew; fi
 }
+
 
 while getopts ':hbg:' opt; do
   case "$opt" in
@@ -78,8 +78,12 @@ python3 -m virtualenv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook playbooks/install_requirements.yml
-ansible-playbook playbooks/build_inventory.yml
-vim -c "e ${ANSIBLE_REPO_INVENTORY}|redraw|echom 'Save and quit to continue running the install script.'"
+echo "localhost ansible_connection=local" > "$ANSIBLE_REPO_INVENTORY"
+ansible-playbook playbooks/install_requirements.yml --inventory "$ANSIBLE_REPO_INVENTORY"
+ansible-playbook playbooks/build_inventory.yml --inventory "$ANSIBLE_REPO_INVENTORY"
+
+vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running the install script.'"
+
+export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
 ansible-playbook playbooks/site.yml --ask-become-pass
 ansible-playbook playbooks/show_secrets.yml --extra_vars "output_to_file=true"
