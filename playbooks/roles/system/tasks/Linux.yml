@@ -21,7 +21,7 @@
         dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
         mode: "0644"
 
-- name: "Apple dconf settings"
+- name: "Apply dconf settings"
   become: true
   tags: [system, linux_settings, dconf, become]
   when: ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined

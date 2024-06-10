@@ -1,0 +1,105 @@
+{
+  "title": "{{ ansible_facts['hostname'] }}",
+  "category": "SERVER",
+  "sections": [
+    {
+      "id": "ssh_keys",
+      "label": "SSH"
+    },
+    {
+      "id": "tokens",
+      "label": "TOKENS"
+    },
+    {
+      "id": "admin_console",
+      "label": "Admin Console"
+    }
+  ],
+  "fields": [
+    {
+      "id": "notesPlain",
+      "type": "STRING",
+      "purpose": "NOTES",
+      "label": "notesPlain",
+      "value": ""
+    },
+    {
+      "id": "url",
+      "type": "STRING",
+      "label": "URL",
+      "value": ""
+    },
+    {
+      "id": "username",
+      "type": "STRING",
+      "label": "username",
+      "value": "{{ ansible_facts['user_id'] }}"
+    },
+    {
+      "id": "password",
+      "type": "CONCEALED",
+      "label": "password",
+      "value": ""
+    },
+    {
+      "id": "SSH_id_rsa",
+      "section": {
+        "id": "ssh_keys",
+        "label": "SSH"
+      },
+      "type": "CONCEALED",
+      "label": "id_rsa",
+      "value": ""
+    },
+    {
+      "id": "admin_console_url",
+      "section": {
+        "id": "admin_console",
+        "label": "Admin Console"
+      },
+      "type": "STRING",
+      "label": "admin console URL",
+      "value": ""
+    },
+    {
+      "id": "admin_console_username",
+      "section": {
+        "id": "admin_console",
+        "label": "Admin Console"
+      },
+      "type": "STRING",
+      "label": "admin console username",
+      "value": ""
+    },
+    {
+      "id": "admin_console_password",
+      "section": {
+        "id": "admin_console",
+        "label": "Admin Console"
+      },
+      "type": "CONCEALED",
+      "label": "console password",
+      "value": ""
+    },
+    {
+      "id": "name",
+      "section": {
+        "id": "hosting_provider_details",
+        "label": "Hosting Provider"
+      },
+      "type": "STRING",
+      "label": "name",
+      "value": ""
+    },
+    {
+      "id": "website",
+      "section": {
+        "id": "hosting_provider_details",
+        "label": "Hosting Provider"
+      },
+      "type": "STRING",
+      "label": "website",
+      "value": ""
+    }
+  ]
+}

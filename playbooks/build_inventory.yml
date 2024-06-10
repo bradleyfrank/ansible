@@ -46,6 +46,8 @@
         accept_hostkey: true
         version: "{{ git_inventory_branch }}"
 
+    # TODO: host_vars entry may already exist; check first
+
     - name: Create host_vars
       ansible.builtin.template:
         src: "host_vars.yml.j2"
