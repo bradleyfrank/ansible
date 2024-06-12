@@ -55,7 +55,7 @@ bootstrap_linux() {
 
 while getopts ':hbg:' opt; do
   case "$opt" in
-    h) echo "[-h] | [-b] [-g <branch>] [-p <playbook>]" ;;
+    h) echo "[-h] | [-b] [-g <branch>]" ;;
     b) unset HOMEBREW_INSTALL_ON_LINUX ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
@@ -93,4 +93,7 @@ vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue runni
 
 export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
 ansible-playbook playbooks/site.yml --ask-become-pass
-ansible-playbook playbooks/show_secrets.yml --extra_vars "output_to_file=true"
+ansible-playbook playbooks/1password.yml
+
+printf "\nVault passphrase: %s\n" "$(cat "$ANSIBLE_VAULT_PASSWORD_FILE")"
+rm -f "$ANSIBLE_VAULT_PASSWORD_FILE"
