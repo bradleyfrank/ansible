@@ -1,4 +1,0 @@
-Host-specific configurations; see:
-
-    - [Inventory basics: formats, hosts, and groups](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
-    - [Splitting Out Host and Group Specific Data](https://docs.ansible.com/ansible/2.7/user_guide/intro_inventory.html#splitting-out-host-and-group-specific-data)
