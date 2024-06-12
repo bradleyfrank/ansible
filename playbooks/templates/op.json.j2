@@ -24,12 +24,6 @@
       "value": ""
     },
     {
-      "id": "url",
-      "type": "STRING",
-      "label": "URL",
-      "value": ""
-    },
-    {
       "id": "username",
       "type": "STRING",
       "label": "username",
@@ -39,7 +33,7 @@
       "id": "password",
       "type": "CONCEALED",
       "label": "password",
-      "value": ""
+      "value": "ADDME"
     },
     {
       "id": "SSH_id_rsa",
@@ -49,7 +43,37 @@
       },
       "type": "CONCEALED",
       "label": "id_rsa",
-      "value": ""
+      "value": "{{ vault_secrets['rsa_ssh_key'] }}"
+    },
+    {
+      "id": "SSH_ed25519_rsa",
+      "section": {
+        "id": "ssh_keys",
+        "label": "SSH"
+      },
+      "type": "CONCEALED",
+      "label": "id_ed25519",
+      "value": "{{ vault_secrets['ed25519_ssh_key'] }}"
+    },
+    {
+      "id": "TOKEN_github",
+      "section": {
+        "id": "tokens",
+        "label": "TOKENS"
+      },
+      "type": "CONCEALED",
+      "label": "GitHub PAT",
+      "value": "{{ vault_secrets['github_token'] }}"
+    },
+    {
+      "id": "TOKEN_ansible_vault",
+      "section": {
+        "id": "tokens",
+        "label": "TOKENS"
+      },
+      "type": "CONCEALED",
+      "label": "Ansible Vault",
+      "value": "{{ vault_secrets['vault_password'] }}"
     },
     {
       "id": "admin_console_url",
@@ -59,7 +83,7 @@
       },
       "type": "STRING",
       "label": "admin console URL",
-      "value": ""
+      "value": "{{ ansible_facts['default_ipv4']['address'] }}"
     },
     {
       "id": "admin_console_username",
@@ -69,7 +93,7 @@
       },
       "type": "STRING",
       "label": "admin console username",
-      "value": ""
+      "value": "root"
     },
     {
       "id": "admin_console_password",
@@ -79,27 +103,7 @@
       },
       "type": "CONCEALED",
       "label": "console password",
-      "value": ""
-    },
-    {
-      "id": "name",
-      "section": {
-        "id": "hosting_provider_details",
-        "label": "Hosting Provider"
-      },
-      "type": "STRING",
-      "label": "name",
-      "value": ""
-    },
-    {
-      "id": "website",
-      "section": {
-        "id": "hosting_provider_details",
-        "label": "Hosting Provider"
-      },
-      "type": "STRING",
-      "label": "website",
-      "value": ""
+      "value": "ADDME"
     }
   ]
 }

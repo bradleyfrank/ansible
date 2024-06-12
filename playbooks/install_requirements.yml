@@ -1,7 +1,7 @@
 ---
 
-- name: Install and update Ansible Galaxy requirements
-  hosts: localhost
+- name: "Install and update Ansible Galaxy requirements"
+  hosts: "localhost"
   gather_facts: false
   vars:
     requirements:
@@ -10,7 +10,7 @@
       - name: "community.general"
       - name: "devsec.hardening"
   tasks:
-    - name: Install Ansible Galaxy requirements
+    - name: "Install Ansible Galaxy requirements"
       community.general.ansible_galaxy_install:
         name: "{{ item['name'] }}"
         type: "{{ item['type'] | default('collection') }}"

@@ -1,14 +1,14 @@
 ---
 
-- name: Update Github token
-  hosts: localhost
+- name: "Update Github token"
+  hosts: "localhost"
   vars_prompt:
-    - name: vault_password
+    - name: "vault_password"
       prompt: "Vault password"
-    - name: github_token
+    - name: "github_token"
       prompt: "New Github token"
   tasks:
-    - name: Create inventory
+    - name: "Create inventory"
       vars:
         rsa_encrypted: "{{ ssh_keys['rsa'] | string | ansible.builtin.vault(vault_password) }}"
         ed25519_encrypted: "{{ ssh_keys['ed25519'] | string | ansible.builtin.vault(vault_password) }}"
