@@ -23,7 +23,7 @@ install_homebrew() {
 
 
 bootstrap_mac() {
-  if ! pgrep caffeinate >/dev/null; then (caffeinate -d -i -m -u &); fi
+  pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ID=macos install_homebrew
   brew install python3 git
@@ -62,6 +62,10 @@ while getopts ':hbg:' opt; do
   esac
 done
 
+case $(uname -m) in (aarch*|arm*)
+  unset HOMEBREW_INSTALL_ON_LINUX ;;
+esac
+
 case $(uname -s) in
   Darwin) bootstrap_mac ;;
   Linux)  bootstrap_linux ;;
@@ -82,7 +86,7 @@ echo "localhost ansible_connection=local" > "$ANSIBLE_REPO_INVENTORY"
 ansible-playbook playbooks/install_requirements.yml --inventory "$ANSIBLE_REPO_INVENTORY"
 ansible-playbook playbooks/build_inventory.yml --inventory "$ANSIBLE_REPO_INVENTORY"
 
-grep "^(#|-|$)" playbooks/roles/*/defaults/main.yml \
+grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
   --no-filename \
   --extended-regexp \
