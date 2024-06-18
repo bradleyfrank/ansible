@@ -11,3 +11,9 @@
     file: logi.yml
   when: (ansible_facts['system'] == "Darwin") and (not logioptionsplus_app['stat']['exists'])
   tags: [logi]
+
+- name: "Include AI removal tasks"
+  ansible.builtin.include_tasks:
+    file: ai.yml
+  when: (ansible_facts['system'] == "Darwin") and (logi_ai_remove)
+  tags: [logi]

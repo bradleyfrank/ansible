@@ -43,7 +43,7 @@
 - name: "Apply Dracut settings"
   become: true
   tags: [system, linux_settings, dracut, become]
-  when: system_linux_dracut_settings | length > 0
+  when: ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined
   block:
     - name: "Install dracut package"
       ansible.builtin.package:
