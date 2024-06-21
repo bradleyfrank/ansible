@@ -1,0 +1,59 @@
+---
+
+- name: "Create temp download directory"
+  ansible.builtin.file:
+    state: "directory"
+    path: "{{ k8s_temp_dir }}"
+  tags: [k8s, kubectl, k9s, krew, install]
+
+- name: "Install kubectl"
+  vars:
+    arch: "{{ k8s_architecture[ansible_facts['machine']] }}"
+    version: "{{ lookup('ansible.builtin.url', k8s_kubectl_version_url) }}"
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/{{ version }}/bin/linux/{{ arch }}/kubectl"
+    dest: "{{ k8s_bin_dir }}/kubectl"
+    mode: "0775"
+  tags: [k8s, kubectl, install]
+
+- name: "Install krew"
+  tags: [k8s, krew, install]
+  vars:
+    arch: "{{ k8s_architecture[ansible_facts['machine']] }}"
+    filename: "krew-{{ ansible_facts['system'] | lower }}_{{ arch }}"
+  block:
+    - name: "Download krew tar file"
+      ansible.builtin.get_url:
+        url: "https://github.com/kubernetes-sigs/krew/releases/latest/download/{{ filename }}.tar.gz"
+        dest: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+    - name: "Extract krew tar file"
+      ansible.builtin.unarchive:
+        src: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+        dest: "{{ k8s_temp_dir }}/{{ filename }}"
+        remote_src: true
+    - name: "Install krew"
+      ansible.builtin.command:
+        cmd: "{{ k8s_temp_dir }}/{{ filename }} install krew"
+        creates: "{{ ansible_facts['user_dir'] }}/.krew"
+
+- name: "Install k9s"
+  tags: [k8s, k9s, install]
+  vars:
+    arch: "{{ k8s_architecture[ansible_facts['machine']] }}"
+    filename: "k9s_{{ ansible_facts['system'] }}_{{ arch }}"
+  block:
+    - name: "Download k9s tar file"
+      ansible.builtin.get_url:
+        url: "https://github.com/derailed/k9s/releases/latest/download/{{ filename }}.tar.gz"
+        dest: "/{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+    - name: "Extract k9s tar file"
+      ansible.builtin.unarchive:
+        src: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+        dest: "{{ k8s_bin_dir }}/k9s"
+        remote_src: true
+
+- name: "Delete temp download directory"
+  ansible.builtin.file:
+    state: "absent"
+    path: "{{ k8s_temp_dir }}"
+  tags: [k8s, kubectl, k9s, krew, install]

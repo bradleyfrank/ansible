@@ -7,9 +7,9 @@
       community.general.homebrew:
         name: "{{ k8s_packages }}"
   rescue:
-    - name: "Fail if Homebrew isn't installed"
-      ansible.builtin.fail:
-        msg: "Homebrew is required to install these packages."
+    - name: "Install manually"
+      ansible.builtin.include_tasks:
+        file: "binaries.yml"
 
 - name: "Load per-OS variables"
   ansible.builtin.include_vars:
