@@ -4,12 +4,14 @@
   ansible.builtin.file:
     state: "directory"
     path: "{{ k8s_local_bin }}"
+    mode: "0755"
   notify: "Delete temp download directory"
 
 - name: "Create temp download directory"
   ansible.builtin.file:
     state: "directory"
     path: "{{ k8s_temp_dir }}"
+    mode: "0755"
   tags: [k8s, kubectl, k9s, krew, install]
 
 - name: "Install kubectl"
@@ -32,6 +34,7 @@
       ansible.builtin.get_url:
         url: "https://github.com/kubernetes-sigs/krew/releases/latest/download/{{ filename }}.tar.gz"
         dest: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+        mode: "0755"
     - name: "Extract krew tar file"
       ansible.builtin.unarchive:
         src: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
@@ -52,6 +55,7 @@
       ansible.builtin.get_url:
         url: "https://github.com/derailed/k9s/releases/latest/download/{{ filename }}.tar.gz"
         dest: "/{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+        mode: "0755"
     - name: "Extract k9s tar file"
       ansible.builtin.unarchive:
         src: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
