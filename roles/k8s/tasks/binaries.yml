@@ -5,6 +5,7 @@
     state: "directory"
     path: "{{ k8s_local_bin }}"
     mode: "0755"
+  changed_when: true
   notify: "Delete temp download directory"
 
 - name: "Create temp download directory"
