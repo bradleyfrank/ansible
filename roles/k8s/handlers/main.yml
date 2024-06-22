@@ -1,0 +1,6 @@
+---
+
+- name: "Delete temp download directory"
+  ansible.builtin.file:
+    state: "absent"
+    path: "{{ k8s_temp_dir }}"
