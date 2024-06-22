@@ -1,5 +1,10 @@
 ---
 
+- name: "Ensure bin directory exists"
+  ansible.builtin.file:
+    state: "directory"
+    path: "{{ k8s_bin_dir }}"
+
 - name: "Create temp download directory"
   ansible.builtin.file:
     state: "directory"
