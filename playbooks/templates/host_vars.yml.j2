@@ -2,12 +2,13 @@
 
 system_hostname: "{{ system_hostname }}"
 email_address: "{{ email_address }}"
-system_has_desktop: "{{
+system_has_desktop: {{
   ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') == 'tty' or
   ansible_facts['distribution'] == "MacOSX"
-}}"
+}}
 xdg_current_desktop: "{{
   ansible_facts['env']['XDG_CURRENT_DESKTOP'] | lower if
     ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined
   else 'none'
 }}"
+

@@ -45,7 +45,7 @@
     name: "{{ dnf_packages['gui'] }}"
     state: "present"
   become: true
-  when: pkgs_desktop_present
+  when: pkgs_install_flatpak
   tags: [packages, gui, become]
 
 - name: "Install Desktop Environment or Window Manager packages"
@@ -55,5 +55,5 @@
     name: "{{ pkgs_dnf_packages[current_desktop] | default([]) }}"
     state: "present"
   become: true
-  when: pkgs_desktop_present
+  when: pkgs_install_flatpak
   tags: [packages, desktop_environment, window_manager, become]
