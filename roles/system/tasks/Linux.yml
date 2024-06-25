@@ -24,7 +24,7 @@
 - name: "Apply dconf settings"
   become: true
   tags: [system, linux_settings, dconf, become]
-  when: ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined
+  when: "'gnome' in xdg_current_desktop"
   block:
     - name: "Install dconf package"
       ansible.builtin.package:
@@ -43,7 +43,7 @@
 - name: "Apply Dracut settings"
   become: true
   tags: [system, linux_settings, dracut, become]
-  when: ansible_facts['env']['XDG_CURRENT_DESKTOP'] is defined
+  when: "'gnome' in xdg_current_desktop"
   block:
     - name: "Install dracut package"
       ansible.builtin.package:

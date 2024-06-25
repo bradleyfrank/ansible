@@ -1,6 +1,7 @@
 ---
 
 pkgs_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
+pkgs_install_flatpak: false
 pkgs_packagekit_enabled: true
 
 pkgs_mas_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:~/.local/bin:~/bin"

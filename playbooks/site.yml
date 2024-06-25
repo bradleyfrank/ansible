@@ -27,14 +27,17 @@
     - name: "Include fonts role"
       ansible.builtin.import_role:
         name: "fonts"
+      when: system_has_desktop
 
     - name: "Include Logitech role"
       ansible.builtin.import_role:
         name: "logi"
+      when: ansible_facts['system'] == "Darwin"
 
     - name: "Include icons role"
       ansible.builtin.import_role:
         name: "icons"
+      when: ansible_facts['system'] == "Darwin"
 
     - name: "Include vim role"
       ansible.builtin.import_role:
