@@ -7,7 +7,7 @@
 
 - name: "Install apps via mas"
   environment:
-    PATH: "{{ pkgs_mas_path }}:{{ ansible_facts['env']['PATH'] }}"
+    PATH: "{{ pkgs_bin_path }}:{{ ansible_facts['env']['PATH'] }}"
   community.general.mas:
     id: "{{ pkgs_mas_apps }}"
     upgrade_all: true

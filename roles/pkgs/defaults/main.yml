@@ -2,9 +2,10 @@
 
 pkgs_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
 pkgs_install_flatpak: false
+pkgs_homebrew_on_linux: true
 pkgs_packagekit_enabled: true
+pkgs_bin_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:~/.local/bin:~/bin"
 
-pkgs_mas_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:~/.local/bin:~/bin"
 pkgs_homebrew_formulas_upgrade: true
 pkgs_homebrew_casks_upgrade: true
 pkgs_accept_external_casks: true
