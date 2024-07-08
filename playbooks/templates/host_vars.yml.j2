@@ -4,7 +4,7 @@ host_hostname: "{{ system_hostname }}"
 host_email_address: "{{ email_address }}"
 host_has_desktop: {{
   True if
-    ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') == 'tty' or
+    ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != "tty" or
     ansible_facts['distribution'] == "MacOSX"
   else False
 }}

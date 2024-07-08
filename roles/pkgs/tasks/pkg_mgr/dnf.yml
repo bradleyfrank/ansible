@@ -4,7 +4,7 @@
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
     state: "present"
-  loop: "{{ repos_dnf }}"
+  loop: "{{ pkgs_dnf_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
@@ -22,7 +22,7 @@
     gpgkey: "{{ item['gpgkey'] }}"
     repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
     skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
-  loop: "{{ repos_dnf }}"
+  loop: "{{ pkgs_dnf_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
