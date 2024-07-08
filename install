@@ -8,7 +8,7 @@ ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_REPO_HOSTVARS="${HOME}/.ansible/inventory/host_vars/localhost.yml"
 ANSIBLE_REPO_INVENTORY="$(mktemp)"
 
-HOMEBREW_INSTALL_ON_LINUX=1
+HOMEBREW_INSTALL_ON_LINUX=1; export HOMEBREW_INSTALL_ON_LINUX
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 
@@ -49,7 +49,7 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  if [ -n "$HOMEBREW_INSTALL_ON_LINUX" ]; then install_homebrew; fi
+  [ -n "$HOMEBREW_INSTALL_ON_LINUX" ] && install_homebrew
 }
 
 

@@ -1,24 +1,28 @@
 ---
 
 pkgs_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
-pkgs_install_flatpak: false
-pkgs_homebrew_on_linux: true
+pkgs_desktop_present: "{{ host_has_desktop | default(true) }}"
+pkgs_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | lower | default('') }}"
+pkgs_homebrew_installed: "{{ host_homebrew_installed | default(false) }}"
 pkgs_packagekit_enabled: true
 pkgs_bin_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:~/.local/bin:~/bin"
 
-pkgs_homebrew_formulas_upgrade: true
-pkgs_homebrew_casks_upgrade: true
-pkgs_accept_external_casks: true
-
-pkgs_apt_repos: []
-pkgs_dnf_repos: []
-pkgs_flatpak_remotes: []
 pkgs_homebrew_taps: []
-
-pkgs_apt_packages: {}
-pkgs_binaries: []
-pkgs_dnf_packages: {}
-pkgs_flatpak_packages: {}
 pkgs_homebrew_casks: []
 pkgs_homebrew_formulas: []
+pkgs_homebrew_formulas_upgrade: true
+pkgs_homebrew_casks_upgrade: true
+pkgs_homebrew_external_casks: true
+
+pkgs_apt_repos: []
+pkgs_apt_packages: {}
+
+pkgs_dnf_repos: []
+pkgs_dnf_packages: {}
+
+pkgs_install_flatpaks: "{{ pkgs_desktop_present }}"
+pkgs_flatpak_remotes: []
+pkgs_flatpak_packages: {}
+
+pkgs_binaries: []
 pkgs_mas_apps: []
