@@ -35,14 +35,14 @@
 
 - name: "Install cli packages"
   ansible.builtin.dnf:
-    name: "{{ dnf_packages['cli'] }}"
+    name: "{{ pkgs_dnf_packages['cli'] }}"
     state: "present"
   become: true
   tags: [packages, cli, become]
 
 - name: "Install gui packages"
   ansible.builtin.dnf:
-    name: "{{ dnf_packages['gui'] }}"
+    name: "{{ pkgs_dnf_packages['gui'] }}"
     state: "present"
   become: true
   when: pkgs_desktop_present
