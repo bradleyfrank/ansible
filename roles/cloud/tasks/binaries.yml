@@ -3,64 +3,64 @@
 - name: "Ensure bin directory exists"
   ansible.builtin.file:
     state: "directory"
-    path: "{{ k8s_local_bin }}"
+    path: "{{ cloud_local_bin }}"
     mode: "0755"
   changed_when: true
-  notify: "Delete temp download directory"
 
 - name: "Create temp download directory"
   ansible.builtin.file:
     state: "directory"
-    path: "{{ k8s_temp_dir }}"
+    path: "{{ cloud_temp_dir }}"
     mode: "0755"
-  tags: [k8s, kubectl, k9s, krew, install]
+  tags: [cloud, kubectl, k9s, krew, install]
+  notify: "Delete temp download directory"
 
 - name: "Install kubectl"
   vars:
-    arch: "{{ k8s_architecture[ansible_facts['machine']] }}"
-    version: "{{ lookup('ansible.builtin.url', k8s_kubectl_version_url) }}"
+    arch: "{{ cloud_architecture[ansible_facts['machine']] }}"
+    version: "{{ lookup('ansible.builtin.url', cloud_kubectl_version_url) }}"
   ansible.builtin.get_url:
     url: "https://dl.k8s.io/release/{{ version }}/bin/linux/{{ arch }}/kubectl"
-    dest: "{{ k8s_local_bin }}/kubectl"
+    dest: "{{ cloud_local_bin }}/kubectl"
     mode: "0755"
-  tags: [k8s, kubectl, install]
+  tags: [cloud, kubectl, install]
 
 - name: "Install krew"
-  tags: [k8s, krew, install]
+  tags: [cloud, krew, install]
   vars:
-    arch: "{{ k8s_architecture[ansible_facts['machine']] }}"
+    arch: "{{ cloud_architecture[ansible_facts['machine']] }}"
     filename: "krew-{{ ansible_facts['system'] | lower }}_{{ arch }}"
   block:
     - name: "Download krew tar file"
       ansible.builtin.get_url:
         url: "https://github.com/kubernetes-sigs/krew/releases/latest/download/{{ filename }}.tar.gz"
-        dest: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+        dest: "{{ cloud_temp_dir }}/{{ filename }}.tar.gz"
         mode: "0755"
     - name: "Extract krew tar file"
       ansible.builtin.unarchive:
-        src: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
-        dest: "{{ k8s_temp_dir }}"
+        src: "{{ cloud_temp_dir }}/{{ filename }}.tar.gz"
+        dest: "{{ cloud_temp_dir }}"
         remote_src: true
     - name: "Install krew"
       ansible.builtin.command:
-        cmd: "{{ k8s_temp_dir }}/{{ filename }} install krew"
+        cmd: "{{ cloud_temp_dir }}/{{ filename }} install krew"
         creates: "{{ ansible_facts['user_dir'] }}/.krew"
 
 - name: "Install k9s"
-  tags: [k8s, k9s, install]
+  tags: [cloud, k9s, install]
   vars:
-    arch: "{{ k8s_architecture[ansible_facts['machine']] }}"
+    arch: "{{ cloud_architecture[ansible_facts['machine']] }}"
     filename: "k9s_{{ ansible_facts['system'] }}_{{ arch }}"
   block:
     - name: "Download k9s tar file"
       ansible.builtin.get_url:
         url: "https://github.com/derailed/k9s/releases/latest/download/{{ filename }}.tar.gz"
-        dest: "/{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
+        dest: "/{{ cloud_temp_dir }}/{{ filename }}.tar.gz"
         mode: "0755"
     - name: "Extract k9s tar file"
       ansible.builtin.unarchive:
-        src: "{{ k8s_temp_dir }}/{{ filename }}.tar.gz"
-        dest: "{{ k8s_local_bin }}"
+        src: "{{ cloud_temp_dir }}/{{ filename }}.tar.gz"
+        dest: "{{ cloud_local_bin }}"
         mode: "0755"
         remote_src: true
-        exclude: "{{ k8s_k9s_excludes }}"
+        exclude: "{{ cloud_k9s_excludes }}"

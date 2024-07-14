@@ -43,9 +43,9 @@
       ansible.builtin.import_role:
         name: "vim"
 
-    - name: "Include k8s role"
+    - name: "Include cloud role"
       ansible.builtin.import_role:
-        name: "k8s"
+        name: "cloud"
 
     - name: "Include Zsh role"
       ansible.builtin.import_role:
