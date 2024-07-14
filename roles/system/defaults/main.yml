@@ -15,6 +15,7 @@ system_linux_dracut_settings: []
 
 system_macos_defaults: []
 system_macos_launchd: {}
+system_macos_reset_dock: true
 system_macos_sleep_display: 15
 system_macos_sleep_computer: 30
 system_macos_firewall_enabled: true
