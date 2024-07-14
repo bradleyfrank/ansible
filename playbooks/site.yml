@@ -6,7 +6,7 @@
 
     - name: "Include repo and package role"
       ansible.builtin.import_role:
-        name: "pkgs"
+        name: "packages"
 
     - name: "Include system role"
       ansible.builtin.import_role:
@@ -14,7 +14,7 @@
 
     - name: "Include dotfiles role"
       ansible.builtin.import_role:
-        name: "dots"
+        name: "dotfiles"
 
     - name: "Include ssh role"
       ansible.builtin.import_role:
