@@ -1,0 +1,5 @@
+---
+
+onepassword_packages:
+  gui: "1password"
+  cli: "1password-cli"

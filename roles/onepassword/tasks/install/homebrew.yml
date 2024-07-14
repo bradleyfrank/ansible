@@ -1,0 +1,14 @@
+---
+
+- name: "Install cli packages"
+  community.general.homebrew:
+    name: "{{ onepassword_packages['cli'] }}"
+    state: "present"
+  tags: [onepassword, install, cli, become]
+
+- name: "Install gui packages"
+  community.general.homebrew:
+    name: "{{ onepassword_packages['gui'] }}"
+    state: "present"
+  when: onepassword_use_gui_integration
+  tags: [onepassword, install, gui, become]

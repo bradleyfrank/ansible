@@ -97,7 +97,7 @@ vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue runni
 
 export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
 ansible-playbook playbooks/site.yml --ask-become-pass
-ansible-playbook playbooks/1password.yml
+ansible-playbook playbooks/password_manager.yml
 
 printf "\nVault passphrase: %s\n" "$(cat "$ANSIBLE_VAULT_PASSWORD_FILE")"
 rm -f "$ANSIBLE_VAULT_PASSWORD_FILE"
