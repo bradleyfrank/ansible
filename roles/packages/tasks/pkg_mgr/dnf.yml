@@ -4,7 +4,7 @@
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
     state: "present"
-  loop: "{{ pkgs_dnf_repos }}"
+  loop: "{{ packages_dnf_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
@@ -22,7 +22,7 @@
     gpgkey: "{{ item['gpgkey'] }}"
     repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
     skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
-  loop: "{{ pkgs_dnf_repos }}"
+  loop: "{{ packages_dnf_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
@@ -35,24 +35,24 @@
 
 - name: "Install cli packages"
   ansible.builtin.dnf:
-    name: "{{ pkgs_dnf_packages['cli'] }}"
+    name: "{{ packages_dnf_packages['cli'] }}"
     state: "present"
   become: true
   tags: [packages, cli, become]
 
 - name: "Install gui packages"
   ansible.builtin.dnf:
-    name: "{{ pkgs_dnf_packages['gui'] }}"
+    name: "{{ packages_dnf_packages['gui'] }}"
     state: "present"
   become: true
-  when: pkgs_desktop_present
+  when: packages_desktop_present
   tags: [packages, gui, become]
 
 - name: "Install Desktop Environment or Window Manager packages"
   ansible.builtin.dnf:
-    name: "{{ pkgs_dnf_packages[item] }}"
+    name: "{{ packages_dnf_packages[item] }}"
     state: "present"
-  loop: "{{ pkgs_dnf_packages.keys() | list }}"
+  loop: "{{ packages_dnf_packages.keys() | list }}"
   become: true
-  when: item in pkgs_current_desktop
+  when: item in packages_current_desktop
   tags: [packages, desktop_environment, window_manager, become]

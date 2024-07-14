@@ -6,7 +6,7 @@
     keyring: "{{ item['keyring'] | default(omit) }}"
     id: "{{ item['id'] | default(omit) }}"
     keyserver: "{{ item['keyserver'] | default(omit) }}"
-  loop: "{{ pkgs_apt_repos }}"
+  loop: "{{ packages_apt_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
@@ -16,7 +16,7 @@
   ansible.builtin.apt_repository:
     repo: "{{ item['repo'] }}"
     filename: "{{ item['name'] }}"
-  loop: "{{ pkgs_apt_repos }}"
+  loop: "{{ packages_apt_repos }}"
   loop_control:
     label: "{{ item['name'] }}"
   become: true
@@ -30,7 +30,7 @@
 
 - name: "Install cli packages"
   ansible.builtin.apt:
-    name: "{{ pkgs_apt_packages['cli'] }}"
+    name: "{{ packages_apt_packages['cli'] }}"
     state: "present"
     autoclean: true
     autoremove: true
@@ -40,23 +40,24 @@
 
 - name: "Install gui packages"
   ansible.builtin.apt:
-    name: "{{ pkgs_apt_packages['gui'] }}"
-    state: present
-    autoclean: true
-    autoremove: true
-    install_recommends: true
-  become: true
-  when: pkgs_install_flatpak
-  tags: [packages, gui, become]
-
-- name: "Install Desktop Environment or Window Manager packages"
-  ansible.builtin.apt:
-    name: "{{ pkgs_apt_packages[item] }}"
+    name: "{{ packages_apt_packages['gui'] }}"
     state: "present"
     autoclean: true
     autoremove: true
     install_recommends: true
-  loop: "{{ pkgs_apt_packages.keys() | list }}"
   become: true
-  when: item in pkgs_current_desktop
+  # TODO: fix 'when' clause
+  when: packages_install_flatpak
+  tags: [packages, gui, become]
+
+- name: "Install Desktop Environment or Window Manager packages"
+  ansible.builtin.apt:
+    name: "{{ packages_apt_packages[item] }}"
+    state: "present"
+    autoclean: true
+    autoremove: true
+    install_recommends: true
+  loop: "{{ packages_apt_packages.keys() | list }}"
+  become: true
+  when: item in packages_current_desktop
   tags: [packages, desktop_environment, window_manager, become]

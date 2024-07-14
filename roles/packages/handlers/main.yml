@@ -6,4 +6,4 @@
     state: "started"
     enabled: true
   become: true
-  when: pkgs_packagekit_enabled
+  when: packages_packagekit_enabled
