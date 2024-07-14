@@ -1,0 +1,5 @@
+[core]
+  excludesfile = {{ ansible_facts['user_dir'] }}/.gitignore
+[user]
+  name = {{ ansible_facts['user_gecos'] }}
+  email = {{ email_address }}

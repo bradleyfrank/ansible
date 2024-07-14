@@ -1,0 +1,10 @@
+---
+
+dock_homebrew_apps:
+  - "fileicon"
+  - "dockutil"
+
+dock_dockutil_spacers:
+  - "spacer"
+  - "small-spacer"
+  - "flex-spacer"

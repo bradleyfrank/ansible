@@ -1,0 +1,25 @@
+---
+
+system_hostname: "{{ host_hostname | default(ansible_facts['hostname']) }}"
+system_has_desktop: "{{ host_has_desktop | default(false) }}"
+system_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
+
+system_template_resolved:
+  - "{{ inventory_dir }}/templates/resolved.conf.j2"
+  - "templates/resolved.conf.j2"
+
+system_linux_dconf_defaults: []
+system_linux_dconf_distro: []
+system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]
+system_linux_dracut_settings: []
+
+system_macos_defaults: []
+system_macos_launchd: {}
+system_macos_reset_dock: true
+system_macos_sleep_display: 15
+system_macos_sleep_computer: 30
+system_macos_firewall_enabled: true
+system_macos_gatekeeper_enabled: true
+system_macos_locate_enabled: true
+system_macos_unhide_user_library: true
+system_macos_unhide_volumes: true

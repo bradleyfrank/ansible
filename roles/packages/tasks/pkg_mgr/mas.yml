@@ -1,0 +1,14 @@
+---
+
+- name: "Install mas formula"
+  community.general.homebrew:
+    name: "mas"
+  tags: [packages, mas, install]
+
+- name: "Install apps via mas"
+  environment:
+    PATH: "{{ packages_bin_path }}:{{ ansible_facts['env']['PATH'] }}"
+  community.general.mas:
+    id: "{{ packages_mas_apps }}"
+    upgrade_all: true
+  tags: [packages, mas]

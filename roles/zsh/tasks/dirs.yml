@@ -1,0 +1,23 @@
+---
+
+- name: "Ensure supplemental Zsh directories exist"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0744"
+  loop: "{{ zsh_supplemental_dirs }}"
+  tags: [zsh, zsh_dirs, dotfiles]
+
+- name: "Check for files in zshrc.d"
+  ansible.builtin.find:
+    paths: "{{ zsh_rcd_dir }}"
+  register: zsh_rcd_find
+  tags: [zsh, zsh_dirs, dotfiles]
+
+- name: "Touch placeholder file for Zsh configs"
+  ansible.builtin.file:
+    path: "{{ zsh_rcd_dir }}/zshrc"
+    state: "touch"
+    mode: "0644"
+  when: zsh_rcd_find['matched'] == 0
+  tags: [zsh, zsh_dirs, dotfiles]

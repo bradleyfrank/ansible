@@ -1,0 +1,68 @@
+---
+
+- name: "Load per-system package definitions"
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts['pkg_mgr'] }}.yml"
+  tags: [system, linux_settings, dconf, dracut]
+
+- name: "Add DNS fallback"
+  become: true
+  tags: [system, linux_settings, dns, become]
+  when: system_linux_dns_fallback | length > 0
+  block:
+    - name: "Ensure 'resolved' conf directory exists"
+      ansible.builtin.file:
+        path: "/etc/systemd/resolved.conf.d"
+        mode: "0755"
+        state: "directory"
+    - name: "Add DNS fallback for systemd-resolved"
+      ansible.builtin.template:
+        src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
+        dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
+        mode: "0644"
+
+- name: "Apply dconf settings"
+  become: true
+  tags: [system, linux_settings, dconf, become]
+  when: "'gnome' in system_current_desktop"
+  block:
+    - name: "Install dconf package"
+      ansible.builtin.package:
+        name: "{{ system_pkg_dconf }}"
+    - name: "Load dconf tasks"
+      vars:
+        dconf_prefix: "{{ item['path'] }}"
+        dconf_settings: "{{ item['keys'] }}"
+      ansible.builtin.include_tasks:
+        file: "dconf.yml"
+      loop: "{{ system_linux_dconf_defaults \
+          | community.general.lists_mergeby(system_linux_dconf_distro, 'path', recursive=True) }}"
+      loop_control:
+        label: "{{ dconf_prefix }}"
+
+- name: "Apply Dracut settings"
+  become: true
+  tags: [system, linux_settings, dracut, become]
+  when: system_has_desktop
+  block:
+    - name: "Install dracut package"
+      ansible.builtin.package:
+        name: "{{ system_pkg_dracut }}"
+    - name: "Create dracut module(s)"
+      ansible.builtin.lineinfile:
+        create: "{{ item['create'] | default(true) }}"
+        mode: "0644"
+        path: "{{ item['path'] }}"
+        line: "{{ item['line'] | default(omit) }}"
+        regexp: "{{ item['regexp'] | default(omit) }}"
+        state: "{{ item['state'] | default('present') }}"
+        search_string: "{{ item['search_string'] | default(omit) }}"
+        insertafter: "{{ item['insertafter'] | default(omit) }}"
+        insertbefore: "{{ item['insertbefore'] | default(omit) }}"
+        backrefs: "{{ item['backrefs'] | default(omit) }}"
+      loop: "{{ system_linux_dracut_settings }}"
+      loop_control:
+        label: "{{ item['desc'] }}"
+      become: true
+      notify: Regenerate Dracut
+      tags: [system, linux_settings, dracut, become]

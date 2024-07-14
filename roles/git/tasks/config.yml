@@ -1,0 +1,31 @@
+---
+
+- name: "Read public SSH key for signing key"
+  ansible.builtin.set_fact:
+    git_signing_key: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split }}"
+  when: git_signing_key_type == "ssh"
+  tags: [git, config, signing, dotfiles]
+
+- name: "Create gitconfig"
+  vars:
+    key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', git_template_gitconfig) }}"
+    dest: "{{ git_config_path }}"
+    mode: "0755"
+  tags: [git, config, signing, dotfiles]
+
+- name: "Ensure gitconfig directory exists"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.gitconfig.d"
+    mode: "0755"
+    state: "directory"
+  tags: [git, config, signing, dotfiles]
+
+- name: "Create allowed signers file"
+  ansible.builtin.template:
+    src: "allowed_signers.j2"
+    dest: "{{ git_signing_allowed_signers }}"
+    mode: "0644"
+  when: git_signing_key_type == "ssh"
+  tags: [git, config, signing, dotfiles]

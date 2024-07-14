@@ -1,0 +1,49 @@
+---
+
+- name: "Stop packagekit"
+  ansible.builtin.systemd:
+    name: "packagekit"
+    state: "stopped"
+    enabled: false
+  become: true
+  when: ansible_facts['system'] == "Linux"
+  notify: Start packagekit
+  tags: [packages, become]
+
+- name: "Include distro-specific package managers"
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
+  tags: [packages, install, repos, become]
+
+- name: "Install Homebrew packages for Linux"
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/homebrew.yml"
+  when: (ansible_facts['system'] == "Linux" and packages_homebrew_installed) and
+        (ansible_facts['architecture'] == "x86_64" or ansible_facts['architecture'] == "amd64")
+  tags: [packages, homebrew, install, repos, formulas, casks]
+
+- name: "Install Mac App Store apps"
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/mas.yml"
+  when: (ansible_facts['system'] == "Darwin") and (packages_mas_apps | length > 0)
+  tags: [packages, mas]
+
+- name: "Include Flakpak packages"
+  ansible.builtin.import_tasks:
+    file: "pkg_mgr/flatpak.yml"
+  when: (ansible_facts['system'] == "Linux") and (packages_install_flatpaks)
+
+- name: "Ensure binary install path exists"
+  ansible.builtin.file:
+    path: "{{ packages_binary_install_path }}"
+    state: "directory"
+    mode: "0755"
+  tags: [packages, binaries, dotfiles]
+
+- name: "Download binaries"
+  ansible.builtin.get_url:
+    url: "{{ item['url'] }}"
+    dest: "{{ packages_binary_install_path }}/{{ item['name'] }}"
+    mode: "0755"
+  loop: "{{ packages_binaries }}"
+  tags: [packages, binaries, dotfiles]

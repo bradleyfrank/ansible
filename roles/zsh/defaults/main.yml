@@ -1,0 +1,21 @@
+---
+
+zsh_package_name: "zsh"
+zsh_prefer_homebrew: false
+zsh_manage_zcompdump: true
+
+zsh_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
+zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.zshrc.d"
+zsh_functions_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/site-functions"
+
+zsh_supplemental_dirs:
+  - "{{ zsh_plugins_dir }}"
+  - "{{ zsh_functions_dir }}"
+  - "{{ zsh_rcd_dir }}"
+
+zsh_template_zshrc:
+  - "{{ inventory_dir }}/templates/zshrc.j2"
+  - "templates/zshrc.j2"
+
+zsh_completions: []
+zsh_plugins: []

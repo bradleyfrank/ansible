@@ -1,0 +1,8 @@
+---
+
+- name: "Stop ssh-agent"
+  ansible.builtin.command:
+    cmd: "ssh-agent -k"
+  environment:
+    SSH_AGENT_PID: "{{ ssh_agent_pid }}"
+  changed_when: false

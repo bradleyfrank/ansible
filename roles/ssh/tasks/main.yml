@@ -1,0 +1,55 @@
+---
+
+- name: "Ensure SSH directory is present"
+  ansible.builtin.file:
+    mode: "0755"
+    path: "{{ ansible_facts['user_dir'] }}/.ssh"
+    state: "directory"
+  tags: [ssh, dotfiles]
+
+- name: "Set proper permissions on ~/.ssh/authorized_keys"
+  ansible.builtin.file:
+    mode: "0600"
+    path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
+    state: "touch"
+  tags: [ssh, dotfiles]
+
+- name: "Create SSH key"
+  community.crypto.openssh_keypair:
+    comment: "{{ ansible_facts['user_id'] }}@{{ ansible_hostname }}"
+    passphrase: "{{ item['value'] }}"
+    path: "{{ ansible_facts['user_dir'] }}/.ssh/id_{{ item['key'] }}"
+    size: 4096
+    type: "{{ item['key'] }}"
+  loop: "{{ ssh_keys | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
+  tags: [ssh, keys, dotfiles]
+
+- name: "Create SSH config"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', ssh_template_config) }}"
+    dest: "{{ ansible_facts['user_dir'] }}/.ssh/config"
+    mode: "0644"
+    force: "{{ ssh_manage_config_force }}"
+  when: ssh_manage_config
+  tags: [ssh, config, dotfiles]
+
+- name: "Create host keys"
+  community.crypto.openssh_keypair:
+    path: "/etc/ssh/ssh_host_{{ item }}_key"
+    type: "{{ item }}"
+  loop: "{{ ssh_host_keys }}"
+  loop_control:
+    label: "{{ item }}"
+  become: true
+  when: (ansible_facts['system'] == "Linux") and (ssh_manage_host_keys)
+  tags: [ssh, host_keys, become]
+
+- name: "Load SSH hardening tasks"
+  ansible.builtin.include_tasks:
+    file: "hardening.yml"
+    apply:
+      tags: [ssh, hardening]
+  when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)
+  tags: [ssh, hardening]

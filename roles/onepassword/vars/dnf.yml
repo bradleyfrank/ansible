@@ -1,0 +1,13 @@
+---
+
+onepassword_packages:
+  gui: "1password"
+  cli: "1password-cli"
+
+onepassword_linux_repo:
+  name: "1Password"  # Avoid name conflict with repo packaged with rpm: 1password.repo
+  description: "1Password"
+  baseurl: "https://downloads.1password.com/linux/rpm/stable/$basearch"
+  gpgkey: "https://downloads.1password.com/linux/keys/1password.asc"
+
+onepassword_repo_file: "/etc/yum.repos.d/1password.repo"

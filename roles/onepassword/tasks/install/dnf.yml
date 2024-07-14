@@ -1,0 +1,55 @@
+---
+
+- name: "Install gpg keys"
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: "present"
+  become: true
+  tags: [onepassword, install, repos, become]
+
+- name: "Install repositories"
+  ansible.builtin.yum_repository:
+    name: "{{ item['name'] }}"
+    description: "{{ item['description'] }}"
+    baseurl: "{{ item['baseurl'] | default(omit) }}"
+    gpgcheck: "{{ item['gpgcheck'] | default(true) }}"
+    gpgkey: "{{ item['gpgkey'] }}"
+    repo_gpgcheck: "{{ item['repo_gpgcheck'] | default(false) }}"
+    skip_if_unavailable: "{{ item['skip_if_unavailable'] | default(true) }}"
+  become: true
+  tags: [onepassword, install, repos, become]
+
+- name: "Update dnf cache"
+  ansible.builtin.dnf:
+    update_cache: true
+  tags: [onepassword, install, repos, become]
+
+- name: "Install cli packages"
+  ansible.builtin.dnf:
+    name: "{{ onepassword_packages['cli'] }}"
+    state: "present"
+  become: true
+  tags: [onepassword, install, cli, become]
+
+- name: "Install gui packages"
+  ansible.builtin.dnf:
+    name: "{{ onepassword_packages['gui'] }}"
+    state: "present"
+  become: true
+  when: onepassword_use_gui_integration
+  tags: [onepassword, install, gui, become]
+
+- name: "Remove repo installed by package"
+  ansible.builtin.file:
+    path: "{{ onepassword_repo_file }}"
+    state: "absent"
+  become: true
+  tags: [onepassword, install, cli, gui, repos, become]
+
+- name: "Make official repo a symlink instead"
+  ansible.builtin.file:
+    src: "/etc/yum.repos.d/{{ onepassword_linux_repo['name'] }}.repo"
+    dest: "{{ onepassword_repo_file }}"
+    state: "absent"
+  become: true
+  tags: [onepassword, install, cli, gui, repos, become]

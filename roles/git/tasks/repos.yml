@@ -1,0 +1,59 @@
+---
+
+- name: "Start ssh-agent"
+  tags: [git, repos]
+  notify: Stop ssh-agent
+  block:
+    - name: "Start ssh-agent"
+      ansible.builtin.shell:
+        cmd: |
+          eval $(ssh-agent -s) > /dev/null
+          echo "{\"SSH_AUTH_SOCK\":\"$SSH_AUTH_SOCK\",\"SSH_AGENT_PID\":\"$SSH_AGENT_PID\"}"
+      register: eval_ssh_agent
+      changed_when: true
+    - name: "Set SSH_AUTH_SOCK"
+      ansible.builtin.set_fact:
+        ssh_auth_sock: "{{ eval_ssh_agent['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
+        ssh_agent_pid: "{{ eval_ssh_agent['stdout'] | from_json | json_query('SSH_AGENT_PID') }}"
+    - name: "Add key to ssh-agent"
+      environment: "{{ eval_ssh_agent['stdout'] }}"
+      ansible.builtin.expect:
+        command: "ssh-add {{ git_ssh_key_private }}"
+        responses:
+          passphrase: "{{ ssh_keys['ed25519'] }}"
+
+- name: "Set repository clone destination"
+  vars:
+    git_repos_branch: "{{ '/' + item['branch'] | default('main') }}"
+  ansible.builtin.set_fact:
+    git_repos_basedir: "{{ git_repos_branch if git_repos_as_worktrees else '' }}"
+  tags: [git, repos]
+
+- name: "Clone repositories"
+  tags: [git, repos]
+  block:
+    - name: "Create repository directories"
+      vars:
+        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+        git_repos_dirname: "{{ git_repos_path }}/{{ git_repo_name }}"
+      ansible.builtin.file:
+        path: "{{ git_repos_dirname }}{{ git_repos_basedir }}"
+        state: "directory"
+        mode: "0755"
+      loop: "{{ git_repos }}"
+      loop_control:
+        label: "{{ git_repo_name }}"
+    - name: "Clone repositories"
+      vars:
+        git_repo_name: "{{ item['url'] | basename | split('.') | first }}"
+        git_repos_dirname: "{{ git_repos_path }}/{{ git_repo_name }}"
+      ansible.builtin.git:
+        repo: "{{ item['url'] }}"
+        version: "{{ item['branch'] | default('main') }}"
+        dest: "{{ git_repos_dirname }}{{ git_repos_basedir }}"
+        accept_hostkey: true
+        key_file: "{{ git_ssh_key_private }}"
+        ssh_opts: "-o 'IdentityAgent={{ ssh_auth_sock }}'"
+      loop: "{{ git_repos }}"
+      loop_control:
+        label: "{{ git_repo_name }}"

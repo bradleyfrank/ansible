@@ -2,77 +2,102 @@
 
 set -o errexit
 
-ANSIBLE_REPO_PATH="$HOME/ansible.$(date +%H%M%S)"
-ANSIBLE_REPO_BRANCH=main
-ANSIBLE_REPO_PLAYBOOK=bootstrap
-ANSIBLE_REPO_URL=https://github.com/bradleyfrank/ansible.git
-HOMEBREW_INSTALL=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-VAULT_ID="$HOME/.ansible/vault"
+ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
+ANSIBLE_REPO_BRANCH="main"
+ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
+ANSIBLE_REPO_HOSTVARS="${HOME}/.ansible/inventory/host_vars/localhost.yml"
+ANSIBLE_REPO_INVENTORY="$(mktemp)"
+
+HOMEBREW_INSTALL_ON_LINUX=1; export HOMEBREW_INSTALL_ON_LINUX
+HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+
+
+install_homebrew() {
+  case "$ID" in
+    fedora) sudo dnf install -y procps-ng file @development-tools ;;
+    debian|ubuntu|linuxmint|pop) sudo apt-get install -y build-essential procps file ;;
+    macos) sudo softwareupdate --install-rosetta ;;
+  esac
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL $HOMEBREW_INSTALL_SCRIPT)"
+}
+
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
-  [ "$(uname -m)" = arm64 ] && sudo softwareupdate --install-rosetta
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL $HOMEBREW_INSTALL)"
+  ID=macos install_homebrew
   brew install python3 git
 }
+
 
 bootstrap_linux() {
   sudo systemctl stop packagekit
   # shellcheck disable=SC1091
   . /etc/os-release
 
-  case "$NAME" in
-    Fedora*)
+  case "$ID" in
+    fedora)
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git redhat-lsb-core
       ;;
-    Ubuntu)
+    debian|ubuntu|linuxmint|pop)
       sudo apt-get clean
       sudo apt-get update
-      sudo apt-get install -y python3 python3-pip git lsb-release
+      sudo apt-get install -y python3 python3-pip python3-venv git lsb-release
       ;;
     *) exit 1 ;;
   esac
+
+  [ -n "$HOMEBREW_INSTALL_ON_LINUX" ] && install_homebrew
 }
 
-while getopts ':dg:' opt; do
+
+while getopts ':hbg:' opt; do
   case "$opt" in
-    d) ANSIBLE_REPO_PLAYBOOK=dotfiles ;;
+    h) echo "[-h] | [-b] [-g <branch>]" ;;
+    b) unset HOMEBREW_INSTALL_ON_LINUX ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
   esac
 done
 
-if [ "$ANSIBLE_REPO_PLAYBOOK" = bootstrap ]; then
-  case $(uname -s) in
-    Darwin) bootstrap_mac ;;
-    Linux)  bootstrap_linux ;;
-    *)      exit 1 ;;
-  esac
-fi
+case $(uname -m) in (aarch*|arm*)
+  unset HOMEBREW_INSTALL_ON_LINUX ;;
+esac
+
+case $(uname -s) in
+  Darwin) bootstrap_mac ;;
+  Linux)  bootstrap_linux ;;
+  *)      exit 1 ;;
+esac
 
 git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
 
 PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
-python3 -m pip install --user virtualenv
-virtualenv venv
+python3 -m venv venv
 #shellcheck disable=SC1091
 . venv/bin/activate
-pip install --requirement requirements.txt
+pip install --no-cache-dir --requirement requirements.txt
 
-cat << EOF > setup/extra-vars.yml
-current_system: "$(uname -s)"
-current_hostname: "$(hostname -s)"
-current_email: "$(id -un)@$(uname -n)"
-EOF
+echo "localhost ansible_connection=local" > "$ANSIBLE_REPO_INVENTORY"
+ansible-playbook playbooks/install_requirements.yml --inventory "$ANSIBLE_REPO_INVENTORY"
+ansible-playbook playbooks/build_inventory.yml --inventory "$ANSIBLE_REPO_INVENTORY"
 
-ANSIBLE_CONFIG=setup/setup.cfg ansible-playbook setup/site.yml --extra-vars "@setup/extra-vars.yml"
+grep "^(#|-|$)" roles/*/defaults/main.yml \
+  --invert-match \
+  --no-filename \
+  --extended-regexp \
+  --color=never \
+  | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
 
-case $ANSIBLE_REPO_PLAYBOOK in
-  bootstrap) ansible-playbook --vault-password-file "$VAULT_ID" --ask-become-pass playbooks/bootstrap.yml ;;
-  dotfiles)  ansible-playbook --vault-password-file "$VAULT_ID" playbooks/dotfiles.yml ;;
-esac
+vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running the install script.'"
+
+export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
+ansible-playbook playbooks/site.yml --ask-become-pass
+ansible-playbook playbooks/password_manager.yml
+
+printf "\nVault passphrase: %s\n" "$(cat "$ANSIBLE_VAULT_PASSWORD_FILE")"
+rm -f "$ANSIBLE_VAULT_PASSWORD_FILE"
