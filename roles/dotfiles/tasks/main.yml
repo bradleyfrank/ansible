@@ -5,27 +5,27 @@
     path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
     state: "directory"
     mode: "0755"
-  loop: "{{ dots_folders }}"
-  tags: [dots, dotfiles]
+  loop: "{{ dotfiles_folders }}"
+  tags: [dotfiles, dotfiles]
 
 - name: "Install dotfiles"
   ansible.posix.synchronize:
-    src: "{{ dots_files_source }}/"
+    src: "{{ dotfiles_files_source }}/"
     dest: "{{ ansible_facts['user_dir'] }}/"
     compress: false
     owner: false
     group: false
-  tags: [dots, dotfiles]
+  tags: [dotfiles, dotfiles]
 
 - name: "Render dotfile templates"
   ansible.builtin.template:
-    src: "{{ dots_templates_source }}/{{ item['name'] }}"
+    src: "{{ dotfiles_templates_source }}/{{ item['name'] }}"
     dest: "{{ item['dest'] }}/{{ item['rename'] | default(item['name'] | splitext | first) }}"
     mode: "{{ item['mode'] | default('0644') }}"
-  loop: "{{ dots_templates }}"
+  loop: "{{ dotfiles_templates }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [dots, dotfiles]
+  tags: [dotfiles, dotfiles]
 
 - name: "Post-processing"
   ansible.builtin.command:
@@ -33,7 +33,7 @@
     creates: "{{ item['creates'] | default(omit) }}"
     removes: "{{ item['removes'] | default(omit) }}"
   changed_when: false
-  loop: "{{ dots_post_processing }}"
-  tags: [dots, dotfiles]
+  loop: "{{ dotfiles_post_processing }}"
+  tags: [dotfiles, dotfiles]
   loop_control:
     label: "{{ item['name'] }}"
