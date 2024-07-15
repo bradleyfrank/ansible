@@ -9,7 +9,7 @@
 - name: "Set MacOS dock apps"
   vars:
     is_spacer: "{{ item['item'] | lower in dock_dockutil_spacers }}"
-    f_add: "--add {{ '\"\"' if is_spacer else item['item'] }}"
+    f_add: "--add \"{{ '' if is_spacer else item['item'] }}\""
     f_type: "{{ '--type ' + item['item'] | lower if is_spacer else '' }}"
     f_section: "--section {{ item['section'] | default('apps') }}"
     f_position: "--position {{ ansible_loop['index'] }}"
