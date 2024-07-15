@@ -5,7 +5,7 @@
     path: "{{ logi_ai_app_path }}"
     state: "absent"
   become: true
-  tags: [logi]
+  tags: [logi, become]
 
 - name: "Remove Logi AI temp directory"
   ansible.builtin.file:
