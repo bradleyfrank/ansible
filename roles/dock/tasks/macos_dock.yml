@@ -4,6 +4,7 @@
   ansible.builtin.command:
     cmd: "dockutil --remove all"
   changed_when: true
+  when: dock_macos_items | length > 0  # avoid resetting Dock unnecessarily
   tags: [dock]
 
 - name: "Set MacOS dock apps"
