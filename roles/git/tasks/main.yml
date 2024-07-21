@@ -1,13 +1,38 @@
 ---
 
-- name: "Include local config tasks"
-  ansible.builtin.import_tasks:
-    file: "config.yml"
+- name: "Template gitconfig"
+  vars:
+    key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', git_template_gitconfig) }}"
+    dest: "{{ git_config_path }}"
+    mode: "0755"
+  tags: [git, config, signing, dotfiles]
 
-- name: "Include Github tasks"
-  ansible.builtin.import_tasks:
-    file: "github.yml"
+- name: "Ensure gitconfig.d directory exists"
+  ansible.builtin.file:
+    path: "{{ git_config_dir }}"
+    mode: "0755"
+    state: "directory"
+  tags: [git, config, signing, dotfiles]
 
-- name: "Include repo tasks"
+- name: "Register SSH key with Github"
+  community.general.github_key:
+    name: "{{ git_ssh_key_name }}"
+    pubkey: "{{ lookup('ansible.builtin.file', git_ssh_key_public) }}"
+    state: "present"
+    token: "{{ git_github_token }}"
+  when: git_ssh_key_upload
+  tags: [github, keys]
+
+- name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:
-    file: "repos.yml"
+    file: "get_authorized_keys.yml"
+
+- name: "Import repo cloning tasks"
+  ansible.builtin.import_tasks:
+    file: "clone_repos.yml"
+
+- name: "Import signing key tasks"
+  ansible.builtin.import_tasks:
+    file: "manage_signing_key.yml"
