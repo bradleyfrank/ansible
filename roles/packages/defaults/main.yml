@@ -26,3 +26,4 @@ packages_flatpak_packages: {}
 
 packages_binaries: []
 packages_mas_apps: []
+packages_pipx_packages: []
