@@ -5,7 +5,7 @@
     path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
     state: "directory"
     mode: "0755"
-    recurse: true
+    recurse: false
   loop: "{{ dotfiles_folders }}"
   tags: [dotfiles]
 

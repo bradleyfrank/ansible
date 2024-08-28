@@ -27,7 +27,6 @@
     path: "{{ git_repos_dirname }}{{ git_repos_branch if git_repos_as_worktrees else '' }}"
     state: "directory"
     mode: "0755"
-    recurse: false  # NOTE: without setting this, existing git repos become dirty
   loop: "{{ git_repos }}"
   loop_control:
     label: "{{ git_repos_name }}"
