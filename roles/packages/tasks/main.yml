@@ -13,7 +13,7 @@
 - name: "Include distro-specific package managers"
   ansible.builtin.include_tasks:
     file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: [packages, install, repos, become]
+  tags: [packages, install, repos]
 
 - name: "Install Homebrew packages for Linux"
   ansible.builtin.include_tasks:
@@ -33,14 +33,10 @@
     file: "pkg_mgr/flatpak.yml"
   when: (ansible_facts['system'] == "Linux") and (packages_install_flatpaks)
 
-- name: "Install pipx packages"
-  community.general.pipx:
-    install_deps: true
-    name: "{{ item }}"
-    state: "install"
-  loop: "{{ packages_pipx_packages }}"
+- name: "Include pipx packages"
+  ansible.builtin.import_tasks:
+    file: "pkg_mgr/pipx.yml"
   when: packages_pipx_packages | length > 0
-  tags: [packages, pipx]
 
 - name: "Ensure binary install path exists"
   ansible.builtin.file:

@@ -1,0 +1,16 @@
+---
+
+- name: "Install pipx"
+  ansible.builtin.package:
+    name: "pipx"
+    state: "present"
+  become: "{{ true if ansible['system'] == 'Linux' else false }}"
+  tags: [packages, flatpak, become]
+
+- name: "Install pipx packages"
+  community.general.pipx:
+    install_deps: true
+    name: "{{ item }}"
+    state: "install"
+  loop: "{{ packages_pipx_packages }}"
+  tags: [packages, pipx]
