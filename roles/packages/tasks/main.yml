@@ -13,14 +13,14 @@
 - name: "Include distro-specific package managers"
   ansible.builtin.include_tasks:
     file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: [packages, install, repos, become]
+  tags: [packages, install, repos, formulas, casks]
 
 - name: "Install Homebrew packages for Linux"
   ansible.builtin.include_tasks:
     file: "pkg_mgr/homebrew.yml"
   when: (ansible_facts['system'] == "Linux" and packages_homebrew_installed) and
         (ansible_facts['architecture'] == "x86_64" or ansible_facts['architecture'] == "amd64")
-  tags: [packages, homebrew, install, repos, formulas, casks]
+  tags: [packages, homebrew, install, repos, formulas]
 
 - name: "Install Mac App Store apps"
   ansible.builtin.include_tasks:
