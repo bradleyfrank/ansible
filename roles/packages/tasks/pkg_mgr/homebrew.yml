@@ -18,5 +18,6 @@
     name: "{{ packages_homebrew_casks }}"
     accept_external_apps: "{{ packages_homebrew_external_casks }}"
     upgrade_all: "{{ packages_homebrew_casks_upgrade }}"
+    install_options: "{{ packages_homebrew_casks_install_options | default(omit) }}"
   when: packages_homebrew_casks | length > 0
   tags: [packages, homebrew, casks]
