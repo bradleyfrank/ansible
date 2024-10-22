@@ -96,7 +96,7 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
 vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running the install script.'"
 
 export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
-ansible-playbook playbooks/site.yml --ask-become-pass
+ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"
 ansible-playbook playbooks/password_manager.yml
 
 printf "\nVault passphrase: %s\n" "$(cat "$ANSIBLE_VAULT_PASSWORD_FILE")"

@@ -2,21 +2,24 @@
 
 - name: "Install dock and icon utilities"
   community.general.homebrew:
-    name: "{{ dock_homebrew_apps }}"
+    name: "{{ desktop_homebrew_apps }}"
     state: "present"
   when: ansible_facts['system'] == "Darwin"
   tags: [dock, icons, install]
 
-- name: "Include MacOS dock tasks"
-  ansible.builtin.include_tasks:
-    file: "macos_dock.yml"
-  when: ansible_facts['system'] == "Darwin"
-  tags: [dock]
+- name: "Reset all dock apps"
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "persistent-apps"
+    type: "array"
+    value: []
+  notify: Restart macOS dock
+  tags: [dock, never]
 
 - name: "Include icon tasks per app directory"
   ansible.builtin.include_tasks:
     file: "icons.yml"
-  loop: "{{ dock_app_paths }}"
+  loop: "{{ desktop_app_paths }}"
   loop_control:
     label: "{{ path }}"
     loop_var: path

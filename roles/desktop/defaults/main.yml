@@ -1,0 +1,11 @@
+---
+
+desktop_replacement_icons: "{{ inventory_dir }}/files/icons"
+
+desktop_app_paths:
+  - "/Applications"
+  - "{{ ansible_facts['user_dir'] }}/Applications"
+
+desktop_macos_items: []
+
+desktop_homebrew_prefix: "/opt/homebrew"
