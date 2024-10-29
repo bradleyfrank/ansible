@@ -1,43 +1,32 @@
 ---
 
-- name: "Load per-OS variables"
-  ansible.builtin.include_vars:
-    file: "{{ ansible_facts['system'] }}.yml"
-  tags: [fonts, dotfiles]
-
-- name: "Set fonts install directory"
-  ansible.builtin.set_fact:
-    fonts_dir: "{{ fonts_default_dir }}"
-  when: fonts_dir is undefined
-  tags: [fonts, dotfiles]
-
 - name: "Ensure fonts directory exists"
   ansible.builtin.file:
-    path: "{{ fonts_dir }}"
+    path: "{{ fonts_dir | default(desktop_fonts_default_dir) }}"
     state: "directory"
     mode: "0755"
-  tags: [fonts, dotfiles]
+  tags: [desktop, fonts]
 
 - name: "Get latest release version of Nerd Fonts"
   community.general.github_release:
-    user: "{{ fonts_github_user }}"
-    repo: "{{ fonts_github_repo }}"
+    user: "{{ desktop_fonts_github_user }}"
+    repo: "{{ desktop_fonts_github_repo }}"
     action: latest_release
     token: "{{ fonts_github_token | default(omit) }}"
   register: fonts_github_latest_release
-  tags: [fonts, dotfiles]
+  tags: [desktop, fonts]
 
 - name: "Get installed version"
   ansible.builtin.set_fact:
     fonts_current_version: "v0.0.0"
   when: fonts_current_version is undefined
-  tags: [fonts, dotfiles]
+  tags: [desktop, fonts]
 
 - name: "Install newer fonts"
   vars:
     fonts_latest_version: "{{ fonts_github_latest_release['tag'] }}"
   when: "fonts_current_version is version(fonts_latest_version, '<')"
-  tags: [fonts, dotfiles]
+  tags: [desktop, fonts]
   block:
     - name: "Show installed font version"
       ansible.builtin.debug:
@@ -47,7 +36,7 @@
         msg: "Latest Nerd Fonts version is {{ fonts_latest_version }}"
     - name: "Include font install tasks"
       ansible.builtin.include_tasks:
-        file: "fonts.yml"
+        file: "fonts/install.yml"
       loop: "{{ fonts_to_install }}"
     - name: "Set latest version"
       ansible.builtin.set_fact:
@@ -63,4 +52,4 @@
     state: "link"
   become: true
   when: ansible_facts['distribution'] == "Fedora"
-  tags: [fonts, become]
+  tags: [desktop, fonts, become]

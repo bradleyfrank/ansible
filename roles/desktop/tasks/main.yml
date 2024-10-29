@@ -1,0 +1,50 @@
+---
+
+- name: "Include per-OS variables"
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts['system'] }}.yml"
+  tags: [desktop, fonts, kvm, icons]
+
+- name: "Install utilities"
+  ansible.builtin.package:
+    name: "{{ desktop_apps }}"
+    state: "present"
+  become: "{{ desktop_become }}"
+  tags: [desktop, fonts, kvm, icons, install]
+
+- name: "Reset macOS dock"
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "persistent-apps"
+    type: "array"
+    value: []
+  notify: Restart macOS dock
+  when: ansible_facts['system'] == "Darwin"
+  tags: [never]
+
+- name: "Reset Gnome dock"
+  community.general.dconf:
+    key: "/org/gnome/shell/favorites"
+    value: "['org.gnome.Nautilus.desktop']"
+  when: "'gnome' in system_current_desktop"
+  tags: [never]
+
+- name: "Include font tasks"
+  ansible.builtin.include_tasks:
+    file: "fonts/main.yml"
+  tags: [desktop, fonts]
+
+- name: "Include KVM tasks"
+  ansible.builtin.include_tasks:
+    file: "kvm/main.yml"
+  tags: [desktop, kvm]
+
+- name: "Include icon tasks"
+  ansible.builtin.include_tasks:
+    file: "icons/main.yml"
+  loop: "{{ desktop_app_paths }}"
+  loop_control:
+    label: "{{ path }}"
+    loop_var: path
+  when: ansible_facts['system'] == "Darwin"
+  tags: [desktop, icons]

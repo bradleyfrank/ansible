@@ -1,0 +1,18 @@
+---
+
+desktop_replacement_icons: "{{ inventory_dir }}/files/icons"
+
+desktop_app_paths:
+  - "/Applications"
+  - "{{ ansible_facts['user_dir'] }}/Applications"
+
+desktop_environment: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
+
+desktop_homebrew_prefix: "/opt/homebrew"
+
+desktop_fonts_github_user: "ryanoasis"
+desktop_fonts_github_repo: "nerd-fonts"
+desktop_fonts_to_install: []
+
+desktop_logi_copy_location: "{{ ansible_facts['user_dir'] }}/Downloads"
+desktop_logi_homebrew_prefix: "/opt/homebrew"
