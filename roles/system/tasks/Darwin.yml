@@ -54,22 +54,6 @@
       become: true
       when: not system_macos_firewall_enabled
 
-- name: "Set Gatekeeper state"
-  tags: [system, mac_settings, gatekeeper, become]
-  block:
-    - name: "Enable Gatekeeper"
-      ansible.builtin.command:
-        cmd: "spctl --master-enable"
-      changed_when: false
-      become: true
-      when: system_macos_gatekeeper_enabled
-    - name: "Disable Gatekeeper"
-      ansible.builtin.command:
-        cmd: "spctl --master-disable"
-      changed_when: false
-      become: true
-      when: not system_macos_gatekeeper_enabled
-
 - name: "Set ~/Library hidden state"
   tags: [system, mac_settings, library]
   block:

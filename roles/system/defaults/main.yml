@@ -19,7 +19,6 @@ system_macos_reset_dock: true
 system_macos_sleep_display: 15
 system_macos_sleep_computer: 30
 system_macos_firewall_enabled: true
-system_macos_gatekeeper_enabled: true
 system_macos_locate_enabled: true
 system_macos_unhide_user_library: true
 system_macos_unhide_volumes: true
