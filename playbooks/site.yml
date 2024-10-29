@@ -4,52 +4,43 @@
   hosts: "localhost"
   tasks:
 
-    - name: "Include repo and package role"
+    - name: "Import repo and package role"
       ansible.builtin.import_role:
         name: "packages"
 
-    - name: "Include system role"
+    - name: "Import system role"
       ansible.builtin.import_role:
         name: "system"
 
-    - name: "Include dotfiles role"
+    - name: "Import dotfiles role"
       ansible.builtin.import_role:
         name: "dotfiles"
 
-    - name: "Include ssh role"
+    - name: "Import ssh role"
       ansible.builtin.import_role:
         name: "ssh"
 
-    - name: "Include git role"
+    - name: "Import git role"
       ansible.builtin.import_role:
         name: "git"
 
-    - name: "Include fonts role"
+    - name: "Import desktop role"
       ansible.builtin.import_role:
-        name: "fonts"
-      when: system_has_desktop
+        name: "desktop"
+      when: host_has_desktop
 
-    - name: "Include Logitech role"
-      ansible.builtin.import_role:
-        name: "logi"
-      when: ansible_facts['system'] == "Darwin"
-
-    - name: "Include dock role"
-      ansible.builtin.import_role:
-        name: "dock"
-
-    - name: "Include vim role"
+    - name: "Import vim role"
       ansible.builtin.import_role:
         name: "vim"
 
-    - name: "Include cloud role"
+    - name: "Import cloud role"
       ansible.builtin.import_role:
         name: "cloud"
 
-    - name: "Include Zsh role"
+    - name: "Import Zsh role"
       ansible.builtin.import_role:
         name: "zsh"
 
-    - name: "Include tmux role"
+    - name: "Import tmux role"
       ansible.builtin.import_role:
         name: "tmux"

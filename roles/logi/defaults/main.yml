@@ -1,7 +1,0 @@
----
-
-logi_ai_remove: true
-logi_ai_app_path: "/Library/Application Support/Logitech.localized/LogiOptionsPlus/logi_ai_prompt_builder"
-logi_ai_temp_path: "{{ ansible_facts['user_dir'] }}/ai_overlay_tmp"
-logi_copy_location: "{{ ansible_facts['user_dir'] }}/Downloads"
-logi_homebrew_prefix: "/opt/homebrew"
