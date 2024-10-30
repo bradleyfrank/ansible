@@ -38,6 +38,7 @@
     install_deps: true
     name: "{{ item }}"
     state: "install"
+    index_url: "{{ packages_pipx_index_url }}"
   loop: "{{ packages_pipx_packages }}"
   when: packages_pipx_packages | length > 0
   tags: [packages, pipx]
