@@ -1,0 +1,6 @@
+docker_pkgs:
+  pkgs:
+    - "podman"
+  optional:
+    - "buildah"
+    - "skopeo"
