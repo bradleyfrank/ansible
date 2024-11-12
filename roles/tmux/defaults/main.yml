@@ -1,10 +1,13 @@
 ---
 
+tmux_config:
+  tmux: {}
+tmux_config_custom: {}
+
 tmux_package_name: "tmux"
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 tmux_plugins: []
 tmux_prefer_homebrew: false
-tmux_profiles: [tmux]
 tmux_rc_path: "{{ ansible_facts['user_dir'] }}/.config/tmux"
 tmux_template_conf:
   - "{{ inventory_dir }}/templates/tmux.conf.j2"
