@@ -16,15 +16,6 @@
     state: "directory"
   tags: [git, config, signing, dotfiles]
 
-- name: "Register SSH key with Github"
-  community.general.github_key:
-    name: "{{ git_ssh_key_name }}"
-    pubkey: "{{ lookup('ansible.builtin.file', git_ssh_key_public) }}"
-    state: "present"
-    token: "{{ git_github_token }}"
-  when: git_ssh_key_upload
-  tags: [github, keys]
-
 - name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:
     file: "get_authorized_keys.yml"
@@ -33,6 +24,10 @@
   ansible.builtin.import_tasks:
     file: "clone_repos.yml"
 
-- name: "Import signing key tasks"
-  ansible.builtin.import_tasks:
-    file: "manage_signing_key.yml"
+- name: "Create allowed signers file"
+  ansible.builtin.template:
+    src: "allowed_signers.j2"
+    dest: "{{ git_signing_allowed_signers }}"
+    mode: "0644"
+  when: git_signing_key_type == "ssh"
+  tags: [git, config, signing]

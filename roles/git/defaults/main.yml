@@ -1,8 +1,6 @@
 ---
 
-git_email_address: "{{
-  host_email_address | default(ansible_facts['user_id'] + '@' + ansible_facts['hostname'])
-}}"
+git_email_address: "{{ host_email_address }}"
 git_github_token: ""
 git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
 git_config_dir: "{{ ansible_facts['user_dir'] }}/.gitconfig.d"

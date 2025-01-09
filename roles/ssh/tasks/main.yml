@@ -14,18 +14,6 @@
     state: "touch"
   tags: [ssh, dotfiles]
 
-- name: "Create SSH key"
-  community.crypto.openssh_keypair:
-    comment: "{{ ansible_facts['user_id'] }}@{{ ansible_hostname }}"
-    passphrase: "{{ item['value'] }}"
-    path: "{{ ansible_facts['user_dir'] }}/.ssh/id_{{ item['key'] }}"
-    size: 4096
-    type: "{{ item['key'] }}"
-  loop: "{{ ssh_keys | dict2items }}"
-  loop_control:
-    label: "{{ item['key'] }}"
-  tags: [ssh, keys, dotfiles]
-
 - name: "Create SSH config"
   ansible.builtin.template:
     src: "{{ lookup('ansible.builtin.first_found', ssh_template_config) }}"

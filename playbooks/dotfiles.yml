@@ -1,0 +1,23 @@
+---
+
+- name: "Apply dotfiles"
+  hosts: "all"
+
+  vars:
+    git_github_token: "{{ lookup('community.general.onepassword', 'GitHub Token', field='credential') }}"
+    ssh_keys:
+      rsa:
+        key: "{{ lookup('community.general.onepassword', 'id_rsa', field='private key') }}"
+        passphrase: "{{ lookup('community.general.onepassword', 'id_rsa', field='passphrase') }}"
+      ed25519:
+        key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='private key') }}"
+        passphrase: "{{ lookup('community.general.onepassword', 'id_ed25519', field='passphrase') }}"
+
+  roles:
+    - dotfiles
+    - ssh
+    - git
+    - vim
+    - cloud
+    - zsh
+    - tmux

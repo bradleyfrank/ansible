@@ -17,7 +17,7 @@
   ansible.builtin.file:
     path: "{{ tmux_rc_path }}"
     mode: "0755"
-    state: "directory"
+    state: directory
   tags: [tmux, dotfiles]
 
 - name: "Template tmux config"
