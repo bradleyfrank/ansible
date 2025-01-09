@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+
+# @meta describe Wrappers around `git` to support worktrees in a tmux session.
+# @meta author Brad Frank
+# @meta require-tools tmux,fzf,gh,git
+# @meta version 3.0.0
+# @meta combine-shorts
+# @meta inherit-flag-options
+# @flag -s --session Open a new session instead of a window (when applicable)
+
+PROJECTS_DIR="$HOME/Development/Projects"
+
+
+##
+## Helper functions
+##
+
+
+_in_git_repo() {
+  if ! GIT_TOPLEVEL_PATH="$(git rev-parse --show-toplevel 2> /dev/null)"; then
+    _error "Must be in a Git repo"
+    return 1
+  fi
+}
+
+
+_error() {
+  printf "\033[0;31m%s\033[0m\n" "$1" >&2
+}
+
+
+_open_in_tmux() {
+  if [[ -z $TMUX ]]; then return 0; fi
+  bmux open "$1"
+}
+
+
+_worktree_list() {
+  git worktree list --porcelain \
+    | grep --extended-regexp '^worktree' \
+    | grep --invert-match "$GIT_TOPLEVEL_PATH" \
+    | grep "$1" \
+    | awk '{print $2}' \
+    | fzf-tmux -p \
+      --multi \
+      --preview='git log --oneline --decorate --color {-1} --' \
+      --delimiter / --with-nth -1
+}
+
+
+_github_branch_list() {
+  git ls-remote --heads --quiet \
+    | sed -rn 's|[a-z0-9]+\s+refs/heads/(.*)$|\1|p' \
+    | grep "$1" \
+    | fzf-tmux -p --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
+}
+
+
+_github_repo_list() {
+  local preview; preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
+
+  #shellcheck disable=SC2016
+  gh api graphql --paginate --field owner="$1" --raw-field query='
+    query ($owner: String!, $endCursor: String) {
+      repositoryOwner(login: $owner) {
+        repositories(first: 30, after: $endCursor) {
+          pageInfo { hasNextPage, endCursor }
+          nodes { nameWithOwner }
+        }
+      }
+    }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
+  | fzf-tmux -p --preview="$preview" --no-multi
+}
+
+
+##
+## Feature functions
+##
+
+
+# @cmd Create a new branch in a worktree
+# @option -n --branch-name Name of the branch to clone
+branch() {
+  local branch_path
+
+  _in_git_repo || exit 1
+  cd "$GIT_TOPLEVEL_PATH" || exit 1
+
+  if [[ -z $argc_branch_name ]]; then
+    argc_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$GIT_TOPLEVEL_PATH")"
+  fi
+
+  branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/${argc_branch_name}"
+  git worktree add "$branch_path"
+  _open_in_tmux "$branch_path"
+}
+
+
+# @cmd Clone a new repository
+# @option -r --repo_url Git repository url (`https://`, `git@`, etc)
+# @option -n --branch-name Name of the branch to clone
+clone() {
+  local gh_repo repo_url tmpdir org_name branch_name branch_path
+
+  if [[ -z $argc_repo_url ]]; then
+    # If repo URL has not been provided, present a choice between the user's
+    # repositories, or any orgs the user belongs to.
+    org_name="$(printf "%s\n%s" \
+      "$(GH_PAGER="cat" gh api user --jq '.login')" \
+      "$(GH_PAGER="cat" gh api user/orgs --jq '.[].login')" \
+      | fzf-tmux -p --no-multi
+    )"
+    [[ -z $org_name ]] && exit 0
+
+    # Select the repository from the chosen org/profile
+    gh_repo="$(_github_repo_list "$org_name")"
+    [[ -z $gh_repo ]] && exit 0
+
+    repo_url="git@github.com:${gh_repo}.git"
+    repo_name="$(basename "$gh_repo")"
+  elif git ls-remote --quiet "$argc_repo_url" 2> /dev/null; then  # validate the repo URL
+    repo_name="$(basename "${repo_url/.git/}")"
+  else
+    _error "Unable to find repository"
+    exit 1
+  fi
+
+  tmpdir="$(mktemp --directory)"
+
+  if [[ -n $argc_branch_name ]]; then
+    # If a branch name was provided, checkout that branch when cloning.
+    git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}" --branch "$argc_branch_name"
+  else
+    git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}"
+    # There should only be one file after a fresh clone: the default branch.
+    argc_branch_name="$(find "${tmpdir}/${repo_name}/.git/logs/refs/heads/" -maxdepth 1 -type f)"
+  fi
+
+  mkdir --parents "${PROJECTS_DIR}/${repo_name}" || exit 1
+  branch_path="${PROJECTS_DIR}/${repo_name}/${argc_branch_name}"
+  mv --no-target-directory "${tmpdir}/${repo_name}" "$branch_path"
+
+  _open_in_tmux "$branch_path"
+}
+
+
+# @cmd Delete a worktree/branch
+# @alias del,rm
+# @option -n --branch-name Name of the worktree/branch to delete
+delete() {
+  local worktree
+
+  _in_git_repo || exit 1
+
+  while read -r worktree; do
+    [[ -z $worktree ]] && exit 0
+    git worktree remove --force "$worktree"
+    git branch --delete --force "$(basename "$worktree")"
+  done <<< "$(_worktree_list "$argc_branch_name")"
+}
+
+
+# @cmd Invoke lazygit in a zoomed window
+# @alias l,z
+lazy() {
+  _in_git_repo || exit 1
+  tmux resize-pane -Z
+  lazygit
+  tmux resize-pane -Z
+}
+
+
+# @cmd Fetch and checkout a remote branch
+# @option -n --branch-name Name of the branch to clone
+pull() {
+  local branch_path
+
+  _in_git_repo || exit 1
+  git fetch origin --prune
+
+  argc_branch_name="$(_github_branch_list "$argc_branch_name")"
+  [[ -z $argc_branch_name ]] && exit 0
+
+  branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/${argc_branch_name}"
+  if ! git worktree add "$branch_path"; then exit 1; fi
+  cd "$branch_path" || exit 1
+
+  git branch --set-upstream-to "origin/${branch_name}" "$argc_branch_name"
+  git pull
+  git reset --hard "origin/${argc_branch_name}"
+
+  _open_in_tmux "$branch_path"
+}
+
+
+# @cmd Stash changes and untracked files across all worktrees
+# @flag -x --exclude-untracked Exclude untracked file(s) from stash
+stash() {
+  local common_dir
+  _in_git_repo || exit 1
+  common_dir="$(git rev-parse --git-common-dir)"
+
+  if [[ -n $argc_exclude_untracked ]]; then
+    git --git-dir "$common_dir" --work-tree "$GIT_TOPLEVEL_PATH" stash push
+  else
+    git --git-dir "$common_dir" --work-tree "$GIT_TOPLEVEL_PATH" stash push --include-untracked
+  fi
+}
+
+
+# @cmd Switch to another worktree/branch in the same repository
+# @alias co,s
+# @option -n --branch-name Name of the branch to clone
+switch() {
+  local selected_branches branch
+  _in_git_repo || exit 1
+
+  selected_branches="$(_worktree_list "$argc_branch_name")"
+  [[ -z $selected_branches ]] && exit 0  # handles repos with only a single branch
+
+  while read -r branch; do
+    [[ ! -d "$branch" ]] && { _error "Branch ${branch} not found"; continue; }
+    _open_in_tmux "$branch"
+  done <<< "$selected_branches"
+}
+
+
+eval "$(argc --argc-eval "$0" "$@")"

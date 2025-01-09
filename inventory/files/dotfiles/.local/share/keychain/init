@@ -1,0 +1,66 @@
+export KEYCHAIN_DIR="${HOME}/.local/share/keychain"
+
+_keychain_load_agent() {
+  if [[ -s "${KEYCHAIN_DIR}/agent" ]]; then
+    source "${KEYCHAIN_DIR}/agent" >/dev/null
+  else
+    killall ssh-agent >/dev/null 2>&1
+    _keychain_eval_ssh_agent
+  fi
+}
+
+
+_keychain_eval_ssh_agent() {
+  eval "$(ssh-agent -s | tee "${KEYCHAIN_DIR}/agent")" >/dev/null
+}
+
+
+_keychain_ssh_add() {
+  if SSH_ASKPASS_KEY="$1" SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=op-ssh \
+    ssh-add "$2" >/dev/null 2>&1
+  then
+    echo $'\uf43d' " \e[32mIdentity added: ${key}\e[0m"
+  else
+    echo $'\uf43d' " \e[31mError adding identity: ${key}\e[0m"
+  fi
+}
+
+
+_keychain_init() {
+  local key ssh_key_file ssh_key_hash_file ssh_key_hash ssh_agent_fingerprints
+  local -a keys; keys=("$@")
+
+  ssh_agent_fingerprints="$(ssh-add -l | awk '{print $2}' | tr '\n' ' ')"
+
+  for key in "${keys[@]}"; do
+    if [[ -f "$key" ]]; then
+      ssh_key_file="$key"
+    elif [[ -f "${HOME}/.ssh/${key}" ]]; then
+      ssh_key_file="${HOME}/.ssh/${key}"
+    else
+      echo $'\uf43d' " \e[31mIdentity skipped: ${key}\e[0m"
+      continue
+    fi
+
+    ssh_key_hash_file="${KEYCHAIN_DIR}/$(tr '/' '_' <<< "$ssh_key_file")"
+
+    if [[ -s "$ssh_key_hash_file" ]]; then
+      ssh_key_hash="$(<"$ssh_key_hash_file")"
+    else
+      ssh_key_hash="$(ssh-keygen -lf "$ssh_key_file" | awk '{print $2}' | tee "${ssh_key_hash_file}")"
+    fi
+
+    if [[ "$ssh_agent_fingerprints" != *"$ssh_key_hash"* ]]; then
+      _keychain_ssh_add "$key" "$ssh_key_file"
+    fi
+  done
+}
+
+
+if pgrep ssh-agent >/dev/null 2>&1; then
+  _keychain_load_agent
+else
+  _keychain_eval_ssh_agent
+fi
+
+_keychain_init "$@"

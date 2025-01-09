@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+#
+# Provides a wrapper around ghostscript to compress PDF files.
+# Author: Brad Frank
+# Date: Nov 2020
+# Tested: GNU bash, version 5.0.18(1)-release (x86_64-apple-darwin19.6.0)
+# Requires: ghostscript
+#
+
+usage() {
+    echo "Usage: pdf-compress -h | [-c <screen|ebook|printer|prepress|default>] -f <file>"
+}
+
+main() {
+  local OPTIND compression input; compression="ebook"
+
+  while getopts ':hc:f:' flag; do
+    case "$flag" in
+      h) usage; exit 0 ;;
+      c) compression="$OPTARG" ;;
+      f) input="$OPTARG" ;;
+      :) echo "Must supply an argument to -$OPTARG." >&2; usage >&2; exit 1 ;;
+     \?) echo "Invalid option: $OPTARG" >&2; usage >&2; exit 1 ;;
+    esac
+  done
+
+  gs \
+    -sDEVICE=pdfwrite \
+    -dCompatibilityLevel=1.4 \
+    -dPDFSETTINGS=/"$compression" \
+    -dNOPAUSE \
+    -dQUIET \
+    -dBATCH \
+    -sOutputFile="${input%.*}.${compression}.pdf" \
+    "$input"
+}
+
+main "$@"

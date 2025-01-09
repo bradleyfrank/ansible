@@ -1,0 +1,317 @@
+---
+
+# -----+
+# secrets
+# -----+
+
+op_github_token: "{{ lookup('community.general.onepassword', 'GitHub Token', field='credential') }}"
+op_rsa_sshkey: "{{ lookup('community.general.onepassword', 'id_rsa', field='private key') }}"
+op_rsa_passphrase: "{{ lookup('community.general.onepassword', 'id_rsa', field='passphrase') }}"
+op_ed25519_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='private key') }}"
+op_ed25519_passphrase: "{{ lookup('community.general.onepassword', 'id_ed25519', field='passphrase') }}"
+
+
+# -----+
+# role: onepassword
+# -----+
+
+onepassword_vault: "Private"
+
+
+# -----+
+# role: dotfiles
+# -----+
+
+dotfiles_folders:
+  - "Development/Projects"
+  - "Development/Notes"
+  - "Development/Scratch"
+  - "Development/Logs"
+  - "Development/Build"
+
+dotfiles_post_processing:
+  - name: "Install `bat` themes"
+    cmd: "{{ bat_exec }} cache --build"
+
+dotfiles_templates:
+  - name: "atuin.zsh.j2"
+    dest: "{{ zsh_rcd_dir }}"
+  - name: "op-ssh.bash.j2"
+    dest: "{{ dotfiles_local_bin }}"
+    rename: "op-ssh"
+    mode: "0755"
+  - name: "dotfiles.zsh.j2"
+    dest: "{{ zsh_rcd_dir }}"
+
+
+# -----+
+# role: fonts
+# -----+
+
+fonts_to_install:
+  - "JetBrainsMono"
+  - "SourceCodePro"
+
+
+# -----+
+# role: git
+# -----+
+
+git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
+git_repos_as_worktrees: true
+git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+git_repos:
+  - url: "ssh://git@github.com/bradleyfrank/dotfiles.git"
+  - url: "ssh://git@github.com/bradleyfrank/ansible.git"
+  - url: "ssh://git@github.com/bradleyfrank/home-servers.git"
+  - url: "ssh://git@github.com/bradleyfrank/plexport.git"
+  - url: "ssh://git@github.com/bradleyfrank/chatgpt.git"
+  - url: "ssh://git@github.com/bradleyfrank/util-containers.git"
+  - url: "ssh://git@github.com/bradleyfrank/cliday.git"
+    branch: "gh-pages"
+
+
+# -----+
+# role: packages
+# -----+
+
+packages_binaries:
+  - name: "cht"
+    url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
+
+packages_install_flatpak: "{{ system_has_desktop }}"
+
+packages_flatpak_remotes:
+  - name: "flathub"
+    url: "https://flathub.org/repo/flathub.flatpakrepo"
+  - name: "elementary"
+    url: "https://flatpak.elementary.io/repo.flatpakrepo"
+
+packages_flatpak_packages:
+  flathub:
+    - "app.drey.EarTag"
+    - "app.drey.Warp"
+    - "com.felipekinoshita.Wildcard"
+    - "com.github.avojak.warble"
+    - "com.github.fabiocolacio.marker"
+    - "com.github.geigi.cozy"
+    - "com.github.huluti.Curtail"
+    - "com.github.johnfactotum.Foliate"
+    - "com.github.junrrein.PDFSlicer"
+    - "com.github.liferooter.textpieces"
+    - "com.github.marktext.marktext"
+    - "com.github.rajsolai.textsnatcher"
+    - "com.makemkv.MakeMKV"
+    - "com.plexamp.Plexamp"
+    - "com.spotify.Client"
+    - "fr.romainvigier.MetadataCleaner"
+    - "io.bassi.Amberol"
+    - "io.github.alainm23.planify"
+    - "io.github.diegoivan.pdf_metadata_editor"
+    - "io.github.seadve.Kooha"
+    - "io.gitlab.news_flash.NewsFlash"
+    - "io.missioncenter.MissionCenter"
+    - "io.posidon.Paper"
+    - "nl.g4d.Girens"
+    - "org.gnome.gitlab.somas.Apostrophe"
+    - "org.gnome.Papers"
+    - "org.nickvision.tagger"
+    - "org.ppsspp.PPSSPP"
+    - "org.signal.Signal"
+    - "re.sonny.Junction"
+    - "re.sonny.Tangram"
+    - "sh.cider.Cider"
+    - "tv.plex.PlexDesktop"
+    - "us.zoom.Zoom"
+  elementary:
+    - "com.github.phase1geo.annotator"
+
+packages_pipx_packages:
+  - "black"
+  - "beets"
+
+
+# -----+
+# role: system
+# -----+
+
+system_linux_dconf_defaults:
+  - path: "/org/gnome"
+    keys:
+      calendar/follow-night-light: "false"
+      shell/disable-user-extensions: "false"
+      system/location/enabled: "true"
+      settings-daemon/plugins/color/night-light-enabled: "true"
+      settings-daemon/plugins/color/night-light-schedule-automatic: "true"
+      terminal/legacy/profiles:/default: "'1846491d-b417-5d9b-a8ca-04fdec4403bf'"
+      terminal/legacy/profiles:/list: "['1846491d-b417-5d9b-a8ca-04fdec4403bf']"
+  - path: "/org/gnome/nautilus"
+    keys:
+      list-view/default-visible-columns: "['name', 'size', 'type', 'date_modified', 'starred']"
+      list-view/default-zoom-level: "'small'"
+      list-view/use-tree-view: "true"
+      preferences/default-folder-viewer: "'list-view'"
+      preferences/search-filter-time-type: "'last_modified'"
+      preferences/show-create-link: "true"
+      preferences/show-delete-permanently: "true"
+  - path: "/org/gnome/gedit/preferences"
+    keys:
+      editor/auto-indent: "true"
+      editor/auto-save: "true"
+      editor/background-pattern: "'none'"
+      editor/bracket-matching: "true"
+      editor/display-line-numbers: "true"
+      editor/display-overview-map: "true"
+      editor/display-right-margin: "true"
+      editor/editor-font: "'SauceCodePro Nerd Font 11'"
+      editor/highlight-current-line: "true"
+      editor/insert-spaces: "true"
+      editor/right-margin-position: "uint32 100"
+      editor/scheme: "'solarized-light'"
+      editor/tabs-size: "uint32 2"
+      editor/use-default-font: "false"
+      editor/wrap-last-split-mode: "'word'"
+      ui/show-tabs-mode: "'auto'"
+      ui/side-panel-visible: "false"
+  - path: "/org/gnome/terminal/legacy/profiles:/:1846491d-b417-5d9b-a8ca-04fdec4403bf"
+    keys:
+      audible-bell: "false"
+      cursor-colors-set: "false"
+      font: "'SauceCodePro Nerd Font 12'"
+      highlight-colors-set: "false"
+      scroll-on-output: "true"
+      scrollback-unlimited: "true"
+      use-system-font: "false"
+      visible-name: "'Custom-Profile'"
+  - path: "/org/gnome/desktop"
+    keys:
+      datetime/automatic-timezone: "true"
+      input-sources/current: "uint32 0"
+      input-sources/sources: "[('xkb', 'us')]"
+      input-sources/xkb-options: "['ctrl:nocaps']"
+      interface/clock-format: "'12h'"
+      interface/clock-show-date: "true"
+      interface/clock-show-seconds: "false"
+      interface/clock-show-weekday: "true"
+      interface/enable-animations: "false"
+      interface/show-battery-percentage: "false"
+      media-handling/autorun-never: "true"
+      media-handling/autorun-x-content-ignore: "[\
+        'x-content/audio-cdda',
+        'x-content/video-dvd',
+        'x-content/audio-player',
+        'x-content/image-dcf',
+        'x-content/unix-software']"
+      peripherals/keyboard/numlock-state: "true"
+      peripherals/mouse/natural-scroll: "false"
+      peripherals/touchpad/tap-to-click: "true"
+      peripherals/touchpad/two-finger-scrolling-enabled: "true"
+      privacy/remove-old-temp-files: "true"
+      privacy/remove-old-trash-files: "true"
+
+system_linux_dracut_settings:
+  - desc: "Enable bluetooth keyboard at boot"
+    line: "add_dracutmodules+=' bluetooth '"
+    path: "/etc/dracut.conf.d/ble.conf"
+
+
+# -----+
+# role: tmux
+# -----+
+
+tmux_profiles:
+  - "tmux"
+  - "popup"
+  - "server"
+
+tmux_plugins:
+  - name: "tmux-resurrect"
+    repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
+    exec: "resurrect.tmux"
+  - name: "tmux-continuum"
+    repo: "https://github.com/tmux-plugins/tmux-continuum.git"
+    exec: "continuum.tmux"
+
+tmux_config:
+  tmux:
+    pane_border_color:
+      default: "fg=color33,bg=default"
+      sync: "fg=color37,bg=default"
+      zoom: "fg=color125,bg=default"
+    pane_border_lines: "heavy"
+    pane_border_status: "top"
+    status_position: "top"
+    status_right: "#[fg=color61,bg=default,bold]#{session_name}"
+    status_style: "fg=default,bg=default"
+    window_status_activity: "fg=color61,bg=default"
+    window_status_current_format: "#[fg=color230,bg=color33]#[bold] [#I] #W #[nobold]"
+    window_status_format: "#[fg=color33,bg=default]#[bold] [#I] #W #[nobold]"
+  popup:
+    pane_border_color:
+      default: "fg=color166,bg=default"
+      sync: "fg=color37,bg=default"
+      zoom: "fg=color125,bg=default"
+    pane_border_lines: "simple"
+    pane_border_status: "top"
+    status_position: "top"
+    status_right: "#[fg=color61,bg=default,bold]#{session_name}"
+    status_style: "fg=default,bg=default"
+    window_status_activity: "fg=violet,bg=default"
+    window_status_current_format: "#[fg=color230,bg=color166]#[bold] [#I] #W #[nobold]"
+    window_status_format: "#[fg=color166,bg=default]#[bold] [#I] #W #[nobold]"
+
+
+# -----+
+# role: vim
+# -----+
+
+vim_extensions:
+  - name: "vim-airline"
+    repo: "https://github.com/vim-airline/vim-airline.git"
+  - name: "vim-airline-themes"
+    repo: "https://github.com/vim-airline/vim-airline-themes.git"
+  - name: "vim-gitgutter"
+    repo: "https://github.com/airblade/vim-gitgutter.git"
+    version: "main"
+  - name: "vim-indent-guides"
+    repo: "https://github.com/preservim/vim-indent-guides.git"
+  - name: "vim-terraform"
+    repo: "https://github.com/hashivim/vim-terraform.git"
+  - name: "vim-solarized8"
+    repo: "https://github.com/lifepillar/vim-solarized8.git"
+  - name: "vim-jinja2-syntax"
+    repo: "https://github.com/Glench/Vim-Jinja2-Syntax.git"
+  - name: "fzf.vim"
+    repo: "https://github.com/junegunn/fzf.vim.git"
+  - name: "vim-fugitive"
+    repo: "https://github.com/tpope/vim-fugitive.git"
+  - name: "vim-css-color"
+    repo: "https://github.com/ap/vim-css-color.git"
+  - name: "vim-markdown"
+    repo: "https://github.com/preservim/vim-markdown.git"
+  - name: "vim-peekaboo"
+    repo: "https://github.com/junegunn/vim-peekaboo.git"
+
+
+# -----+
+# role: zsh
+# -----+
+
+zsh_completions:
+  - name: "cht"
+    command: "curl -L https://cheat.sh/:zsh"
+  - name: "nb"
+    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
+  - name: "doctl"
+    command: "doctl completion zsh"
+
+zsh_plugins:
+  - name: "fzf-tab"
+    repo: "https://github.com/Aloxaf/fzf-tab"
+    source: "fzf-tab.plugin.zsh"
+  - name: "zsh-vi-mode"
+    repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
+    source: "zsh-vi-mode.plugin.zsh"
+  - name: "base16-shell"
+    repo: "https://github.com/chriskempson/base16-shell.git"
+    source: "profile_helper.sh"

@@ -1,0 +1,149 @@
+---
+
+bat_exec: "/usr/bin/batcat"
+system_linux_add_dns_fallback: false
+tmux_clipboard: "xsel --clipboard --input"
+
+system_linux_dconf_distro:
+  - path: "/org/cinnamon"
+    keys:
+      enabled-applets: "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:1:xapp-status@cinnamon.org:4', 'panel1:right:2:notifications@cinnamon.org:5', 'panel1:right:3:printers@cinnamon.org:6', 'panel1:right:4:removable-drives@cinnamon.org:7', 'panel1:right:5:keyboard@cinnamon.org:8', 'panel1:right:6:favorites@cinnamon.org:9', 'panel1:right:7:network@cinnamon.org:10', 'panel1:right:8:sound@cinnamon.org:11', 'panel1:right:9:power@cinnamon.org:12', 'panel1:right:10:calendar@cinnamon.org:13', 'panel1:right:11:cornerbar@cinnamon.org:14']"
+      next-applet-id: "15"
+      desktop/sound/event-sounds: "false"
+  - path: "/org/linuxmint/updates"
+    keys:
+      show-welcome-page: "false"
+
+packages_apt_repos:
+  - name: "1password"
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
+      https://downloads.1password.com/linux/debian/amd64 stable main
+    key: "https://onepassword.s3.amazonaws.com/linux/keys/1password.asc"
+    keyring: "/usr/share/keyrings/1password-archive-keyring.gpg"
+  - name: "google-chrome"
+    repo: "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
+    key: "https://dl.google.com/linux/linux_signing_key.pub"
+  - name: "gh-cli"
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
+      https://cli.github.com/packages stable main
+    key: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+    keyring: "/usr/share/keyrings/githubcli-archive-keyring.gpg"
+  - name: "charm"
+    repo: "deb [trusted=yes] https://repo.charm.sh/apt/ /"
+    key: "https://apt.fury.io/charmcli/gpg.key"
+    keyring: "/usr/share/keyrings/charmcli.gpg"
+
+packages_apt_packages:
+  cli:
+    - apt-file
+    - atool
+    - bash-completion
+    - bat
+    - bcal
+    - borgbackup
+    - diceware
+    - dictd
+    - duf
+    - fd-find
+    - fdupes
+    - ffmpeg
+    - figlet
+    - fwupd
+    - fzf
+    - gh
+    - ghostscript
+    - glances
+    - gron
+    - htop
+    - httpie
+    - iftop
+    - inxi
+    - jq
+    - libmp4-info-perl
+    - libvirt-clients
+    - mkvtoolnix
+    - moreutils
+    - most
+    - msmtp
+    - mtr
+    - nmap
+    - p7zip-*
+    - par
+    - perf-tools-unstable
+    - pdfgrep
+    - pipx
+    - pwgen
+    - python3
+    - python3-dev
+    - python3-pip
+    - ripgrep
+    - ruby
+    - shellcheck
+    - ssh
+    - stow
+    - strace
+    - tidy
+    - tlp
+    - tmux
+    - tmuxp
+    - toilet
+    - trash-cli
+    - tree
+    - trurl
+    - vim
+    - wget
+    - xdelta
+    - xsel
+    - xz-utils
+    - yt-dlp
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  gui:
+    - 1password
+    - alacritty
+    - asciinema
+    - audacious
+    - calibre
+    - drawing
+    - fonts-noto-color-emoji
+    - ghostwriter
+    - google-chrome-stable
+    - keepassxc
+    - libreoffice
+    - nextcloud-desktop
+    - picard
+    - remmina
+    - shutter
+    - solaar
+    - system-config-printer
+    - thunderbird
+    - timeshift
+    - torbrowser-launcher
+    - vlc
+  cinnamon:
+    - celluloid
+    - gpaste*
+    - meld
+    - mpv
+    - transmission-gtk
+
+packages_homebrew_taps:
+  - charmbracelet/tap
+
+packages_homebrew_formulas:
+  - atuin
+  - bat-extras
+  - csvlens
+  - doctl
+  - eza
+  - fastfetch
+  - freeze
+  - glow
+  - glow
+  - lazygit
+  - nb
+  - qsv
+  - yq

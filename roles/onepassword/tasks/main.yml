@@ -21,3 +21,4 @@
     file: "auth.yml"
   when: not onepassword_use_gui_integration
   tags: [onepassword, auth]
+

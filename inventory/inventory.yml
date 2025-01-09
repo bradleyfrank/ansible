@@ -1,0 +1,14 @@
+---
+
+local:
+  hosts:
+    mac06770
+  children:
+    Darwin:
+      hosts:
+        mac06770
+    MacOSX:
+      hosts:
+        mac06770
+  vars:
+    ansible_connection: local
