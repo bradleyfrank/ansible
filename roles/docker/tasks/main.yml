@@ -1,0 +1,11 @@
+---
+
+- name: "Include variables based on package manager"
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts['pkg_mgr'] }}.yml"
+  tags: [docker]
+
+- name: "Include tasks based on package manager"
+  ansible.builtin.include_tasks:
+    file: "install/{{ ansible_facts['pkg_mgr'] }}.yml"
+  tags: [docker]

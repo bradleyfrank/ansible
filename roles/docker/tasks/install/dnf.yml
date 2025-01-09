@@ -1,0 +1,21 @@
+---
+
+- name: "Update dnf cache"
+  ansible.builtin.dnf:
+    update_cache: true
+  tags: [docker, install]
+
+- name: "Install Podman"
+  ansible.builtin.dnf:
+    name: "{{ docker_pkgs['pkgs'] }}"
+    state: "present"
+  become: true
+  tags: [docker, install, become]
+
+- name: "Install optional packages"
+  ansible.builtin.dnf:
+    name: "{{ docker_pkgs['optional'] }}"
+    state: "present"
+  become: true
+  when: docker_install_optional_packages
+  tags: [docker, install, become]
