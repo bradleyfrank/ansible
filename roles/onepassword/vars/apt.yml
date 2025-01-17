@@ -6,7 +6,7 @@ onepassword_packages:
 
 onepassword_linux_repo:
   name: "1Password"  # Avoid name conflict with repo packaged with deb: 1password.list
-  uris: "https://downloads.1password.com/linux/debian/amd64"
+  uris: "https://downloads.1password.com/linux/debian/{{ ansible_facts['architecture'] }}"
   components: ["main"]
   suites: ["stable"]
   signed_by: "https://onepassword.s3.amazonaws.com/linux/keys/1password.asc"
