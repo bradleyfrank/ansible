@@ -8,6 +8,8 @@
     signed_by: "{{ onepassword_linux_repo['signed_by'] }}"
     state: present
     enabled: true
+  become: true
+  tags: [onepassword, install, repos, become]
 
 #- name: "Install 1Password gpg key"
 #  ansible.builtin.apt_key:
