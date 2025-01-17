@@ -5,25 +5,12 @@
     name: "{{ onepassword_linux_repo['name'] }}"
     uris: "{{ onepassword_linux_repo['uris'] }}"
     components: "{{ onepassword_linux_repo['components'] }}"
+    suites: ["{{ ansible_facts['distribution_release'] | lower }}"]
     signed_by: "{{ onepassword_linux_repo['signed_by'] }}"
     state: present
     enabled: true
   become: true
   tags: [onepassword, install, repos, become]
-
-#- name: "Install 1Password gpg key"
-#  ansible.builtin.apt_key:
-#    url: "{{ onepassword_linux_repo['url'] }}"
-#    keyring: "{{ onepassword_linux_repo['keyring'] }}"
-#  become: true
-#  tags: [onepassword, install, repos, become]
-#
-#- name: "Install 1Password repository"
-#  ansible.builtin.apt_repository:
-#    repo: "{{ onepassword_linux_repo['repo'] }}"
-#    filename: "{{ onepassword_linux_repo['name'] }}"
-#  become: true
-#  tags: [onepassword, install, repos, become]
 
 - name: "Create debsig-verify policy directory"
   ansible.builtin.file:
