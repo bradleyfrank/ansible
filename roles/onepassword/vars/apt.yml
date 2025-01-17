@@ -4,11 +4,15 @@ onepassword_packages:
   gui: "1password"
   cli: "1password-cli"
 
-onepassword_repo_arch: "{{ ansible_facts['architecture'] | regex_replace('aarch64', 'arm64') }}"
+_arch:
+  aarch64: "arm64"
+  arm64: "arm64"
+  x86_64: "amd64"
+  amd64: "amd64"
 
 onepassword_linux_repo:
-  name: "1Password"  # Avoid name conflict with repo packaged with deb: 1password.list
-  uris: "https://downloads.1password.com/linux/debian/{{ onepassword_repo_arch }}"
+  name: "1password"
+  uris: "https://downloads.1password.com/linux/debian/{{ _arch[ansible_facts['architecture']] }}"
   components: ["main"]
   suites: ["stable"]
   signed_by: "https://onepassword.s3.amazonaws.com/linux/keys/1password.asc"

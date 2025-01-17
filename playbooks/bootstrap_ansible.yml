@@ -24,11 +24,6 @@
       loop: "{{ ansible_collections }}"
       tags: [collections]
 
-    - name: "Include 1Password role"
-      ansible.builtin.import_role:
-        name: "onepassword"
-      tags: [1password]
-
     - name: "Create host_vars"
       ansible.builtin.template:
         src: "host_vars.yml.j2"
@@ -42,3 +37,10 @@
         path: "{{ host_vars }}"
         insertafter: EOF
       tags: [host_vars]
+
+    - meta: "refresh_inventory"
+
+    - name: "Include 1Password role"
+      ansible.builtin.import_role:
+        name: "onepassword"
+      tags: [1password]
