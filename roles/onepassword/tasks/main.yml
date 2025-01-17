@@ -2,7 +2,7 @@
 
 - name: "Load package manager variables"
   ansible.builtin.include_vars:
-    file: "{{ ansible_facts['pkg_mgr'] }}"
+    file: "{{ ansible_facts['pkg_mgr'] }}.yml"
   tags: [onepassword, install]
 
 - name: "Include install tasks"
