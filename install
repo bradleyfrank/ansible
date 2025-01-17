@@ -85,6 +85,7 @@ python3 -m venv venv
 pip install --no-cache-dir --requirement requirements.txt
 
 ansible-playbook playbooks/bootstrap_ansible.yml \
+  --ask-become-pass \
   --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS}"
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
