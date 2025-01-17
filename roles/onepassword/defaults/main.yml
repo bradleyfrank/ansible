@@ -1,3 +1,6 @@
 ---
 
-onepassword_use_gui_integration: "{{ host_has_desktop | default(true) }}"
+onepassword_use_gui_integration: "{{
+  (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
+  (ansible_facts['distribution'] == 'MacOSX')
+}}"
