@@ -5,8 +5,7 @@
     name: "{{ onepassword_linux_repo['name'] }}"
     uris: "{{ onepassword_linux_repo['uris'] }}"
     components: "{{ onepassword_linux_repo['components'] }}"
-    suites: []
-    #suites: ["{{ ansible_facts['distribution_release'] | lower }}"]
+    suites: "{{ onepassword_linux_repo['suites'] }}"
     signed_by: "{{ onepassword_linux_repo['signed_by'] }}"
     state: present
     enabled: true
