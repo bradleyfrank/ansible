@@ -26,9 +26,9 @@
 
 - name: "Add account to 1Password-cli"
   vars:
-    address: "--address {{ onepassword_signin_url }}"
-    email: "--email {{ onepassword_email_address }}"
-    secret_key: "--secret-key {{ onepassword_secret_key }}"
+    address: "--address {{ onepassword_signin_url['user_input'] }}"
+    email: "--email {{ onepassword_email_address['user_input'] }}"
+    secret_key: "--secret-key {{ onepassword_secret_key['user_input'] }}"
   ansible.builtin.expect:
     command: "op account add {{ address }} {{ email }} {{ secret_key }}"
     responses:
