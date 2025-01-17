@@ -4,23 +4,16 @@
   hosts: all
 
   vars:
-    default_inventory_branch: "main"
     host_vars: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/host_vars/{{ system_hostname }}.yml"
 
   vars_prompt:
     - name: "system_hostname"
       prompt: "Enter system hostname"
       private: false
+      default: "{{ ansible_facts['hostname'] }}"
     - name: "email_address"
       prompt: "Enter email address"
       private: false
-    - name: "git_inventory_repo"
-      prompt: "Git repository URL for inventory"
-      private: false
-    - name: "git_inventory_branch"
-      prompt: "Repository branch for inventory"
-      private: false
-      default: "{{ default_inventory_branch }}"
 
   tasks:
     - name: "Include 1Password role"

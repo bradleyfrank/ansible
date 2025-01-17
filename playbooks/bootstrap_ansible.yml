@@ -1,0 +1,44 @@
+---
+
+- name: "Bootstrap Ansible"
+  hosts: all
+
+  vars:
+    host_vars: "{{ inventory_dir }}/host_vars/{{ system_hostname }}.yml"
+
+  vars_prompt:
+    - name: "system_hostname"
+      prompt: "Enter system hostname"
+      private: false
+      default: "{{ ansible_facts['hostname'] }}"
+    - name: "email_address"
+      prompt: "Enter email address"
+      private: false
+
+  tasks:
+    - name: "Install Ansible Galaxy requirements"
+      community.general.ansible_galaxy_install:
+        name: "{{ item }}"
+        type: "collection"
+        force: true
+      loop: "{{ ansible_collections }}"
+      tags: [collections]
+
+    - name: "Include 1Password role"
+      ansible.builtin.import_role:
+        name: "onepassword"
+      tags: [1password]
+
+    - name: "Create host_vars"
+      ansible.builtin.template:
+        src: "host_vars.yml.j2"
+        dest: "{{ host_vars }}"
+        mode: "0755"
+      tags: [host_vars]
+
+    - name: "Append customized role vars to host_vars"
+      ansible.builtin.blockinfile:
+        block: "{{ lookup('ansible.builtin.file', role_vars) }}"
+        path: "{{ host_vars }}"
+        insertafter: EOF
+      tags: [host_vars]

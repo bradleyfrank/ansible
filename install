@@ -5,8 +5,8 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-ANSIBLE_REPO_HOSTVARS="${HOME}/.ansible/inventory/host_vars/localhost.yml"
-ANSIBLE_REPO_INVENTORY="$(mktemp)"
+
+TMP_ROLEVARS="$(mktemp)"
 
 HOMEBREW_INSTALL_ON_LINUX=1; export HOMEBREW_INSTALL_ON_LINUX
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -49,15 +49,17 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  [ -n "$HOMEBREW_INSTALL_ON_LINUX" ] && install_homebrew
+  if [ -n "$HOMEBREW_INSTALL_ON_LINUX" ]; then
+    install_homebrew
+  fi
 }
 
 
-while getopts ':hbg:' opt; do
+while getopts ':hb:n' opt; do
   case "$opt" in
-    h) echo "[-h] | [-b] [-g <branch>]" ;;
-    b) unset HOMEBREW_INSTALL_ON_LINUX ;;
-    g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
+    h) echo "[-h] | [-n] [-b <branch>]"; exit 0 ;;
+    b) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
+    n) unset HOMEBREW_INSTALL_ON_LINUX ;;
     *) exit 1 ;;
   esac
 done
@@ -82,22 +84,15 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-echo "localhost ansible_connection=local" > "$ANSIBLE_REPO_INVENTORY"
-ansible-playbook playbooks/install_requirements.yml --inventory "$ANSIBLE_REPO_INVENTORY"
-ansible-playbook playbooks/build_inventory.yml --inventory "$ANSIBLE_REPO_INVENTORY"
+ansible-playbook playbooks/bootstrap_ansible.yml --extra-vars "role_vars=${TMP_ROLEVARS}"
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
   --no-filename \
   --extended-regexp \
   --color=never \
-  | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
+  | sed "s/^/# /g" >> "$TMP_ROLEVARS"
 
-vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running the install script.'"
+vim -c "e ${TMP_ROLEVARS}|redraw|echom 'Save and quit to continue running the install script.'"
 
-export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
 ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"
-ansible-playbook playbooks/password_manager.yml
-
-printf "\nVault passphrase: %s\n" "$(cat "$ANSIBLE_VAULT_PASSWORD_FILE")"
-rm -f "$ANSIBLE_VAULT_PASSWORD_FILE"

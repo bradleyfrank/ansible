@@ -1,6 +1,17 @@
 ---
 
 # -----+
+# collections
+# -----+
+
+ansible_collections:
+  - "ansible.posix"
+  - "community.crypto"
+  - "community.general"
+  - "devsec.hardening"
+
+
+# -----+
 # secrets
 # -----+
 
