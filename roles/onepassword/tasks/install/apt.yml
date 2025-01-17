@@ -54,18 +54,3 @@
   become: true
   when: onepassword_use_gui_integration
   tags: [onepassword, install, gui, become]
-
-- name: "Remove repo installed by package"
-  ansible.builtin.file:
-    path: "{{ onepassword_repo_file }}"
-    state: "absent"
-  become: true
-  tags: [onepassword, install, cli, gui, repos, become]
-
-- name: "Make official repo a symlink instead"
-  ansible.builtin.file:
-    src: "/etc/apt/sources.list.d/{{ onepassword_linux_repo['name'] }}.list"
-    dest: "{{ onepassword_repo_file }}"
-    state: "absent"
-  become: true
-  tags: [onepassword, install, cli, gui, repos, become]
