@@ -7,11 +7,11 @@
     host_vars: "{{ inventory_dir }}/host_vars/{{ system_hostname }}.yml"
 
   vars_prompt:
-    - name: "system_hostname"
+    - name: "bootstrap_hostname"
       prompt: "Enter system hostname"
       private: false
       default: "{{ system_hostname }}"
-    - name: "email_address"
+    - name: "bootstrap_email"
       prompt: "Enter email address"
       private: false
 

@@ -1,7 +1,7 @@
 ---
 
-host_hostname: "{{ system_hostname }}"
-host_email_address: "{{ email_address }}"
+host_hostname: "{{ bootstrap_hostname }}"
+host_email_address: "{{ bootstrap_email }}"
 host_has_desktop: {{
   True if
     ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != "tty" or
