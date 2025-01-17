@@ -10,7 +10,7 @@
     - name: "system_hostname"
       prompt: "Enter system hostname"
       private: false
-      default: "{{ ansible_facts['hostname'] }}"
+      default: "{{ system_hostname }}"
     - name: "email_address"
       prompt: "Enter email address"
       private: false
