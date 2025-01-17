@@ -1,6 +1,6 @@
 ---
 
-- name: Add Jenkins repo using key from URL.
+- name: "Install 1Password repository"
   ansible.builtin.deb822_repository:
     name: "{{ onepassword_linux_repo['name'] }}"
     uris: "{{ onepassword_linux_repo['uris'] }}"
