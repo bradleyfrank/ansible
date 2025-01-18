@@ -56,7 +56,7 @@
       ansible.builtin.blockinfile:
         block: "{{ lookup('ansible.builtin.file', role_vars) }}"
         path: "{{ host_vars }}"
-        insertafter: EOF
+        insertafter: "EOF"
       tags: [host_vars]
 
     - name: "Include 1Password role"
@@ -64,7 +64,17 @@
         name: "onepassword"
       tags: [onepassword]
 
-    - debug:
-        msg: "{{ onepassword_session_token }}"
+    - name: "Generate 1Password session"
       vars:
         onepassword_session_token: "{{ cmd_op_session_token['stdout'] | split('\n') | last }}"
+      ansible.builtin.command:
+        cmd: "op signin --session {{ onepassword_session_token }} --force"
+      register: cmd_op_signin
+
+    - name: "Write 1Password session to file"
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_facts['user_dir'] }}/.op_session"
+        mode: "0400"
+        insertbefore: "BOF"
+        line: "{{ cmd_op_signin['stdout'] }}"
+      tags: [onepassword, never]

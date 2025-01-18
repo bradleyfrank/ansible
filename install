@@ -7,6 +7,7 @@ ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 
 TMP_ROLEVARS="$(mktemp)"
+TMP_OP_SESSION_FILE="${HOME}/.op_session"
 
 HOMEBREW_INSTALL_ON_LINUX=1; export HOMEBREW_INSTALL_ON_LINUX
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -95,6 +96,10 @@ vim -c "e ${TMP_ROLEVARS}|redraw|echom 'Save and quit to continue running the in
 
 ansible-playbook playbooks/bootstrap_ansible.yml \
   --ask-become-pass \
+  --tags "all,never" \
   --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS}"
+
+. "$TMP_OP_SESSION_FILE"
+rm --force "$TMP_OP_SESSION_FILE"
 
 ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"
