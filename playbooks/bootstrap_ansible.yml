@@ -67,4 +67,4 @@
     - debug:
       vars:
         onepassword_session_token: "{{ cmd_op_session_token['stdout'] }}"
-        msg: "{{ onepassword_session_token }}"
+      msg: "{{ onepassword_session_token }}"
