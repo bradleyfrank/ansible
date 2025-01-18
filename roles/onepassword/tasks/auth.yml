@@ -1,39 +1,14 @@
 ---
 
-- name: "Enter the 1Password Signin URL"
-  ansible.builtin.pause:
-    prompt: "Enter the 1Password Signin URL"
-    echo: yes
-  register: onepassword_signin_url
-
-- name: "Enter the 1Password Email"
-  ansible.builtin.pause:
-    prompt: "Enter the 1Password Email"
-    echo: yes
-  register: onepassword_email_address
-
-- name: "Enter the 1Password Secret Key"
-  ansible.builtin.pause:
-    prompt: "Enter the 1Password Secret Key"
-    echo: no
-  register: onepassword_secret_key
-
-- name: "Enter the 1Password Account password"
-  ansible.builtin.pause:
-    prompt: "Enter the 1Password Account password"
-    echo: no
-  register: onepassword_account_password
-
 - name: "Add account to 1Password-cli"
   vars:
-    address: "--address {{ onepassword_signin_url['user_input'] }}"
-    email: "--email {{ onepassword_email_address['user_input'] }}"
-    secret_key: "--secret-key {{ onepassword_secret_key['user_input'] }}"
-    account_pass: "{{ onepassword_account_password ['user_input'] }}"
+    address: "--address {{ onepassword_signin_url }}"
+    email: "--email {{ onepassword_email_address }}"
+    secret_key: "--secret-key {{ onepassword_secret_key }}"
   ansible.builtin.expect:
     command: "op account add {{ address }} {{ email }} {{ secret_key }}"
     responses:
-      Enter the password: "{{ account_pass }}"
+      Enter the password: "{{ onepassword_account_password }}"
   tags: [onepassword, auth]
 
 - name: "Confirm account is present in 1Password"
@@ -48,6 +23,6 @@
   ansible.builtin.expect:
     command: "op signin --raw"
     responses:
-      Enter the password: "{{ account_pass }}"
+      Enter the password: "{{ onepassword_account_password }}"
   register: cmd_op_signin
   tags: [onepassword, auth]

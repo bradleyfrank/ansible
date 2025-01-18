@@ -7,13 +7,34 @@
     host_vars: "{{ inventory_dir }}/host_vars/{{ system_hostname }}.yml"
 
   vars_prompt:
-    - name: "bootstrap_hostname"
+    - name: bootstrap_hostname
       prompt: "Enter system hostname"
       private: false
       default: "{{ system_hostname }}"
-    - name: "bootstrap_email"
+
+    - name: bootstrap_email
       prompt: "Enter email address"
       private: false
+
+    - name: onepassword_signin_url
+      prompt: "Enter the 1Password Signin URL"
+      private: false
+      confirm: true
+
+    - name: onepassword_email_address
+      prompt: "Enter the 1Password Email"
+      private: false
+      confirm: true
+
+    - name: onepassword_secret_key
+      prompt: "Enter the 1Password Secret Key"
+      private: true
+      confirm: true
+
+    - name: onepassword_account_password
+      prompt: "Enter the 1Password Account password"
+      private: true
+      confirm: true
 
   tasks:
     - name: "Install Ansible Galaxy requirements"
@@ -39,6 +60,11 @@
       tags: [host_vars]
 
     - name: "Include 1Password role"
+      vars:
+        onepassword_signin_url: "{{ onepassword_signin_url }}"
+        onepassword_email_address: "{{ onepassword_email_address }}"
+        onepassword_secret_key: "{{ onepassword_secret_key }}"
+        onepassword_account_password: "{{ onepassword_account_password }}"
       ansible.builtin.import_role:
         name: "onepassword"
       tags: [1password]
