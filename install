@@ -84,10 +84,6 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook playbooks/bootstrap_ansible.yml \
-  --ask-become-pass \
-  --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS}"
-
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
   --no-filename \
@@ -96,5 +92,9 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
   | sed "s/^/# /g" >> "$TMP_ROLEVARS"
 
 vim -c "e ${TMP_ROLEVARS}|redraw|echom 'Save and quit to continue running the install script.'"
+
+ansible-playbook playbooks/bootstrap_ansible.yml \
+  --ask-become-pass \
+  --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS}"
 
 ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"

@@ -38,8 +38,6 @@
         insertafter: EOF
       tags: [host_vars]
 
-    - meta: "refresh_inventory"
-
     - name: "Include 1Password role"
       ansible.builtin.import_role:
         name: "onepassword"

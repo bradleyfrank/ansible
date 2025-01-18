@@ -29,10 +29,11 @@
     address: "--address {{ onepassword_signin_url['user_input'] }}"
     email: "--email {{ onepassword_email_address['user_input'] }}"
     secret_key: "--secret-key {{ onepassword_secret_key['user_input'] }}"
+    account_pass: "{{ onepassword_account_password ['user_input'] }}"
   ansible.builtin.expect:
     command: "op account add {{ address }} {{ email }} {{ secret_key }}"
     responses:
-      Enter the password: "{{ onepassword_account_password }}"
+      Enter the password: "{{ account_pass }}"
   tags: [onepassword, auth]
 
 - name: "Confirm account is present in 1Password"
