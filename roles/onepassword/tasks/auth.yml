@@ -48,6 +48,6 @@
   ansible.builtin.expect:
     command: "op signin --raw"
     responses:
-      Enter the password: "{{ onepassword_account_password }}"
+      Enter the password: "{{ account_pass }}"
   register: cmd_op_signin
   tags: [onepassword, auth]
