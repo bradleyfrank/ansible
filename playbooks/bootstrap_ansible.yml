@@ -60,11 +60,11 @@
       tags: [host_vars]
 
     - name: "Include 1Password role"
-      vars:
-        onepassword_signin_url: "{{ onepassword_signin_url }}"
-        onepassword_email_address: "{{ onepassword_email_address }}"
-        onepassword_secret_key: "{{ onepassword_secret_key }}"
-        onepassword_account_password: "{{ onepassword_account_password }}"
       ansible.builtin.import_role:
         name: "onepassword"
-      tags: [1password]
+      tags: [onepassword]
+
+    - debug:
+      vars:
+        onepassword_session_token: "{{ cmd_op_session_token['stdout'] }}"
+        msg: "{{ onepassword_session_token }}"
