@@ -65,6 +65,6 @@
       tags: [onepassword]
 
     - debug:
-      msg: "{{ onepassword_session_token }}"
+        msg: "{{ onepassword_session_token }}"
       vars:
         onepassword_session_token: "{{ cmd_op_session_token['stdout'] }}"
