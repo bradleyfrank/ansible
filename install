@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# shellcheck disable=SC1090,SC1091
 
 set -o errexit
 
@@ -9,7 +10,7 @@ ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 TMP_ROLEVARS="$(mktemp)"
 TMP_OP_SESSION_FILE="${HOME}/.op_session"
 
-HOMEBREW_INSTALL_ON_LINUX=1; export HOMEBREW_INSTALL_ON_LINUX
+export HOMEBREW_INSTALL_ON_LINUX=1
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 
@@ -33,7 +34,6 @@ bootstrap_mac() {
 
 bootstrap_linux() {
   sudo systemctl stop packagekit
-  # shellcheck disable=SC1091
   . /etc/os-release
 
   case "$ID" in
@@ -81,7 +81,6 @@ git checkout "$ANSIBLE_REPO_BRANCH"
 
 PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
 python3 -m venv venv
-#shellcheck disable=SC1091
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
@@ -99,7 +98,10 @@ ansible-playbook playbooks/bootstrap_ansible.yml \
   --tags "all,never" \
   --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS}"
 
-. "$TMP_OP_SESSION_FILE"
-rm --force "$TMP_OP_SESSION_FILE"
+# The 1Password session file exists if the GUI is not installed.
+if [ -e "$TMP_OP_SESSION_FILE" ]; then
+  . "$TMP_OP_SESSION_FILE"
+  rm --force "$TMP_OP_SESSION_FILE"
+fi
 
 ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"

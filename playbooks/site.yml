@@ -1,7 +1,7 @@
 ---
 
 - name: "Run all the things"
-  hosts: "localhost"
+  hosts: all
   tasks:
 
     - name: "Import repo and package role"
@@ -27,7 +27,6 @@
     - name: "Import desktop role"
       ansible.builtin.import_role:
         name: "desktop"
-      when: host_has_desktop
 
     - name: "Import vim role"
       ansible.builtin.import_role:
