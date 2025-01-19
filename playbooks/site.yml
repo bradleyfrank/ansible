@@ -4,6 +4,14 @@
   hosts: all
   tasks:
 
+    - name: "Add host to 'system' group"
+      ansible.builtin.group_by:
+        key: "{{ ansible_facts['system'] }}"
+
+    - name: "Add host to 'distribution' group"
+      ansible.builtin.group_by:
+        key: "{{ ansible_facts['distribution'] }}"
+
     - name: "Import repo and package role"
       ansible.builtin.import_role:
         name: "packages"
