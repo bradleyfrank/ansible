@@ -142,11 +142,9 @@ ssh_user_keys:
   id_rsa:
     private_key: "{{ lookup('community.general.onepassword', 'id_rsa', field='private key') }}"
     public_key: "{{ lookup('community.general.onepassword', 'id_rsa', field='public key') }}"
-    passphrase: "{{ lookup('community.general.onepassword', 'id_rsa', field='passphrase') }}"
   id_ed25519:
     private_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='private key') }}"
     public_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='public key') }}"
-    passphrase: "{{ lookup('community.general.onepassword', 'id_ed25519', field='passphrase') }}"
 
 
 # -----+

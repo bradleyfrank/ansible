@@ -16,6 +16,7 @@
 
 - name: "Copy user SSH keys"
   tags: [ssh, keys, dotfiles]
+  no_log: true
   block:
     - name: "Copy user SSH private keys"
       ansible.builtin.copy:
