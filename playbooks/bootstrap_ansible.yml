@@ -43,6 +43,12 @@
       loop: "{{ ansible_collections }}"
       tags: [collections]
 
+    - name: "Set hostname"
+      ansible.builtin.hostname:
+        name: "{{ bootstrap_hostname }}"
+      become: true
+      tags: [hostname]
+
     - name: "Create host_vars"
       vars:
         role_overrides: "{{ lookup('ansible.builtin.file', role_vars) }}"
