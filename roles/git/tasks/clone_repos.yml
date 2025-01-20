@@ -15,7 +15,7 @@
   ansible.builtin.expect:
     command: "ssh-add {{ git_ssh_key_private }}"
     responses:
-      passphrase: "{{ ssh_keys['ed25519'] }}"
+      passphrase: "{{ git_ssh_key_passphrase }}"
   tags: [git, repos]
 
 - name: "Create repository directories"
