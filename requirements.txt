@@ -5,7 +5,6 @@ cryptography>=35.0.0
 github3.py
 jmespath
 pexpect
-pipx
 pre-commit
 psutil
 pyobjc-framework-Cocoa; sys_platform == 'darwin'
