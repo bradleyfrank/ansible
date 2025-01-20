@@ -13,6 +13,8 @@ nnoremap <Space> :nohlsearch<CR>
 nnoremap H :bp<CR>
 nnoremap L :bn<CR>
 
+" :W sudo saves the file (useful for handling the permission-denied error)
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " layout/format/style
 let g:indent_guides_auto_colors = 0
@@ -23,6 +25,7 @@ let g:vim_markdown_folding_disabled = 1
 set colorcolumn=100
 set conceallevel=0
 set cursorline
+set encoding=utf8
 set foldmethod=syntax
 set hlsearch
 set incsearch

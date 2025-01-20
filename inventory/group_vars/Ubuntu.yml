@@ -50,7 +50,6 @@ packages_apt_packages:
     - atool
     - bash-completion
     - bat
-    - bat-extras
     - bcal
     - borgbackup
     - diceware
@@ -164,6 +163,7 @@ packages_homebrew_taps:
 
 packages_homebrew_formulas:
   - atuin
+  - bat-extras
   - csvlens
   - doctl
   - eza
