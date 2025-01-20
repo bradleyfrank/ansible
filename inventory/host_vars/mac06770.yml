@@ -1,7 +1,6 @@
 ---
 
 host_email_address: "bfrank@oreilly.com"
-host_has_desktop: true
 onepassword_vault: "Employee"
 desktop_app_paths:
   - "/Applications"

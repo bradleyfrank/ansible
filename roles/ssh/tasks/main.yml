@@ -59,6 +59,5 @@
 - name: "Secure SSH settings"
   ansible.builtin.include_role:
     name: devsec.hardening.ssh_hardening
-  become: true
   tags: [ssh, hardening, become]
   when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)

@@ -1,7 +1,10 @@
 ---
 
 packages_binary_install_path: "{{ ansible_facts['user_dir'] }}/.local/bin"
-packages_desktop_present: "{{ host_has_desktop | default(false) }}"
+packages_desktop_present: "{{
+  (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
+  (ansible_facts['distribution'] == 'MacOSX')
+}}"
 packages_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
 packages_packagekit_enabled: true
 packages_bin_path:
