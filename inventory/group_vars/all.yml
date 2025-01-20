@@ -133,10 +133,6 @@ packages_flatpak_packages:
   elementary:
     - com.github.phase1geo.annotator"
 
-packages_pipx_packages:
-  - black"
-  - beets"
-
 
 # -----+
 # role: ssh

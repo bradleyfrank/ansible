@@ -33,16 +33,6 @@
     file: "pkg_mgr/flatpak.yml"
   when: (ansible_facts['system'] == "Linux") and (packages_install_flatpaks)
 
-- name: "Install pipx packages"
-  community.general.pipx:
-    install_deps: true
-    name: "{{ item }}"
-    state: "install"
-    index_url: "{{ packages_pipx_index_url }}"
-  loop: "{{ packages_pipx_packages }}"
-  when: packages_pipx_packages | length > 0
-  tags: [packages, pipx]
-
 - name: "Ensure binary install path exists"
   ansible.builtin.file:
     path: "{{ packages_binary_install_path }}"

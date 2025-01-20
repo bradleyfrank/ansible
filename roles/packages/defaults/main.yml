@@ -35,6 +35,3 @@ packages_flatpak_packages: {}
 
 packages_binaries: []
 packages_mas_apps: []
-
-packages_pipx_index_url: "https://pypi.python.org/simple"
-packages_pipx_packages: []

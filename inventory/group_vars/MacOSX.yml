@@ -372,6 +372,7 @@ packages_homebrew_formulas:
   - bat
   - bat-extras
   - bcal
+  - black
   - cabextract
   - charmbracelet/tap/freeze
   - coreutils

@@ -31,6 +31,7 @@ packages_apt_packages:
     - bash-completion
     - bat
     - bcal
+    - black
     - borgbackup
     - diceware
     - dictd
