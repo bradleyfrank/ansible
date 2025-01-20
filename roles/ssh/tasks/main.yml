@@ -20,13 +20,13 @@
     - name: "Copy user SSH private keys"
       ansible.builtin.copy:
         content: "{{ item['value']['private_key'] }}"
-        dest: "{{ ansible_facts['user_home'] }}/.ssh/{{ item['key'] }}"
+        dest: "{{ ansible_facts['user_dir'] }}/.ssh/{{ item['key'] }}"
         mode: "0600"
       loop: "{{ ssh_user_keys | dict2items }}"
     - name: "Copy user SSH public keys"
       ansible.builtin.copy:
         content: "{{ item['value']['public_key'] }}"
-        dest: "{{ ansible_facts['user_home'] }}/.ssh/{{ item['key'] }}"
+        dest: "{{ ansible_facts['user_dir'] }}/.ssh/{{ item['key'] }}"
         mode: "0644"
       loop: "{{ ssh_user_keys | dict2items }}"
 
