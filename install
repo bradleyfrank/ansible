@@ -96,7 +96,7 @@ vim -c "e ${TMP_ROLEVARS}|redraw|echom 'Save and quit to continue running the in
 ansible-playbook playbooks/bootstrap_ansible.yml \
   --ask-become-pass \
   --tags "all,never" \
-  --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS}"
+  --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS} user_id=$(id -un)"
 
 # The 1Password session file exists if the GUI is not installed.
 if [ -e "$TMP_OP_SESSION_FILE" ]; then

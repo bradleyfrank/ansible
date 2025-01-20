@@ -7,12 +7,12 @@
     - name: bootstrap_hostname
       prompt: "Enter system hostname"
       private: false
-      default: "{{ system_hostname }}"
+      default: "{{ system_hostname | default('') }}"
 
     - name: bootstrap_email
       prompt: "Enter email address"
       private: false
-      default: "{{ ansible_facts['user_id'] }}@{{ bootstrap_hostname }}"
+      default: "{{ user_id + '@' + system_hostname | default('') }}"
 
     - name: onepassword_signin_url
       prompt: "Enter the 1Password Signin URL"
