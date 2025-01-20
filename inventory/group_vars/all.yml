@@ -16,10 +16,6 @@ ansible_collections:
 # -----+
 
 op_github_token: "{{ lookup('community.general.onepassword', 'GitHub Token', field='credential') }}"
-op_rsa_sshkey: "{{ lookup('community.general.onepassword', 'id_rsa', field='private key') }}"
-op_rsa_passphrase: "{{ lookup('community.general.onepassword', 'id_rsa', field='passphrase') }}"
-op_ed25519_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='private key') }}"
-op_ed25519_passphrase: "{{ lookup('community.general.onepassword', 'id_ed25519', field='passphrase') }}"
 
 
 # -----+
@@ -100,46 +96,61 @@ packages_flatpak_remotes:
 
 packages_flatpak_packages:
   flathub:
-    - "app.drey.EarTag"
-    - "app.drey.Warp"
-    - "com.felipekinoshita.Wildcard"
-    - "com.github.avojak.warble"
-    - "com.github.fabiocolacio.marker"
-    - "com.github.geigi.cozy"
-    - "com.github.huluti.Curtail"
-    - "com.github.johnfactotum.Foliate"
-    - "com.github.junrrein.PDFSlicer"
-    - "com.github.liferooter.textpieces"
-    - "com.github.marktext.marktext"
-    - "com.github.rajsolai.textsnatcher"
-    - "com.makemkv.MakeMKV"
-    - "com.plexamp.Plexamp"
-    - "com.spotify.Client"
-    - "fr.romainvigier.MetadataCleaner"
-    - "io.bassi.Amberol"
-    - "io.github.alainm23.planify"
-    - "io.github.diegoivan.pdf_metadata_editor"
-    - "io.github.seadve.Kooha"
-    - "io.gitlab.news_flash.NewsFlash"
-    - "io.missioncenter.MissionCenter"
-    - "io.posidon.Paper"
-    - "nl.g4d.Girens"
-    - "org.gnome.gitlab.somas.Apostrophe"
-    - "org.gnome.Papers"
-    - "org.nickvision.tagger"
-    - "org.ppsspp.PPSSPP"
-    - "org.signal.Signal"
-    - "re.sonny.Junction"
-    - "re.sonny.Tangram"
-    - "sh.cider.Cider"
-    - "tv.plex.PlexDesktop"
-    - "us.zoom.Zoom"
+    - app.drey.EarTag"
+    - app.drey.Warp"
+    - com.felipekinoshita.Wildcard"
+    - com.github.avojak.warble"
+    - com.github.fabiocolacio.marker"
+    - com.github.geigi.cozy"
+    - com.github.huluti.Curtail"
+    - com.github.johnfactotum.Foliate"
+    - com.github.junrrein.PDFSlicer"
+    - com.github.liferooter.textpieces"
+    - com.github.marktext.marktext"
+    - com.github.rajsolai.textsnatcher"
+    - com.makemkv.MakeMKV"
+    - com.plexamp.Plexamp"
+    - com.spotify.Client"
+    - fr.romainvigier.MetadataCleaner"
+    - io.bassi.Amberol"
+    - io.github.alainm23.planify"
+    - io.github.diegoivan.pdf_metadata_editor"
+    - io.github.seadve.Kooha"
+    - io.gitlab.news_flash.NewsFlash"
+    - io.missioncenter.MissionCenter"
+    - io.posidon.Paper"
+    - nl.g4d.Girens"
+    - org.gnome.gitlab.somas.Apostrophe"
+    - org.gnome.Papers"
+    - org.nickvision.tagger"
+    - org.ppsspp.PPSSPP"
+    - org.signal.Signal"
+    - re.sonny.Junction"
+    - re.sonny.Tangram"
+    - sh.cider.Cider"
+    - tv.plex.PlexDesktop"
+    - us.zoom.Zoom"
   elementary:
-    - "com.github.phase1geo.annotator"
+    - com.github.phase1geo.annotator"
 
 packages_pipx_packages:
-  - "black"
-  - "beets"
+  - black"
+  - beets"
+
+
+# -----+
+# role: ssh
+# -----+
+
+ssh_user_keys:
+  id_rsa:
+    private_key: "{{ lookup('community.general.onepassword', 'id_rsa', field='private key') }}"
+    public_key: "{{ lookup('community.general.onepassword', 'id_rsa', field='public key') }}"
+    passphrase: "{{ lookup('community.general.onepassword', 'id_rsa', field='passphrase') }}"
+  id_ed25519:
+    private_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='private key') }}"
+    public_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='public key') }}"
+    passphrase: "{{ lookup('community.general.onepassword', 'id_ed25519', field='passphrase') }}"
 
 
 # -----+
@@ -242,6 +253,9 @@ tmux_plugins:
   - name: "tmux-continuum"
     repo: "https://github.com/tmux-plugins/tmux-continuum.git"
     exec: "continuum.tmux"
+  - name: "tmux-fzf"
+    repo: "https://github.com/sainnhe/tmux-fzf"
+    exec: "main.tmux"
 
 tmux_config:
   tmux:

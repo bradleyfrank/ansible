@@ -46,8 +46,7 @@
     autoremove: true
     install_recommends: true
   become: true
-  # TODO: fix 'when' clause
-  when: packages_install_flatpak
+  when: packages_desktop_present
   tags: [packages, gui, become]
 
 - name: "Install Desktop Environment or Window Manager packages"

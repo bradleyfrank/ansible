@@ -26,3 +26,22 @@
       Enter the password: "{{ onepassword_account_password }}"
   register: cmd_op_session_token
   tags: [onepassword, auth]
+
+- name: "Generate 1Password session"
+  vars:
+    # Split output because the first line is the 'Enter password' prompt.
+    onepassword_session_token: "{{ cmd_op_session_token['stdout'] | split('\n') | last }}"
+  ansible.builtin.command:
+    cmd: "op signin --session {{ onepassword_session_token }} --force"
+  changed_when: true
+  register: cmd_op_signin
+
+- name: "Write 1Password session to file"
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_facts['user_dir'] }}/.op_session"
+    mode: "0400"
+    insertbefore: "BOF"
+    line: "{{ cmd_op_signin['stdout'] }}"
+    create: true
+  tags: [onepassword, never]
+  when: onepassword_write_session_file

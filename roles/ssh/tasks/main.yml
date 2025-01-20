@@ -11,8 +11,24 @@
   ansible.builtin.file:
     mode: "0600"
     path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
-    state: "touch"
+    state: touch
   tags: [ssh, dotfiles]
+
+- name: "Copy user SSH keys"
+  tags: [ssh, keys, dotfiles]
+  block:
+    - name: "Copy user SSH private keys"
+      ansible.builtin.copy:
+        content: "{{ item['value']['private_key'] }}"
+        dest: "{{ ansible_facts['user_home'] }}/.ssh/{{ item['key'] }}"
+        mode: "0600"
+      loop: "{{ ssh_user_keys | dict2items }}"
+    - name: "Copy user SSH public keys"
+      ansible.builtin.copy:
+        content: "{{ item['value']['public_key'] }}"
+        dest: "{{ ansible_facts['user_home'] }}/.ssh/{{ item['key'] }}"
+        mode: "0644"
+      loop: "{{ ssh_user_keys | dict2items }}"
 
 - name: "Create SSH config"
   ansible.builtin.template:
@@ -34,10 +50,15 @@
   when: (ansible_facts['system'] == "Linux") and (ssh_manage_host_keys)
   tags: [ssh, host_keys, become]
 
-- name: "Load SSH hardening tasks"
-  ansible.builtin.include_tasks:
-    file: "hardening.yml"
-    apply:
-      tags: [ssh, hardening]
-  when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)
+- name: "Set SSH hardening vars for Linux Mint"
+  ansible.builtin.set_fact:
+    os_vars: "{{ ssh_hardening['Debian'] }}"
+  when: (ansible_facts['distribution'] in ["Linux_Mint", "LMDE"])
   tags: [ssh, hardening]
+
+- name: "Secure SSH settings"
+  ansible.builtin.import_role:
+    name: devsec.hardening.ssh_hardening
+  become: true
+  tags: [ssh, hardening, become]
+  when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)

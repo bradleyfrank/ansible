@@ -1,5 +1,6 @@
 ---
 
+onepassword_write_session_file: false
 onepassword_use_gui_integration: "{{
   (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
   (ansible_facts['distribution'] == 'MacOSX')

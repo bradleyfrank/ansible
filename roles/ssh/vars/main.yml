@@ -1,6 +1,6 @@
 ---
 
-ssh_hardening:
+ssh_hardening_overrides:
   Debian:
     sshd_path: /usr/sbin/sshd
     ssh_host_keys_dir: /etc/ssh
