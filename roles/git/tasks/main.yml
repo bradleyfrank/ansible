@@ -20,6 +20,12 @@
   ansible.builtin.import_tasks:
     file: "get_authorized_keys.yml"
 
+- name: "Check if SSH Agent socket exists"
+  ansible.builtin.stat:
+    path: "{{ git_ssh_agent_socket }}"
+  register: stat_ssh_agent_socket
+  tags: [git, repos]
+
 - name: "Import repo cloning tasks"
   ansible.builtin.import_tasks:
     file: "clone_repos.yml"

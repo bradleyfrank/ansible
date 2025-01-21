@@ -14,9 +14,6 @@ ssh_harden_security: true
 ssh_config:
   - host: "*"
     args:
-      CanonicalizeHostname: "yes"
-      ServerAliveCountMax: "4"
-      ServerAliveInterval: "15"
       User: "{{ ansible_facts['user_id'] }}"
 
 ssh_host_keys:

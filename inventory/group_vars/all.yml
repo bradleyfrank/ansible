@@ -57,6 +57,7 @@ fonts_to_install:
 # role: git
 # -----+
 
+git_ssh_auth_sock: "{{ ansible_facts['user_dir'] }}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 git_github_token: "{{ lookup('community.general.onepassword', 'GitHub Token', field='credential') }}"
 git_ssh_key_passphrase: "{{ lookup('community.general.onepassword', 'id_ed25519', field='passphrase') }}"
 git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
@@ -140,6 +141,23 @@ ssh_user_keys:
   id_ed25519:
     private_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='private key') }}"
     public_key: "{{ lookup('community.general.onepassword', 'id_ed25519', field='public key') }}"
+
+ssh_config:
+  - host: "memory-alpha"
+    args:
+      HostName: "192.168.1.40"
+      ForwardAgent: "yes"
+  - host: "rsync.net"
+    args:
+      HostName: "{{ lookup('community.general.onepassword', 'rsync.net', field='URL') }}"
+      User: "root"
+  - host: "*"
+    args:
+      CanonicalizeHostname: "yes"
+      ServerAliveCountMax: "4"
+      ServerAliveInterval: "15"
+      User: "{{ ansible_facts['user_id'] }}"
+
 
 
 # -----+
