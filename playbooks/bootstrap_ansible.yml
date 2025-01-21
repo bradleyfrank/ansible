@@ -7,32 +7,12 @@
     - name: bootstrap_hostname
       prompt: "Enter system hostname"
       private: false
-      default: "{{ system_hostname | default('') }}"
+      default: "{{ system_hostname | default('localhost') }}"
 
     - name: bootstrap_email
       prompt: "Enter email address"
       private: false
-      default: "{{ user_id + '@' + system_hostname | default('') }}"
-
-    - name: onepassword_signin_url
-      prompt: "Enter the 1Password Signin URL"
-      private: false
-      confirm: true
-
-    - name: onepassword_email_address
-      prompt: "Enter the 1Password Email"
-      private: false
-      confirm: true
-
-    - name: onepassword_secret_key
-      prompt: "Enter the 1Password Secret Key"
-      private: true
-      confirm: true
-
-    - name: onepassword_account_password
-      prompt: "Enter the 1Password Account password"
-      private: true
-      confirm: true
+      default: "{{ user_id | default('user') + '@' + system_hostname | default('localhost') }}"
 
   tasks:
     - name: "Install Ansible Galaxy requirements"
@@ -49,18 +29,18 @@
       become: true
       tags: [hostname]
 
+    - name: "Check for existing host_vars"
+      ansible.builtin.stat:
+        path: "{{ inventory_dir }}/host_vars/{{ bootstrap_hostname }}.yml"
+      register: stat_host_vars_yml
+      tags: [host_vars]
+
     - name: "Create host_vars"
       vars:
-        role_overrides: "{{ lookup('ansible.builtin.file', role_vars) }}"
+        role_overrides: "{{ lookup('ansible.builtin.file', role_vars, errors='ignore') }}"
       ansible.builtin.template:
         src: "host_vars.yml.j2"
         dest: "{{ inventory_dir }}/host_vars/{{ bootstrap_hostname }}.yml"
         mode: "0755"
+      when: not stat_host_vars['stat']['exists']
       tags: [host_vars]
-
-    - name: "Include 1Password role"
-      vars:
-        onepassword_write_session_file: true
-      ansible.builtin.import_role:
-        name: "onepassword"
-      tags: [onepassword]
