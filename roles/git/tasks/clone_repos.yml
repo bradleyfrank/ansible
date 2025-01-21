@@ -1,22 +1,33 @@
 ---
 
-- name: "Start ssh-agent"
-  ansible.builtin.shell:
-    cmd: |
-      eval $(ssh-agent -s) > /dev/null
-      echo "{\"SSH_AUTH_SOCK\":\"$SSH_AUTH_SOCK\",\"SSH_AGENT_PID\":\"$SSH_AGENT_PID\"}"
-  register: cmd_eval_ssh_agent
-  changed_when: true
-  notify: "Stop ssh-agent"
+- name: "Check SSH agent socket"
+  ansible.builtin.stat:
+    path: "{{ git_ssh_auth_sock }}"
+  register: stat_ssh_auth_sock
   tags: [git, repos]
 
-- name: "Add key to ssh-agent"
-  environment: "{{ cmd_eval_ssh_agent['stdout'] }}"
-  ansible.builtin.expect:
-    command: "ssh-add {{ git_ssh_key_private }}"
-    responses:
-      passphrase: "{{ git_ssh_key_passphrase }}"
+- name: "Manual ssh-agent setup"
+  when: not stat_ssh_auth_sock['stat']['exists']
+  notify: "Stop ssh-agent"
   tags: [git, repos]
+  block:
+    - name: "Start ssh-agent"
+      ansible.builtin.shell:
+        cmd: |
+          eval $(ssh-agent -s) > /dev/null
+          echo "{\"SSH_AUTH_SOCK\":\"$SSH_AUTH_SOCK\",\"SSH_AGENT_PID\":\"$SSH_AGENT_PID\"}"
+      register: cmd_eval
+      changed_when: true
+    - name: "Add key to ssh-agent"
+      environment: "{{ cmd_eval['stdout'] }}"
+      ansible.builtin.expect:
+        command: "ssh-add {{ git_ssh_key_private }}"
+        responses:
+          passphrase: "{{ git_ssh_key_passphrase }}"
+    - name: "Set ssh-agent socket"
+      ansible.builtin.set_fact:
+        git_ssh_auth_sock: "{{ cmd_eval['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
+        git_ssh_auth_pid: "{{ cmd_eval['stdout'] | from_json | json_query('SSH_AUTH_PID') }}"
 
 - name: "Create repository directories"
   vars:
@@ -37,7 +48,6 @@
     git_repos_name: "{{ item['url'] | basename | split('.') | first }}"
     git_repos_dirname: "{{ git_repos_path }}/{{ git_repos_name }}"
     git_repos_branch: "{{ '/' + item['branch'] | default('main') }}"
-    git_ssh_auth_sock: "{{ cmd_eval_ssh_agent['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
   ansible.builtin.git:
     repo: "{{ item['url'] }}"
     version: "{{ item['branch'] | default('main') }}"

@@ -9,22 +9,9 @@
     mode: "0755"
   tags: [git, config, signing, dotfiles]
 
-- name: "Ensure gitconfig.d directory exists"
-  ansible.builtin.file:
-    path: "{{ git_config_dir }}"
-    mode: "0755"
-    state: "directory"
-  tags: [git, config, signing, dotfiles]
-
 - name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:
     file: "get_authorized_keys.yml"
-
-- name: "Check if SSH Agent socket exists"
-  ansible.builtin.stat:
-    path: "{{ git_ssh_agent_socket }}"
-  register: stat_ssh_agent_socket
-  tags: [git, repos]
 
 - name: "Import repo cloning tasks"
   ansible.builtin.import_tasks:

@@ -4,5 +4,5 @@
   ansible.builtin.command:
     cmd: "ssh-agent -k"
   environment:
-    SSH_AGENT_PID: "{{ cmd_eval_ssh_agent['stdout'] | from_json | json_query('SSH_AGENT_PID') }}"
+    SSH_AGENT_PID: "{{ git_ssh_auth_pid }}"
   changed_when: false
