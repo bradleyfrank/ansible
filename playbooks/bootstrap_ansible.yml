@@ -4,14 +4,22 @@
   hosts: all
 
   vars:
-    default_secrets:
-      - name: id_ed25519
-      - name: id_rsa
-    vault_passphrase: "{{
-      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
-    }}"
+    ansible_collections:
+      - name: "ansible.posix"
+      - name: "community.crypto"
+      - name: "community.general"
+      - name: "devsec.hardening"
     ansible_dir: "{{ ansible_facts['user_dir'] }}/.ansible"
-    host_vars: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
+    default_secrets:
+      - name: "id_ed25519"
+      - name: "id_rsa"
+    host_vars_files: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
+    vault_passphrase: "{{ lookup('community.general.random_words',
+                                  numwords=5,
+                                  delimiter='-',
+                                  case='capitalize'
+                                )
+                       }}"
 
   vars_prompt:
     - name: "git_inventory_repo"
@@ -65,9 +73,10 @@
         passphrase: "{{ lookup('community.general.random_words',
                                 numwords=5,
                                 delimiter='-',
-                                case='capitalize')
+                                case='capitalize'
+                              )
                         | ansible.builtin.vault(vault_passphrase)
-        }}"
+                     }}"
       ansible.builtin.blockinfile:
         block: "{{ passphrase }}"
         create: true
