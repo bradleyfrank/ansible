@@ -1,8 +1,0 @@
-session_name: main
-windows:
-  - window_name: infractl
-    start_directory: ~/Development/Projects/infractl/main
-    layout: even-horizontal
-    panes:
-      - shell_command: benv_activate && benv_sync && clear
-      - shell_command: clear

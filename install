@@ -82,7 +82,7 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook playbooks/bootstrap_ansible.yml
+ansible-playbook --inventory inventory.ini playbooks/bootstrap_ansible.yml
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \

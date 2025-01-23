@@ -1,7 +1,7 @@
 ---
 
 - name: "Bootstrap Ansible"
-  hosts: all
+  hosts: localhost
 
   vars:
     ansible_collections:
