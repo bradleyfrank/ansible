@@ -33,7 +33,7 @@
   tasks:
     - name: "Install Ansible Galaxy requirements"
       community.general.ansible_galaxy_install:
-        name: "{{ item }}"
+        name: "{{ item['name'] }}"
         type: "collection"
         force: true
       loop: "{{ ansible_collections }}"
