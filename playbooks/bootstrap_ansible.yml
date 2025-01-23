@@ -13,7 +13,7 @@
     default_secrets:
       - name: "id_ed25519"
       - name: "id_rsa"
-    host_vars_files: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
+    host_vars_file: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
     vault_passphrase: "{{ lookup('community.general.random_words',
                                   numwords=5,
                                   delimiter='-',
@@ -56,14 +56,14 @@
 
     - name: "Check for existing host_vars"
       ansible.builtin.stat:
-        path: "{{ host_vars }}"
+        path: "{{ host_vars_file }}"
       register: stat_host_vars_yml
       tags: [inventory]
 
     - name: "Create host_vars"
       ansible.builtin.template:
         src: "host_vars.yml.j2"
-        dest: "{{ host_vars }}"
+        dest: "{{ host_vars_file }}"
         mode: "0755"
       when: not stat_host_vars['stat']['exists']
       tags: [inventory]
