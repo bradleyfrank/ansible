@@ -14,12 +14,15 @@
       - name: "id_ed25519"
       - name: "id_rsa"
     host_vars_file: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
-    vault_passphrase: "{{ lookup('community.general.random_words',
-                                  numwords=5,
-                                  delimiter='-',
-                                  case='capitalize'
-                                )
-                       }}"
+    ssh_ed25519_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+    ssh_rsa_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+    vault_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
 
   vars_prompt:
     - name: "git_inventory_repo"
@@ -70,20 +73,16 @@
 
     - name: "Create encrypted secrets file"
       vars:
-        passphrase: "{{ lookup('community.general.random_words',
-                                numwords=5,
-                                delimiter='-',
-                                case='capitalize'
-                              )
-                        | ansible.builtin.vault(vault_passphrase)
-                     }}"
-      ansible.builtin.blockinfile:
-        block: "{{ passphrase }}"
-        create: true
+        ssh_rsa_passphrase_enc: "{{
+          ssh_rsa_passphrase | ansible.builtin.vault(vault_passphrase)
+        }}"
+        ssh_ed25519_passphrase_enc: "{{
+          ssh_ed25519_passphrase | ansible.builtin.vault(vault_passphrase)
+        }}"
+        #github_token_enc: "{{ git_github_token | ansible.builtin.vault(vault_passphrase) }}"
+      ansible.builtin.template:
+        src: "secrets.enc.j2"
+        dest: "{{ ansible_dir }}/inventory/secrets.enc"
         decrypt: false
-        insertafter: EOF
-        marker: ""
         mode: "0700"
-        path: "{{ ansible_dir }}/inventory/secrets.enc"
-      loop: "{{ encrypted_secrets | default(default_secrets) }}"
       tags: [inventory, vault]
