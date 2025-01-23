@@ -85,5 +85,5 @@
         marker: ""
         mode: "0700"
         path: "{{ ansible_dir }}/inventory/secrets.enc"
-      loop: "{{ encrypted_secrets | default(default_secrets) | dict2items }}"
+      loop: "{{ encrypted_secrets | default(default_secrets) }}"
       tags: [inventory, vault]
