@@ -65,7 +65,7 @@
         src: "host_vars.yml.j2"
         dest: "{{ host_vars_file }}"
         mode: "0755"
-      when: not stat_host_vars['stat']['exists']
+      when: not stat_host_vars_yml['stat']['exists']
       tags: [inventory]
 
     - name: "Create encrypted secrets file"
