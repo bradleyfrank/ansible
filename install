@@ -6,9 +6,7 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-
-TMP_ROLEVARS="$(mktemp)"
-TMP_OP_SESSION_FILE="${HOME}/.op_session"
+ANSIBLE_HOST_VARS="${HOME}/.ansible/inventory/host_vars/$(uname -n).yml"
 
 export HOMEBREW_INSTALL_ON_LINUX=1
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -84,23 +82,15 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
+ansible-playbook playbooks/bootstrap_ansible.yml
+
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
   --no-filename \
   --extended-regexp \
   --color=never \
-  | sed "s/^/# /g" >> "$TMP_ROLEVARS"
+  | sed "s/^/# /g" >> "${ANSIBLE_HOST_VARS}"
 
-vim -c "e ${TMP_ROLEVARS}|redraw|echom 'Save and quit to continue running the install script.'"
-
-ansible-playbook playbooks/bootstrap_ansible.yml \
-  --ask-become-pass \
-  --extra-vars "system_hostname=$(uname -n) role_vars=${TMP_ROLEVARS} user_id=$(id -un)"
-
-# The 1Password session file exists if the GUI is not installed.
-if [ -e "$TMP_OP_SESSION_FILE" ]; then
-  . "$TMP_OP_SESSION_FILE"
-  rm --force "$TMP_OP_SESSION_FILE"
-fi
+vim -c "e ${ANSIBLE_HOST_VARS}|redraw|echom 'Save and quit to continue running Ansible.'"
 
 ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"

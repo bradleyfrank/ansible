@@ -3,16 +3,24 @@
 - name: "Bootstrap Ansible"
   hosts: all
 
-  vars_prompt:
-    - name: bootstrap_hostname
-      prompt: "Enter system hostname"
-      private: false
-      default: "{{ system_hostname | default('localhost') }}"
+  vars:
+    vault_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+    ssh_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+    ansible_dir: "{{ ansible_facts['user_dir'] }}/.ansible"
+    host_vars: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
 
-    - name: bootstrap_email
-      prompt: "Enter email address"
+  vars_prompt:
+    - name: "git_inventory_repo"
+      prompt: "Git repository URL for inventory"
       private: false
-      default: "{{ user_id | default('user') + '@' + system_hostname | default('localhost') }}"
+    - name: "git_inventory_branch"
+      prompt: "Repository branch for inventory"
+      private: false
+      default: "main"
 
   tasks:
     - name: "Install Ansible Galaxy requirements"
@@ -23,24 +31,42 @@
       loop: "{{ ansible_collections }}"
       tags: [collections]
 
-    - name: "Set hostname"
-      ansible.builtin.hostname:
-        name: "{{ bootstrap_hostname }}"
-      become: true
-      tags: [hostname]
+    - name: "Create vault file"
+      ansible.builtin.copy:
+        content: "{{ vault_password }}"
+        dest: "{{ ansible_facts['user_dir'] }}/.ansible/vault"
+        mode: "0400"
+      tags: [vault]
+
+    - name: "Clone inventory repository"
+      ansible.builtin.git:
+        repo: "{{ git_inventory_repo }}"
+        dest: "{{ ansible_dir }}/inventory"
+        accept_hostkey: true
+        version: "{{ git_inventory_branch }}"
+      tags: [inventory]
 
     - name: "Check for existing host_vars"
       ansible.builtin.stat:
-        path: "{{ inventory_dir }}/host_vars/{{ bootstrap_hostname }}.yml"
+        path: "{{ host_vars }}"
       register: stat_host_vars_yml
-      tags: [host_vars]
+      tags: [inventory]
 
     - name: "Create host_vars"
-      vars:
-        role_overrides: "{{ lookup('ansible.builtin.file', role_vars, errors='ignore') }}"
       ansible.builtin.template:
         src: "host_vars.yml.j2"
-        dest: "{{ inventory_dir }}/host_vars/{{ bootstrap_hostname }}.yml"
+        dest: "{{ host_vars }}"
         mode: "0755"
       when: not stat_host_vars['stat']['exists']
-      tags: [host_vars]
+      tags: [inventory]
+
+    - name: "Create inventory"
+      vars:
+        ssh_encrypted_passphrase: "{{ ssh_passphrase | ansible.builtin.vault(vault_password) }}"
+        github_token_encrypted: "{{ git_github_token | ansible.builtin.vault(vault_password) }}"
+      ansible.builtin.template:
+        src: "inventory.yml.j2"
+        dest: "{{ ansible_dir }}/inventory/inventory.yml"
+        decrypt: false
+        mode: "0755"
+      tags: [inventory]

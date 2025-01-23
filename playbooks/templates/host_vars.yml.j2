@@ -2,10 +2,7 @@
 
 # GLOBAL
 
-host_hostname: "{{ bootstrap_hostname }}"
-host_email_address: "{{ bootstrap_email }}"
-host_homebrew_installed: "{{ ansible_facts['env']['HOMEBREW_INSTALL_ON_LINUX'] is defined }}"
+host_email_address: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
 
 # ROLES
 
-{{ role_overrides | default("# Add role variable overrides here") }}
