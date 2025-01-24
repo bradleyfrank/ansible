@@ -73,14 +73,6 @@ case $(uname -s) in
   *)      exit 1 ;;
 esac
 
-# TODO: gh v2.54.0 introduced `--skip-ssh-key` but not all distros are updated yet
-GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
-GH_OAUTH_TOKEN="$(gh auth token)"
-
-if ! echo "$GH_OAUTH_TOKEN" | grep --quiet "^gho_"; then
-  unset GH_OATH_TOKEN
-fi
-
 git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
@@ -90,7 +82,17 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook --inventory inventory.ini playbooks/bootstrap_ansible.yml --extra-vars "github_token=$GH_OAUTH_TOKEN"
+# TODO: gh v2.54.0 introduced `--skip-ssh-key` but not all distros are updated yet
+GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
+GH_TOKEN="$(gh auth token)"
+
+if ! echo "$GH_TOKEN" | grep --quiet "^gho_"; then
+  unset GH_TOKEN
+fi
+
+ansible-playbook playbooks/bootstrap_ansible.yml \
+  --inventory inventory.ini \
+  --extra-vars "github_token=$GH_TOKEN"
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
