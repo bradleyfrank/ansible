@@ -57,3 +57,8 @@
     - name: "Import tmux role"
       ansible.builtin.import_role:
         name: "tmux"
+
+    - name: "Import 1Password role"
+      ansible.builtin.import_role:
+        name: "onepassword"
+        tasks_from: "import"

@@ -1,0 +1,109 @@
+{
+  "title": "{{ ansible_facts['hostname'] }}",
+  "category": "SERVER",
+  "sections": [
+    {
+      "id": "ssh_keys",
+      "label": "SSH"
+    },
+    {
+      "id": "tokens",
+      "label": "TOKENS"
+    },
+    {
+      "id": "admin_console",
+      "label": "Admin Console"
+    }
+  ],
+  "fields": [
+    {
+      "id": "notesPlain",
+      "type": "STRING",
+      "purpose": "NOTES",
+      "label": "notesPlain",
+      "value": ""
+    },
+    {
+      "id": "username",
+      "type": "STRING",
+      "label": "username",
+      "value": "{{ ansible_facts['user_id'] }}"
+    },
+    {
+      "id": "password",
+      "type": "CONCEALED",
+      "label": "password",
+      "value": "{{ onepassword_user_password }}"
+    },
+    {
+      "id": "SSH_id_rsa",
+      "section": {
+        "id": "ssh_keys",
+        "label": "SSH"
+      },
+      "type": "CONCEALED",
+      "label": "id_rsa",
+      "value": "{{ vault_secrets['rsa_ssh_key'] }}"
+    },
+    {
+      "id": "SSH_ed25519_rsa",
+      "section": {
+        "id": "ssh_keys",
+        "label": "SSH"
+      },
+      "type": "CONCEALED",
+      "label": "id_ed25519",
+      "value": "{{ vault_secrets['ed25519_ssh_key'] }}"
+    },
+    {
+      "id": "TOKEN_github",
+      "section": {
+        "id": "tokens",
+        "label": "TOKENS"
+      },
+      "type": "CONCEALED",
+      "label": "GitHub PAT",
+      "value": "{{ vault_secrets['github_token'] }}"
+    },
+    {
+      "id": "TOKEN_ansible_vault",
+      "section": {
+        "id": "tokens",
+        "label": "TOKENS"
+      },
+      "type": "CONCEALED",
+      "label": "Ansible Vault",
+      "value": "{{ vault_secrets['vault_password'] }}"
+    },
+    {
+      "id": "admin_console_url",
+      "section": {
+        "id": "admin_console",
+        "label": "Admin Console"
+      },
+      "type": "STRING",
+      "label": "admin console URL",
+      "value": "{{ ansible_facts['default_ipv4']['address'] }}"
+    },
+    {
+      "id": "admin_console_username",
+      "section": {
+        "id": "admin_console",
+        "label": "Admin Console"
+      },
+      "type": "STRING",
+      "label": "admin console username",
+      "value": "root"
+    },
+    {
+      "id": "admin_console_password",
+      "section": {
+        "id": "admin_console",
+        "label": "Admin Console"
+      },
+      "type": "CONCEALED",
+      "label": "console password",
+      "value": "ADDME"
+    }
+  ]
+}
