@@ -77,7 +77,7 @@ esac
 GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
 GH_OAUTH_TOKEN="$(gh auth token)"
 
-if ! grep --quiet "^gho_" <<< "$GH_OAUTH_TOKEN"; then
+if ! echo "$GH_OAUTH_TOKEN" | grep --quiet "^gho_"; then
   unset GH_OATH_TOKEN
 fi
 
@@ -90,7 +90,7 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook --inventory inventory.ini playbooks/bootstrap_ansible.yml --extra_vars "github_token=$GH_OAUTH_TOKEN"
+ansible-playbook --inventory inventory.ini playbooks/bootstrap_ansible.yml --extra-vars "github_token=$GH_OAUTH_TOKEN"
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \

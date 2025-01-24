@@ -34,19 +34,6 @@
       default: "main"
 
   tasks:
-    - name: "Authenticate to GitHub"
-      ansible.builtin.expect:
-        command: "gh auth login --git-protocol ssh --hostname github.com --web"
-        responses:
-          Generate a new SSH key: "n"
-          Press Enter to open: ""
-      register: cmd_gh_auth_login
-      async: 5
-      poll: 10
-
-    - debug:
-        msg: "{{ cmd_gh_auth_login }}"
-
     - name: "Install Ansible Galaxy requirements"
       community.general.ansible_galaxy_install:
         name: "{{ item['name'] }}"
