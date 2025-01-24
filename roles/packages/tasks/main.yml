@@ -18,7 +18,7 @@
 - name: "Install Homebrew packages for Linux"
   ansible.builtin.include_tasks:
     file: "pkg_mgr/homebrew.yml"
-  when: (ansible_facts['system'] == "Linux" and packages_homebrew_installed) and
+  when: (ansible_facts['system'] == "Linux" and packages_homebrew_install) and
         (ansible_facts['architecture'] == "x86_64" or ansible_facts['architecture'] == "amd64")
   tags: [packages, homebrew, install, repos, formulas]
 
@@ -31,7 +31,7 @@
 - name: "Include Flakpak packages"
   ansible.builtin.import_tasks:
     file: "pkg_mgr/flatpak.yml"
-  when: (ansible_facts['system'] == "Linux") and (packages_install_flatpaks)
+  when: (ansible_facts['system'] == "Linux") and (packages_flatpak_install)
 
 - name: "Ensure binary install path exists"
   ansible.builtin.file:
