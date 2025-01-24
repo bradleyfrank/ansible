@@ -7,8 +7,6 @@ ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
 ANSIBLE_HOST_VARS="${HOME}/.ansible/inventory/host_vars/$(uname --nodename).yml"
-
-export HOMEBREW_INSTALL_ON_LINUX=1
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 
@@ -48,23 +46,22 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  if [ -n "$HOMEBREW_INSTALL_ON_LINUX" ]; then
+  if [ -z "$SKIP_HOMEBREW_LINUX" ]; then
     install_homebrew
   fi
 }
 
 
-while getopts ':hb:n' opt; do
+while getopts ':hg' opt; do
   case "$opt" in
-    h) echo "[-h] | [-n] [-b <branch>]"; exit 0 ;;
-    b) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
-    n) unset HOMEBREW_INSTALL_ON_LINUX ;;
+    h) echo "[-h]elp | [-g <branch>]"; exit 0 ;;
+    g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
   esac
 done
 
 case $(uname -m) in (aarch*|arm*)
-  unset HOMEBREW_INSTALL_ON_LINUX ;;
+  SKIP_HOMEBREW_LINUX=1 ;;
 esac
 
 case $(uname -s) in
@@ -82,17 +79,18 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-# TODO: gh v2.54.0 introduced `--skip-ssh-key` but not all distros are updated yet
-GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
-GH_TOKEN="$(gh auth token)"
-
-if ! echo "$GH_TOKEN" | grep --quiet "^gho_"; then
-  unset GH_TOKEN
+if [ -z "$SKIP_GITHUB" ]; then
+  # TODO: gh v2.54.0 introduced `--skip-ssh-key` but not all distros are updated yet
+  GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
+  GH_TOKEN="$(gh auth token)"
+  if ! echo "$GH_TOKEN" | grep --quiet "^gho_"; then
+    unset GH_TOKEN
+  fi
 fi
 
 ansible-playbook playbooks/bootstrap_ansible.yml \
   --inventory inventory.ini \
-  --extra-vars "github_token=$GH_TOKEN"
+  --extra-vars "github_token=${GH_TOKEN:-None}"
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
@@ -102,5 +100,11 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
   | sed "s/^/# /g" >> "${ANSIBLE_HOST_VARS}"
 
 vim -c "e ${ANSIBLE_HOST_VARS}|redraw|echom 'Save and quit to continue running Ansible.'"
+
+if [ -z "$SKIP_OP" ]; then
+  ansible-playbook playbooks/setup_onepassword.yml --ask-become-pass
+  . "${HOME}/.op_session"
+  rm --force "${HOME}/.op_session"
+fi
 
 ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"

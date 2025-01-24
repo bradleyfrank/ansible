@@ -1,20 +1,21 @@
 ---
 
 - name: "Run all the things"
-  hosts: all
+  hosts: localhost
   tasks:
 
     # SET GROUPS
 
-    - name: "Add host to 'system' group"
+    - name: "Add host to group '{{ item }}'"
       ansible.builtin.group_by:
-        key: "{{ ansible_facts['system'] }}"
+        key: "{{ ansible_facts[item] }}"
+      loop: [system, distribution]
       tags: [always]
 
-    - name: "Add host to 'distribution' group"
-      ansible.builtin.group_by:
-        key: "{{ ansible_facts['distribution'] }}"
-      tags: [always]
+#    - name: "Add host to 'distribution' group"
+#      ansible.builtin.group_by:
+#        key: "{{ ansible_facts['distribution'] }}"
+#      tags: [always]
 
     # ROLE IMPORTS
 

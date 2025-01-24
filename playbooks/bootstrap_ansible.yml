@@ -57,18 +57,11 @@
         version: "{{ git_inventory_branch }}"
       tags: [inventory]
 
-    - name: "Check for existing host_vars"
-      ansible.builtin.stat:
-        path: "{{ host_vars_file }}"
-      register: stat_host_vars_yml
-      tags: [inventory]
-
     - name: "Create host_vars"
       ansible.builtin.template:
         src: "host_vars.yml.j2"
         dest: "{{ host_vars_file }}"
         mode: "0755"
-      when: not stat_host_vars_yml['stat']['exists']
       tags: [inventory]
 
     - name: "Create encrypted secrets file"
