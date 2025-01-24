@@ -1,0 +1,29 @@
+---
+
+- name: "Install gh-cli repository"
+  ansible.builtin.deb822_repository:
+    name: "{{ gh_linux_repo['name'] }}"
+    uris: "{{ gh_linux_repo['uris'] }}"
+    components: "{{ gh_linux_repo['components'] }}"
+    suites: "{{ gh_linux_repo['suites'] }}"
+    signed_by: "{{ gh_linux_repo['signed_by'] }}"
+    state: present
+    enabled: true
+  become: true
+  tags: [gh, install, repos, become]
+
+- name: "Update apt cache"
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  tags: [gh, install, repos, become]
+
+- name: "Install gh-cli package"
+  ansible.builtin.apt:
+    name: "{{ gh_package }}"
+    state: present
+    autoclean: true
+    autoremove: true
+    install_recommends: true
+  become: true
+  tags: [gh, install, cli, become]
