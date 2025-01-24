@@ -6,7 +6,7 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-ANSIBLE_HOST_VARS="${HOME}/.ansible/inventory/host_vars/$(uname -n).yml"
+ANSIBLE_HOST_VARS="${HOME}/.ansible/inventory/host_vars/$(uname --nodename).yml"
 
 export HOMEBREW_INSTALL_ON_LINUX=1
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -26,7 +26,7 @@ bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ID=macos install_homebrew
-  brew install python3 git
+  brew install python3 git gh
 }
 
 
@@ -38,12 +38,12 @@ bootstrap_linux() {
     fedora)
       sudo dnf clean all
       sudo dnf makecache
-      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git redhat-lsb-core
+      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc gh git redhat-lsb-core
       ;;
     debian|ubuntu|linuxmint|pop)
       sudo apt-get clean
       sudo apt-get update
-      sudo apt-get install -y python3 python3-pip python3-venv git lsb-release
+      sudo apt-get install -y python3 python3-pip python3-venv gh git lsb-release
       ;;
     *) exit 1 ;;
   esac
@@ -73,6 +73,14 @@ case $(uname -s) in
   *)      exit 1 ;;
 esac
 
+# TODO: gh v2.54.0 introduced `--skip-ssh-key` but not all distros are updated yet
+GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
+GH_OAUTH_TOKEN="$(gh auth token)"
+
+if ! grep --quiet "^gho_" <<< "$GH_OAUTH_TOKEN"; then
+  unset GH_OATH_TOKEN
+fi
+
 git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
 cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
@@ -82,7 +90,7 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook --inventory inventory.ini playbooks/bootstrap_ansible.yml
+ansible-playbook --inventory inventory.ini playbooks/bootstrap_ansible.yml --extra_vars "github_token=$GH_OAUTH_TOKEN"
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \

@@ -25,10 +25,6 @@
     }}"
 
   vars_prompt:
-    - name: "github_auth"
-      prompt: "Retrieve GitHub OAUTH token?"
-      private: false
-      default: true
     - name: "git_inventory_repo"
       prompt: "Git repository URL for inventory"
       private: false
@@ -40,7 +36,7 @@
   tasks:
     - name: "Authenticate to GitHub"
       ansible.builtin.expect:
-        command: "GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web"
+        command: "gh auth login --git-protocol ssh --hostname github.com --web"
         responses:
           Generate a new SSH key: "n"
           Press Enter to open: ""
@@ -96,7 +92,7 @@
         ssh_ed25519_passphrase_enc: "{{
           ssh_ed25519_passphrase | ansible.builtin.vault(vault_passphrase)
         }}"
-        #github_token_enc: "{{ git_github_token | ansible.builtin.vault(vault_passphrase) }}"
+        github_token_enc: "{{ github_token | ansible.builtin.vault(vault_passphrase) }}"
       ansible.builtin.template:
         src: "secrets.enc.j2"
         dest: "{{ ansible_dir }}/inventory/secrets.enc"
