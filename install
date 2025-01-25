@@ -52,9 +52,9 @@ bootstrap_linux() {
 }
 
 
-while getopts ':hg' opt; do
+while getopts ':hg:t' opt; do
   case "$opt" in
-    h) echo "[-h]elp | [-g <branch>]"; exit 0 ;;
+    h) echo "[-h]elp | [-g <git branch>]"; exit 0 ;;
     g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     *) exit 1 ;;
   esac
@@ -79,15 +79,6 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-if [ -z "$SKIP_GITHUB" ]; then
-  # TODO: gh v2.54.0 introduced `--skip-ssh-key` but not all distros are updated yet
-  GH_BROWSER=false gh auth login --git-protocol ssh --hostname github.com --web
-  GH_TOKEN="$(gh auth token)"
-  if ! echo "$GH_TOKEN" | grep --quiet "^gho_"; then
-    unset GH_TOKEN
-  fi
-fi
-
 ansible-playbook playbooks/bootstrap_ansible.yml \
   --inventory inventory.ini \
   --extra-vars "github_token=${GH_TOKEN:-None}"
@@ -101,7 +92,15 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
 
 vim -c "e ${ANSIBLE_HOST_VARS}|redraw|echom 'Save and quit to continue running Ansible.'"
 
-if [ -z "$SKIP_OP" ]; then
+if [ -n "$SKIP_OP" ]; then
+  ansible-playbook playbooks/setup_onepassword.yml \
+    --ask-become-pass \
+    --extra-vars "onepassword_skip_setup=1" \
+    --extra-vars "onepassword_signin_url=0" \
+    --extra-vars "onepassword_email_address=0" \
+    --extra-vars "onepassword_secret_key=0" \
+    --extra-vars "onepassword_account_password=0"
+else
   ansible-playbook playbooks/setup_onepassword.yml --ask-become-pass
   . "${HOME}/.op_session"
   rm --force "${HOME}/.op_session"

@@ -25,13 +25,35 @@
     }}"
 
   vars_prompt:
-    - name: "git_inventory_repo"
+    - name: git_inventory_repo
       prompt: "Git repository URL for inventory"
       private: false
-    - name: "git_inventory_branch"
+
+    - name: git_inventory_branch
       prompt: "Repository branch for inventory"
       private: false
       default: "main"
+
+    - name: onepassword_signin_url
+      prompt: "Enter the 1Password Signin URL"
+      private: false
+      confirm: true
+
+    - name: onepassword_email_address
+      prompt: "Enter the 1Password Email"
+      private: false
+      confirm: true
+
+    - name: onepassword_secret_key
+      prompt: "Enter the 1Password Secret Key"
+      private: true
+      confirm: true
+
+    - name: onepassword_account_password
+      prompt: "Enter the 1Password Account password"
+      private: true
+      confirm: true
+
 
   tasks:
     - name: "Install Ansible Galaxy requirements"
@@ -57,12 +79,24 @@
         version: "{{ git_inventory_branch }}"
       tags: [inventory]
 
+    - name: "Import group_vars from dotfiles repo"
+      ansible.builtin.include_vars:
+        dir: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/group_vars"
+
     - name: "Create host_vars"
       ansible.builtin.template:
         src: "host_vars.yml.j2"
         dest: "{{ host_vars_file }}"
         mode: "0755"
       tags: [inventory]
+
+    - name: "Include 1Password role"
+      vars:
+        onepassword_write_session_file: true
+      ansible.builtin.import_role:
+        name: "onepassword"
+      when: not onepassword_skip_setup
+      tags: [onepassword]
 
     - name: "Create encrypted secrets file"
       vars:
@@ -74,8 +108,8 @@
         }}"
         github_token_enc: "{{ github_token | ansible.builtin.vault(vault_passphrase) }}"
       ansible.builtin.template:
-        src: "secrets.enc.j2"
-        dest: "{{ ansible_dir }}/inventory/secrets.enc"
+        src: "secrets.yml.j2"
+        dest: "{{ ansible_dir }}/inventory/secrets.yml"
         decrypt: false
         mode: "0700"
       tags: [inventory, vault]
