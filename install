@@ -4,10 +4,17 @@
 set -o errexit
 
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
-ANSIBLE_REPO_BRANCH="main"
-ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
+ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
+ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
+
 ANSIBLE_HOST_VARS="${HOME}/.ansible/inventory/host_vars/$(uname --nodename).yml"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+
+DOTFILES_REPO_URL="${DOTFILES_REPO_URL:-https://github.com/bradleyfrank/dotfiles}"
+DOTFILES_REPO_BRANCH="${DOTFILES_REPO_BRANCH:-main}"
+
+export DOTFILES_REPO_URL
+export DOTFILES_REPO_BRANCH
 
 
 install_homebrew() {
@@ -24,7 +31,7 @@ bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ID=macos install_homebrew
-  brew install python3 git gh
+  brew install python3 git
 }
 
 
@@ -36,12 +43,12 @@ bootstrap_linux() {
     fedora)
       sudo dnf clean all
       sudo dnf makecache
-      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc gh git redhat-lsb-core
+      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git redhat-lsb-core
       ;;
     debian|ubuntu|linuxmint|pop)
       sudo apt-get clean
       sudo apt-get update
-      sudo apt-get install -y python3 python3-pip python3-venv gh git lsb-release
+      sudo apt-get install -y python3 python3-pip python3-venv git lsb-release
       ;;
     *) exit 1 ;;
   esac
@@ -51,14 +58,6 @@ bootstrap_linux() {
   fi
 }
 
-
-while getopts ':hg:t' opt; do
-  case "$opt" in
-    h) echo "[-h]elp | [-g <git branch>]"; exit 0 ;;
-    g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
-    *) exit 1 ;;
-  esac
-done
 
 case $(uname -m) in (aarch*|arm*)
   SKIP_HOMEBREW_LINUX=1 ;;
@@ -79,9 +78,7 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook playbooks/bootstrap_ansible.yml \
-  --inventory inventory.ini \
-  --extra-vars "github_token=${GH_TOKEN:-None}"
+ansible-playbook playbooks/bootstrap_ansible.yml --inventory inventory.ini
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \

@@ -10,30 +10,9 @@
       - name: "community.general"
       - name: "devsec.hardening"
     ansible_dir: "{{ ansible_facts['user_dir'] }}/.ansible"
-    default_secrets:
-      - name: "id_ed25519"
-      - name: "id_rsa"
     host_vars_file: "{{ ansible_dir }}/inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
-    ssh_ed25519_passphrase: "{{
-      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
-    }}"
-    ssh_rsa_passphrase: "{{
-      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
-    }}"
-    vault_passphrase: "{{
-      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
-    }}"
 
   vars_prompt:
-    - name: git_inventory_repo
-      prompt: "Git repository URL for inventory"
-      private: false
-
-    - name: git_inventory_branch
-      prompt: "Repository branch for inventory"
-      private: false
-      default: "main"
-
     - name: onepassword_signin_url
       prompt: "Enter the 1Password Signin URL"
       private: false
@@ -54,7 +33,6 @@
       private: true
       confirm: true
 
-
   tasks:
     - name: "Install Ansible Galaxy requirements"
       community.general.ansible_galaxy_install:
@@ -62,54 +40,22 @@
         type: "collection"
         force: true
       loop: "{{ ansible_collections }}"
-      tags: [collections]
-
-    - name: "Create vault file"
-      ansible.builtin.copy:
-        content: "{{ vault_passphrase }}"
-        dest: "{{ ansible_facts['user_dir'] }}/.ansible/vault"
-        mode: "0400"
-      tags: [vault]
-
-    - name: "Clone inventory repository"
-      ansible.builtin.git:
-        repo: "{{ git_inventory_repo }}"
-        dest: "{{ ansible_dir }}/inventory"
-        accept_hostkey: true
-        version: "{{ git_inventory_branch }}"
-      tags: [inventory]
-
-    - name: "Import group_vars from dotfiles repo"
-      ansible.builtin.include_vars:
-        dir: "{{ ansible_facts['user_dir'] }}/.ansible/inventory/group_vars"
-
-    - name: "Create host_vars"
-      ansible.builtin.template:
-        src: "host_vars.yml.j2"
-        dest: "{{ host_vars_file }}"
-        mode: "0755"
-      tags: [inventory]
 
     - name: "Include 1Password role"
       vars:
         onepassword_write_session_file: true
       ansible.builtin.import_role:
         name: "onepassword"
-      when: not onepassword_skip_setup
-      tags: [onepassword]
 
-    - name: "Create encrypted secrets file"
-      vars:
-        ssh_rsa_passphrase_enc: "{{
-          ssh_rsa_passphrase | ansible.builtin.vault(vault_passphrase)
-        }}"
-        ssh_ed25519_passphrase_enc: "{{
-          ssh_ed25519_passphrase | ansible.builtin.vault(vault_passphrase)
-        }}"
-        github_token_enc: "{{ github_token | ansible.builtin.vault(vault_passphrase) }}"
+    - name: "Clone inventory repository"
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo_url }}"
+        dest: "{{ ansible_dir }}/inventory"
+        accept_hostkey: true
+        version: "{{ dotfiles_repo_branch }}"
+
+    - name: "Create host_vars"
       ansible.builtin.template:
-        src: "secrets.yml.j2"
-        dest: "{{ ansible_dir }}/inventory/secrets.yml"
-        decrypt: false
-        mode: "0700"
-      tags: [inventory, vault]
+        src: "host_vars.yml.j2"
+        dest: "{{ host_vars_file }}"
+        mode: "0755"

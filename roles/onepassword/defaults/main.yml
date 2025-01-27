@@ -1,5 +1,6 @@
 ---
 
+onepassword_import_secrets: true
 onepassword_vault: "Private"
 onepassword_write_session_file: false
 onepassword_use_gui_integration: "{{
