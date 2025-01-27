@@ -1,0 +1,199 @@
+PATH="${HOME}/.local/bin:/opt/bin"
+PATH="${PATH}:${HOME}/.krew/bin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/bin:{{ zsh_homebrew_prefix }}/sbin"
+{% if ansible_facts['distribution'] == "MacOSX" %}
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/coreutils/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-tar/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/grep/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-sed/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gsed/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gawk/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/findutils/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-which/libexec/gnubin"
+{% endif %}
+{% if ansible_facts['distribution'] == "Ubuntu" %}
+PATH="${PATH}:/snap/bin"
+{% endif %}
+PATH="${PATH}:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+
+MANPATH="${HOME}/.local/share/man"
+{% if ansible_facts['distribution'] == "MacOSX" %}
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/coreutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-tar/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/grep/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-sed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gsed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gawk/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/findutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-which/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/share/man"
+{% endif %}
+MANPATH="${MANPATH}:/usr/local/share/man:/usr/share/man"
+
+export PATH
+export MANPATH
+export EDITOR=vim
+export VISUAL=vim
+export BASE16_SHELL="${HOME}/.local/share/base16-shell"
+export CHTSH_QUERY_OPTIONS="style=vs"
+export DOCKER_CLI_HINTS=false
+export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
+export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:33,hl+:33:bold --info=inline --select-1 --exit-0 --reverse --height=~100%"
+export GH_PAGER=glow
+export KEYTIMEOUT=1
+export LESS="-R --mouse"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+{% if (ansible_facts['distribution'] == "MacOSX") or (zsh_prefer_homebrew) %}
+export HELPDIR={{ zsh_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
+export HOMEBREW_CELLAR={{ zsh_homebrew_prefix }}/Cellar
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_EMOJI=1
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_INSTALL_UPGRADE=1
+export HOMEBREW_PREFIX={{ zsh_homebrew_prefix }}
+export HOMEBREW_REPOSITORY={{ zsh_homebrew_prefix }}/Homebrew
+export INFOPATH={{ zsh_homebrew_prefix }}/share/info:"${INFOPATH:-}"
+{% endif %}
+{% if ansible_facts['distribution'] == "Fedora" %}
+export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
+{% endif %}
+{% if ansible_facts['distribution'] == "MacOSX" %}
+
+# Set XDG environment variables for MacOS
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_STATE_HOME="${HOME}/.local/state"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_RUNTIME_DIR="${HOME}/Library/Caches/TemporaryItems"
+{% endif %}
+
+# Set app XDG environment variables
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
+export GOPATH="${XDG_DATA_HOME}/go"
+export MINIKUBE_HOME="${XDG_DATA_HOME}/minikube"
+export NVM_DIR="${XDG_DATA_HOME}/nvm"
+export TERMINFO="${XDG_DATA_HOME}/terminfo"
+export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+export SQLITE_HISTORY="${XDG_CACHE_HOME}/sqlite_history"
+export W3M_DIR="${XDG_DATA_HOME}/w3m"
+
+
+alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
+alias lz='eza --color always --classify --long --all --group-directories-first --no-quotes'
+alias ld='lz --only-dirs'
+alias lg='lz --group'
+alias lG='lz --git'
+alias lk='lz --sort type'
+alias ll='lz --octal-permissions'
+alias lt='lz --tree'
+alias lT='lz --sort time'
+alias lS='lz --sort size'
+
+{% if ansible_facts['os_family'] == "Debian" %}
+alias bat='batcat'
+{% else %}
+unalias run-help
+
+{% endif %}
+alias bwatch='batwatch'
+alias condense='grep -Erv "(^#|^$)"'
+alias cp='cp -i'
+alias dirdiff='git diff --no-index'
+alias e='aunpack'
+alias ff='fastfetch'
+alias glances='glances --theme-white'
+alias glow='glow --config ~/.config/glow.yml'
+alias help='run-help'  # help topics path set via $HELPDIR
+alias isodate='date --iso-8601=seconds'
+alias man='batman'
+alias mkpasswd='pwgen -1y'
+alias mp='multipass'
+alias mux='tmux new-session -A -s main'
+alias psync='rsync -a --info=progress2'
+alias pubip='dig myip.opendns.com @resolver1.opendns.com'
+alias sc='shellcheck'
+alias scp='rsync -va'
+alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
+alias wget='wget --hsts-file="${XDG_DATA_HOME}/wget-hsts"'
+{% if ansible_facts['system'] == "Linux" %}
+alias iowatch='watch -n 1 iostat -xy --human 1 1'
+alias ipa='ip -c a'
+alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
+alias lsports='lsof -i -P -n'
+alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
+{% endif %}
+
+
+cdf() { cd $(dirs -lp | fzf --no-multi); }
+jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
+tardir() { tar -czf "${1%/}".tar.gz "$1"; }
+tim() { tmux split-window -h -c "$(pwd)" "vim $@"; }
+gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
+numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")"; }
+random() { pwgen -1Anr "$(echo {a..z})" "${1:-5}"; }
+zvm_after_init() { bindkey -M viins '^R' atuin-search; }  # rebind after zsh-vi-mode loads
+
+
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:*' fzf-flags --color='light' --border='rounded' --height='~100%'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -Alo --group-directories-first --color=always --smart-group --no-permissions --no-filesize --time-style=relative $realpath'
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
+zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
+zstyle ':completion:*' menu select                 # Use menu selection for completion
+zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
+zstyle ':completion:*' rehash true                 # Auto find new executables in path
+zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
+zstyle ':completion:*' use-cache on                # "
+zstyle ':completion:*' cache-path ~/.zsh/cache     # "
+
+WORDCHARS=${WORDCHARS//\/[&;]}                     # Don't consider these part of the word
+CORRECT_IGNORE_FILE='[_|.]*'                       # Skip correcting commands matching pattern
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=5000
+
+setopt appendhistory           # Immediately append history instead of overwriting
+setopt auto_pushd              # Push directories onto stack
+setopt autocd                  # Change directory without `cd`
+setopt correct                 # Auto correct mistakes
+setopt extended_history        # Save each commands beginning timestamp and the duration
+setopt extendedglob            # Extended globbing. Allows using regular expressions with *
+setopt hist_verify             # Confirm commands from history expansion
+setopt inc_append_history_time # Time taken by the command is recorded correctly in the history file
+setopt nobeep                  # No beep
+setopt nocaseglob              # Case insensitive globbing
+setopt numericglobsort         # Sort filenames numerically when it makes sense
+setopt pushd_ignore_dups       # Ignore duplices in the directory stack
+setopt rcexpandparam           # Array expension with parameters
+
+autoload -Uz compinit bashcompinit zmv zcalc vcs_info edit-command-line run-help
+compinit -C && bashcompinit
+zle -N edit-command-line
+
+
+{% for plugin in zsh_plugins %}
+source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
+{% endfor %}
+{% if ansible_facts['distribution'] == "MacOSX" %}
+source {{ zsh_homebrew_prefix }}/opt/fzf/shell/completion.zsh
+source {{ zsh_homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
+source {{ zsh_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{% elif ansible_facts['distribution'] == "Fedora" %}
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/fzf/shell/key-bindings.zsh
+{% else %}
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+{% endif %}
+for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
+source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
+
+
+eval "$(batman --export-env)"
+eval "$(atuin init zsh)"
+
+base16_solarized-light

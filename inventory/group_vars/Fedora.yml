@@ -1,0 +1,189 @@
+---
+
+bat_exec: "/usr/bin/bat"
+tmux_clipboard: "wl-copy"
+
+system_linux_dconf_distro:
+  - path: "/org/gnome/shell"
+    keys:
+      enabled-extensions: "['GPaste@gnome-shell-extensions.gnome.org','background-logo@fedorahosted.org']"
+      favorite-apps: "['org.gnome.Terminal.desktop','firefox.desktop','org.gnome.Nautilus.desktop','1password.desktop','org.gnome.gedit.desktop','signal-desktop.desktop']"
+
+packages_dnf_packages:
+  cli:
+    - atool
+    - bash-completion
+    - bat
+    - bcal
+    - borgbackup
+    - diceware
+    - dictd
+    - dnf-plugin-system-upgrade
+    - dnf-utils
+    - dua-cli
+    - duf
+    - eza
+    - fastfetch
+    - fd-find
+    - fdkaac
+    - fdupes
+    - ffmpeg
+    - figlet
+    - fwupd
+    - fzf
+    - gcc-c++
+    - gh  # gh-cli
+    - ghostscript
+    - git-delta
+    - glances
+    - gron
+    - hadolint
+    - htop
+    - httpie
+    - iftop
+    - inxi
+    - jq
+    - jo
+    - lame
+    - libmp4v2
+    - libvirt-client
+    - mkvtoolnix
+    - moreutils
+    - most
+    - msmtp
+    - mtr
+    - nmap
+    - ocrmypdf
+    - p7zip
+    - p7zip-plugins
+    - par
+    - perf
+    - pdfgrep
+    - pipx
+    - podman
+    - pwgen
+    - python3
+    - python3-devel
+    - rdfind
+    - ripgrep
+    - ruby
+    - ShellCheck
+    - stow
+    - strace
+    - tidy
+    - tlp
+    - tmux
+    - tmuxp
+    - toilet
+    - trash-cli
+    - tree
+    - trurl
+    - virtualenv
+    - vim
+    - wget
+    - xsel
+    - xz
+    - yt-dlp
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  gui:
+    - 1password  # 1password-gui
+    - alacritty
+    - asciinema
+    - audacious
+    - calibre
+    - distrobox
+    - fragments
+    - ghostwriter
+    - google-chrome-stable  # google-chrome
+    - google-noto-emoji-color-fonts
+    - google-noto-sans-fonts
+    - google-noto-sans-mono-fonts
+    - google-noto-serif-fonts
+    - keepassxc
+    - libreoffice
+    - mediawriter
+    - nextcloud-client
+    - nextcloud-client-nautilus
+    - picard
+    - remmina
+    - seahorse
+    - solaar
+    - system-config-printer
+    - thunderbird
+    - timeshift
+    - torbrowser-launcher
+    - vlc
+  gnome:
+    - celluloid
+    - gedit-plugin-codecomment
+    - gedit-plugin-colorpicker
+    - gedit-plugin-git
+    - gedit-plugin-joinlines
+    - gedit-plugin-multiedit
+    - gnome-characters
+    - gnome-connections
+    - gnome-extensions-app
+    - gnome-games
+    - gnome-shell-extension-gpaste
+    - gnome-tweaks
+    - gnote
+    - gpaste*
+    - gthumb
+    - hydrapaper
+    - libgnome-keyring
+    - meld
+    - mpv
+    - transmission-gtk
+
+packages_homebrew_taps:
+  - charmbracelet/tap
+
+packages_homebrew_formulas:
+  - atuin
+  - bandwhich
+  - bat-extras
+  - csvlens
+  - doctl
+  - freeze
+  - glow
+  - lazygit
+  - nb
+  - qsv
+  - yq
+
+packages_dnf_repos:
+  - name: gh-cli
+    description: packages for the GitHub CLI
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059
+  - name: google-chrome
+    description: Google Chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+  - name: negativo17-multimedia
+    description: negativo17 - Multimedia
+    baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
+    gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+    includepackages: ['*nvidia*']  # https://negativo17.org/nvidia-driver
+  - name: rpmfusion-free
+    description: RPM Fusion for Fedora - Free
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+  - name: rpmfusion-free-updates
+    description: RPM Fusion for Fedora - Free - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    exclude: ['*nvidia*']
+  - name: rpmfusion-nonfree
+    description: RPM Fusion for Fedora - Nonfree
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    exclude: ['*nvidia*']
+  - name: rpmfusion-nonfree-updates
+    description: RPM Fusion for Fedora - Nonfree - Updates
+    metalink: https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch
+    gpgkey: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+    exclude: ['*nvidia*']

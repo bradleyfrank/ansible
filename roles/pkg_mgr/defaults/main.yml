@@ -1,0 +1,38 @@
+---
+
+pkg_mgr_package_manager: "{{ ansible_facts['pkg_mgr'] }}"
+
+pkg_mgr_bin_dir: "{{ ansible_facts['user_dir'] }}/.local/bin"
+pkg_mgr_binaries: []
+
+pkg_mgr_current_desktop: "{{
+  ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('gnome') | lower
+}}"
+
+pkg_mgr_packagekit_enabled: true
+
+pkg_mgr_bin_path:
+  - "/opt/homebrew/bin"
+  - "/home/linuxbrew/.linuxbrew/bin"
+  - "/usr/local/bin"
+  - "{{ ansible_facts['user_dir'] }}/.local/bin"
+  - "{{ ansible_facts['user_dir'] }}/bin"
+  - "{{ ansible_facts['env']['PATH'] }}"
+
+pkg_mgr_homebrew_taps: []
+pkg_mgr_homebrew_casks: []
+pkg_mgr_homebrew_casks_upgrade: true
+pkg_mgr_homebrew_casks_external: true
+pkg_mgr_homebrew_formulas: []
+pkg_mgr_homebrew_formulas_upgrade: true
+
+pkg_mgr_apt_repos: []
+pkg_mgr_apt_packages: {}
+
+pkg_mgr_dnf_repos: []
+pkg_mgr_dnf_packages: {}
+
+pkg_mgr_flatpak_remotes: []
+pkg_mgr_flatpak_packages: {}
+
+pkg_mgr_mas_apps: []

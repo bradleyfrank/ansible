@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+#
+# Wrapper for git-absorb.
+# Author: Brad Frank
+# Date: Nov 2022
+# Tested: GGNU bash, version 5.1.16(1)-release (x86_64-apple-darwin20.6.0)
+#
+
+origin="$(git remote show origin | awk '/HEAD branch/ {print $NF}')"
+base="$(git log "$origin" --oneline --reverse --pretty=format:"%h" | head -n1)"
+git absorb --base "$base" --and-rebase

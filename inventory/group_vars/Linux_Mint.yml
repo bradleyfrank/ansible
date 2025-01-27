@@ -1,0 +1,134 @@
+---
+
+bat_exec: "/usr/bin/batcat"
+tmux_clipboard: "wl-copy"
+
+packages_apt_repos:
+  - name: google-chrome
+    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+    key: https://dl.google.com/linux/linux_signing_key.pub
+  - name: gh-cli
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
+      https://cli.github.com/packages stable main
+    key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
+  - name: charm
+    repo: deb [trusted=yes] https://repo.charm.sh/apt/ /
+    key: https://apt.fury.io/charmcli/gpg.key
+    keyring: /usr/share/keyrings/charmcli.gpg
+  - name: 1password
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
+      https://downloads.1password.com/linux/debian/amd64 stable main
+    key: https://downloads.1password.com/linux/keys/1password.asc
+    keyring: /usr/share/keyrings/1password-archive-keyring.gpg
+
+packages_apt_packages:
+  cli:
+    - apt-file
+    - atool
+    - bash-completion
+    - bat
+    - bcal
+    - borgbackup
+    - diceware
+    - dictd
+    - duf
+    - fd-find
+    - fdupes
+    - ffmpeg
+    - figlet
+    - fwupd
+    - fzf
+    - gh
+    - ghostscript
+    - glances
+    - htop
+    - httpie
+    - iftop
+    - inxi
+    - jq
+    - libmp4-info-perl
+    - libvirt-clients
+    - mkvtoolnix
+    - most
+    - msmtp
+    - mtr
+    - nmap
+    - p7zip-*
+    - par
+    - perf-tools-unstable
+    - pdfgrep
+    - pipx
+    - pwgen
+    - python3
+    - python3-dev
+    - python3-pip
+    - ripgrep
+    - ruby
+    - shellcheck
+    - ssh
+    - stow
+    - strace
+    - tidy
+    - tlp
+    - tmux
+    - tmuxp
+    - toilet
+    - tree
+    - vim
+    - virtualenv
+    - wget
+    - xdelta
+    - xz-utils
+    - yt-dlp
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  gui:
+    - 1password
+    - alacritty
+    - asciinema
+    - audacious
+    - calibre
+    - drawing
+    - fonts-noto-color-emoji
+    - ghostwriter
+    - google-chrome-stable
+    - keepassxc
+    - libreoffice
+    - nextcloud-desktop
+    - picard
+    - remmina
+    - shutter
+    - solaar
+    - system-config-printer
+    - thunderbird
+    - timeshift
+    - torbrowser-launcher
+    - vlc
+  cinnamon:
+    - celluloid
+    - gpaste*
+    - meld
+    - mpv
+    - transmission-gtk
+
+packages_homebrew_taps:
+  - charmbracelet/tap
+
+packages_homebrew_formulas:
+  - atuin
+  - bat-extras
+  - csvlens
+  - doctl
+  - eza
+  - fastfetch
+  - freeze
+  - glow
+  - lazygit
+  - nb
+  - qsv
+  - trurl
+  - yq

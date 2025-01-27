@@ -1,0 +1,14 @@
+session_name: dotfiles
+windows:
+  - window_name: ansible
+    start_directory: ~/Development/Projects/ansible/main
+    layout: even-horizontal
+    panes:
+      - shell_command: benv_activate && benv_sync && clear
+      - shell_command: clear
+  - window_name: dotfiles
+    start_directory: ~/Development/Projects/dotfiles/main
+    layout: even-horizontal
+    panes:
+      - shell_command: clear
+      - shell_command: clear

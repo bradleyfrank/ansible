@@ -1,0 +1,19 @@
+---
+
+- name: "Install flatpak"
+  ansible.builtin.package:
+    name: "flatpak"
+    state: present
+  become: true
+
+- name: "Install flatpak remotes"
+  community.general.flatpak_remote: "{{ item }}"
+  loop: "{{ pkg_mgr_flatpak_remotes }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+
+- name: "Install flatpak packages"
+  community.general.flatpak: "{{ item['name'] }}"
+  loop: "{{ pkg_mgr_flatpak_packages }}"
+  loop_control:
+    label: "{{ item['name'] }}"

@@ -1,0 +1,11 @@
+session_name: nb
+start_directory: ~/Development/Scratch
+windows:
+  - window_name: nb
+    layout: main-vertical
+    focus: true
+    panes:
+      - shell_command: clear && nb orm:ls --all --no-header --no-footer --no-indicator
+      - shell_command: clear && nb orm:edit "Journal"
+        focus: true
+  - window_name: scratch

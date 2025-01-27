@@ -1,0 +1,15 @@
+---
+
+- name: "Include distro-specific package managers"
+  ansible.builtin.include_tasks:
+    file: "{{ pkg_mgr_package_manager }}.yml"
+
+- name: "Install Mac App Store apps"
+  ansible.builtin.include_tasks:
+    file: "mas.yml"
+  when: (ansible_facts['system'] == "Darwin") and (pkg_mgr_mas_apps | length > 0)
+
+- name: "Include Flakpak packages"
+  ansible.builtin.import_tasks:
+    file: "flatpak.yml"
+  when: (ansible_facts['system'] == "Linux") and (pkg_mgr_flatpak_packages | length > 0)

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+#
+# Helps find the parent process and displays the process tree.
+# Author: Brad Frank
+# Date: July 2021
+# Tested: GNU bash, version 5.0.17(1)-release (x86_64-pc-linux-gnu)
+#
+
+if [[ "$(uname -s)" == "Darwin" ]] || [[ -z "$1" ]]; then
+  exit 1
+fi
+
+if [[ "$1" =~ ^[0-9]+$ ]]; then
+  ps --forest -o pid,ppid,user,time,cmd -g "$(ps -o sid= -p "$1")"
+else
+  ps --forest -o pid,ppid,user,time,cmd -g "$(pgrep "$1")"
+fi

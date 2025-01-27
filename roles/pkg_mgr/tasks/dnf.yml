@@ -1,0 +1,47 @@
+---
+
+- name: "Stop packagekit"
+  ansible.builtin.systemd:
+    name: "packagekit"
+    state: stopped
+    enabled: false
+  become: true
+  notify: Start packagekit
+
+- name: "Install gpg keys"
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: "{{ item['state'] | default(present) }}"
+  loop: "{{ pkg_mgr_dnf_repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+
+- name: "Install repositories"
+  ansible.builtin.yum_repository: "{{ item }}"
+  loop: "{{ pkg_mgr_dnf_repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+
+- name: "Refresh cache"
+  ansible.builtin.dnf:
+    update_cache: true
+  become: true
+
+
+
+
+- name: "Install gui packages"
+  ansible.builtin.dnf:
+    name: "{{ packages_dnf_packages['gui'] }}"
+    state: present
+  become: true
+
+- name: "Install Desktop Environment or Window Manager packages"
+  ansible.builtin.dnf:
+    name: "{{ packages_dnf_packages[item] }}"
+    state: present
+  loop: "{{ packages_dnf_packages.keys() | list }}"
+  become: true
+  when: item in packages_current_desktop

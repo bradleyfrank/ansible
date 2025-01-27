@@ -1,0 +1,12 @@
+---
+
+- name: "Install mas formula"
+  community.general.homebrew:
+    name: "mas"
+
+- name: "Install apps via mas"
+  environment:
+    PATH: "{{ pkg_mgr_bin_path | join(':') }}"
+  community.general.mas:
+    id: "{{ pkg_mgr_mas_apps }}"
+    upgrade_all: true

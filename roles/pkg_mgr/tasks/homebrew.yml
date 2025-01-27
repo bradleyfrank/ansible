@@ -1,0 +1,22 @@
+---
+
+  # Checking compatibility avoids errors with arm64 arch that break the play.
+
+- name: "Install Homebrew taps"
+  community.general.homebrew_tap:
+    name: "{{ pkg_mgr_homebrew_taps }}"
+  when: pkg_mgr_brew_compat
+
+- name: "Install Homebrew formulas"
+  community.general.homebrew:
+    name: "{{ pkg_mgr_homebrew_formulas }}"
+    upgrade_all: "{{ pkg_mgr_homebrew_formulas_upgrade }}"
+  when: pkg_mgr_brew_compat
+
+- name: "Install Homebrew casks"
+  community.general.homebrew_cask:
+    name: "{{ pkg_mgr_homebrew_casks }}"
+    accept_external_apps: "{{ pkg_mgr_homebrew_external_casks }}"
+    upgrade_all: "{{ pkg_mgr_homebrew_casks_upgrade }}"
+    install_options: "{{ pkg_mgr_homebrew_casks_install_options | default(omit) }}"
+  when: pkg_mgr_brew_compat
