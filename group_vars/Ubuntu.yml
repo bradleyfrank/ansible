@@ -29,22 +29,33 @@ system_linux_dconf_distro:
         'org.gnome.gedit.desktop',
         'org.signal.Signal.desktop']"
 
-packages_apt_repos:
+pkg_mgr_repos:
   - name: google-chrome
-    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
-    key: https://dl.google.com/linux/linux_signing_key.pub
+    uris: ["https://dl.google.com/linux/chrome/deb"]
+    components: ["main"]
+    suites: ["stable"]
+    enabled: true
+    signed_by: "https://dl.google.com/linux/linux_signing_key.pub"
   - name: gh-cli
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
-      https://cli.github.com/packages stable main
-    key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
+    uris: {"https://cli.github.com/packages"]
+    components: ["main"]
+    suites: ["stable"]
+    enabled: true
+    signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
   - name: charm
-    repo: deb [trusted=yes] https://repo.charm.sh/apt/ /
-    key: https://apt.fury.io/charmcli/gpg.key
-    keyring: /usr/share/keyrings/charmcli.gpg
+    uris: ["https://repo.charm.sh/apt"]
+    components: ["/"]
+    suites: [""]
+    enabled: true
+    signed_by: "https://apt.fury.io/charmcli/gpg.key"
+  - name: ghostty
+    uris: ["http://download.opensuse.org/repositories/home:/clayrisser:/bookworm/Debian_12/"]
+    components: ["/"]
+    suites: [""]
+    enabled: true
+    signed_by: "https://download.opensuse.org/repositories/home:clayrisser:bookworm/Debian_12/Release.key"
 
-packages_apt_packages:
+pkg_mgr_packages:
   cli:
     - apt-file
     - atool
@@ -115,6 +126,7 @@ packages_apt_packages:
     - calibre
     - drawing
     - fonts-noto-color-emoji
+    - ghostty
     - ghostwriter
     - google-chrome-stable
     - keepassxc
@@ -157,20 +169,16 @@ packages_apt_packages:
     - meld
     - mpv
     - transmission-gtk
-
-packages_homebrew_taps:
-  - charmbracelet/tap
-
-packages_homebrew_formulas:
-  - atuin
-  - bat-extras
-  - csvlens
-  - doctl
-  - eza
-  - fastfetch
-  - freeze
-  - glow
-  - lazygit
-  - nb
-  - qsv
-  - yq
+  formulas:
+    - atuin
+    - bat-extras
+    - csvlens
+    - charmbracelet/tap/freeze
+    - charmbracelet/tap/glow
+    - doctl
+    - eza
+    - fastfetch
+    - lazygit
+    - nb
+    - qsv
+    - yq

@@ -1,0 +1,32 @@
+---
+
+- name: "Add apt repositories"
+  become: true
+  block:
+  - name: "Install repository"
+    ansible.builtin.deb822_repository: "{{ item }}"
+    loop: "{{ pkg_mgr_repos }}"
+    loop_control:
+      label: "{{ item['name'] }}"
+- name: "Refresh cache"
+    ansible.builtin.apt:
+      update_cache: true
+
+- name: "Add dnf repositories"
+  become: true
+  block:
+  - name: "Install gpg keys"
+    ansible.builtin.rpm_key:
+      key: "{{ item['gpgkey'] }}"
+      state: present
+    loop: "{{ pkg_mgr_repos }}"
+    loop_control:
+      label: "{{ item['name'] }}"
+  - name: "Install repositories"
+    ansible.builtin.yum_repository: "{{ item }}"
+    loop: "{{ pkg_mgr_repos }}"
+    loop_control:
+      label: "{{ item['name'] }}"
+  - name: "Refresh cache"
+    ansible.builtin.dnf:
+      update_cache: true

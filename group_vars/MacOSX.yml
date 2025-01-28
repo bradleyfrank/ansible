@@ -359,136 +359,131 @@ system_macos_defaults:
     type: "bool"
     value: "true"
 
-packages_homebrew_taps:
-  - noahgorstein/tap  # jqp
+pkg_mgr_packages:
+  formulas:
+    - asciinema
+    - atuin
+    - atool
+    - bandwhich
+    - bash
+    - bash-completion@2
+    - bat
+    - bat-extras
+    - bcal
+    - cabextract
+    - charmbracelet/tap/freeze
+    - charmbracelet/tap/glow
+    - coreutils
+    - csvlens
+    - diceware
+    - dict
+    - doctl
+    - dua-cli
+    - duf
+    - dust
+    - eye-d3
+    - eza
+    - fastfetch
+    - fd
+    - fdupes
+    - ffmpeg
+    - findutils
+    - fzf
+    - fx
+    - gawk
+    - gh
+    - ghostscript
+    - git-absorb
+    - gnu-sed
+    - gnu-tar
+    - gnu-which
+    - grep
+    - gzip
+    - hadolint
+    - httpie
+    - iftop
+    - jq
+    - jo
+    - kpcli
+    - kube-linter
+    - lame
+    - lazygit
+    - less
+    - markdown
+    - moreutils
+    - mtr
+    - nb
+    - nmap
+    - noahgorstein/tap/jqp
+    - ocrmypdf
+    - p7zip
+    - par
+    - pdfgrep
+    - pipx
+    - prettyping
+    - pwgen
+    - qpdf
+    - qsv
+    - rdfind
+    - rename
+    - ripgrep
+    - rpm2cpio
+    - rsync
+    - shellcheck
+    - shellharden
+    - shfmt
+    - slides
+    - ssh-copy-id
+    - tidy-html5
+    - trash
+    - tree
+    - trippy
+    - vim
+    - watch
+    - wget
+    - yamllint
+    - yt-dlp
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+  casks:
+    - 1password
+    - 1password-cli
+    - appcleaner
+    - balenaetcher
+    - calibre
+    - expressions
+    - fantastical
+    - firefox
+    - ghostty
+    - iina
+    - keepassxc
+    - keepingyouawake
+    - kindle
+    - libreoffice
+    - maccy
+    - multipass
+    - mullvadvpn
+    - musicbrainz-picard
+    - nextcloud
+    - plexamp
+    - ppsspp
+    - raindropio
+    - signal
+    - sony-ps-remote-play
+    - spotify
+    - tor-browser
+    - transmission
+    - transmit
+    - utm
+    - vlc
+    - zoom
+  mas:
+    - 1320666476  # Wipr Safari extension
+    - 1529448980  # Reeder
+    - 1549370672  # Raindrop.io Safari extension
+    - 1555925018  # Genki Arcade
+    - 1569813296  # 1Password Safari extension
+    - 1591303229  # Vinegar Safari extension
+    - 1622835804  # Kagi Safari extension
 
-packages_homebrew_formulas:
-  - asciinema
-  - atuin
-  - atool
-  - bandwhich
-  - bash
-  - bash-completion@2
-  - bat
-  - bat-extras
-  - bcal
-  - cabextract
-  - charmbracelet/tap/freeze
-  - coreutils
-  - csvlens
-  - diceware
-  - dict
-  - doctl
-  - dua-cli
-  - duf
-  - dust
-  - eye-d3
-  - eza
-  - fastfetch
-  - fd
-  - fdupes
-  - ffmpeg
-  - findutils
-  - fzf
-  - fx
-  - gawk
-  - gh
-  - ghostscript
-  - git-absorb
-  - charmbracelet/tap/glow
-  - gnu-sed
-  - gnu-tar
-  - gnu-which
-  - grep
-  - gzip
-  - hadolint
-  - httpie
-  - iftop
-  - jq
-  - jqp
-  - jo
-  - kpcli
-  - kube-linter
-  - lame
-  - lazygit
-  - less
-  - markdown
-  - moreutils
-  - mtr
-  - nb
-  - nmap
-  - ocrmypdf
-  - p7zip
-  - par
-  - pdfgrep
-  - pipx
-  - prettyping
-  - pwgen
-  - qpdf
-  - qsv
-  - rdfind
-  - rename
-  - ripgrep
-  - rpm2cpio
-  - rsync
-  - shellcheck
-  - shellharden
-  - shfmt
-  - slides
-  - ssh-copy-id
-  - tidy-html5
-  - tmux
-  - tmuxp
-  - trash
-  - tree
-  - trippy
-  - vim
-  - watch
-  - wget
-  - yamllint
-  - yt-dlp
-  - zsh-autosuggestions
-  - zsh-syntax-highlighting
-
-packages_homebrew_casks_install_options: ["no-quarantine"]
-packages_homebrew_casks:
-  - 1password
-  - 1password-cli
-  - appcleaner
-  - balenaetcher
-  - calibre
-  - expressions
-  - fantastical
-  - firefox
-  - ghostty
-  - iina
-  - keepassxc
-  - keepingyouawake
-  - kindle
-  - libreoffice
-  - maccy
-  - multipass
-  - mullvadvpn
-  - musicbrainz-picard
-  - nextcloud
-  - plexamp
-  - ppsspp
-  - raindropio
-  - signal
-  - sony-ps-remote-play
-  - spotify
-  - tor-browser
-  - transmission
-  - transmit
-  - utm
-  - vlc
-  - zoom
-
-packages_mas_apps:
-  - 1320666476  # Wipr Safari extension
-  - 1529448980  # Reeder
-  - 1549370672  # Raindrop.io Safari extension
-  - 1555925018  # Genki Arcade
-  - 1569813296  # 1Password Safari extension
-  - 1591303229  # Vinegar Safari extension
-  - 1622835804  # Kagi Safari extension
+pkg_mgr_homebrew_casks_install_options: ["no-quarantine"]

@@ -13,7 +13,7 @@
     label: "{{ item['name'] }}"
 
 - name: "Install flatpak packages"
-  community.general.flatpak: "{{ item['name'] }}"
+  community.general.flatpak: "{{ item }}"
   loop: "{{ pkg_mgr_flatpak_packages }}"
   loop_control:
     label: "{{ item['name'] }}"

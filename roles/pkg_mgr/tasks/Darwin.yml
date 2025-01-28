@@ -1,0 +1,10 @@
+---
+
+- name: "Install Homebrew formulas"
+  ansible.builtin.include_tasks:
+    file: "homebrew.yml"
+
+ - name: "Install Mac App Store apps"
+  ansible.builtin.include_tasks:
+    file: "mas.yml"
+  when: pkg_mgr['mas'] | default([]) | length > 0

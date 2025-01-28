@@ -61,7 +61,7 @@ git_repos:
 
 
 # -----+
-# role: packages
+# role: pkg_mgr
 # -----+
 
 pkg_mgr_binaries:

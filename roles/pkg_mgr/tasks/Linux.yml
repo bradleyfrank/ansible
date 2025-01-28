@@ -1,0 +1,46 @@
+---
+
+- name: "Stop packagekit"
+  ansible.builtin.systemd:
+    name: "packagekit"
+    state: stopped
+    enabled: false
+  become: true
+  notify: Start packagekit
+
+- name: "Add package repositories"
+  ansible.builtin.include_tasks:
+    file: "repos.yml"
+
+- name: "Install cli packages"
+  ansible.builtin.package:
+    name: "{{ pkg_mgr_packages['cli'] }}"
+    state: present
+  become: true
+
+- name: "Install gui packages"
+  ansible.builtin.package:
+    name: "{{ pkg_mgr_packages['gui'] }}"
+    state: present
+  when: pkg_mgr_desktop_present
+  become: true
+
+- name: "Install DE/WM packages"
+  ansible.builtin.package:
+    name: "{{ pkg_mgr_packages[item] }}"
+    state: present
+  loop: "{{ pkg_mgr_packages.keys() | list }}"
+  when: item in pkg_mgr_current_desktop
+  become: true
+
+- name: "Install Homebrew formulas"
+  ansible.builtin.include_tasks:
+    file: "homebrew.yml"
+  # Checking compatibility avoids errors with arm64 arch that break the play.
+  when: (ansible_facts['system'] == 'Darwin') or (ansible_facts['system'] == 'Linux' and
+        (ansible_facts['architecture'] == 'x86_64' or ansible_facts['architecture'] == 'amd64'))
+
+- name: "Include Flakpak packages"
+  ansible.builtin.include_tasks:
+    file: "flatpak.yml"
+  when: pkg_mgr_flatpak_install and (pkg_mgr_flatpak_packages | length > 0)
