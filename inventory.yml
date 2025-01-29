@@ -1,7 +1,0 @@
----
-
-local:
-  hosts:
-    MacBookPro-m1
-  vars:
-    ansible_connection: local

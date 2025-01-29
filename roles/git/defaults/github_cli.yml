@@ -1,9 +1,0 @@
----
-
-gh_package: gh
-gh_linux_repo:
-  name: "gh-cli"
-  uris: "https://cli.github.com/packages"
-  components: ["main"]
-  suites: ["stable"]
-  signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"

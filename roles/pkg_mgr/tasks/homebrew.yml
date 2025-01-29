@@ -14,7 +14,7 @@
 - name: "Install Homebrew casks"
   community.general.homebrew_cask:
     name: "{{ pkg_mgr_packages['casks'] }}"
-    accept_external_apps: "{{ pkg_mgr_homebrew_external_casks }}"
+    accept_external_apps: "{{ pkg_mgr_homebrew_casks_external }}"
     upgrade_all: "{{ pkg_mgr_homebrew_casks_upgrade }}"
     install_options: "{{ pkg_mgr_homebrew_casks_install_options | default(omit) }}"
   when: pkg_mgr_packages['casks'] | default([]) | length > 0

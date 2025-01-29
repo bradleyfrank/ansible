@@ -14,22 +14,17 @@
     state: touch
   tags: [ssh, dotfiles]
 
-- name: "Copy user SSH keys"
+- name: "Create SSH key"
+  community.crypto.openssh_keypair:
+    comment: "{{ ansible_facts['user_id'] }}@{{ ansible_hostname }}"
+    passphrase: "{{ item['value'] }}"
+    path: "{{ ansible_facts['user_dir'] }}/.ssh/id_{{ item['key'] }}"
+    size: 4096
+    type: "{{ item['key'] }}"
+  loop: "{{ ssh_keys | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
   tags: [ssh, keys, dotfiles]
-  no_log: true
-  block:
-    - name: "Copy user SSH private keys"
-      ansible.builtin.copy:
-        content: "{{ item['value']['private_key'] }}"
-        dest: "{{ ansible_facts['user_dir'] }}/.ssh/{{ item['key'] }}"
-        mode: "0600"
-      loop: "{{ ssh_user_keys | dict2items }}"
-    - name: "Copy user SSH public keys"
-      ansible.builtin.copy:
-        content: "{{ item['value']['public_key'] }}"
-        dest: "{{ ansible_facts['user_dir'] }}/.ssh/{{ item['key'] }}.pub"
-        mode: "0644"
-      loop: "{{ ssh_user_keys | dict2items }}"
 
 - name: "Create SSH config"
   ansible.builtin.template:

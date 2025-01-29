@@ -8,9 +8,35 @@
   become: true
   notify: Start packagekit
 
-- name: "Add package repositories"
-  ansible.builtin.include_tasks:
-    file: "repos.yml"
+- name: "Add repositories"
+  ansible.builtin.deb822_repository: "{{ item }}"
+  loop: "{{ pkg_mgr_repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: ansible_facts['pkg_mgr'] == "apt"
+
+- name: "Install gpg keys"
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: present
+  loop: "{{ pkg_mgr_repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: ansible_facts['pkg_mgr'] == "dnf"
+
+- name: "Add repositories"
+  ansible.builtin.yum_repository: "{{ item }}"
+  loop: "{{ pkg_mgr_repos }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+  when: ansible_facts['pkg_mgr'] == "dnf"
+
+- name: "Update package manager cache"
+  ansible.builtin.package:
+    update_cache: true
 
 - name: "Install cli packages"
   ansible.builtin.package:
@@ -40,7 +66,7 @@
   when: (ansible_facts['system'] == 'Darwin') or (ansible_facts['system'] == 'Linux' and
         (ansible_facts['architecture'] == 'x86_64' or ansible_facts['architecture'] == 'amd64'))
 
-- name: "Include Flakpak packages"
+- name: "Include Flakpak packages install tasks"
   ansible.builtin.include_tasks:
     file: "flatpak.yml"
   when: pkg_mgr_flatpak_install and (pkg_mgr_flatpak_packages | length > 0)

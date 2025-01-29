@@ -1,7 +1,7 @@
 ---
 
 bat_exec: "/opt/homebrew/bin/bat"
-glow_config_path: "{{ ansible_user_dir }}/Library/Preferences/glow"
+glow_config_path: "{{ ansible_facts['user_dir'] }}/Library/Preferences/glow"
 system_macos_launchd: {}
 tmux_clipboard: "pbcopy"
 zsh_prefer_homebrew: true
@@ -94,7 +94,7 @@ system_macos_defaults:
     domain: "com.apple.finder"
     key: "NewWindowTargetPath"
     type: "string"
-    value: "file://{{ ansible_user_dir }}/Downloads/"
+    value: "file://{{ ansible_facts['user_dir'] }}/Downloads/"
 
   - name: "[Dock] Enable auto-hide"
     domain: "com.apple.dock"
@@ -137,7 +137,7 @@ system_macos_defaults:
     domain: "com.apple.screencapture"
     key: "location"
     type: "string"
-    value: "{{ ansible_user_dir }}/Downloads"
+    value: "{{ ansible_facts['user_dir'] }}/Downloads"
 
   - name: "[Expose] Set bottom-left corner to application windows"
     domain: "com.apple.dock"

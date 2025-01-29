@@ -1,5 +1,9 @@
 ---
 
+- name: "Install GitHub CLI"
+  ansible.builtin.package:
+    name: "gh"
+
 - name: "Template gitconfig"
   vars:
     key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
@@ -7,7 +11,6 @@
     src: "{{ lookup('ansible.builtin.first_found', git_template_gitconfig) }}"
     dest: "{{ git_config_path }}"
     mode: "0755"
-  tags: [git, config, signing, dotfiles]
 
 - name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:
@@ -23,4 +26,3 @@
     dest: "{{ git_signing_allowed_signers }}"
     mode: "0644"
   when: git_signing_key_type == "ssh"
-  tags: [git, config, signing]

@@ -1,0 +1,5 @@
+---
+
+- name: "Include per-system tasks"
+  ansible.builtin.include_tasks:
+    file: "{{ ansible_facts['system'] }}.yml"
