@@ -2,3 +2,4 @@
 
 onepassword_template: "{{ ansible_facts['user_dir'] }}/.ansible/op.json"
 onepassword_homebrew_path: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin"
+onepassword_session: "{{ ansible_facts['user_dir'] }}/.op_session"
