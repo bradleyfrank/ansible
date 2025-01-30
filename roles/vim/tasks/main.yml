@@ -26,7 +26,7 @@
 
 - name: "Install vim config"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', vim_template_vimrc) }}"
+    src: "vimrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.vimrc"
     mode: "0644"
   tags: [vim, config, dotfiles]

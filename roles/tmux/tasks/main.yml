@@ -25,7 +25,7 @@
     filename: "{{ item['key'] }}"
     config: "{{ item['value'] }}"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', tmux_template_conf) }}"
+    src: "tmux.conf.j2"
     dest: "{{ tmux_rc_path }}/{{ filename }}.conf"
     mode: "0755"
   loop: "{{ tmux_config | ansible.builtin.combine(tmux_config_custom, recursive=true) | dict2items }}"

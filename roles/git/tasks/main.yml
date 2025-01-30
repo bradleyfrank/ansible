@@ -8,7 +8,7 @@
   vars:
     key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', git_template_gitconfig) }}"
+    src: "gitconfig.j2"
     dest: "{{ git_config_path }}"
     mode: "0755"
 

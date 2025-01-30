@@ -13,9 +13,5 @@ zsh_supplemental_dirs:
   - "{{ zsh_functions_dir }}"
   - "{{ zsh_rcd_dir }}"
 
-zsh_template_zshrc:
-  - "{{ inventory_dir }}/templates/zshrc.j2"
-  - "templates/zshrc.j2"
-
 zsh_completions: []
 zsh_plugins: []

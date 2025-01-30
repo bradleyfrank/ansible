@@ -28,7 +28,7 @@
 
 - name: "Create SSH config"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', ssh_template_config) }}"
+    src: "ssh.config.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.ssh/config"
     mode: "0644"
     force: "{{ ssh_manage_config_force }}"

@@ -1,12 +1,8 @@
 ---
 
 cloud_local_bin: "{{ ansible_facts['user_dir'] }}/.local/bin"
-
-cloud_k9s_template_config:
-  - "{{ inventory_dir }}/templates/k9s.{{ item }}.yml.j2"
-  - "templates/k9s.{{ item }}.yml.j2"
-
 cloud_krew_bin: "{{ cloud_homebrew_prefix }}/bin/kubectl krew"
+cloud_temp_dir: "/tmp/ansible_cloud_role"
 
 cloud_krew_plugins:
   - cert-manager
@@ -19,5 +15,3 @@ cloud_packages:
   - kubectl
   - krew
   - k9s
-
-cloud_temp_dir: "/tmp/ansible_cloud_role"

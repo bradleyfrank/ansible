@@ -38,7 +38,7 @@
 
 - name: "Template k9s config"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', cloud_k9s_template_config) }}"
+    src: "k9s.{{ item }}.yml.j2"
     dest: "{{ cloud_k9s_config }}/{{ item }}.yml"
     mode: "0644"
   loop: [config, skin]

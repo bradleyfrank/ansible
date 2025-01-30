@@ -6,10 +6,6 @@ git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
 git_ssh_auth_sock: ""
 git_ssh_auth_pid: ""
 
-git_template_gitconfig:
-  - "{{ inventory_dir }}/templates/gitconfig.j2"
-  - "templates/gitconfig.j2"
-
 git_ssh_authorized_keys_from_github: true
 git_ssh_authorized_keys_match: "[*]"
 

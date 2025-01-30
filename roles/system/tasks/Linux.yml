@@ -17,7 +17,7 @@
         state: "directory"
     - name: "Add DNS fallback for systemd-resolved"
       ansible.builtin.template:
-        src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
+        src: "resolved.conf.j2"
         dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
         mode: "0644"
 
