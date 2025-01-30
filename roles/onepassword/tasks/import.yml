@@ -22,5 +22,5 @@
     # https://1password.community/discussion/comment/703328/#Comment_703328
     cmd: "op item create --template {{ onepassword_template }} --format json </dev/null 2>/dev/null"
   register: cmd_op_item_create
-  changed_when: cmd_op_item_create['stdout'] | from_json | length = 0
+  changed_when: (cmd_op_item_create['stdout'] | from_json)['id'] is defined
   tags: [onepassword, import]
