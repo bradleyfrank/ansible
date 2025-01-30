@@ -6,7 +6,7 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
 ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
-ANSIBLE_HOST_VARS="${ANSIBLE_REPO_PATH}/inventory/host_vars/$(uname --nodename).yml"
+ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/inventory/host_vars/$(uname --nodename).yml"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 
