@@ -38,7 +38,7 @@
 
 - name: "Write 1Password session to file"
   ansible.builtin.lineinfile:
-    path: "{{ onepassword_session }}"
+    path: "{{ onepassword_session_file }}"
     mode: "0400"
     insertbefore: "BOF"
     line: "{{ cmd_op_signin['stdout'] }}"

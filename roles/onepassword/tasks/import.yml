@@ -21,9 +21,6 @@
   ansible.builtin.shell:
     # https://1password.community/discussion/comment/703328/#Comment_703328
     cmd: |
-      . {{ onepassword_session }}
+      . {{ onepassword_session_file }}
       op item create --template {{ onepassword_template }} --format json </dev/null 2>/dev/null
-  register: cmd_op_item_create
-  changed_when: (cmd_op_item_create['stdout'] | from_json)['id'] is defined
-  failed_when: (cmd_op_item_create['stdout'] | from_json)['id'] is not defined
   tags: [onepassword, import]
