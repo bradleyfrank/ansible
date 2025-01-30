@@ -21,3 +21,8 @@
     file: "auth.yml"
   when: not onepassword_use_gui_integration
   tags: [onepassword, auth]
+
+- name: "Include import tasks"
+  ansible.builtin.include_tasks:
+    file: "import.yml"
+  tags: [onepassword, import]

@@ -16,7 +16,7 @@
     cmd: "op account list --format json"
   register: cmd_op_account_list
   changed_when: false
-  failed_when: cmd_op_account_list['stdout'] | from_json | length == 0
+  failed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid'] is defined
   tags: [onepassword, auth]
 
 - name: "Generate session token"
