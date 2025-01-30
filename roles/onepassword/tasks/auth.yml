@@ -15,8 +15,8 @@
   ansible.builtin.command:
     cmd: "op account list --format json"
   register: cmd_op_account_list
-  changed_when: false
-  failed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid'] is defined
+  changed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid'] is defined
+  failed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid'] is not defined
   tags: [onepassword, auth]
 
 - name: "Generate session token"
