@@ -40,7 +40,7 @@
     - name: "Extract role default vars"
       ansible.builtin.shell:
         cmd: |
-          set -o pipefail
+          set -o pipefail && \
           grep "^(#|-|$)" roles/*/defaults/main.yml \
             --invert-match \
             --no-filename \
