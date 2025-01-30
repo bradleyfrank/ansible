@@ -28,7 +28,7 @@
 
     - name: "Skip remaining tasks if host_vars exist"
       when: stat_host_vars_yml['stat']['isreg'] is defined
-      meta: end_play
+      ansible.builtin.meta: end_play
 
     - name: "Template host_vars file"
       ansible.builtin.template:
