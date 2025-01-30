@@ -43,5 +43,5 @@
     insertbefore: "BOF"
     line: "{{ cmd_op_signin['stdout'] }}"
     create: true
-  tags: [onepassword, never]
+  tags: [onepassword, auth]
   when: onepassword_write_session_file
