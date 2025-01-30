@@ -37,7 +37,7 @@ pkg_mgr_repos:
     enabled: true
     signed_by: "https://dl.google.com/linux/linux_signing_key.pub"
   - name: gh-cli
-    uris: {"https://cli.github.com/packages"]
+    uris: ["https://cli.github.com/packages"]
     components: ["main"]
     suites: ["stable"]
     enabled: true
