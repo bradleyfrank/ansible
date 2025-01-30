@@ -7,3 +7,7 @@ cloud_architecture:
   amd64: "amd64"
 
 cloud_kubectl_version_url: "https://dl.k8s.io/release/stable.txt"
+
+cloud_k9s_excludes:
+  - "LICENSE"
+  - "README.md"

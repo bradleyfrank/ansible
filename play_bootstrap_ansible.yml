@@ -36,26 +36,3 @@
         dest: "{{ host_vars_yml }}"
         mode: "0644"
       tags: [host_vars]
-
-    - name: "Extract role default vars"
-      ansible.builtin.shell:
-        cmd: |
-          set -o pipefail && \
-          grep "^(#|-|$)" roles/*/defaults/main.yml \
-            --invert-match \
-            --no-filename \
-            --extended-regexp \
-            --color=never
-      changed_when: false
-      register: cmd_grep_defaults_main_yml
-      tags: [host_vars]
-
-    - name: "Append role default variables to host_vars"
-      vars:
-        role_defaults: "{{ cmd_grep_defaults_main_yml['stdout'] }}"
-      ansible.builtin.blockinfile:
-        insertafter: EOF
-        block: "{{ role_defaults | regex_replace('^', '# ', multiline=True) }}"
-        marker: ""
-        path: "{{ host_vars_yml }}"
-      tags: [host_vars]
