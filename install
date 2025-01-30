@@ -71,8 +71,9 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook play_bootstrap_ansible.yml \
-  --extra-vars "ansible_python_interpreter=${PWD}/venv/bin/python3"
+export ANSIBLE_PYTHON_INTERPRETER="${PWD}/venv/bin/python3"
+
+ansible-playbook play_bootstrap_ansible.yml
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
@@ -80,7 +81,6 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
   --extended-regexp \
   --color=never \
   | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
-
 vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running Ansible.'"
 
 ansible-playbook play_init_onepassword.yml --ask-become-pass

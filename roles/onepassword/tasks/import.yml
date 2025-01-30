@@ -12,7 +12,7 @@
     src: "op.json.j2"
     dest: "{{ onepassword_template }}"
     mode: "0600"
-  notify: Delete 1Password template
+  notify: "Delete 1Password template"
   tags: [onepassword, import]
 
 - name: "Import secrets into 1Password"

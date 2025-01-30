@@ -3,4 +3,4 @@
 - name: "Delete 1Password template"
   ansible.builtin.file:
     path: "{{ onepassword_template }}"
-    state: "absent"
+    state: absent
