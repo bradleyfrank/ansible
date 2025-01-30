@@ -6,15 +6,8 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
 ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
-
-ANSIBLE_HOST_VARS="${HOME}/.ansible/inventory/host_vars/$(uname --nodename).yml"
+ANSIBLE_HOST_VARS="${ANSIBLE_REPO_PATH}/inventory/host_vars/$(uname --nodename).yml"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-
-DOTFILES_REPO_URL="${DOTFILES_REPO_URL:-https://github.com/bradleyfrank/dotfiles}"
-DOTFILES_REPO_BRANCH="${DOTFILES_REPO_BRANCH:-main}"
-
-export DOTFILES_REPO_URL
-export DOTFILES_REPO_BRANCH
 
 
 install_homebrew() {
@@ -59,11 +52,11 @@ bootstrap_linux() {
 }
 
 
-case $(uname -m) in (aarch*|arm*)
+case $(uname --machine) in (aarch*|arm*)
   SKIP_HOMEBREW_LINUX=1 ;;
 esac
 
-case $(uname -s) in
+case $(uname --kernel-name) in
   Darwin) bootstrap_mac ;;
   Linux)  bootstrap_linux ;;
   *)      exit 1 ;;
@@ -78,29 +71,10 @@ python3 -m venv venv
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-ansible-playbook playbooks/bootstrap_ansible.yml --inventory inventory.ini
+ansible-playbook play_bootstrap_ansible.yml
+ansible-playbook play_init_onepassword.yml --ask-become-pass
 
-grep "^(#|-|$)" roles/*/defaults/main.yml \
-  --invert-match \
-  --no-filename \
-  --extended-regexp \
-  --color=never \
-  | sed "s/^/# /g" >> "${ANSIBLE_HOST_VARS}"
+. "${HOME}/.op_session"
+rm --force "${HOME}/.op_session"
 
-vim -c "e ${ANSIBLE_HOST_VARS}|redraw|echom 'Save and quit to continue running Ansible.'"
-
-if [ -n "$SKIP_OP" ]; then
-  ansible-playbook playbooks/setup_onepassword.yml \
-    --ask-become-pass \
-    --extra-vars "onepassword_skip_setup=1" \
-    --extra-vars "onepassword_signin_url=0" \
-    --extra-vars "onepassword_email_address=0" \
-    --extra-vars "onepassword_secret_key=0" \
-    --extra-vars "onepassword_account_password=0"
-else
-  ansible-playbook playbooks/setup_onepassword.yml --ask-become-pass
-  . "${HOME}/.op_session"
-  rm --force "${HOME}/.op_session"
-fi
-
-ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"
+#ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"

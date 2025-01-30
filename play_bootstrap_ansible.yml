@@ -1,0 +1,61 @@
+---
+
+- name: "Bootstrap Ansible requirements"
+  hosts: localhost
+
+  vars:
+    galaxy_collections:
+      - name: "ansible.posix"
+      - name: "community.crypto"
+      - name: "community.general"
+      - name: "devsec.hardening"
+    host_vars_yml: "inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
+
+  tasks:
+    - name: "Install Ansible Galaxy requirements"
+      community.general.ansible_galaxy_install:
+        name: "{{ item['name'] }}"
+        type: "{{ item['type'] | default('collection') }}"
+        force: true
+      loop: "{{ galaxy_collections }}"
+      tags: [collections]
+
+    - name: "Check if host_vars already exists"
+      ansible.builtin.stat:
+        path: "{{ host_vars_yml }}"
+      register: stat_host_vars_yml
+      tags: [host_vars]
+
+    - name: "Skip remaining tasks if host_vars exist"
+      when: stat_host_vars_yml['stat']['isreg'] is defined
+      meta: end_play
+
+    - name: "Template host_vars file"
+      ansible.builtin.template:
+        src: "host_vars.yml.j2"
+        dest: "{{ host_vars_yml }}"
+        mode: "0644"
+      tags: [host_vars]
+
+    - name: "Extract role default vars"
+      ansible.builtin.shell:
+        cmd: |
+          set -o pipefail
+          grep "^(#|-|$)" roles/*/defaults/main.yml \
+            --invert-match \
+            --no-filename \
+            --extended-regexp \
+            --color=never
+      changed_when: false
+      register: cmd_grep_defaults_main_yml
+      tags: [host_vars]
+
+    - name: "Append role default variables to host_vars"
+      vars:
+        role_defaults: "{{ cmd_grep_defaults_main_yml['stdout'] }}"
+      ansible.builtin.blockinfile:
+        insertafter: EOF
+        block: "{{ role_defaults | regex_replace('^', '# ', multiline=True) }}"
+        marker: ""
+        path: "{{ host_vars_yml }}"
+      tags: [host_vars]

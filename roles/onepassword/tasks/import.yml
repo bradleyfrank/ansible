@@ -1,42 +1,26 @@
 ---
 
-- name: "Retrieve Vault password from file"
-  ansible.builtin.set_fact:
-    # ignoring errors results in a blank string, which is the desired result
-    vault_password: "{{ lookup('ansible.builtin.file', onepassword_ansible_vault, errors='ignore') }}"
-  tags: [onepassword, import]
-
-- name: "Add Vault password to secrets list"
-  ansible.builtin.set_fact:
-    vault_secrets: "{{ vault_secrets | ansible.builtin.combine({'vault_password': vault_password}) }}"
-  tags: [onepassword, import]
-
-- name: "Get 1Password Vault id"  # noqa command-instead-of-shell
-  ansible.builtin.shell:
-    cmd: "{{ op_bin }} vault get '{{ op_vault }}' --format=json"
-  changed_when: false
-  register: cmd_op_vault_get
-  tags: [onepassword, import]
-
-- name: "Output decrypted secrets to template"
+- name: "Template 1Password json file for importing"
   vars:
-    vault_id: "{{ cmd_op_vault_get['stdout'] | community.general.json_query('id') }}"
+    ed25519_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+    rsa_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
   ansible.builtin.template:
     src: "op.json.j2"
-    dest: "{{ op_template }}"
+    dest: "{{ onepassword_template }}"
     mode: "0600"
+  notify: Delete 1Password template
   tags: [onepassword, import]
 
 - name: "Import secrets into 1Password"
+  environment:
+    PATH: "{{ ansible_facts['env']['PATH'] }}:{{ onepassword_homebrew_path }}"
+  ansible.builtin.shell:
+    # https://1password.community/discussion/comment/703328/#Comment_703328
+    cmd: "op item create --template {{ onepassword_template }} --format json </dev/null 2>/dev/null"
+  register: cmd_op_item_create
+  changed_when: cmd_op_item_create['stdout'] | from_json | length = 0
   tags: [onepassword, import]
-  block:
-    - name: "Import secrets into 1Password"
-      ansible.builtin.shell:
-        # https://1password.community/discussion/comment/703328/#Comment_703328
-        cmd: "{{ op_bin }} item create --template {{ op_template }} </dev/null"
-      changed_when: false
-  always:
-    - name: "Remove 1Password template"
-      ansible.builtin.file:
-        path: "{{ op_template }}"
-        state: "absent"

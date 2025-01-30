@@ -46,6 +46,7 @@ fonts_to_install:
 # role: git
 # -----+
 
+git_github_token: "{{ lookup('community.general.onepassword', 'GitHub Token', field='credential') }}"
 git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
 git_repos_as_worktrees: true
 git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"

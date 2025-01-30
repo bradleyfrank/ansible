@@ -1,7 +1,165 @@
 ---
 
-host_hostname: "MacBookPro-m1"
-host_email_address: "bradfrank@fastmail.com"
-host_has_desktop: true
-cloud_packages: []
-onepassword_vault: "Franco-Puccini"
+global_email_address: "bfrank@MacBookPro-m1"
+
+# cloud_local_bin: "{{ ansible_facts['user_dir'] }}/.local/bin"
+# cloud_k9s_excludes:
+#   - "LICENSE"
+#   - "README.md"
+# cloud_k9s_template_config:
+#   - "{{ inventory_dir }}/templates/k9s.{{ item }}.yml.j2"
+#   - "templates/k9s.{{ item }}.yml.j2"
+# cloud_krew_bin: "{{ cloud_homebrew_prefix }}/bin/kubectl krew"
+# cloud_krew_plugins:
+#   - cert-manager
+#   - deprecations
+#   - get-all
+#   - neat
+#   - stern
+# cloud_packages:
+#   - kubectl
+#   - krew
+#   - k9s
+# cloud_temp_dir: "/tmp/ansible_cloud_role"
+# desktop_replacement_icons: "{{ inventory_dir }}/files/icons"
+# desktop_app_paths:
+#   - "/Applications"
+#   - "{{ ansible_facts['user_dir'] }}/Applications"
+# desktop_environment: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
+# desktop_homebrew_prefix: "/opt/homebrew"
+# desktop_fonts_github_user: "ryanoasis"
+# desktop_fonts_github_repo: "nerd-fonts"
+# desktop_fonts_to_install: []
+# desktop_logi_copy_location: "{{ ansible_facts['user_dir'] }}/Downloads"
+# desktop_logi_homebrew_prefix: "/opt/homebrew"
+# dotfiles_files_source: "{{ inventory_dir }}/files/dotfiles"
+# dotfiles_folders: []
+# dotfiles_local_bin: "{{ ansible_facts['user_dir'] }}/.local/bin"
+# dotfiles_post_processing: []
+# dotfiles_templates: []
+# dotfiles_templates_source: "{{ inventory_dir }}/templates"
+# git_email_address: "{{ host_email_address }}"
+# git_github_token: ""
+# git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
+# git_ssh_auth_sock: ""
+# git_ssh_auth_pid: ""
+# git_template_gitconfig:
+#   - "{{ inventory_dir }}/templates/gitconfig.j2"
+#   - "templates/gitconfig.j2"
+# git_ssh_authorized_keys_from_github: true
+# git_ssh_authorized_keys_match: "[*]"
+# git_ssh_key_upload: true
+# git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
+# git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
+# git_ssh_key_public: "{{ git_ssh_key_private }}.pub"
+# git_ssh_key_passphrase: ""
+# git_signing_key_upload: true
+# git_signing_key_type: "ssh"
+# git_signing_key_file: "{{ git_ssh_key_private }}.pub"
+# git_signing_allowed_signers: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers"
+# git_repos: []
+# git_repos_update: false
+# git_repos_as_worktrees: false
+# git_repos_path: "{{ ansible_facts['user_dir'] }}/Git"
+# onepassword_import_secrets: true
+# onepassword_vault: "Private"
+# onepassword_write_session_file: false
+# onepassword_use_gui_integration: "{{
+#   (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
+#   (ansible_facts['distribution'] == 'MacOSX')
+# }}"
+# pkg_mgr_package_manager: "{{ ansible_facts['pkg_mgr'] }}"
+# pkg_mgr_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
+# pkg_mgr_desktop_present: "{{ ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty' }}"
+# pkg_mgr_packagekit_enabled: true
+# pkg_mgr_bin_path:
+#   - "/opt/homebrew/bin"
+#   - "/home/linuxbrew/.linuxbrew/bin"
+#   - "/usr/local/bin"
+#   - "{{ ansible_facts['user_dir'] }}/.local/bin"
+#   - "{{ ansible_facts['user_dir'] }}/bin"
+#   - "{{ ansible_facts['env']['PATH'] }}"
+# pkg_mgr_homebrew_taps: []
+# pkg_mgr_homebrew_casks: []
+# pkg_mgr_homebrew_casks_upgrade: true
+# pkg_mgr_homebrew_casks_external: true
+# pkg_mgr_homebrew_formulas: []
+# pkg_mgr_homebrew_formulas_upgrade: true
+# pkg_mgr_repos: []
+# pkg_mgr_packages: []
+# pkg_mgr_flatpak_install: "{{ pkg_mgr_desktop_present }}"
+# pkg_mgr_flatpak_remotes: []
+# pkg_mgr_flatpak_packages: {}
+# pkg_mgr_mas_apps: []
+# pkg_mgr_bin_dir: "{{ ansible_facts['user_dir'] }}/.local/bin"
+# pkg_mgr_binaries: []
+# ssh_manage_config: true
+# ssh_manage_config_force: false
+# ssh_template_config:
+#   - "{{ inventory_dir }}/templates/ssh.config.j2"
+#   - "templates/ssh.config.j2"
+# ssh_user_keys: []
+# ssh_manage_host_keys: true
+# ssh_harden_security: true
+# ssh_config:
+#   - host: "*"
+#     args:
+#       User: "{{ ansible_facts['user_id'] }}"
+# ssh_host_keys:
+#   - "rsa"
+#   - "ed25519"
+#   - "ecdsa"
+# system_hostname: "{{ host_hostname | default(ansible_facts['hostname']) }}"
+# system_has_desktop: "{{ host_has_desktop | default(false) }}"
+# system_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
+# system_template_resolved:
+#   - "{{ inventory_dir }}/templates/resolved.conf.j2"
+#   - "templates/resolved.conf.j2"
+# system_linux_dconf_defaults: []
+# system_linux_dconf_distro: []
+# system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]
+# system_linux_dracut_settings: []
+# system_macos_defaults: []
+# system_macos_launchd: {}
+# system_macos_reset_dock: true
+# system_macos_sleep_display: 15
+# system_macos_sleep_computer: 30
+# system_macos_firewall_enabled: true
+# system_macos_locate_enabled: true
+# system_macos_unhide_user_library: true
+# system_macos_unhide_volumes: true
+# tmux_config:
+#   tmux: {}
+# tmux_config_custom: {}
+# tmux_package_name: "tmux"
+# tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
+# tmux_plugins: []
+# tmux_prefer_homebrew: false
+# tmux_rc_path: "{{ ansible_facts['user_dir'] }}/.config/tmux"
+# tmux_template_conf:
+#   - "{{ inventory_dir }}/templates/tmux.conf.j2"
+#   - "templates/tmux.conf.j2"
+# vim_package_name: "vim"
+# vim_prefer_homebrew: false
+# vim_rc: "{{ ansible_facts['user_dir'] }}/.vimrc"
+# vim_extensions: []
+# vim_extensions_dir: "{{ ansible_facts['user_dir'] }}/.vim/pack/default/start"
+# vim_template_vimrc:
+#   - "{{ inventory_dir }}/templates/vimrc.j2"
+#   - "templates/vimrc.j2"
+# zsh_package_name: "zsh"
+# zsh_prefer_homebrew: false
+# zsh_manage_zcompdump: true
+# zsh_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
+# zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.zshrc.d"
+# zsh_functions_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/site-functions"
+# zsh_supplemental_dirs:
+#   - "{{ zsh_plugins_dir }}"
+#   - "{{ zsh_functions_dir }}"
+#   - "{{ zsh_rcd_dir }}"
+# zsh_template_zshrc:
+#   - "{{ inventory_dir }}/templates/zshrc.j2"
+#   - "templates/zshrc.j2"
+# zsh_completions: []
+# zsh_plugins: []
+

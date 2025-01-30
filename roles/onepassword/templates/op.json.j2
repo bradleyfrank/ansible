@@ -33,7 +33,7 @@
       "id": "password",
       "type": "CONCEALED",
       "label": "password",
-      "value": "{{ onepassword_user_password }}"
+      "value": ""
     },
     {
       "id": "SSH_id_rsa",
@@ -43,7 +43,7 @@
       },
       "type": "CONCEALED",
       "label": "id_rsa",
-      "value": "{{ vault_secrets['rsa_ssh_key'] }}"
+      "value": "{{ rsa_passphrase }}"
     },
     {
       "id": "SSH_ed25519_rsa",
@@ -53,27 +53,7 @@
       },
       "type": "CONCEALED",
       "label": "id_ed25519",
-      "value": "{{ vault_secrets['ed25519_ssh_key'] }}"
-    },
-    {
-      "id": "TOKEN_github",
-      "section": {
-        "id": "tokens",
-        "label": "TOKENS"
-      },
-      "type": "CONCEALED",
-      "label": "GitHub PAT",
-      "value": "{{ vault_secrets['github_token'] }}"
-    },
-    {
-      "id": "TOKEN_ansible_vault",
-      "section": {
-        "id": "tokens",
-        "label": "TOKENS"
-      },
-      "type": "CONCEALED",
-      "label": "Ansible Vault",
-      "value": "{{ vault_secrets['vault_password'] }}"
+      "value": "{{ ed25519_passphrase }}"
     },
     {
       "id": "admin_console_url",
@@ -103,7 +83,7 @@
       },
       "type": "CONCEALED",
       "label": "console password",
-      "value": "ADDME"
+      "value": ""
     }
   ]
 }
