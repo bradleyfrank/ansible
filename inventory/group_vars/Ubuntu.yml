@@ -44,8 +44,8 @@ pkg_mgr_repos:
     signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
   - name: charm
     uris: ["https://repo.charm.sh/apt"]
-    components: ["/"]
-    suites: [""]
+    components: ["*"]
+    suites: ["*"]
     enabled: true
     signed_by: "https://apt.fury.io/charmcli/gpg.key"
 
