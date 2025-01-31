@@ -8,6 +8,15 @@ op_vault: "Private"
 
 
 # -----+
+# role: desktop
+# -----+
+
+desktop_fonts_install:
+  - "JetBrainsMono"
+  - "SourceCodePro"
+
+
+# -----+
 # role: dotfiles
 # -----+
 
@@ -31,15 +40,6 @@ dotfiles_templates:
     mode: "0755"
   - name: "dotfiles.zsh.j2"
     dest: "{{ zsh_rcd_dir }}"
-
-
-# -----+
-# role: fonts
-# -----+
-
-fonts_to_install:
-  - "JetBrainsMono"
-  - "SourceCodePro"
 
 
 # -----+

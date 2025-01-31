@@ -3,14 +3,14 @@
 - name: "Include per-OS variables"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
-  tags: [desktop, fonts, kvm, icons]
+  tags: [desktop, fonts, icons]
 
 - name: "Install utilities"
   ansible.builtin.package:
-    name: "{{ desktop_apps }}"
+    name: "{{ desktop_apps_install | default(desktop_apps_install_default) }}"
     state: "present"
   become: "{{ desktop_become }}"
-  tags: [desktop, fonts, kvm, icons, install]
+  tags: [desktop, fonts, icons, install]
 
 - name: "Reset macOS dock"
   community.general.osx_defaults:
@@ -34,15 +34,16 @@
     file: "fonts/main.yml"
   tags: [desktop, fonts]
 
-- name: "Include KVM tasks"
+- name: "Include Logitech tasks"
   ansible.builtin.include_tasks:
-    file: "kvm/main.yml"
+    file: "logi.yml"
+  when: (ansible_facts['system'] == "Darwin") and desktop_logi_app_install
   tags: [desktop, kvm]
 
 - name: "Include icon tasks"
   ansible.builtin.include_tasks:
-    file: "icons/main.yml"
-  loop: "{{ desktop_app_paths }}"
+    file: "icons.yml"
+  loop: "{{ desktop_apps_paths }}"
   loop_control:
     label: "{{ path }}"
     loop_var: path

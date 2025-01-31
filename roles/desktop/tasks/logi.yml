@@ -5,18 +5,18 @@
     path: "/Applications/logioptionsplus.app"
   register: logioptionsplus_app
   when: ansible_facts['system'] == "Darwin"
-  tags: [desktop, kvm]
+  tags: [desktop, logi]
 
 - name: "Download Logi Options+ installer"
-  when: (ansible_facts['system'] == "Darwin") and (not logioptionsplus_app['stat']['exists'])
-  tags: [desktop, kvm, install]
+  when: not logioptionsplus_app['stat']['exists']
+  tags: [desktop, logi, install]
   block:
     - name: "Install Logi Options+"
       community.general.homebrew:
         name: "logi-options-plus"
     - name: "Find Logi installer"
       ansible.builtin.find:
-        paths: "{{ desktop_logi_homebrew_prefix }}/Caskroom/logi-options-plus"
+        paths: "{{ desktop_homebrew_prefix }}/Caskroom/logi-options-plus"
         follow: true
         recurse: true
         patterns: "logioptionsplus_installer.app"
@@ -25,5 +25,5 @@
     - name: "Copy Logi installer"
       ansible.builtin.copy:
         src: "{{ logioptionsplus_installer['files'][0]['path'] }}"
-        dest: "{{ desktop_logi_copy_location }}"
+        dest: "{{ ansible_facts['user_dir'] }}/Downloads"
         mode: "0755"

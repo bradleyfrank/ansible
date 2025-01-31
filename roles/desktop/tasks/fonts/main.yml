@@ -1,46 +1,31 @@
 ---
 
-- name: "Ensure fonts directory exists"
-  ansible.builtin.file:
-    path: "{{ fonts_dir | default(desktop_fonts_default_dir) }}"
-    state: "directory"
-    mode: "0755"
-  tags: [desktop, fonts]
-
 - name: "Get latest release version of Nerd Fonts"
   community.general.github_release:
     user: "{{ desktop_fonts_github_user }}"
     repo: "{{ desktop_fonts_github_repo }}"
     action: latest_release
-    token: "{{ fonts_github_token | default(omit) }}"
-  register: fonts_github_latest_release
-  tags: [desktop, fonts]
-
-- name: "Get installed version"
-  ansible.builtin.set_fact:
-    fonts_current_version: "v0.0.0"
-  when: fonts_current_version is undefined
+  register: desktop_fonts_latest_release
   tags: [desktop, fonts]
 
 - name: "Install newer fonts"
   vars:
-    fonts_latest_version: "{{ fonts_github_latest_release['tag'] }}"
-  when: "fonts_current_version is version(fonts_latest_version, '<')"
+    desktop_fonts_latest_version: "{{ desktop_fonts_latest_release['tag'] }}"
+  when: "desktop_fonts_current_version is version(desktop_fonts_latest_version, '<')"
   tags: [desktop, fonts]
   block:
-    - name: "Show installed font version"
-      ansible.builtin.debug:
-        msg: "Installed Nerd Fonts version is {{ fonts_current_version }}"
-    - name: "Show latest font version"
-      ansible.builtin.debug:
-        msg: "Latest Nerd Fonts version is {{ fonts_latest_version }}"
+    - name: "Ensure fonts directory exists"
+      ansible.builtin.file:
+        path: "{{ desktop_fonts_dir }}"
+        state: directory
+        mode: "0755"
     - name: "Include font install tasks"
       ansible.builtin.include_tasks:
         file: "fonts/install.yml"
-      loop: "{{ fonts_to_install }}"
+      loop: "{{ desktop_fonts_install }}"
     - name: "Set latest version"
       ansible.builtin.set_fact:
-        fonts_current_version: "{{ fonts_latest_version }}"
+        desktop_fonts_current_version: "{{ desktop_fonts_latest_version }}"
         cacheable: true
 
 - name: "Symlink lcdfilter conf for better fonts"
@@ -49,7 +34,7 @@
     dest: "/etc/fonts/conf.d/11-lcdfilter-default.conf"
     owner: "root"
     group: "root"
-    state: "link"
+    state: link
   become: true
   when: ansible_facts['distribution'] == "Fedora"
   tags: [desktop, fonts, become]
