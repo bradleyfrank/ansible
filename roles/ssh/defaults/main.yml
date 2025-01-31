@@ -1,19 +1,18 @@
 ---
 
+ssh_harden_security: true
+
 ssh_manage_config: true
 ssh_manage_config_force: false
+
 ssh_config:
   - host: "*"
     args:
       User: "{{ ansible_facts['user_id'] }}"
-
+ssh_key_passphrases: {}
 
 ssh_manage_host_keys: true
 ssh_host_keys:
   - "rsa"
   - "ed25519"
   - "ecdsa"
-
-ssh_user_keys: []
-
-ssh_harden_security: true

@@ -115,6 +115,21 @@ pkg_mgr_flatpak_packages:
 
 
 # -----+
+# role: ssh
+# -----+
+
+ssh_keys:
+  id_rsa:
+    type: "rsa"
+    passphrase: "{{ lookup('community.general.onepassword', '{{ ansible_facts.hostname }}',
+                     section='SSH', field='id_rsa') }}"
+  id_ed25519:
+    type: "ed25519"
+    passphrase: "{{ lookup('community.general.onepassword', '{{ ansible_facts.hostname }}',
+                     section='SSH', field='id_ed25519') }}"
+
+
+# -----+
 # role: system
 # -----+
 
