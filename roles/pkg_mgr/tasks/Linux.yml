@@ -8,7 +8,7 @@
   become: true
   notify: Start packagekit
 
-- name: "Add repositories"
+- name: "Add repositories (apt)"
   ansible.builtin.deb822_repository: "{{ item }}"
   loop: "{{ pkg_mgr_repos }}"
   loop_control:
@@ -16,7 +16,7 @@
   become: true
   when: ansible_facts['pkg_mgr'] == "apt"
 
-- name: "Install gpg keys"
+- name: "Install gpg keys (apt)"
   ansible.builtin.rpm_key:
     key: "{{ item['gpgkey'] }}"
     state: present
@@ -26,7 +26,7 @@
   become: true
   when: ansible_facts['pkg_mgr'] == "dnf"
 
-- name: "Add repositories"
+- name: "Add repositories (dnf)"
   ansible.builtin.yum_repository: "{{ item }}"
   loop: "{{ pkg_mgr_repos }}"
   loop_control:
@@ -37,6 +37,7 @@
 - name: "Update package manager cache"
   ansible.builtin.package:
     update_cache: true
+  become: true
 
 - name: "Install cli packages"
   ansible.builtin.package:

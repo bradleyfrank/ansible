@@ -48,12 +48,6 @@ pkg_mgr_repos:
     suites: [""]
     enabled: true
     signed_by: "https://apt.fury.io/charmcli/gpg.key"
-  - name: ghostty
-    uris: ["http://download.opensuse.org/repositories/home:/clayrisser:/bookworm/Debian_12/"]
-    components: ["/"]
-    suites: [""]
-    enabled: true
-    signed_by: "https://download.opensuse.org/repositories/home:clayrisser:bookworm/Debian_12/Release.key"
 
 pkg_mgr_packages:
   cli:
