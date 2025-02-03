@@ -1,0 +1,5 @@
+docker_pkgs:
+  prereqs: []
+  packages:
+    - "docker"
+  optional: []

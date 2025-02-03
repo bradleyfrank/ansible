@@ -27,10 +27,6 @@ dotfiles_folders:
   - "Development/Logs"
   - "Development/Build"
 
-dotfiles_post_processing:
-  - name: "Install `bat` themes"
-    cmd: "{{ bat_exec }} cache --build"
-
 dotfiles_templates:
   - name: "atuin.zsh.j2"
     dest: "{{ zsh_rcd_dir }}"

@@ -1,0 +1,32 @@
+- name: "Install Docker prereq packages"
+  ansible.builtin.apt:
+    name: "{{ docker_pkgs['prereqs'] }}"
+    state: present
+    install_recommends: true
+    update_cache: true
+  become: true
+  tags: [docker, install, become]
+
+- name: "Add repositories"
+  ansible.builtin.deb822_repository: "{{ docker_repos }}"
+  become: true
+  tags: [docker, install, become]
+
+- name: "Install Docker packages"
+  ansible.builtin.apt:
+    name: "{{ docker_pkgs['packages'] }}"
+    state: present
+    install_recommends: true
+    update_cache: true
+  become: true
+  tags: [docker, install, become]
+
+- name: "Install optional packages"
+  ansible.builtin.apt:
+    name: "{{ docker_pkgs['optional'] }}"
+    state: present
+    install_recommends: true
+    update_cache: true
+  become: true
+  when: docker_install_optional_packages
+  tags: [docker, install, become]

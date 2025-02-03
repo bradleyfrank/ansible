@@ -1,0 +1,4 @@
+---
+
+docker_install_desktop_version: false
+docker_install_optional_packages: true

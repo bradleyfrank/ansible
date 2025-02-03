@@ -3,3 +3,10 @@
 - name: "Include per-system tasks"
   ansible.builtin.include_tasks:
     file: "{{ ansible_facts['system'] }}.yml"
+  tags: [pkg_mgr]
+
+- name: "Build `bat` cache"
+  ansible.builtin.command:
+    cmd: "{{ exec['bat'] cache --build }}"
+  changed_when: true
+  tags: [pkg_mgr]
