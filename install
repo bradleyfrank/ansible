@@ -81,6 +81,7 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
   --extended-regexp \
   --color=never \
   | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
+
 vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running Ansible.'"
 
 ansible-playbook play_init_onepassword.yml --ask-become-pass

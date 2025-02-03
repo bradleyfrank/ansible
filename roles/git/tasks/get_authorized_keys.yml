@@ -10,8 +10,8 @@
       Accept: "{{ git_github_api_headers_accept }}"
       X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
   register: git_ssh_keys
-  tags: [git, github, keys, authorized_keys]
   when: git_ssh_authorized_keys_from_github
+  tags: [git, authorized_keys]
 
 - name: "Add matching public keys to `authorized_keys`"
   ansible.posix.authorized_key:
@@ -20,5 +20,5 @@
   loop: "{{ git_ssh_keys['json'] | community.general.json_query(git_ssh_authorized_keys_match) }}"
   loop_control:
     label: "{{ item['title'] }}"
-  tags: [git, github, keys, authorized_keys]
   when: git_ssh_authorized_keys_from_github
+  tags: [git, authorized_keys]

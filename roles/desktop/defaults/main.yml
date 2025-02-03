@@ -1,7 +1,5 @@
 ---
 
-desktop_environment: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
-desktop_homebrew_prefix: "/opt/homebrew"
 desktop_logi_app_install: false
 desktop_replacement_icons_dir: "icons"
 
@@ -9,7 +7,10 @@ desktop_fonts_current_version: "{{
   ansible_facts['desktop_fonts_current_version'] | default('v0.0.0')
 }}"
 desktop_fonts_dir: ""
-desktop_fonts_install: []
+
+desktop_fonts_install:
+  - "JetBrainsMono"
+  - "SourceCodePro"
 
 desktop_apps_paths:
   - "/Applications"

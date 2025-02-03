@@ -1,7 +1,10 @@
 ---
 
-host_email_address: "bfrank@oreilly.com"
-host_has_desktop: true
+global_email_address: "bfrank@oreilly.com"
+global_is_desktop_system: true
+global_desktop_environment: null
+global_homebrew_prefix: "/opt/homebrew"
+
 onepassword_vault: "Employee"
 
 desktop_app_paths:
@@ -15,19 +18,17 @@ git_clone_repos:
   - url: "git@github.com:bradleyfrank/cliday.git"
 
 packages_homebrew_casks:
-  - "1password"
-  - "1password-cli"
-  - "alacritty"
-  - "appcleaner"
-  - "google-cloud-sdk"
-  - "itsycal"
-  - "keepingyouawake"
-  - "maccy"
-  - "multipass"
-  - "rectangle"
-  - "utm"
-  - "vlc"
-  - "zoom"
+  - 1password
+  - 1password-cli
+  - appcleaner
+  - google-cloud-sdk
+  - itsycal
+  - keepingyouawake
+  - maccy
+  - multipass
+  - utm
+  - vlc
+  - zoom
 
 packages_mas_apps: []
 

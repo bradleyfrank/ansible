@@ -1,8 +1,10 @@
 ---
 
-- name: "Install GitHub CLI"
+- name: "Install packages"
   ansible.builtin.package:
-    name: "gh"
+    name: "{{ git_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [git, install, become]
 
 - name: "Template gitconfig"
   vars:
@@ -10,7 +12,8 @@
   ansible.builtin.template:
     src: "gitconfig.j2"
     dest: "{{ git_config_path }}"
-    mode: "0755"
+    mode: "0700"
+  tags: [git, gitconfig, dotfiles]
 
 - name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:

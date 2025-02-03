@@ -46,7 +46,7 @@ set tabstop=2
 set backspace=indent,eol,start
 {% if 'MacOSX' in ansible_distribution -%}
 set clipboard=unnamed
-set rtp+={{ vim_homebrew_prefix }}/opt/fzf
+set rtp+={{ global_homebrew_prefix }}/opt/fzf
 {% elif 'Ubuntu' in ansible_distribution -%}
 set rtp+=/usr/share/doc/fzf/examples/
 {% endif -%}

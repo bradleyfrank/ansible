@@ -26,7 +26,7 @@
     label: "{{ item['key'] }}"
   tags: [ssh, keys, dotfiles]
 
-- name: "Create SSH config"
+- name: "Template SSH config"
   ansible.builtin.template:
     src: "ssh.config.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.ssh/config"
@@ -34,6 +34,13 @@
     force: "{{ ssh_manage_config_force }}"
   when: ssh_manage_config
   tags: [ssh, config, dotfiles]
+
+- name: "Template SSH agent script"
+  ansible.builtin.template:
+    src: "op-ssh.bash.j2"
+    dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
+    mode: "0755"
+  tags: [ssh, dotfiles]
 
 - name: "Create host keys"
   community.crypto.openssh_keypair:
@@ -52,7 +59,7 @@
   when: (ansible_facts['distribution'] in ["Linux_Mint", "LMDE"])
   tags: [ssh, hardening]
 
-- name: "Secure SSH settings"
+- name: "Include SSH hardening role"
   ansible.builtin.include_role:
     name: devsec.hardening.ssh_hardening
   tags: [ssh, hardening, become]

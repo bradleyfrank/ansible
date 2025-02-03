@@ -6,6 +6,16 @@ tmux_config_custom: {}
 
 tmux_package_name: "tmux"
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
-tmux_plugins: []
-tmux_prefer_homebrew: false
 tmux_rc_path: "{{ ansible_facts['user_dir'] }}/.config/tmux"
+
+tmux_profiles:
+  - "tmux"
+  - "popup"
+
+tmux_plugins:
+  - name: "tmux-resurrect"
+    repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
+    exec: "resurrect.tmux"
+  - name: "tmux-continuum"
+    repo: "https://github.com/tmux-plugins/tmux-continuum.git"
+    exec: "continuum.tmux"

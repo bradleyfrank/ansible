@@ -1,8 +1,7 @@
 ---
 
 cloud_local_bin: "{{ ansible_facts['user_dir'] }}/.local/bin"
-cloud_krew_bin: "{{ cloud_homebrew_prefix }}/bin/kubectl krew"
-cloud_temp_dir: "/tmp/ansible_cloud_role"
+cloud_krew_bin: "{{ global_homebrew_prefix }}/bin/kubectl krew"
 
 cloud_krew_plugins:
   - cert-manager

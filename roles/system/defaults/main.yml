@@ -1,9 +1,5 @@
 ---
 
-system_hostname: "{{ host_hostname | default(ansible_facts['hostname']) }}"
-system_has_desktop: "{{ host_has_desktop | default(false) }}"
-system_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
-
 system_linux_dconf_defaults: []
 system_linux_dconf_distro: []
 system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]

@@ -1,6 +1,0 @@
----
-
-- name: "Delete temp download directory"
-  ansible.builtin.file:
-    state: "absent"
-    path: "{{ cloud_temp_dir }}"

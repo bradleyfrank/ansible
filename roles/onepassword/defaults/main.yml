@@ -2,7 +2,4 @@
 
 onepassword_vault: "Private"
 onepassword_write_session_file: false
-onepassword_use_gui_integration: "{{
-  (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
-  (ansible_facts['distribution'] == 'MacOSX')
-}}"
+onepassword_use_gui_integration: "{{ global_is_desktop_system | default(false) }}"

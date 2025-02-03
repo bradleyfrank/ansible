@@ -23,4 +23,5 @@
     cmd: |
       . {{ onepassword_session_file }}
       op item create --template {{ onepassword_template }} --format json </dev/null 2>/dev/null
+  changed_when: true
   tags: [onepassword, import]

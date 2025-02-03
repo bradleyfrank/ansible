@@ -1,15 +1,15 @@
 PATH="${HOME}/.local/bin:/opt/bin"
 PATH="${PATH}:${HOME}/.krew/bin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/bin:{{ zsh_homebrew_prefix }}/sbin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/bin:{{ global_homebrew_prefix }}/sbin"
 {% if ansible_facts['distribution'] == "MacOSX" %}
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/coreutils/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-tar/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/grep/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-sed/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gsed/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gawk/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/findutils/libexec/gnubin"
-PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-which/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/coreutils/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gnu-tar/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/grep/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gnu-sed/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gsed/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gawk/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/findutils/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gnu-which/libexec/gnubin"
 {% endif %}
 {% if ansible_facts['distribution'] == "Ubuntu" %}
 PATH="${PATH}:/snap/bin"
@@ -18,15 +18,15 @@ PATH="${PATH}:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 MANPATH="${HOME}/.local/share/man"
 {% if ansible_facts['distribution'] == "MacOSX" %}
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/coreutils/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-tar/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/grep/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-sed/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gsed/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gawk/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/findutils/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-which/libexec/gnuman"
-MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/share/man"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/coreutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gnu-tar/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/grep/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gnu-sed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gsed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gawk/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/findutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gnu-which/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/share/man"
 {% endif %}
 MANPATH="${MANPATH}:/usr/local/share/man:/usr/share/man"
 
@@ -44,16 +44,16 @@ export KEYTIMEOUT=1
 export LESS="-R --mouse"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 {% if (ansible_facts['distribution'] == "MacOSX") or (zsh_prefer_homebrew) %}
-export HELPDIR={{ zsh_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
-export HOMEBREW_CELLAR={{ zsh_homebrew_prefix }}/Cellar
+export HELPDIR={{ global_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
+export HOMEBREW_CELLAR={{ global_homebrew_prefix }}/Cellar
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_EMOJI=1
 export HOMEBREW_NO_ENV_HINTS=1
 export HOMEBREW_NO_INSTALL_CLEANUP=1
 export HOMEBREW_NO_INSTALL_UPGRADE=1
-export HOMEBREW_PREFIX={{ zsh_homebrew_prefix }}
-export HOMEBREW_REPOSITORY={{ zsh_homebrew_prefix }}/Homebrew
-export INFOPATH={{ zsh_homebrew_prefix }}/share/info:"${INFOPATH:-}"
+export HOMEBREW_PREFIX={{ global_homebrew_prefix }}
+export HOMEBREW_REPOSITORY={{ global_homebrew_prefix }}/Homebrew
+export INFOPATH={{ global_homebrew_prefix }}/share/info:"${INFOPATH:-}"
 {% endif %}
 {% if ansible_facts['distribution'] == "Fedora" %}
 export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
@@ -178,9 +178,9 @@ zle -N edit-command-line
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
 {% endfor %}
 {% if ansible_facts['distribution'] == "MacOSX" %}
-source {{ zsh_homebrew_prefix }}/opt/fzf/shell/completion.zsh
-source {{ zsh_homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
-source {{ zsh_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source {{ global_homebrew_prefix }}/opt/fzf/shell/completion.zsh
+source {{ global_homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
+source {{ global_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 {% elif ansible_facts['distribution'] == "Fedora" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/fzf/shell/key-bindings.zsh

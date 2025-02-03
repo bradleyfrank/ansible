@@ -1,4 +1,3 @@
 ---
 
-zsh_default_homebrew_prefix: "/home/linuxbrew/.linuxbrew"
 zsh_default_bin: "/usr/bin/zsh"

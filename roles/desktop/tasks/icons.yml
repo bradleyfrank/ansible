@@ -4,7 +4,7 @@
   vars:
     desktop_app: "{{ path }}/{{ app['path'] | splitext | first }}.app"
   ansible.builtin.command:
-    cmd: "{{ desktop_homebrew_prefix }}/bin/fileicon set {{ desktop_app }} {{ app['src'] }}"
+    cmd: "{{ global_homebrew_prefix }}/bin/fileicon set {{ desktop_app }} {{ app['src'] }}"
   register: cmd_fileicon_set
   changed_when: false
   failed_when:

@@ -13,18 +13,7 @@
   when: (ansible_facts['system'] == "Darwin") or (vim_prefer_homebrew)
   tags: [vim, install]
 
-- name: "Load per-OS variables"
-  ansible.builtin.include_vars:
-    file: "{{ ansible_facts['system'] }}.yml"
-  tags: [vim, dotfiles]
-
-- name: "Set Homebrew prefix"
-  ansible.builtin.set_fact:
-    vim_homebrew_prefix: "{{ vim_default_homebrew_prefix }}"
-  when: vim_homebrew_prefix is undefined
-  tags: [vim, dotfiles]
-
-- name: "Install vim config"
+- name: "Template vim config"
   ansible.builtin.template:
     src: "vimrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.vimrc"

@@ -1,25 +1,30 @@
 ---
 
-- name: "Install zsh (via OS package manager)"
+- name: "Install zsh"
   ansible.builtin.package:
     name: "{{ zsh_package_name }}"
-  become: true
-  when: (ansible_facts['system'] == "Linux") and (not zsh_prefer_homebrew)
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
   tags: [zsh, install, become]
 
-- name: "Install zsh (via Homebrew)"
-  community.general.homebrew:
-    name: "{{ zsh_package_name }}"
-  when: (ansible_facts['system'] == "Darwin") or (zsh_prefer_homebrew)
-  tags: [zsh, install]
+- name: "Get current Zsh version"
+  ansible.builtin.command:
+    cmd: "{{ zsh_bin[ansible_facts['system']] }} --version"
+  register: cmd_zsh_version
+  changed_when: false
+  tags: [zsh, dotfiles]
 
-- name: "Include tasks for setting vars"
-  ansible.builtin.import_tasks:
-    file: "vars.yml"
+- name: "Set current Zsh version"
+  ansible.builtin.set_fact:
+    zsh_current_version: "{{ (cmd_zsh_version['stdout'] | split)[1] }}"
+  tags: [zsh, dotfiles]
 
-- name: "Include tasks for managing supplemental directories"
-  ansible.builtin.import_tasks:
-    file: "dirs.yml"
+- name: "Ensure supplemental Zsh directories exist"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0744"
+  loop: "{{ zsh_supplemental_dirs }}"
+  tags: [zsh, zsh_dirs, dotfiles]
 
 - name: "Configure Homebrew Zsh for MacOS"
   when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
@@ -29,7 +34,7 @@
     - name: "Add Homebrew Zsh to available shells"
       ansible.builtin.lineinfile:
         path: "/etc/shells"
-        line: "{{ zsh_homebrew_prefix }}/bin/zsh"
+        line: "{{ global_homebrew_prefix }}/bin/zsh"
     - name: "Fix Homebrew Zsh folder permissions"
       ansible.builtin.file:
         path: "{{ item }}"
@@ -39,8 +44,8 @@
 - name: "Set Zsh as default shell"
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
-    shell: "{{ zsh_bin_path }}"
-  when: ansible_facts['user_shell'] != zsh_bin_path
+    shell: "{{ zsh_bin[ansible_facts['system']] }}"
+  when: ansible_facts['user_shell'] != zsh_bin[ansible_facts['system']]
   become: true
   tags: [zsh, shell, become]
 

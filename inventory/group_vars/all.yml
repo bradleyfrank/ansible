@@ -1,51 +1,13 @@
 ---
 
 # -----+
-# global
-# -----+
-
-op_vault: "Private"
-
-
-# -----+
-# role: desktop
-# -----+
-
-desktop_fonts_install:
-  - "JetBrainsMono"
-  - "SourceCodePro"
-
-
-# -----+
-# role: dotfiles
-# -----+
-
-dotfiles_folders:
-  - "Development/Projects"
-  - "Development/Notes"
-  - "Development/Scratch"
-  - "Development/Logs"
-  - "Development/Build"
-
-dotfiles_templates:
-  - name: "atuin.zsh.j2"
-    dest: "{{ zsh_rcd_dir }}"
-  - name: "op-ssh.bash.j2"
-    dest: "{{ dotfiles_local_bin }}"
-    rename: "op-ssh"
-    mode: "0755"
-  - name: "dotfiles.zsh.j2"
-    dest: "{{ zsh_rcd_dir }}"
-
-
-# -----+
 # role: git
 # -----+
 
-git_github_token: "{{ lookup('community.general.onepassword', 'GitHub Token', field='credential') }}"
-git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
-git_repos_as_worktrees: true
-git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+git_github_token: "{{
+  lookup('community.general.onepassword', 'GitHub Token', field='credential')
+}}"
+
 git_repos:
   - url: "ssh://git@github.com/bradleyfrank/dotfiles.git"
   - url: "ssh://git@github.com/bradleyfrank/ansible.git"
@@ -184,18 +146,6 @@ system_linux_dracut_settings:
 # role: tmux
 # -----+
 
-tmux_profiles:
-  - "tmux"
-  - "popup"
-
-tmux_plugins:
-  - name: "tmux-resurrect"
-    repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
-    exec: "resurrect.tmux"
-  - name: "tmux-continuum"
-    repo: "https://github.com/tmux-plugins/tmux-continuum.git"
-    exec: "continuum.tmux"
-
 tmux_config:
   tmux:
     pane_border_color:
@@ -223,59 +173,3 @@ tmux_config:
     window_status_activity: "fg=violet,bg=default"
     window_status_current_format: "#[fg=color230,bg=color166]#[bold] [#I] #W #[nobold]"
     window_status_format: "#[fg=color166,bg=default]#[bold] [#I] #W #[nobold]"
-
-
-# -----+
-# role: vim
-# -----+
-
-vim_extensions:
-  - name: "vim-airline"
-    repo: "https://github.com/vim-airline/vim-airline.git"
-  - name: "vim-airline-themes"
-    repo: "https://github.com/vim-airline/vim-airline-themes.git"
-  - name: "vim-gitgutter"
-    repo: "https://github.com/airblade/vim-gitgutter.git"
-    version: "main"
-  - name: "vim-indent-guides"
-    repo: "https://github.com/preservim/vim-indent-guides.git"
-  - name: "vim-terraform"
-    repo: "https://github.com/hashivim/vim-terraform.git"
-  - name: "vim-solarized8"
-    repo: "https://github.com/lifepillar/vim-solarized8.git"
-  - name: "vim-jinja2-syntax"
-    repo: "https://github.com/Glench/Vim-Jinja2-Syntax.git"
-  - name: "fzf.vim"
-    repo: "https://github.com/junegunn/fzf.vim.git"
-  - name: "vim-fugitive"
-    repo: "https://github.com/tpope/vim-fugitive.git"
-  - name: "vim-css-color"
-    repo: "https://github.com/ap/vim-css-color.git"
-  - name: "vim-markdown"
-    repo: "https://github.com/preservim/vim-markdown.git"
-  - name: "vim-peekaboo"
-    repo: "https://github.com/junegunn/vim-peekaboo.git"
-
-
-# -----+
-# role: zsh
-# -----+
-
-zsh_completions:
-  - name: "cht"
-    command: "curl -L https://cheat.sh/:zsh"
-  - name: "nb"
-    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
-  - name: "doctl"
-    command: "doctl completion zsh"
-
-zsh_plugins:
-  - name: "fzf-tab"
-    repo: "https://github.com/Aloxaf/fzf-tab"
-    source: "fzf-tab.plugin.zsh"
-  - name: "zsh-vi-mode"
-    repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
-    source: "zsh-vi-mode.plugin.zsh"
-  - name: "base16-shell"
-    repo: "https://github.com/chriskempson/base16-shell.git"
-    source: "profile_helper.sh"

@@ -2,7 +2,7 @@
 
 pkg_mgr_package_manager: "{{ ansible_facts['pkg_mgr'] }}"
 pkg_mgr_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
-pkg_mgr_desktop_present: "{{ ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty' }}"
+pkg_mgr_desktop_present: "{{ global_is_desktop_system | default(false) }}"
 pkg_mgr_packagekit_enabled: true
 
 pkg_mgr_bin_path:

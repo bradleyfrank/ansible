@@ -1,6 +1,6 @@
 ---
 
-- name: "Try installing packages via Homebrew"
+- name: "Install packages via Homebrew"
   tags: [cloud, kubectl, k9s, krew, install]
   block:
     - name: "Install K8s packages"
@@ -14,12 +14,6 @@
 - name: "Load per-OS variables"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['system'] }}.yml"
-  tags: [cloud, kubectl, k9s, krew, dotfiles]
-
-- name: "Set Homebrew prefix"
-  ansible.builtin.set_fact:
-    cloud_homebrew_prefix: "{{ cloud_default_homebrew_prefix }}"
-  when: cloud_homebrew_prefix is undefined
   tags: [cloud, kubectl, k9s, krew, dotfiles]
 
 - name: "Set k9s config path"

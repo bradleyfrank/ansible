@@ -16,7 +16,7 @@
         name: "logi-options-plus"
     - name: "Find Logi installer"
       ansible.builtin.find:
-        paths: "{{ desktop_homebrew_prefix }}/Caskroom/logi-options-plus"
+        paths: "{{ global_homebrew_prefix }}/Caskroom/logi-options-plus"
         follow: true
         recurse: true
         patterns: "logioptionsplus_installer.app"

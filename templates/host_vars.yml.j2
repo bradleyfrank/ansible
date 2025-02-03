@@ -1,4 +1,14 @@
 ---
 
+global_homebrew_prefix:
+  {%- if ansible_facts['system'] == "Linux" %} "/home/linuxbrew/.linuxbrew"
+  {%- elif ansible_facts['system'] == "MacOSX" %} "/opt/homebrew"
+  {%- endif %}
 global_email_address: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
-
+global_is_desktop_system: "{{
+  (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
+  (ansible_facts['distribution'] == 'MacOSX')
+}}"
+global_desktop_environment: "{{
+  ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default(null) | lower
+}}"

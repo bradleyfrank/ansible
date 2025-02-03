@@ -22,7 +22,7 @@
 [core]
   excludesfile = {{ ansible_facts['user_dir'] }}/.gitignore
   editor = vim
-{% if 'Darwin' in ansible_system %}
+{% if ansible_facts['system'] == 'Darwin' %}
   fsmonitor = true
 {% endif %}
   untrackedCache = true
@@ -50,7 +50,7 @@
   showUntrackedfiles = all
 [user]
   name = {{ ansible_facts['user_gecos'] }}
-  email = {{ git_email_address }}
+  email = {{ global_email_address }}
   signingkey = {{ key_contents[0] }} {{ key_contents[1] }}
 [include]
   path = ~/.gitconfig.d/config

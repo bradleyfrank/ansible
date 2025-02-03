@@ -2,18 +2,16 @@
 
 - name: "Ensure bin directory exists"
   ansible.builtin.file:
-    state: "directory"
+    state: directory
     path: "{{ cloud_local_bin }}"
     mode: "0755"
   changed_when: true
 
 - name: "Create temp download directory"
-  ansible.builtin.file:
-    state: "directory"
-    path: "{{ cloud_temp_dir }}"
-    mode: "0755"
+  ansible.builtin.tempfile:
+    state: directory
+  register: cloud_temp_dir
   tags: [cloud, kubectl, k9s, krew, install]
-  notify: "Delete temp download directory"
 
 - name: "Install kubectl"
   vars:

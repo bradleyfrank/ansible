@@ -1,8 +1,6 @@
 ---
 
-zsh_homebrew_bin: "{{ zsh_homebrew_prefix }}/bin/zsh"
-zsh_bin_path: "{{ zsh_prefer_homebrew | ternary(zsh_homebrew_bin, zsh_default_bin) }}"
 zsh_chmod_directories:
-  - "{{ zsh_homebrew_prefix }}/share"
-  - "{{ zsh_homebrew_prefix }}/share/zsh"
-  - "{{ zsh_homebrew_prefix }}/share/zsh/site-functions"
+  - "{{ global_homebrew_prefix }}/share"
+  - "{{ global_homebrew_prefix }}/share/zsh"
+  - "{{ global_homebrew_prefix }}/share/zsh/site-functions"
