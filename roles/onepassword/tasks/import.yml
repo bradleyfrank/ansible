@@ -17,7 +17,7 @@
 
 - name: "Import secrets into 1Password"
   environment:
-    PATH: "{{ ansible_facts['env']['PATH'] }}:{{ onepassword_homebrew_path }}"
+    PATH: "{{ ansible_facts['env']['PATH'] }}:{{ global_homebrew_prefix }}/bin"
   ansible.builtin.shell:
     # https://1password.community/discussion/comment/703328/#Comment_703328
     cmd: |

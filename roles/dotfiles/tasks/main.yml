@@ -1,0 +1,22 @@
+---
+
+- name: "Create development folder structure"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
+    state: directory
+    mode: "0644"
+    recurse: false
+  loop:
+    - "Development/Projects"
+    - "Development/Notes"
+    - "Development/Scratch"
+    - "Development/Logs"
+    - "Development/Build"
+
+- name: "Sync dotfiles to home directory"
+  ansible.posix.synchronize:
+    src: "home"
+    dest: "{{ ansible_facts['user_dir'] }}/"
+    compress: false
+    owner: false
+    group: false

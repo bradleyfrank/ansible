@@ -4,7 +4,10 @@ tmux_config:
   tmux: {}
 tmux_config_custom: {}
 
-tmux_package_name: "tmux"
+tmux_packages:
+  - tmux
+  - tmuxp
+
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 tmux_rc_path: "{{ ansible_facts['user_dir'] }}/.config/tmux"
 

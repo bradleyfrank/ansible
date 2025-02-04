@@ -1,7 +1,9 @@
 ---
 
+zsh_packages:
+  - zsh
+
 zsh_bin: "{{ '/usr/bin/zsh' if ansible_facts['system'] == 'Linux' else '/bin/zsh' }}"
-zsh_package_name: "zsh"
 zsh_manage_zcompdump: true
 
 zsh_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"

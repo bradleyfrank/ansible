@@ -1,8 +1,0 @@
----
-
-dotfiles_files_source: "{{ inventory_dir }}/files/dotfiles"
-dotfiles_folders: []
-dotfiles_local_bin: "{{ ansible_facts['user_dir'] }}/.local/bin"
-dotfiles_post_processing: []
-dotfiles_templates: []
-dotfiles_templates_source: "{{ inventory_dir }}/templates"

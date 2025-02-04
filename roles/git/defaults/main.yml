@@ -1,6 +1,9 @@
 ---
 
-git_packages: [git, gh]
+git_packages:
+  - git
+  - gh
+
 git_github_token: ""
 git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
 

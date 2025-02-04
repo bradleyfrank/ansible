@@ -1,6 +1,6 @@
 ---
 
-- name: "Install packages"
+- name: "Install git packages"
   ansible.builtin.package:
     name: "{{ git_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"

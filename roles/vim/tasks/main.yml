@@ -1,19 +1,11 @@
 ---
 
-- name: "Install vim (via OS package manager)"
+- name: "Install vim packages"
   ansible.builtin.package:
-    name: "{{ vim_package_name }}"
-  become: true
-  when: (ansible_facts['system'] == "Linux") and (not vim_prefer_homebrew)
-  tags: [vim, become]
+    name: "{{ vim_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [vim, install, become]
 
-- name: "Install vim (via Homebrew)"
-  community.general.homebrew:
-    name: "{{ vim_package_name }}"
-  when: (ansible_facts['system'] == "Darwin") or (vim_prefer_homebrew)
-  tags: [vim, install]
-
-- name: "Template vim config"
   ansible.builtin.template:
     src: "vimrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.vimrc"

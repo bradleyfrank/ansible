@@ -1,8 +1,8 @@
 ---
 
-- name: "Install zsh"
+- name: "Install zsh packages"
   ansible.builtin.package:
-    name: "{{ zsh_package_name }}"
+    name: "{{ zsh_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
   tags: [zsh, install, become]
 

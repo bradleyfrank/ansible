@@ -1,17 +1,10 @@
 ---
 
-- name: "Install tmux (via OS package manager)"
+- name: "Install tmux packages"
   ansible.builtin.package:
-    name: "{{ tmux_package_name }}"
-  become: true
-  when: (ansible_facts['system'] == "Linux") and (not tmux_prefer_homebrew)
-  tags: [tmux, become]
-
-- name: "Install tmux (via Homebrew)"
-  community.general.homebrew:
-    name: "{{ tmux_package_name }}"
-  when: (ansible_facts['system'] == "Darwin") or (tmux_prefer_homebrew)
-  tags: [tmux, install]
+    name: "{{ tmux_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [tmux, install, become]
 
 - name: "Ensure tmux config path exists"
   ansible.builtin.file:

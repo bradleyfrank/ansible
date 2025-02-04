@@ -1,9 +1,9 @@
 ---
 
-ssh_harden_security: true
 ssh_manage_config: true
 ssh_manage_config_force: false
-ssh_manage_host_keys: true
+
+ssh_harden_security: true
 
 ssh_config:
   - host: "*"
@@ -18,6 +18,7 @@ ssh_keys:
     type: "ed25519"
     passphrase: ""
 
+ssh_manage_host_keys: true
 ssh_host_keys:
   - "rsa"
   - "ed25519"

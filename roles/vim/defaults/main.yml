@@ -1,7 +1,8 @@
 ---
 
-vim_package_name: "vim"
-vim_prefer_homebrew: false
+vim_packages:
+  - vim
+
 vim_rc: "{{ ansible_facts['user_dir'] }}/.vimrc"
 
 vim_extensions_dir: "{{ ansible_facts['user_dir'] }}/.vim/pack/default/start"
