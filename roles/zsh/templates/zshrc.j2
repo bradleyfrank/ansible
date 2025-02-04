@@ -43,7 +43,7 @@ export GH_PAGER=glow
 export KEYTIMEOUT=1
 export LESS="-R --mouse"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-{% if (ansible_facts['distribution'] == "MacOSX") or (zsh_prefer_homebrew) %}
+{% if (ansible_facts['distribution'] == "MacOSX") %}
 export HELPDIR={{ global_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
 export HOMEBREW_CELLAR={{ global_homebrew_prefix }}/Cellar
 export HOMEBREW_NO_AUTO_UPDATE=1

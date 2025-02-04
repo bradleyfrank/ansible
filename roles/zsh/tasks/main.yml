@@ -27,7 +27,7 @@
   tags: [zsh, zsh_dirs, dotfiles]
 
 - name: "Configure Homebrew Zsh for MacOS"
-  when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
+  when: ansible_facts['system'] == "Darwin"
   become: true
   tags: [zsh, shell, become]
   block:
