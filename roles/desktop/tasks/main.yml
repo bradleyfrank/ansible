@@ -5,12 +5,12 @@
     file: "{{ ansible_facts['system'] }}.yml"
   tags: [desktop, fonts, icons]
 
-- name: "Install utilities"
+- name: "Install desktop utilities"
   ansible.builtin.package:
-    name: "{{ desktop_apps_install | default(desktop_apps_install_default) }}"
-    state: "present"
-  become: "{{ desktop_become }}"
-  tags: [desktop, fonts, icons, install]
+    name: "{{ desktop_packages }}"
+    state: present
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [desktop, fonts, icons, never]
 
 - name: "Reset macOS dock"
   community.general.osx_defaults:

@@ -4,7 +4,7 @@
   ansible.builtin.package:
     name: "{{ tmux_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [tmux, install, become]
+  tags: [tmux, install, never]
 
 - name: "Ensure tmux config path exists"
   ansible.builtin.file:

@@ -5,16 +5,16 @@
     name: "{{ docker_pkgs['packages'] }}"
     install_options: "{{ docker_homebrew_casks_install_options | default(omit) }}"
   when: docker_install_desktop_version
-  tags: [docker, install]
+  tags: [docker, never]
 
 - name: "Install Docker Engine"
   community.general.homebrew:
     name: "{{ docker_pkgs['packages'] }}"
   when: not docker_install_desktop_version
-  tags: [docker, install]
+  tags: [docker, never]
 
 - name: "Install optional packages"
   community.general.homebrew:
     name: "{{ docker_pkgs['optional'] }}"
   when: docker_install_optional_packages
-  tags: [docker, install]
+  tags: [docker, never]

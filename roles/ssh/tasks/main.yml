@@ -1,5 +1,11 @@
 ---
 
+- name: "Install ssh packages"
+  ansible.builtin.package:
+    name: "{{ ssh_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [ssh, install, never]
+
 - name: "Ensure SSH directory is present"
   ansible.builtin.file:
     mode: "0755"
@@ -51,7 +57,7 @@
     label: "{{ item }}"
   become: true
   when: (ansible_facts['system'] == "Linux") and (ssh_manage_host_keys)
-  tags: [ssh, host_keys, become]
+  tags: [ssh, host_keys, never]
 
 - name: "Set SSH hardening vars for Linux Mint"
   ansible.builtin.set_fact:
@@ -62,5 +68,5 @@
 - name: "Include SSH hardening role"
   ansible.builtin.include_role:
     name: devsec.hardening.ssh_hardening
-  tags: [ssh, hardening, become]
+  tags: [ssh, hardening, never]
   when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)

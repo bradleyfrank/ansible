@@ -2,6 +2,8 @@
 
 zsh_packages:
   - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
 
 zsh_bin: "{{ '/usr/bin/zsh' if ansible_facts['system'] == 'Linux' else '/bin/zsh' }}"
 zsh_manage_zcompdump: true

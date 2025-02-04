@@ -36,12 +36,6 @@ pkg_mgr_repos:
     suites: ["stable"]
     enabled: true
     signed_by: "https://dl.google.com/linux/linux_signing_key.pub"
-  - name: gh-cli
-    uris: ["https://cli.github.com/packages"]
-    components: ["main"]
-    suites: ["stable"]
-    enabled: true
-    signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
   - name: charm
     uris: ["https://repo.charm.sh/apt"]
     components: ["*"]
@@ -64,11 +58,12 @@ pkg_mgr_packages:
     - fdupes
     - ffmpeg
     - figlet
+    - freeze
     - fwupd
     - fzf
-    - gh
     - ghostscript
     - glances
+    - glow
     - htop
     - httpie
     - iftop
@@ -85,7 +80,6 @@ pkg_mgr_packages:
     - par
     - perf-tools-unstable
     - pdfgrep
-    - pipx
     - pwgen
     - python3
     - python3-dev
@@ -93,28 +87,20 @@ pkg_mgr_packages:
     - ripgrep
     - ruby
     - shellcheck
-    - ssh
     - stow
     - strace
     - tidy
     - tlp
-    - tmux
-    - tmuxp
     - toilet
     - tree
     - trurl
-    - vim
     - virtualenv
     - wget
     - xdelta
     - xz-utils
     - yt-dlp
-    - zsh
-    - zsh-autosuggestions
-    - zsh-syntax-highlighting
   gui:
     - 1password
-    - alacritty
     - asciinema
     - audacious
     - calibre
@@ -129,7 +115,6 @@ pkg_mgr_packages:
     - picard
     - remmina
     - shutter
-    - solaar
     - system-config-printer
     - timeshift
     - torbrowser-launcher
@@ -137,11 +122,6 @@ pkg_mgr_packages:
   gnome:
     - celluloid
     - geary
-    - gedit-plugin-code-comment
-    - gedit-plugin-color-picker
-    - gedit-plugin-git
-    - gedit-plugin-join-lines
-    - gedit-plugin-multi-edit
     - gnome-characters
     - gnome-connections
     - gnome-games-app
@@ -157,22 +137,13 @@ pkg_mgr_packages:
     - meld
     - mpv
     - transmission-gtk
-  cinnamon:
-    - celluloid
-    - gpaste*
-    - meld
-    - mpv
-    - transmission-gtk
   formulas:
     - atuin
     - bat-extras
     - csvlens
-    - charmbracelet/tap/freeze
-    - charmbracelet/tap/glow
     - doctl
     - eza
     - fastfetch
-    - lazygit
     - nb
     - qsv
     - yq

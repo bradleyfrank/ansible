@@ -14,28 +14,21 @@ system_linux_dconf_distro:
     keys:
       show-welcome-page: "false"
 
-packages_apt_repos:
-  - name: "1password"
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
-      https://downloads.1password.com/linux/debian/amd64 stable main
-    key: "https://onepassword.s3.amazonaws.com/linux/keys/1password.asc"
-    keyring: "/usr/share/keyrings/1password-archive-keyring.gpg"
-  - name: "google-chrome"
-    repo: "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
-    key: "https://dl.google.com/linux/linux_signing_key.pub"
-  - name: "gh-cli"
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
-      https://cli.github.com/packages stable main
-    key: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
-    keyring: "/usr/share/keyrings/githubcli-archive-keyring.gpg"
-  - name: "charm"
-    repo: "deb [trusted=yes] https://repo.charm.sh/apt/ /"
-    key: "https://apt.fury.io/charmcli/gpg.key"
-    keyring: "/usr/share/keyrings/charmcli.gpg"
+pkg_mgr_repos:
+  - name: google-chrome
+    uris: ["https://dl.google.com/linux/chrome/deb"]
+    components: ["main"]
+    suites: ["stable"]
+    enabled: true
+    signed_by: "https://dl.google.com/linux/linux_signing_key.pub"
+  - name: charm
+    uris: ["https://repo.charm.sh/apt"]
+    components: ["*"]
+    suites: ["*"]
+    enabled: true
+    signed_by: "https://apt.fury.io/charmcli/gpg.key"
 
-packages_apt_packages:
+pkg_mgr_packages:
   cli:
     - apt-file
     - atool
@@ -50,11 +43,11 @@ packages_apt_packages:
     - fdupes
     - ffmpeg
     - figlet
+    - freeze
     - fwupd
     - fzf
-    - gh
     - ghostscript
-    - glances
+    - glow
     - gron
     - htop
     - httpie
@@ -73,7 +66,6 @@ packages_apt_packages:
     - par
     - perf-tools-unstable
     - pdfgrep
-    - pipx
     - pwgen
     - python3
     - python3-dev
@@ -81,29 +73,20 @@ packages_apt_packages:
     - ripgrep
     - ruby
     - shellcheck
-    - ssh
     - stow
     - strace
     - tidy
     - tlp
-    - tmux
-    - tmuxp
     - toilet
     - trash-cli
     - tree
     - trurl
-    - vim
     - wget
     - xdelta
     - xsel
     - xz-utils
     - yt-dlp
-    - zsh
-    - zsh-autosuggestions
-    - zsh-syntax-highlighting
   gui:
-    - 1password
-    - alacritty
     - asciinema
     - audacious
     - calibre
@@ -117,7 +100,6 @@ packages_apt_packages:
     - picard
     - remmina
     - shutter
-    - solaar
     - system-config-printer
     - thunderbird
     - timeshift
@@ -129,21 +111,13 @@ packages_apt_packages:
     - meld
     - mpv
     - transmission-gtk
-
-packages_homebrew_taps:
-  - charmbracelet/tap
-
-packages_homebrew_formulas:
-  - atuin
-  - bat-extras
-  - csvlens
-  - doctl
-  - eza
-  - fastfetch
-  - freeze
-  - glow
-  - glow
-  - lazygit
-  - nb
-  - qsv
-  - yq
+  formulas:
+    - atuin
+    - bat-extras
+    - csvlens
+    - doctl
+    - eza
+    - fastfetch
+    - nb
+    - qsv
+    - yq

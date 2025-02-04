@@ -37,4 +37,4 @@
     state: link
   become: true
   when: ansible_facts['distribution'] == "Fedora"
-  tags: [desktop, fonts, become]
+  tags: [desktop, fonts]

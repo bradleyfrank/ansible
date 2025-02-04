@@ -1,5 +1,19 @@
 ---
 
+- name: "Add repository (dnf)"
+
+- name: "Install gpg keys (dnf)"
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: present
+  become: true
+  when: ansible_facts['pkg_mgr'] == "dnf"
+
+- name: "Add repositories (dnf)"
+  ansible.builtin.yum_repository: "{{ git_github_ghcli_repo }}"
+  become: true
+  when: ansible_facts['pkg_mgr'] == "dnf"
+
 - name: "Install git packages"
   ansible.builtin.package:
     name: "{{ git_packages }}"

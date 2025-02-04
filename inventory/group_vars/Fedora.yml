@@ -1,7 +1,6 @@
 ---
 
 bat_exec: "/usr/bin/bat"
-tmux_clipboard: "wl-copy"
 
 system_linux_dconf_distro:
   - path: "/org/gnome/shell"
@@ -32,7 +31,6 @@ pkg_mgr_packages:
     - fwupd
     - fzf
     - gcc-c++
-    - gh  # gh-cli
     - ghostscript
     - git-delta
     - glances
@@ -59,8 +57,6 @@ pkg_mgr_packages:
     - par
     - perf
     - pdfgrep
-    - pipx
-    - podman
     - pwgen
     - python3
     - python3-devel
@@ -72,24 +68,16 @@ pkg_mgr_packages:
     - strace
     - tidy
     - tlp
-    - tmux
-    - tmuxp
     - toilet
     - trash-cli
     - tree
     - trurl
     - virtualenv
-    - vim
     - wget
-    - xsel
     - xz
     - yt-dlp
-    - zsh
-    - zsh-autosuggestions
-    - zsh-syntax-highlighting
   gui:
     - 1password  # 1password-gui
-    - alacritty
     - asciinema
     - audacious
     - calibre
@@ -110,7 +98,6 @@ pkg_mgr_packages:
     - picard
     - remmina
     - seahorse
-    - solaar
     - system-config-printer
     - thunderbird
     - timeshift
@@ -118,11 +105,6 @@ pkg_mgr_packages:
     - vlc
   gnome:
     - celluloid
-    - gedit-plugin-codecomment
-    - gedit-plugin-colorpicker
-    - gedit-plugin-git
-    - gedit-plugin-joinlines
-    - gedit-plugin-multiedit
     - gnome-characters
     - gnome-connections
     - gnome-extensions-app
@@ -151,10 +133,6 @@ pkg_mgr_packages:
     - yq
 
 pkg_mgr_repos:
-  - name: gh-cli
-    description: "packages for the GitHub CLI"
-    baseurl: "https://cli.github.com/packages/rpm"
-    gpgkey: "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059"
   - name: google-chrome
     description: "Google Chrome"
     baseurl: "http://dl.google.com/linux/chrome/rpm/stable/$basearch"

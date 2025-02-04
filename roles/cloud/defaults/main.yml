@@ -13,3 +13,4 @@ cloud_packages:
   - kubectl
   - krew
   - k9s
+  - kube-linter

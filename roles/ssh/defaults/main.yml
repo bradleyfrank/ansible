@@ -1,5 +1,11 @@
 ---
 
+ssh_packages_defaults:
+  Darwin: [ssh-copy-id]
+  Linux: []
+
+ssh_packages: "{{ ssh_packages_defaults[ansible_facts['system']] }}"
+
 ssh_manage_config: true
 ssh_manage_config_force: false
 

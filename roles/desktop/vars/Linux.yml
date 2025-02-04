@@ -1,5 +1,0 @@
----
-
-desktop_fonts_dir: "{{ ansible_facts['user_dir'] }}/.local/share/fonts"
-desktop_become: true
-desktop_apps_install_default: []

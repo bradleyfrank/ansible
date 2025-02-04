@@ -1,7 +1,0 @@
----
-
-desktop_fonts_dir: "{{ ansible_facts['user_dir'] }}/Library/Fonts"
-desktop_become: false
-desktop_apps_install_default:
-  - fileicon
-  - bettermouse

@@ -1,5 +1,6 @@
 docker_pkgs:
   prereqs: []
   packages:
-    - "docker"
+    - docker
+    - hadolint
   optional: []
