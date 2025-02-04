@@ -56,9 +56,9 @@ bind 'C' new-window -c "#{pane_current_path}"
 bind 'c' new-window -c "~/"
 bind 'D' run-shell -b "bmux dump"
 bind 'r' run-shell -b "bmux rename #{pane_current_path}"
-bind 'u' source-file "~/.config/tmux/{{ name }}.conf"
+bind 'u' source-file "~/.config/tmux/{{ item['key'] }}.conf"
 bind 'y' set synchronize-panes
-{% if name == "tmux" %}
+{% if item['key'] == "tmux" %}
 bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
 bind 'M' choose-tree -Zs "move-window -t %%"
 bind 'm' choose-tree -Z "move-pane -t %%"

@@ -3,15 +3,8 @@
 - name: "Run all the things"
   hosts: all
   tasks:
-
-    - name: "Add host to group system"
-      ansible.builtin.group_by:
-        key: "{{ ansible_facts['system'] }}"
-
-    - name: "Add host to group distribution"
-      ansible.builtin.group_by:
-        key: "{{ ansible_facts['distribution'] }}"
-
+    - ansible.builtin.group_by: { key: "{{ ansible_facts['system'] }}" }
+    - ansible.builtin.group_by: { key: "{{ ansible_facts['distribution'] }}" }
     - ansible.builtin.import_role: { name: "pkg_mgr" }
     - ansible.builtin.import_role: { name: "system" }
     - ansible.builtin.import_role: { name: "desktop" }

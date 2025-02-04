@@ -4,6 +4,11 @@ tmux_config:
   tmux: {}
 tmux_config_custom: {}
 
+tmux_clipboard_per_system:
+  Darwin: "pbcopy"
+  Linux: "wl-copy"
+tmux_clipboard: tmux_clipboard_per_system[ansible_facts['system']]
+
 tmux_packages:
   - tmux
   - tmuxp

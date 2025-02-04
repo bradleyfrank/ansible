@@ -4,8 +4,7 @@ global_email_address: "bfrank@oreilly.com"
 global_is_desktop_system: true
 global_desktop_environment: null
 global_homebrew_prefix: "/opt/homebrew"
-
-onepassword_vault: "Employee"
+global_onepassword_vault: "Employee"
 
 desktop_app_paths:
   - "/Applications"

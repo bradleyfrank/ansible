@@ -8,7 +8,7 @@
 
 - name: "Get current Zsh version"
   ansible.builtin.command:
-    cmd: "{{ zsh_bin[ansible_facts['system']] }} --version"
+    cmd: "{{ zsh_bin }} --version"
   register: cmd_zsh_version
   changed_when: false
   tags: [zsh, dotfiles]
@@ -44,8 +44,8 @@
 - name: "Set Zsh as default shell"
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
-    shell: "{{ zsh_bin[ansible_facts['system']] }}"
-  when: ansible_facts['user_shell'] != zsh_bin[ansible_facts['system']]
+    shell: "{{ zsh_bin }}"
+  when: ansible_facts['user_shell'] != zsh_bin
   become: true
   tags: [zsh, shell, become]
 
@@ -87,5 +87,5 @@
     - name: "Generate zcompdump"
       ansible.builtin.shell:
         cmd: "autoload -Uz compinit && compinit"
-        executable: "{{ zsh_bin_path }}"
+        executable: "{{ zsh_bin }}"
         creates: "{{ ansible_facts['user_dir'] }}/.zcompdump"

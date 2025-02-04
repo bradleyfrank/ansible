@@ -44,10 +44,10 @@ set tabstop=2
 
 " functionality
 set backspace=indent,eol,start
-{% if 'MacOSX' in ansible_distribution -%}
+{% if 'MacOSX' in ansible_facts['distribution'] -%}
 set clipboard=unnamed
 set rtp+={{ global_homebrew_prefix }}/opt/fzf
-{% elif 'Ubuntu' in ansible_distribution -%}
+{% elif 'Ubuntu' in ansible_facts['distribution'] -%}
 set rtp+=/usr/share/doc/fzf/examples/
 {% endif -%}
 set laststatus=2
