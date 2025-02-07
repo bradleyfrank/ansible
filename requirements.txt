@@ -2,6 +2,7 @@ ansible
 ansible-lint
 bcrypt
 cryptography>=35.0.0
+distro
 github3.py
 jmespath
 pexpect

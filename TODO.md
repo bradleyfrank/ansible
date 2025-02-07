@@ -1,6 +1,5 @@
 # TODO
 
-- New tag: `moredots`
 - Move Zsh config files to `~/.config/zsh/`
   - make sure to include `.zcompdump`
   - will involve changing `$ZDOTDIR`

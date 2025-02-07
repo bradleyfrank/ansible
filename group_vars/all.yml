@@ -148,7 +148,7 @@ system_linux_dracut_settings:
 # -----+
 
 tmux_config:
-  tmux:
+  - profile: "tmux"
     pane_border_color:
       default: "fg=color33,bg=default"
       sync: "fg=color37,bg=default"
@@ -161,7 +161,7 @@ tmux_config:
     window_status_activity: "fg=color61,bg=default"
     window_status_current_format: "#[fg=color230,bg=color33]#[bold] [#I] #W #[nobold]"
     window_status_format: "#[fg=color33,bg=default]#[bold] [#I] #W #[nobold]"
-  popup:
+  - profile: "popup"
     pane_border_color:
       default: "fg=color166,bg=default"
       sync: "fg=color37,bg=default"

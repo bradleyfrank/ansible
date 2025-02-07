@@ -1,7 +1,6 @@
 ---
 
-tmux_config:
-  tmux: {}
+tmux_config: {}
 
 tmux_clipboard_defaults:
   Darwin: "pbcopy"
@@ -15,10 +14,6 @@ tmux_packages:
 
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 tmux_config_dir: "{{ ansible_facts['user_dir'] }}/.config/tmux"
-
-tmux_profiles:
-  - "tmux"
-  - "popup"
 
 tmux_plugins:
   - name: "tmux-resurrect"

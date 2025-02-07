@@ -3,12 +3,6 @@
 - name: "Manage dotfiles"
   hosts: all
   tasks:
-    - ansible.builtin.group_by:
-        key: "{{ ansible_facts['system'] }}"
-
-    - ansible.builtin.group_by:
-        key: "{{ ansible_facts['distribution'] }}"
-
     - ansible.builtin.import_role:
         name: "ssh"
       tags: [ssh]

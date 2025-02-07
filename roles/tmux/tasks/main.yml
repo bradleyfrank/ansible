@@ -14,12 +14,9 @@
   tags: [dots]
 
 - name: "Template tmux config"
-  vars:
-    filename: "{{ item['key'] }}"
-    config: "{{ item['value'] }}"
   ansible.builtin.template:
     src: "tmux.conf.j2"
-    dest: "{{ tmux_config_dir }}/{{ filename }}.conf"
+    dest: "{{ tmux_config_dir }}/{{ item['profile'] }}.conf"
     mode: "0755"
   loop: "{{ tmux_config }}"
   tags: [dots]
