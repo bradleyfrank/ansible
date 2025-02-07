@@ -4,19 +4,19 @@
   ansible.builtin.package:
     name: "{{ zsh_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [zsh, install, become]
+  tags: [install]
 
 - name: "Get current Zsh version"
   ansible.builtin.command:
     cmd: "{{ zsh_bin }} --version"
   register: cmd_zsh_version
   changed_when: false
-  tags: [zsh, dotfiles]
+  tags: [dots]
 
 - name: "Set current Zsh version"
   ansible.builtin.set_fact:
     zsh_current_version: "{{ (cmd_zsh_version['stdout'] | split)[1] }}"
-  tags: [zsh, dotfiles]
+  tags: [dots]
 
 - name: "Ensure supplemental Zsh directories exist"
   ansible.builtin.file:
@@ -24,12 +24,11 @@
     state: "directory"
     mode: "0744"
   loop: "{{ zsh_supplemental_dirs }}"
-  tags: [zsh, zsh_dirs, dotfiles]
+  tags: [moredots]
 
 - name: "Configure Homebrew Zsh for MacOS"
   when: ansible_facts['system'] == "Darwin"
   become: true
-  tags: [zsh, shell, become]
   block:
     - name: "Add Homebrew Zsh to available shells"
       ansible.builtin.lineinfile:
@@ -47,7 +46,6 @@
     shell: "{{ zsh_bin }}"
   when: ansible_facts['user_shell'] != zsh_bin
   become: true
-  tags: [zsh, shell, become]
 
 - name: "Install Zsh plugins"
   ansible.builtin.git:
@@ -58,28 +56,25 @@
   loop: "{{ zsh_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [zsh, zsh_plugins, dotfiles]
-
-- name: "Generate Zsh completions"
-  ansible.builtin.shell:
-    cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
-  changed_when: false
-  loop: "{{ zsh_completions }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  tags: [zsh, completions, dotfiles]
+  tags: [moredots]
 
 - name: "Apply zshrc template"
   ansible.builtin.template:
     src: "zshrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     mode: "0644"
-  tags: [zsh, zshrc, dotfiles]
+  tags: [dots]
 
-- name: "Refresh zcompdump"
-  tags: [zsh, zcompdump, dotfiles]
-  when: zsh_manage_zcompdump
+- name: "Refresh Zsh completions"
+  tags: [moredots, completions]
   block:
+    - name: "Generate completions"
+      ansible.builtin.shell:
+        cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
+      changed_when: false
+      loop: "{{ zsh_completions }}"
+      loop_control:
+        label: "{{ item['name'] }}"
     - name: "Delete zcompdump"
       ansible.builtin.file:
         path: "{{ ansible_facts['user_dir'] }}/.zcompdump"

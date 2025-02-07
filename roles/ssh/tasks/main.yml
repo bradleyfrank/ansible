@@ -4,21 +4,21 @@
   ansible.builtin.package:
     name: "{{ ssh_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [ssh, install, never]
+  tags: [install]
 
 - name: "Ensure SSH directory is present"
   ansible.builtin.file:
     mode: "0755"
     path: "{{ ansible_facts['user_dir'] }}/.ssh"
     state: "directory"
-  tags: [ssh, dotfiles]
+  tags: [dots]
 
 - name: "Set proper permissions on ~/.ssh/authorized_keys"
   ansible.builtin.file:
     mode: "0600"
     path: "{{ ansible_facts['user_dir'] }}/.ssh/authorized_keys"
     state: touch
-  tags: [ssh, dotfiles]
+  tags: [dots]
 
 - name: "Create SSH keys"
   community.crypto.openssh_keypair:
@@ -30,7 +30,7 @@
   loop: "{{ ssh_keys | dict2items }}"
   loop_control:
     label: "{{ item['key'] }}"
-  tags: [ssh, keys, dotfiles]
+  tags: [ssh_keys]
 
 - name: "Template SSH config"
   ansible.builtin.template:
@@ -39,14 +39,14 @@
     mode: "0644"
     force: "{{ ssh_manage_config_force }}"
   when: ssh_manage_config
-  tags: [ssh, config, dotfiles]
+  tags: [dots]
 
 - name: "Copy SSH agent script"
   ansible.builtin.copy:
     src: "op-ssh.bash"
     dest: "{{ ansible_facts['user_dir'] }}/.local/bin/op-ssh"
     mode: "0755"
-  tags: [ssh, dotfiles]
+  tags: [dots]
 
 - name: "Create host keys"
   community.crypto.openssh_keypair:
@@ -57,16 +57,16 @@
     label: "{{ item }}"
   become: true
   when: (ansible_facts['system'] == "Linux") and (ssh_manage_host_keys)
-  tags: [ssh, host_keys, never]
+  tags: [never]
 
 - name: "Set SSH hardening vars for Linux Mint"
   ansible.builtin.set_fact:
     os_vars: "{{ ssh_hardening['Debian'] }}"
   when: (ansible_facts['distribution'] in ["Linux_Mint", "LMDE"])
-  tags: [ssh, hardening]
+  tags: [never, hardening]
 
 - name: "Include SSH hardening role"
   ansible.builtin.include_role:
     name: devsec.hardening.ssh_hardening
-  tags: [ssh, hardening, never]
+  tags: [never, hardening]
   when: (ansible_facts['system'] == "Linux") and (ssh_harden_security)

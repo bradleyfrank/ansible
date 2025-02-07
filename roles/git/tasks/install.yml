@@ -1,0 +1,21 @@
+---
+
+- name: "Add repository (dnf)"
+  when: ansible_facts['pkg_mgr'] == "dnf"
+  become: true
+  block:
+    - name: "Install gpg keys (dnf)"
+      ansible.builtin.rpm_key:
+        key: "{{ git_github_ghcli_repo['dnf']['gpgkey'] }}"
+    - name: "Add repository (dnf)"
+      ansible.builtin.yum_repository: "{{ git_github_ghcli_repo['dnf'] }}"
+
+- name: "Add repository (apt)"
+  ansible.builtin.deb822_repository: "{{ git_github_ghcli_repo['apt'] }}"
+  become: true
+  when: ansible_facts['pkg_mgr'] == "apt"
+
+- name: "Install git packages"
+  ansible.builtin.package:
+    name: "{{ git_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"

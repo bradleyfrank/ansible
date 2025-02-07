@@ -18,6 +18,7 @@ onepassword_linux_repo:
   components: ["main"]
   suites: ["stable"]
   signed_by: "https://onepassword.s3.amazonaws.com/linux/keys/1password.asc"
+  enabled: true
 
 onepassword_debsig_url: "https://downloads.1password.com/linux/debian/debsig/1password.pol"
 onepassword_debsig_dir: "/etc/debsig/policies/AC2D62742012EA22"

@@ -1,7 +1,5 @@
 ---
 
-bat_exec: "/usr/bin/bat"
-
 system_linux_dconf_distro:
   - path: "/org/gnome/shell"
     keys:

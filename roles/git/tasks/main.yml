@@ -1,24 +1,27 @@
 ---
 
-- name: "Add repository (dnf)"
+- name: "Import package install tasks"
+  ansible.builtin.import_tasks:
+    file: "install.yml"
+  tags: [install]
 
-- name: "Install gpg keys (dnf)"
-  ansible.builtin.rpm_key:
-    key: "{{ item['gpgkey'] }}"
-    state: present
-  become: true
-  when: ansible_facts['pkg_mgr'] == "dnf"
+- name: "Import authorized keys tasks"
+  ansible.builtin.import_tasks:
+    file: "get_authorized_keys.yml"
+  tags: [moredots, authorized_keys]
 
-- name: "Add repositories (dnf)"
-  ansible.builtin.yum_repository: "{{ git_github_ghcli_repo }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "dnf"
+- name: "Import repo cloning tasks"
+  ansible.builtin.import_tasks:
+    file: "clone_repos.yml"
+  tags: [git_repos]
 
-- name: "Install git packages"
-  ansible.builtin.package:
-    name: "{{ git_packages }}"
-  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [git, install, become]
+- name: "Create allowed signers file"
+  ansible.builtin.template:
+    src: "allowed_signers.j2"
+    dest: "{{ git_signing_allowed_signers }}"
+    mode: "0644"
+  when: git_signing_key_type == "ssh"
+  tags: [moredots, gitconfig]
 
 - name: "Template gitconfig"
   vars:
@@ -27,19 +30,11 @@
     src: "gitconfig.j2"
     dest: "{{ git_config_path }}"
     mode: "0700"
-  tags: [git, gitconfig, dotfiles]
+  tags: [dots, gitconfig]
 
-- name: "Import authorized keys tasks"
-  ansible.builtin.import_tasks:
-    file: "get_authorized_keys.yml"
-
-- name: "Import repo cloning tasks"
-  ansible.builtin.import_tasks:
-    file: "clone_repos.yml"
-
-- name: "Create allowed signers file"
-  ansible.builtin.template:
-    src: "allowed_signers.j2"
-    dest: "{{ git_signing_allowed_signers }}"
+- name: "Copy gitignore"
+  ansible.builtin.copy:
+    src: "gitignore"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/git/ignore"
     mode: "0644"
-  when: git_signing_key_type == "ssh"
+  tags: [dots, gitconfig]

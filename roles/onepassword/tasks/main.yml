@@ -3,26 +3,19 @@
 - name: "Load package manager variables"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: [onepassword, install]
 
 - name: "Include install tasks"
   ansible.builtin.include_tasks:
     file: "install/{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: [onepassword, install]
 
 - name: "Pause to enable 1Password CLI integration"
   ansible.builtin.pause:
     prompt: "Enable the 1Password CLI integration and hit [Enter]"
   when: onepassword_use_gui_integration
-  tags: [onepassword, auth]
 
 - name: "Authenticate 1Password-cli"
   ansible.builtin.include_tasks:
     file: "auth.yml"
   when: not onepassword_use_gui_integration
-  tags: [onepassword, auth]
 
-- name: "Include import tasks"
-  ansible.builtin.include_tasks:
-    file: "import.yml"
-  tags: [onepassword, import]
+- ansible.builtin.include_tasks: "import.yml"

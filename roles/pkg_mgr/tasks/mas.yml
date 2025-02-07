@@ -4,6 +4,7 @@
   community.general.homebrew:
     name: "mas"
     state: present
+  tags: [never, mas]
 
 - name: "Install apps via mas"
   environment:
@@ -11,3 +12,4 @@
   community.general.mas:
     id: "{{ pkg_mgr_packages['mas'] }}"
     upgrade_all: true
+  tags: [mas]

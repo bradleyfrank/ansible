@@ -1,6 +1,6 @@
 ---
 
-- name: "Run all the things"
+- name: "Manage dotfiles"
   hosts: all
   tasks:
     - ansible.builtin.group_by:
@@ -8,18 +8,6 @@
 
     - ansible.builtin.group_by:
         key: "{{ ansible_facts['distribution'] }}"
-
-    - ansible.builtin.import_role:
-        name: "pkg_mgr"
-      tags: [pkg_mgr]
-
-    - ansible.builtin.import_role:
-        name: "system"
-      tags: [system]
-
-    - ansible.builtin.import_role:
-        name: "desktop"
-      tags: [desktop]
 
     - ansible.builtin.import_role:
         name: "ssh"
@@ -44,4 +32,3 @@
     - ansible.builtin.import_role:
         name: "zsh"
       tags: [zsh]
-

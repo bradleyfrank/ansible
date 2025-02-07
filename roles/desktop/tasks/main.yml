@@ -1,16 +1,11 @@
 ---
 
-- name: "Include per-OS variables"
-  ansible.builtin.include_vars:
-    file: "{{ ansible_facts['system'] }}.yml"
-  tags: [desktop, fonts, icons]
-
 - name: "Install desktop utilities"
   ansible.builtin.package:
     name: "{{ desktop_packages }}"
     state: present
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [desktop, fonts, icons, never]
+  tags: [install, fonts, icons]
 
 - name: "Reset macOS dock"
   community.general.osx_defaults:
@@ -38,7 +33,7 @@
   ansible.builtin.include_tasks:
     file: "logi.yml"
   when: (ansible_facts['system'] == "Darwin") and desktop_logi_app_install
-  tags: [desktop, kvm]
+  tags: [desktop, logitech]
 
 - name: "Include icon tasks"
   ansible.builtin.include_tasks:

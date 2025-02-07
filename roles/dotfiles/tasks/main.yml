@@ -12,6 +12,7 @@
     - "Development/Scratch"
     - "Development/Logs"
     - "Development/Build"
+  tags: [dots]
 
 - name: "Sync dotfiles to home directory"
   ansible.posix.synchronize:
@@ -20,3 +21,4 @@
     compress: false
     owner: false
     group: false
+  tags: [dots]

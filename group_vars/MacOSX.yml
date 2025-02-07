@@ -1,10 +1,7 @@
 ---
 
-bat_exec: "/opt/homebrew/bin/bat"
 glow_config_path: "{{ ansible_facts['user_dir'] }}/Library/Preferences/glow"
 system_macos_launchd: {}
-tmux_clipboard: "pbcopy"
-zsh_prefer_homebrew: true
 
 system_macos_defaults:
   - name: "[Time Machine] Disable prompting to use new exteral drives"

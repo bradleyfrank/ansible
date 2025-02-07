@@ -2,19 +2,19 @@
 
 tmux_config:
   tmux: {}
-tmux_config_custom: {}
 
-tmux_clipboard_per_system:
+tmux_clipboard_defaults:
   Darwin: "pbcopy"
   Linux: "wl-copy"
-tmux_clipboard: tmux_clipboard_per_system[ansible_facts['system']]
+
+tmux_clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
 
 tmux_packages:
   - tmux
   - tmuxp
 
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
-tmux_rc_path: "{{ ansible_facts['user_dir'] }}/.config/tmux"
+tmux_config_dir: "{{ ansible_facts['user_dir'] }}/.config/tmux"
 
 tmux_profiles:
   - "tmux"

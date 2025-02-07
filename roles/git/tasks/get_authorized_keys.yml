@@ -11,7 +11,6 @@
       X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
   register: git_ssh_keys
   when: git_ssh_authorized_keys_from_github
-  tags: [git, authorized_keys]
 
 - name: "Add matching public keys to `authorized_keys`"
   ansible.posix.authorized_key:
@@ -21,4 +20,3 @@
   loop_control:
     label: "{{ item['title'] }}"
   when: git_ssh_authorized_keys_from_github
-  tags: [git, authorized_keys]

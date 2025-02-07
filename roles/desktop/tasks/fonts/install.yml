@@ -7,16 +7,16 @@
     url: "{{ url_prefix }}/releases/download/{{ desktop_fonts_latest_version }}/{{ item }}.zip"
     dest: "/tmp/{{ item }}.zip"
     mode: "0644"
-  tags: [desktop, fonts]
+  tags: [fonts]
 
 - name: "Extract Nerd Fonts"
   ansible.builtin.unarchive:
     src: "/tmp/{{ item }}.zip"
     dest: "{{ desktop_fonts_dir }}"
-  tags: [desktop, fonts]
+  tags: [fonts]
 
 - name: "Delete zip file"
   ansible.builtin.file:
     state: "absent"
     path: "/tmp/{{ item }}.zip"
-  tags: [desktop, fonts]
+  tags: [fonts]

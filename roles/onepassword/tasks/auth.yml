@@ -9,15 +9,13 @@
     command: "op account add {{ address }} {{ email }} {{ secret_key }}"
     responses:
       Enter the password: "{{ onepassword_account_password }}"
-  tags: [onepassword, auth]
 
 - name: "Confirm account is present in 1Password"
   ansible.builtin.command:
     cmd: "op account list --format json"
   register: cmd_op_account_list
-  changed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid'] is defined
-  failed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid'] is not defined
-  tags: [onepassword, auth]
+  changed_when: (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid']
+  failed_when: not (cmd_op_account_list['stdout'] | from_json)[0]['user_uuid']
 
 - name: "Generate session token"
   ansible.builtin.expect:
@@ -25,7 +23,6 @@
     responses:
       Enter the password: "{{ onepassword_account_password }}"
   register: cmd_op_session_token
-  tags: [onepassword, auth]
 
 - name: "Generate 1Password session"
   vars:
@@ -43,5 +40,4 @@
     insertbefore: "BOF"
     line: "{{ cmd_op_signin['stdout'] }}"
     create: true
-  tags: [onepassword, auth]
   when: onepassword_write_session_file

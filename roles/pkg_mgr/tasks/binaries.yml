@@ -5,6 +5,7 @@
     path: "{{ pkg_mgr_binary_install_path }}"
     state: directory
     mode: "0755"
+  tags: [binaries]
 
 - name: "Download binaries"
   ansible.builtin.get_url:
@@ -12,3 +13,4 @@
     dest: "{{ pkg_mgr_binary_install_path }}/{{ item['name'] }}"
     mode: "0755"
   loop: "{{ pkg_mgr_binaries }}"
+  tags: [never, binaries]

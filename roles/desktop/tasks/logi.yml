@@ -3,15 +3,13 @@
 - name: "Check if Logi Options+ is installed"
   ansible.builtin.stat:
     path: "/Applications/logioptionsplus.app"
-  register: logioptionsplus_app
+  register: stat_logioptionsplus_app
   when: ansible_facts['system'] == "Darwin"
-  tags: [desktop, logi]
-
-
+  tags: [install, logi]
 
 - name: "Download Logi Options+ installer"
-  when: not logioptionsplus_app['stat']['exists']
-  tags: [desktop, logi, install]
+  when: not stat_logioptionsplus_app['stat']['exists']
+  tags: [install, logi]
   block:
     - name: "Install Logi Options+"
       community.general.homebrew:
@@ -23,9 +21,9 @@
         recurse: true
         patterns: "logioptionsplus_installer.app"
         file_type: "directory"
-      register: logioptionsplus_installer
+      register: find_logioptionsplus_installer
     - name: "Copy Logi installer"
       ansible.builtin.copy:
-        src: "{{ logioptionsplus_installer['files'][0]['path'] }}"
+        src: "{{ find_logioptionsplus_installer['files'][0]['path'] }}"
         dest: "{{ ansible_facts['user_dir'] }}/Downloads"
         mode: "0755"

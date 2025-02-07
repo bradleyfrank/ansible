@@ -1,16 +1,9 @@
 ---
 
 - name: "Install 1Password repository"
-  ansible.builtin.deb822_repository:
-    name: "{{ onepassword_linux_repo['name'] }}"
-    uris: "{{ onepassword_linux_repo['uris'] }}"
-    components: "{{ onepassword_linux_repo['components'] }}"
-    suites: "{{ onepassword_linux_repo['suites'] }}"
-    signed_by: "{{ onepassword_linux_repo['signed_by'] }}"
-    state: present
-    enabled: true
+  ansible.builtin.deb822_repository: "{{ onepassword_linux_repo }}"
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Create debsig-verify policy directory"
   ansible.builtin.file:
@@ -18,7 +11,7 @@
     state: directory
     mode: "0644"
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Add debsign-verify policy"
   ansible.builtin.get_url:
@@ -26,13 +19,13 @@
     dest: "{{ onepassword_debsig_dir }}/1password.pol"
     mode: "0644"
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Update apt cache"
   ansible.builtin.apt:
     update_cache: true
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Install 1Password cli package"
   ansible.builtin.apt:
@@ -42,7 +35,7 @@
     autoremove: true
     install_recommends: true
   become: true
-  tags: [onepassword, install, cli, become]
+  tags: [install]
 
 - name: "Install 1Password gui package"
   ansible.builtin.apt:
@@ -53,4 +46,4 @@
     install_recommends: true
   become: true
   when: onepassword_use_gui_integration
-  tags: [onepassword, install, gui, become]
+  tags: [install]

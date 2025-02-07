@@ -4,14 +4,14 @@
   ansible.builtin.package:
     name: "{{ tmux_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [tmux, install, never]
+  tags: [install]
 
 - name: "Ensure tmux config path exists"
   ansible.builtin.file:
-    path: "{{ tmux_rc_path }}"
+    path: "{{ tmux_config_dir }}"
     mode: "0755"
     state: directory
-  tags: [tmux, dotfiles]
+  tags: [dots]
 
 - name: "Template tmux config"
   vars:
@@ -19,10 +19,10 @@
     config: "{{ item['value'] }}"
   ansible.builtin.template:
     src: "tmux.conf.j2"
-    dest: "{{ tmux_rc_path }}/{{ filename }}.conf"
+    dest: "{{ tmux_config_dir }}/{{ filename }}.conf"
     mode: "0755"
-  loop: "{{ tmux_config | ansible.builtin.combine(tmux_config_custom, recursive=true) | dict2items }}"
-  tags: [tmux, dotfiles]
+  loop: "{{ tmux_config }}"
+  tags: [dots]
 
 - name: "Install tmux plugins"
   ansible.builtin.git:
@@ -33,4 +33,4 @@
   loop: "{{ tmux_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [tmux, tmux_plugins, dotfiles]
+  tags: [moredots]

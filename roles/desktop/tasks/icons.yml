@@ -14,4 +14,4 @@
   loop_control:
     label: "{{ desktop_app }}"
     loop_var: app
-  tags: [desktop, icons]
+  tags: [icons]

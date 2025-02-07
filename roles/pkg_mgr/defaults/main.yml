@@ -1,9 +1,17 @@
 ---
 
-pkg_mgr_package_manager: "{{ ansible_facts['pkg_mgr'] }}"
 pkg_mgr_current_desktop: "{{ global_desktop_environment | default('') }}"
 pkg_mgr_desktop_present: "{{ global_is_desktop_system | default(false) }}"
+
 pkg_mgr_packagekit_enabled: true
+
+pkg_mgr_bat_exec_defaults:
+  Ubuntu: "/usr/bin/batcat"
+  Debian: "/usr/bin/batcat"
+  Fedora: "/usr/bin/bat"
+  MacOSX: "/opt/homebrew/bin/bat"
+
+pkg_mgr_bat_exec: "{{ pkg_mgr_bat_exec_defaults[ansible_facts['distribution']] }}"
 
 pkg_mgr_bin_path:
   - "/opt/homebrew/bin"

@@ -13,7 +13,6 @@
     dest: "{{ onepassword_template }}"
     mode: "0600"
   notify: "Delete 1Password template"
-  tags: [onepassword, import]
 
 - name: "Import secrets into 1Password"
   environment:
@@ -24,4 +23,3 @@
       . {{ onepassword_session_file }}
       op item create --template {{ onepassword_template }} --format json </dev/null 2>/dev/null
   changed_when: true
-  tags: [onepassword, import]

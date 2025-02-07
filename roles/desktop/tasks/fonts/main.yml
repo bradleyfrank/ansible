@@ -6,13 +6,13 @@
     repo: "{{ desktop_fonts_github_repo }}"
     action: latest_release
   register: desktop_fonts_latest_release
-  tags: [desktop, fonts]
+  tags: [install, fonts]
 
 - name: "Install newer fonts"
   vars:
     desktop_fonts_latest_version: "{{ desktop_fonts_latest_release['tag'] }}"
   when: "desktop_fonts_current_version is version(desktop_fonts_latest_version, '<')"
-  tags: [desktop, fonts]
+  tags: [install, fonts]
   block:
     - name: "Ensure fonts directory exists"
       ansible.builtin.file:
@@ -37,4 +37,4 @@
     state: link
   become: true
   when: ansible_facts['distribution'] == "Fedora"
-  tags: [desktop, fonts]
+  tags: [fonts]

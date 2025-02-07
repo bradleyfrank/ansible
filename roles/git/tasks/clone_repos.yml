@@ -4,12 +4,10 @@
   ansible.builtin.stat:
     path: "{{ git_ssh_auth_sock }}"
   register: stat_ssh_auth_sock
-  tags: [git, repos]
 
 - name: "Manual ssh-agent setup"
   when: not stat_ssh_auth_sock['stat']['exists']
   notify: "Stop ssh-agent"
-  tags: [git, repos]
   block:
     - name: "Start ssh-agent"
       ansible.builtin.shell:
@@ -27,7 +25,7 @@
     - name: "Set ssh-agent socket"
       ansible.builtin.set_fact:
         git_ssh_auth_sock: "{{ cmd_eval['stdout'] | from_json | json_query('SSH_AUTH_SOCK') }}"
-        git_ssh_auth_pid: "{{ cmd_eval['stdout'] | from_json | json_query('SSH_AUTH_PID') }}"
+        git_ssh_auth_pid: "{{ cmd_eval['stdout'] | from_json | json_query('SSH_AGENT_PID') }}"
 
 - name: "Create repository directories"
   vars:
@@ -36,12 +34,11 @@
     git_repos_branch: "{{ '/' + item['branch'] | default('main') }}"
   ansible.builtin.file:
     path: "{{ git_repos_dirname }}{{ git_repos_branch if git_repos_as_worktrees else '' }}"
-    state: "directory"
+    state: directory
     mode: "0755"
   loop: "{{ git_repos }}"
   loop_control:
     label: "{{ git_repos_name }}"
-  tags: [git, repos]
 
 - name: "Clone repositories"
   vars:
@@ -59,4 +56,3 @@
   loop: "{{ git_repos }}"
   loop_control:
     label: "{{ git_repos_name }}"
-  tags: [git, repos]

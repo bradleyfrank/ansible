@@ -1,5 +1,7 @@
 ---
 
+git_github_gitignore_repo: "https://raw.githubusercontent.com/github/gitignore/refs/heads/main"
+
 git_github_api_ssh_key_url: "https://api.github.com/user/keys"
 git_github_api_signing_key_url: "https://api.github.com/user/ssh_signing_keys"
 git_github_api_headers_accept: "application/vnd.github+json"

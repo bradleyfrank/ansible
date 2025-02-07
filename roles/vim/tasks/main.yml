@@ -4,16 +4,16 @@
   ansible.builtin.package:
     name: "{{ vim_packages }}"
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
-  tags: [vim, install, become]
+  tags: [install]
 
 - name: "Template vimrc"
   ansible.builtin.template:
     src: "vimrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.vimrc"
     mode: "0644"
-  tags: [vim, config, dotfiles]
+  tags: [dots]
 
-- name: "Install vim extensions"
+- name: "Install Vim extensions"
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
     dest: "{{ vim_extensions_dir }}/{{ item['name'] }}"
@@ -22,4 +22,4 @@
   loop: "{{ vim_extensions }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [vim, extensions, dotfiles]
+  tags: [moredots]
