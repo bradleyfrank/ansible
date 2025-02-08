@@ -2,7 +2,7 @@
 
 global_email_address: "bfrank@oreilly.com"
 global_is_desktop_system: true
-global_desktop_environment: null
+global_desktop_environment: ""
 global_homebrew_prefix: "/opt/homebrew"
 global_onepassword_vault: "Employee"
 
