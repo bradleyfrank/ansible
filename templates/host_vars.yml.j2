@@ -2,7 +2,7 @@
 
 ## GLOBAL
 
-global_homebrew_prefix: "{{ template[homebrew_prefix[ansible_facts['system']]] }}"
+global_homebrew_prefix: "{{ template['homebrew_prefix'][ansible_facts['system']] }}"
 global_email_address: "{{ template['email'] }}"
 global_is_desktop_system: {{ template['is_desktop'] }}
 global_desktop_environment: {{ template['desktop_environment'] }}"
