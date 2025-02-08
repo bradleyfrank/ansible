@@ -15,13 +15,8 @@ inventory = {
       }
     }
   },
-  "local": {
+  distro.name(): {
     "hosts": [hostname],
-    "children": {
-      distro.name(): {
-        "hosts": [hostname]
-      }
-    }
   }
 }
 
