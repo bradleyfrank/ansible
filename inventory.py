@@ -9,17 +9,18 @@ hostname = getattr(platform.uname(), "node")
 
 inventory = {
   "_meta": {
-    "hostvars": {}
+    "hostvars": {
+      hostname: {
+        "ansible_connection": "local"
+      }
+    }
   },
-  "all": {
+  "local": {
     "hosts": [hostname],
     "children": {
       distro.name(): {
         "hosts": [hostname]
       }
-    },
-    "vars": {
-      "ansible_connection": "local"
     }
   }
 }
