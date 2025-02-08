@@ -1,7 +1,7 @@
 ---
 
 - name: "Bootstrap Ansible requirements"
-  hosts: localhost
+  hosts: all
 
   vars:
     galaxy_collections:
