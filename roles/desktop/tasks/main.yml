@@ -21,7 +21,7 @@
   community.general.dconf:
     key: "/org/gnome/shell/favorites"
     value: "['org.gnome.Nautilus.desktop']"
-  when: "'gnome' in system_current_desktop"
+  when: "'gnome' in desktop_current_environment"
   tags: [never]
 
 - name: "Include font tasks"

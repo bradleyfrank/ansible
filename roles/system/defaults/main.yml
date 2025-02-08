@@ -1,5 +1,7 @@
 ---
 
+system_linux_current_desktop: "{{ global_desktop_environment | default('') }}"
+
 system_linux_dconf_defaults: []
 system_linux_dconf_distro: []
 system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]
