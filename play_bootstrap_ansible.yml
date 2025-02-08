@@ -9,7 +9,7 @@
       - name: "community.crypto"
       - name: "community.general"
       - name: "devsec.hardening"
-    host_vars_yml: "inventory/host_vars/{{ ansible_facts['hostname'] }}.yml"
+    host_vars_yml: "host_vars/{{ ansible_facts['hostname'] }}.yml"
 
   tasks:
     - name: "Install Ansible Galaxy requirements"
