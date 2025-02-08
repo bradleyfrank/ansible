@@ -12,5 +12,5 @@ global_is_desktop_system: "{{
   (ansible_facts['distribution'] == 'MacOSX')
 }}"
 global_desktop_environment: "{{
-  ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default(null) | lower
+  ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower
 }}"
