@@ -10,6 +10,16 @@
       - name: "community.general"
       - name: "devsec.hardening"
     host_vars_yml: "host_vars/{{ ansible_facts['hostname'] }}.yml"
+    template:
+      homebrew_prefix:
+        Linux: "/home/linuxbrew/.linuxbrew"
+        MacOSX: "/opt/homebrew"
+      email: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
+      is_desktop: (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
+                  (ansible_facts['distribution'] == "MacOSX")
+      desktop_environment: "{{
+        ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower
+      }}"
 
   tasks:
     - name: "Install Ansible Galaxy requirements"

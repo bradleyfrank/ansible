@@ -2,19 +2,10 @@
 
 ## GLOBAL
 
-global_homebrew_prefix:
-  {% if ansible_facts['system'] == 'Linux' -%} "/home/linuxbrew/.linuxbrew"
-  {% elif ansible_facts['system'] == 'MacOSX' -%} "/opt/homebrew"
-  {% endif -%}
-global_email_address: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
-global_is_desktop_system: {{
-  (ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') != 'tty') or
-  (ansible_facts['distribution'] == "MacOSX")
-}}
-global_desktop_environment: "{{
-  ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower
-}}"
-
+global_homebrew_prefix: "{{ template[homebrew_prefix[ansible_facts['system']]] }}"
+global_email_address: "{{ template['email'] }}"
+global_is_desktop_system: {{ template['is_desktop'] }}
+global_desktop_environment: {{ template['desktop_environment'] }}"
 
 ## ROLES
 
