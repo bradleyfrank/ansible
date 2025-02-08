@@ -3,8 +3,10 @@
 ## GLOBAL
 
 global_homebrew_prefix:
-  {%- if ansible_facts['system'] == 'Linux' %} "/home/linuxbrew/.linuxbrew"
-  {%- elif ansible_facts['system'] == 'MacOSX' %} "/opt/homebrew"
+  {%- if ansible_facts['system'] == 'Linux' %}
+    "/home/linuxbrew/.linuxbrew"
+  {%- elif ansible_facts['system'] == 'MacOSX' %}
+    "/opt/homebrew"
   {% endif %}
 global_email_address: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
 global_is_desktop_system: {{

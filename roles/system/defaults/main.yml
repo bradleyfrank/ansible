@@ -1,5 +1,6 @@
 ---
 
+system_linux_has_desktop: "{{ global_is_desktop_system | default(false) }}"
 system_linux_current_desktop: "{{ global_desktop_environment | default('') }}"
 
 system_linux_dconf_defaults: []
