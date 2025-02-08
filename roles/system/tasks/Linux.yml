@@ -44,7 +44,7 @@
 - name: "Apply Dracut settings"
   become: true
   tags: [dracut]
-  when: system_has_desktop
+  when: system_linux_has_desktop
   block:
     - name: "Install dracut package"
       ansible.builtin.package:
