@@ -3,12 +3,6 @@
 - name: "Run all the things"
   hosts: all
   tasks:
-    - ansible.builtin.group_by:
-        key: "{{ ansible_facts['system'] }}"
-
-    - ansible.builtin.group_by:
-        key: "{{ ansible_facts['distribution'] }}"
-
     - ansible.builtin.import_role:
         name: "pkg_mgr"
       tags: [pkg_mgr]
@@ -20,6 +14,7 @@
     - ansible.builtin.import_role:
         name: "desktop"
       tags: [desktop]
+      when: not (global_is_desktop_system | default(false))
 
     - ansible.builtin.import_role:
         name: "ssh"

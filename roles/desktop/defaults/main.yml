@@ -2,7 +2,9 @@
 
 desktop_logi_app_install: false
 desktop_replacement_icons_dir: "icons"
+
 desktop_current_environment: "{{ global_desktop_environment | default('') }}"
+desktop_
 
 desktop_fonts_install:
   - "JetBrainsMono"
