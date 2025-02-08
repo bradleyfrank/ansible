@@ -4,7 +4,6 @@
   ansible.builtin.stat:
     path: "/Applications/logioptionsplus.app"
   register: stat_logioptionsplus_app
-  when: ansible_facts['system'] == "Darwin"
   tags: [install, logi]
 
 - name: "Download Logi Options+ installer"

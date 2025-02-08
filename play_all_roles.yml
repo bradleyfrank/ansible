@@ -14,7 +14,6 @@
     - ansible.builtin.import_role:
         name: "desktop"
       tags: [desktop]
-      when: not (global_is_desktop_system | default(false))
 
     - ansible.builtin.import_role:
         name: "ssh"

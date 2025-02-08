@@ -27,13 +27,17 @@
 - name: "Include font tasks"
   ansible.builtin.include_tasks:
     file: "fonts/main.yml"
-  tags: [desktop, fonts]
+  when: desktop_has_desktop
+  tags: [fonts]
 
 - name: "Include Logitech tasks"
   ansible.builtin.include_tasks:
     file: "logi.yml"
-  when: (ansible_facts['system'] == "Darwin") and desktop_logi_app_install
-  tags: [desktop, logitech]
+  when:
+    - ansible_facts['system'] == "Darwin"
+    - desktop_logi_app_install
+    - desktop_has_desktop
+  tags: [logitech]
 
 - name: "Include icon tasks"
   ansible.builtin.include_tasks:
@@ -43,4 +47,4 @@
     label: "{{ path }}"
     loop_var: path
   when: ansible_facts['system'] == "Darwin"
-  tags: [desktop, icons]
+  tags: [icons]
