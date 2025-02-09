@@ -24,7 +24,7 @@
   register: cmd_krew_install
   changed_when: "'Installed plugin' in cmd_krew_install['stdout']"
   failed_when: "'does not exist in the plugin index' in cmd_krew_install['stdout']"
-  when: "'krew' in cloud_packages" and (cloud_krew_plugins | length > 0)
+  when: "('krew' in cloud_packages) and (cloud_krew_plugins | length > 0)"
   tags: [moredots, krew]
 
 - name: "Ensure k9s config directory exists"
