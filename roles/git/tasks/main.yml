@@ -5,6 +5,12 @@
     file: "install.yml"
   tags: [install]
 
+- name: "Ensure git config directory exists"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.config/git"
+    state: directory
+  tags: [dots]
+
 - name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:
     file: "get_authorized_keys.yml"
