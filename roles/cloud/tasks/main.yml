@@ -3,7 +3,7 @@
 - name: "Install packages via Homebrew"
   tags: [install, kubectl, k9s, krew]
   block:
-    - name: "Install K8s packages"
+    - name: "Install cloudy packages"
       community.general.homebrew:
         name: "{{ cloud_packages }}"
     - name: "Set krew bin"
