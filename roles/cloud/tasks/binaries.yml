@@ -55,6 +55,7 @@
 - name: "Install k9s"
   tags: [install, k9s]
   vars:
+    temp_dir: "{{ cloud_temp_dir['path'] }}"
     filename: "k9s_{{ ansible_facts['system'] }}_{{ cloud_architecture }}"
     tar_file: "{{ filename }}.tar.gz"
     gh_repo: "https://github.com/{{ cloud_k9s['github_user'] }}/{{ cloud_k9s['github_repo'] }}"
