@@ -33,7 +33,7 @@
     - name: "Get latest release version of krew"
       community.general.github_release:
         user: "{{ cloud_krew['github_user'] }}"
-        repo: "{{ cloud_krew['github_pass'] }}"
+        repo: "{{ cloud_krew['github_repo'] }}"
         action: latest_release
       register: cloud_krew_latest_release
     - name: "Download krew tar file"
@@ -61,7 +61,7 @@
     - name: "Get latest release version of k9s"
       community.general.github_release:
         user: "{{ cloud_k9s['github_user'] }}"
-        repo: "{{ cloud_k9s['github_pass'] }}"
+        repo: "{{ cloud_k9s['github_repo'] }}"
         action: latest_release
       register: cloud_k9s_latest_release
     - name: "Download k9s tar file"
