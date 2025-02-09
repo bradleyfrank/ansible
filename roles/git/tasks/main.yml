@@ -10,6 +10,15 @@
     file: "get_authorized_keys.yml"
   tags: [moredots, authorized_keys]
 
+- name: "Register SSH key with Github"
+  community.general.github_key:
+    name: "{{ git_ssh_key_name }}"
+    pubkey: "{{ lookup('ansible.builtin.file', git_ssh_key_public) }}"
+    state: "present"
+    token: "{{ git_github_token }}"
+  when: git_ssh_key_upload
+  tags: [never, ssh_keys]
+
 - name: "Import repo cloning tasks"
   ansible.builtin.import_tasks:
     file: "clone_repos.yml"
