@@ -26,6 +26,7 @@
 - name: "Install krew"
   tags: [install, krew]
   vars:
+    temp_dir: "{{ cloud_temp_dir['path'] }}"
     filename: "krew-{{ ansible_facts['system'] | lower }}_{{ cloud_architecture }}"
     tar_file: "{{ filename }}.tar.gz"
     gh_repo: "https://github.com/{{ cloud_krew['github_user'] }}/{{ cloud_krew['github_repo'] }}"
@@ -39,16 +40,16 @@
     - name: "Download krew tar file"
       ansible.builtin.get_url:
         url: "{{ gh_repo }}/releases/download/{{ cloud_krew_latest_release['tag'] }}/{{ tar_file }}"
-        dest: "{{ cloud_temp_dir }}/{{ tar_file }}"
+        dest: "{{ temp_dir }}/{{ tar_file }}"
         mode: "0755"
     - name: "Extract krew tar file"
       ansible.builtin.unarchive:
-        src: "{{ cloud_temp_dir }}/{{ tar_file }}"
-        dest: "{{ cloud_temp_dir }}"
+        src: "{{ temp_dir }}/{{ tar_file }}"
+        dest: "{{ temp_dir }}"
         remote_src: true
     - name: "Install krew"
       ansible.builtin.command:
-        cmd: "{{ cloud_temp_dir }}/{{ filename }} install krew"
+        cmd: "{{ temp_dir }}/{{ filename }} install krew"
         creates: "{{ ansible_facts['user_dir'] }}/.krew"
 
 - name: "Install k9s"
@@ -67,11 +68,11 @@
     - name: "Download k9s tar file"
       ansible.builtin.get_url:
         url: "{{ gh_repo }}/releases/download/{{ cloud_krew_latest_release['tag'] }}/{{ tar_file }}"
-        dest: "{{ cloud_temp_dir }}/{{ tar_file }}"
+        dest: "{{ temp_dir }}/{{ tar_file }}"
         mode: "0755"
     - name: "Extract k9s tar file"
       ansible.builtin.unarchive:
-        src: "{{ cloud_temp_dir }}/{{ tar_file }}"
+        src: "{{ temp_dir }}/{{ tar_file }}"
         dest: "{{ cloud_local_bin_path }}"
         mode: "0755"
         remote_src: true
