@@ -6,11 +6,12 @@
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
   tags: [install]
 
-- name: "Ensure SSH directory is present"
+- name: "Ensure required directories are present"
   ansible.builtin.file:
     mode: "0755"
-    path: "{{ ansible_facts['user_dir'] }}/.ssh"
-    state: "directory"
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ ssh_required_dirs }}"
   tags: [dots]
 
 - name: "Set proper permissions on ~/.ssh/authorized_keys"

@@ -2,10 +2,10 @@
 
 ## GLOBAL
 
-global_homebrew_prefix: "{{ template['homebrew_prefix'][ansible_facts['system']] }}"
-global_email_address: "{{ template['email'] }}"
-global_is_desktop_system: {{ template['is_desktop'] }}
-global_desktop_environment: "{{ template['desktop_environment'] }}"
+global_homebrew_prefix: "{{ host_vars_globals['homebrew_prefix'][ansible_facts['system']] }}"
+global_email_address: "{{ host_vars_globals['email'] }}"
+global_is_desktop_system: {{ host_vars_globals['is_desktop'] }}
+global_desktop_environment: "{{ host_vars_globals['desktop_environment'] }}"
 
 ## ROLES
 

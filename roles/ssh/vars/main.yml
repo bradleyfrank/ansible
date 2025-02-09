@@ -1,5 +1,13 @@
 ---
 
+ssh_packages_defaults:
+  Darwin: [ssh-copy-id]
+  Linux: []
+
+ssh_required_dirs:
+  - "{{ ansible_facts['user_dir'] }}/.ssh"
+  - "{{ ansible_facts['user_dir'] }}/.local/bin"
+
 ssh_hardening_overrides:
   Debian:
     sshd_path: /usr/sbin/sshd

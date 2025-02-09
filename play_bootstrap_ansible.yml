@@ -9,18 +9,17 @@
       - name: "community.crypto"
       - name: "community.general"
       - name: "devsec.hardening"
-    host_vars_yml: "host_vars/{{ ansible_facts['hostname'] }}.yml"
     _xdg_session_type: "{{ ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') }}"
+    _xdg_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') }}"
     _distro: "{{ ansible_facts['distribution'] }}"
-    template:
+    host_vars_yml: "host_vars/{{ ansible_facts['hostname'] }}.yml"
+    host_vars_globals:
       homebrew_prefix:
         Linux: "/home/linuxbrew/.linuxbrew"
-        MacOSX: "/opt/homebrew"
+        Darwin: "/opt/homebrew"
       email: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
       is_desktop: "{{ _xdg_session_type != 'tty' or _distro == 'MacOSX' }}"
-      desktop_environment: "{{
-        ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower
-      }}"
+      desktop_environment: "{{ _xdg_desktop | lower }}"
 
   tasks:
     - name: "Install Ansible Galaxy requirements"
@@ -38,7 +37,7 @@
       tags: [host_vars]
 
     - name: "Skip remaining tasks if host_vars exist"
-      when: stat_host_vars_yml['stat']['isreg'] is defined
+      when: stat_host_vars_yml['stat']['isreg']
       ansible.builtin.meta: end_play
 
     - name: "Template host_vars file"

@@ -1,0 +1,5 @@
+---
+
+tmux_clipboard_defaults:
+  Darwin: "pbcopy"
+  Linux: "wl-copy"

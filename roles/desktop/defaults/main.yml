@@ -3,6 +3,9 @@
 desktop_logi_app_install: false
 desktop_replacement_icons_dir: "icons"
 
+desktop_fonts_dir: "{{ desktop_fonts_dir_defaults[ansible_facts['system']] }}"
+desktop_packages: "{{ desktop_packages_defaults[ansible_facts['system']] }}"
+
 desktop_current_environment: "{{ global_desktop_environment | default('') }}"
 desktop_has_desktop: "{{ global_is_desktop_system | default(false) }}"
 
@@ -17,13 +20,3 @@ desktop_fonts_current_version: "{{
 desktop_apps_paths:
   - "/Applications"
   - "{{ ansible_facts['user_dir'] }}/Applications"
-
-desktop_fonts_dir_defaults:
-  Linux: "{{ ansible_facts['user_dir'] }}/.local/share/fonts"
-  Darwin: "{{ ansible_facts['user_dir'] }}/Library/Fonts"
-desktop_fonts_dir: "{{ desktop_fonts_dir_defaults[ansible_facts['system']] }}"
-
-desktop_packages_defaults:
-  Linux: [solaar]
-  Darwin: [fileicon, bettermouse]
-desktop_packages: "{{ desktop_packages_defaults[ansible_facts['system']] }}"
