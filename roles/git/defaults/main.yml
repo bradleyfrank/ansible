@@ -3,7 +3,6 @@
 git_packages:
   - git
   - gh
-  - lazygit
 
 git_github_token: ""
 git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
