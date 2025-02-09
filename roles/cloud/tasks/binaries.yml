@@ -64,7 +64,7 @@
         repo: "{{ cloud_k9s['github_pass'] }}"
         action: latest_release
       register: cloud_k9s_latest_release
-  - name: "Download k9s tar file"
+    - name: "Download k9s tar file"
       ansible.builtin.get_url:
         url: "{{ gh_repo }}/releases/download/latest/{{ tar_file }}"
         dest: "{{ cloud_temp_dir }}/{{ tar_file }}"
