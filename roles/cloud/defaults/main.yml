@@ -1,6 +1,7 @@
 ---
 
-cloud_krew_bin: "{{ global_homebrew_prefix }}/bin/kubectl krew"
+cloud_architecture: "{{ cloud_package_arch[ansible_facts['machine']] }}"
+cloud_k9s_config_path: "{{ cloud_k9s_config_defaults[ansible_facts['system']] }}"
 
 cloud_krew_plugins:
   - cert-manager

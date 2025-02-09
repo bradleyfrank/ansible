@@ -6,10 +6,26 @@
     - name: "Install K8s packages"
       community.general.homebrew:
         name: "{{ cloud_packages }}"
+    - name: "Set krew bin"
+      ansible.builtin.set_fact:
+        cloud_krew_bin: "{{ global_homebrew_prefix }}/bin/kubectl krew"
   rescue:
     - name: "Install manually"
       ansible.builtin.include_tasks:
         file: "binaries.yml"
+    - name: "Set krew bin"
+      ansible.builtin.set_fact:
+        cloud_krew_bin: "{{ cloud_local_bin_path }}/kubectl krew"
+
+- name: "Install krew plugins"
+  ansible.builtin.command:
+    cmd: "{{ cloud_krew_bin }} install {{ item }}"
+  loop: "{{ cloud_krew_plugins }}"
+  register: cmd_krew_install
+  changed_when: "'Installed plugin' in cmd_krew_install['stdout']"
+  failed_when: "'does not exist in the plugin index' in cmd_krew_install['stdout']"
+  when: "'krew' in cloud_packages" and (cloud_krew_plugins | length > 0)
+  tags: [moredots, krew]
 
 - name: "Ensure k9s config directory exists"
   ansible.builtin.file:
@@ -29,13 +45,3 @@
     label: "{{ item }}"
   when: "'k9s' in cloud_packages"
   tags: [dots, k9s]
-
-- name: "Install krew plugins"
-  ansible.builtin.command:
-    cmd: "{{ cloud_krew_bin }} install {{ item }}"
-  loop: "{{ cloud_krew_plugins }}"
-  register: cmd_krew_install
-  changed_when: "'Installed plugin' in cmd_krew_install['stdout']"
-  failed_when: "'does not exist in the plugin index' in cmd_krew_install['stdout']"
-  when: ("krew" in cloud_packages) and (cloud_krew_plugins | length > 0)
-  tags: [moredots, krew]

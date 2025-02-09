@@ -30,7 +30,7 @@
   block:
     - name: "Download krew tar file"
       ansible.builtin.get_url:
-        url: "https://github.com/kubernetes-sigs/krew/releases/latest/download/{{ filename }}.tar.gz"
+        url: "{{ cloud_krew_url }}/releases/download/latest/{{ filename }}.tar.gz"
         dest: "{{ cloud_temp_dir }}/{{ filename }}.tar.gz"
         mode: "0755"
     - name: "Extract krew tar file"
