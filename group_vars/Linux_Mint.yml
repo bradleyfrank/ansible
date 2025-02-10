@@ -100,7 +100,6 @@ packages_homebrew_formulas:
   - atuin
   - bat-extras
   - csvlens
-  - doctl
   - eza
   - fastfetch
   - lazygit

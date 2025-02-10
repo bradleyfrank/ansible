@@ -140,7 +140,6 @@ pkg_mgr_packages:
     - atuin
     - bat-extras
     - csvlens
-    - doctl
     - eza
     - fastfetch
     - nb

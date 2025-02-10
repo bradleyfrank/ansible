@@ -124,7 +124,6 @@ pkg_mgr_packages:
     - charmbracelet/tap/freeze
     - charmbracelet/tap/glow
     - csvlens
-    - doctl
     - lazygit
     - nb
     - qsv

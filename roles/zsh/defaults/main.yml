@@ -22,8 +22,6 @@ zsh_completions:
     command: "curl -L https://cheat.sh/:zsh"
   - name: "nb"
     command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
-  - name: "doctl"
-    command: "doctl completion zsh"
 
 zsh_plugins:
   - name: "fzf-tab"

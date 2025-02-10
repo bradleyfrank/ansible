@@ -374,7 +374,6 @@ pkg_mgr_packages:
     - csvlens
     - diceware
     - dict
-    - doctl
     - dua-cli
     - duf
     - dust
