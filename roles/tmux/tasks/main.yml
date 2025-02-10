@@ -19,6 +19,8 @@
     dest: "{{ tmux_config_dir }}/{{ item['profile'] }}.conf"
     mode: "0755"
   loop: "{{ tmux_config }}"
+  loop_control:
+    label: "{{ item['profile'] }}"
   tags: [dots]
 
 - name: "Install tmux plugins"
