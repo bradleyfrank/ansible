@@ -1,21 +1,16 @@
 ---
 
 - name: "Install packages via Homebrew"
+  community.general.homebrew:
+    name: "{{ cloud_packages }}"
   tags: [install, kubectl, k9s, krew]
-  block:
-    - name: "Install cloudy packages"
-      community.general.homebrew:
-        name: "{{ cloud_packages }}"
-    - name: "Set krew bin"
-      ansible.builtin.set_fact:
-        cloud_krew_bin: "{{ global_homebrew_prefix }}/bin/kubectl krew"
-  rescue:
-    - name: "Install manually"
-      ansible.builtin.include_tasks:
-        file: "binaries.yml"
-    - name: "Set krew bin"
-      ansible.builtin.set_fact:
-        cloud_krew_bin: "{{ cloud_local_bin_path }}/kubectl krew"
+  when: cloud_install_from_homebrew
+
+- name: "Install manually"
+  ansible.builtin.include_tasks:
+    file: "binaries.yml"
+  tags: [install, kubectl, k9s, krew]
+  when: not cloud_install_from_homebrew
 
 - name: "Install krew plugins"
   ansible.builtin.command:
