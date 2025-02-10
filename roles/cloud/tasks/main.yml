@@ -29,7 +29,7 @@
 
 - name: "Ensure k9s config directory exists"
   ansible.builtin.file:
-    path: "{{ cloud_k9s_config }}"
+    path: "{{ cloud_k9s_config_path }}"
     state: directory
     mode: "0755"
   when: "'k9s' in cloud_packages"
