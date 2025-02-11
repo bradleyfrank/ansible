@@ -1,6 +1,6 @@
 ---
 
 zsh_chmod_directories:
-  - "{{ global_homebrew_prefix }}/share"
+  - "{{ global_homebrew_prefix | default('/opt/homebrew') }}/share"
   - "{{ global_homebrew_prefix }}/share/zsh"
   - "{{ global_homebrew_prefix }}/share/zsh/site-functions"

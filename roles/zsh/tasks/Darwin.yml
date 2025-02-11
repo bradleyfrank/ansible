@@ -1,0 +1,12 @@
+---
+
+- name: "Add Homebrew Zsh to available shells"
+  ansible.builtin.lineinfile:
+    path: "/etc/shells"
+    line: "{{ zsh_homebrew_prefix }}/bin/zsh"
+
+- name: "Fix Homebrew Zsh folder permissions"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "0755"
+  loop: "{{ zsh_chmod_directories }}"

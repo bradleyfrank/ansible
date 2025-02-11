@@ -27,25 +27,16 @@
   tags: [moredots]
 
 - name: "Configure Homebrew Zsh for MacOS"
+  ansible.builtin.import_tasks:
+    file: "config_macos_zsh.yml"
   when: ansible_facts['system'] == "Darwin"
-  become: true
-  block:
-    - name: "Add Homebrew Zsh to available shells"
-      ansible.builtin.lineinfile:
-        path: "/etc/shells"
-        line: "{{ global_homebrew_prefix }}/bin/zsh"
-    - name: "Fix Homebrew Zsh folder permissions"
-      ansible.builtin.file:
-        path: "{{ item }}"
-        mode: "0755"
-      loop: "{{ zsh_chmod_directories }}"
 
 - name: "Set Zsh as default shell"
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
     shell: "{{ zsh_bin }}"
-  when: ansible_facts['user_shell'] != zsh_bin
   become: true
+  when: ansible_facts['user_shell'] != zsh_bin
 
 - name: "Install Zsh plugins"
   ansible.builtin.git:
@@ -66,21 +57,7 @@
   tags: [dots]
 
 - name: "Refresh Zsh completions"
+  ansible.builtin.import:
+    file: "completions.yml"
   tags: [moredots, completions]
-  block:
-    - name: "Generate completions"
-      ansible.builtin.shell:
-        cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
-      changed_when: false
-      loop: "{{ zsh_completions }}"
-      loop_control:
-        label: "{{ item['name'] }}"
-    - name: "Delete zcompdump"
-      ansible.builtin.file:
-        path: "{{ ansible_facts['user_dir'] }}/.zcompdump"
-        state: absent
-    - name: "Generate zcompdump"
-      ansible.builtin.shell:
-        cmd: "autoload -Uz compinit && compinit"
-        executable: "{{ zsh_bin }}"
-        creates: "{{ ansible_facts['user_dir'] }}/.zcompdump"
+
