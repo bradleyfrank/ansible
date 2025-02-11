@@ -10,3 +10,4 @@
     path: "{{ item }}"
     mode: "0755"
   loop: "{{ zsh_chmod_directories }}"
+

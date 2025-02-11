@@ -36,7 +36,7 @@
     name: "{{ ansible_facts['user_id'] }}"
     shell: "{{ zsh_bin }}"
   become: true
-  when: ansible_facts['user_shell'] != zsh_bin
+  tags: [never]
 
 - name: "Install Zsh plugins"
   ansible.builtin.git:
