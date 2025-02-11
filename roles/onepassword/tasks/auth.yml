@@ -34,10 +34,8 @@
   register: cmd_op_signin
 
 - name: "Write 1Password session to file"
-  vars:
-    onepassword_export_session: "{{ cmd_op_signin['stdout'] }}"
-  ansible.builtin.template:
-    src: "op_session.j2"
+  ansible.builtin.copy:
+    content: "{{ cmd_op_signin['stdout'] }}"
     dest: "{{ onepassword_session_file }}"
     mode: "0400"
   when: onepassword_write_session_file

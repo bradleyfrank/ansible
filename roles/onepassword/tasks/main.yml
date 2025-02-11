@@ -18,4 +18,5 @@
     file: "auth.yml"
   when: not onepassword_use_gui_integration
 
-- ansible.builtin.include_tasks: "import.yml"
+- name: "Include tasks to add 1Password entry"
+  ansible.builtin.include_tasks: "import.yml"
