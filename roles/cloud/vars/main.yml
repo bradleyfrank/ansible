@@ -2,7 +2,7 @@
 
 cloud_bin_path_defaults:
   arm64: "{{ ansible_facts['user_dir'] }}/.local/bin"
-  amd64: "{{ global_homebrew_prefix }}/bin"
+  amd64: "{{ global_homebrew_prefix | default('/opt/homebrew'] }}/bin"
 
 cloud_install_from_homebrew_defaults:
   arm64: false
