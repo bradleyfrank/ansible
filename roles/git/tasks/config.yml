@@ -5,6 +5,12 @@
     path: "{{ git_global_config_dir }}"
     state: directory
 
+- name: "Downgrade to 'diff3' when 'zdiff3' not available"
+  ansible.builtin.set_fact:
+    git_conflictstyle: "diff3"
+  when: (ansible_facts['distribution'] == 'Ubuntu') and
+        (ansible_facts['distribution_version'] < 24)
+
 - name: "Template gitconfig"
   vars:
     key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
