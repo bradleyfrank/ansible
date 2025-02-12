@@ -92,7 +92,6 @@ pkg_mgr_packages:
     - tlp
     - toilet
     - tree
-    - trurl
     - virtualenv
     - wget
     - xdelta
@@ -144,4 +143,5 @@ pkg_mgr_packages:
     - fastfetch
     - nb
     - qsv
+    - trurl  # available in Ubuntu as of 24.04
     - yq
