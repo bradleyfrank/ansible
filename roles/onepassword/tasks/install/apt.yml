@@ -1,26 +1,17 @@
 ---
 
-- name: "Install 1Password gpg key"
-  ansible.builtin.apt_key:
-    url: "{{ onepassword_linux_repo['url'] }}"
-    keyring: "{{ onepassword_linux_repo['keyring'] }}"
-  become: true
-  tags: [onepassword, install, repos, become]
-
 - name: "Install 1Password repository"
-  ansible.builtin.apt_repository:
-    repo: "{{ onepassword_linux_repo['repo'] }}"
-    filename: "{{ onepassword_linux_repo['name'] }}"
+  ansible.builtin.deb822_repository: "{{ onepassword_linux_repo }}"
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Create debsig-verify policy directory"
   ansible.builtin.file:
     path: "{{ onepassword_debsig_dir }}"
-    state: "directory"
+    state: directory
     mode: "0644"
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Add debsign-verify policy"
   ansible.builtin.get_url:
@@ -28,46 +19,31 @@
     dest: "{{ onepassword_debsig_dir }}/1password.pol"
     mode: "0644"
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Update apt cache"
   ansible.builtin.apt:
     update_cache: true
   become: true
-  tags: [onepassword, install, repos, become]
+  tags: [repos]
 
 - name: "Install 1Password cli package"
   ansible.builtin.apt:
     name: "{{ onepassword_packages['cli'] }}"
-    state: "present"
+    state: present
     autoclean: true
     autoremove: true
     install_recommends: true
   become: true
-  tags: [onepassword, install, cli, become]
+  tags: [install]
 
 - name: "Install 1Password gui package"
   ansible.builtin.apt:
     name: "{{ onepassword_packages['gui'] }}"
-    state: "present"
+    state: present
     autoclean: true
     autoremove: true
     install_recommends: true
   become: true
   when: onepassword_use_gui_integration
-  tags: [onepassword, install, gui, become]
-
-- name: "Remove repo installed by package"
-  ansible.builtin.file:
-    path: "{{ onepassword_repo_file }}"
-    state: "absent"
-  become: true
-  tags: [onepassword, install, cli, gui, repos, become]
-
-- name: "Make official repo a symlink instead"
-  ansible.builtin.file:
-    src: "/etc/apt/sources.list.d/{{ onepassword_linux_repo['name'] }}.list"
-    dest: "{{ onepassword_repo_file }}"
-    state: "absent"
-  become: true
-  tags: [onepassword, install, cli, gui, repos, become]
+  tags: [install]

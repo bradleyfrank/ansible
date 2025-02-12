@@ -1,7 +1,12 @@
 ---
 
-zsh_package_name: "zsh"
-zsh_prefer_homebrew: false
+zsh_packages:
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+
+zsh_bin: "{{ lookup('ansible.builtin.first_found', files=['zsh'], paths=zsh_bin_search_paths) }}"
+
 zsh_manage_zcompdump: true
 
 zsh_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
@@ -13,9 +18,19 @@ zsh_supplemental_dirs:
   - "{{ zsh_functions_dir }}"
   - "{{ zsh_rcd_dir }}"
 
-zsh_template_zshrc:
-  - "{{ inventory_dir }}/templates/zshrc.j2"
-  - "templates/zshrc.j2"
+zsh_completions:
+  - name: "cht"
+    command: "curl -L https://cheat.sh/:zsh"
+  - name: "nb"
+    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
 
-zsh_completions: []
-zsh_plugins: []
+zsh_plugins:
+  - name: "fzf-tab"
+    repo: "https://github.com/Aloxaf/fzf-tab"
+    source: "fzf-tab.plugin.zsh"
+  - name: "zsh-vi-mode"
+    repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
+    source: "zsh-vi-mode.plugin.zsh"
+  - name: "base16-shell"
+    repo: "https://github.com/chriskempson/base16-shell.git"
+    source: "profile_helper.sh"

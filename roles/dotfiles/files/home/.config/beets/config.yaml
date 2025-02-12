@@ -1,0 +1,28 @@
+directory: ~/Music/Beets
+library: ~/Music/beets.db
+plugins: convert mbsync inline
+ignore_hidden: yes
+per_disc_numbering: yes
+ui:
+  color: yes
+  colors:
+    action_description: darkgray
+    text_highlight_minor: turquoise
+import:
+  copy: yes
+  from_scratch: yes
+musicbrainz:
+  extra_tags: [year, catalognum, country, media, label]
+item_fields:
+  disc_padded: u'%03i' % (disc) if disctotal > 99 else u'%02i' % (disc)
+  track_padded: u'%03i' % (track) if tracktotal > 99 else u'%02i' % (track)
+paths:
+  default: "%upper{${album}}/${disc_padded}x${track_padded}_${title}"
+  singleton: "%upper{${album}}/${disc_padded}x${track_padded}_${title}"
+  comp: "%upper{${album}}/${disc_padded}x${track_padded}_${title}"
+replace:
+  '[^一-龠ぁ-ゔァ-ヴーa-zA-Z0-9々〆〤ヶ]+': _
+convert:
+  auto: yes
+  dest: ~/Music/Archive
+  never_convert_lossy_files: yes

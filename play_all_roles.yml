@@ -1,0 +1,41 @@
+---
+
+- name: "Run all the things"
+  hosts: all
+  tasks:
+    - ansible.builtin.import_role:
+        name: "pkg_mgr"
+      tags: [pkg_mgr]
+
+    - ansible.builtin.import_role:
+        name: "system"
+      tags: [system]
+
+    - ansible.builtin.import_role:
+        name: "desktop"
+      tags: [desktop]
+
+    - ansible.builtin.import_role:
+        name: "ssh"
+      tags: [ssh]
+
+    - ansible.builtin.import_role:
+        name: "git"
+      tags: [git]
+
+    - ansible.builtin.import_role:
+        name: "cloud"
+      tags: [cloud]
+
+    - ansible.builtin.import_role:
+        name: "tmux"
+      tags: [tmux]
+
+    - ansible.builtin.import_role:
+        name: "vim"
+      tags: [vim]
+
+    - ansible.builtin.import_role:
+        name: "zsh"
+      tags: [zsh]
+

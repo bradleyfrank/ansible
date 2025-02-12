@@ -1,0 +1,20 @@
+---
+
+- name: "Generate completions"
+  ansible.builtin.shell:
+    cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
+  changed_when: false
+  loop: "{{ zsh_completions }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+
+- name: "Delete zcompdump"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.zcompdump"
+    state: absent
+
+- name: "Generate zcompdump"
+  ansible.builtin.shell:
+    cmd: "autoload -Uz compinit && compinit"
+    executable: "{{ zsh_bin }}"
+    creates: "{{ ansible_facts['user_dir'] }}/.zcompdump"

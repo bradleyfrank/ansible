@@ -1,0 +1,17 @@
+---
+
+- name: "Set app icons"
+  vars:
+    desktop_app: "{{ path }}/{{ app['path'] | splitext | first }}.app"
+  ansible.builtin.command:
+    cmd: "{{ global_homebrew_prefix }}/bin/fileicon set {{ desktop_app }} {{ app['src'] }}"
+  register: cmd_fileicon_set
+  changed_when: false
+  failed_when:
+    - "'you do not have read permissions' in cmd_fileicon_set['stderr']"
+    - "'file not found or not a (readable) regular file' in cmd_fileicon_set['stderr']"
+  loop: "{{ lookup('community.general.filetree', desktop_replacement_icons_dir + '/') }}"
+  loop_control:
+    label: "{{ desktop_app }}"
+    loop_var: app
+  tags: [icons]

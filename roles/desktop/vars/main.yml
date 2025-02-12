@@ -1,0 +1,12 @@
+---
+
+desktop_fonts_dir_defaults:
+  Linux: "{{ ansible_facts['user_dir'] }}/.local/share/fonts"
+  Darwin: "{{ ansible_facts['user_dir'] }}/Library/Fonts"
+
+desktop_packages_defaults:
+  Linux: [solaar]
+  Darwin: [fileicon, bettermouse]
+
+desktop_fonts_github_user: "ryanoasis"
+desktop_fonts_github_repo: "nerd-fonts"

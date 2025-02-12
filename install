@@ -1,14 +1,12 @@
 #!/usr/bin/env sh
+# shellcheck disable=SC1090,SC1091
 
 set -o errexit
 
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
-ANSIBLE_REPO_BRANCH="main"
-ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-ANSIBLE_REPO_HOSTVARS="${HOME}/.ansible/inventory/host_vars/localhost.yml"
-ANSIBLE_REPO_INVENTORY="$(mktemp)"
-
-HOMEBREW_INSTALL_ON_LINUX=1; export HOMEBREW_INSTALL_ON_LINUX
+ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
+ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
+ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/$(uname --nodename).yml"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 
@@ -32,7 +30,6 @@ bootstrap_mac() {
 
 bootstrap_linux() {
   sudo systemctl stop packagekit
-  # shellcheck disable=SC1091
   . /etc/os-release
 
   case "$ID" in
@@ -49,24 +46,17 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  [ -n "$HOMEBREW_INSTALL_ON_LINUX" ] && install_homebrew
+  if [ -z "$SKIP_HOMEBREW_LINUX" ]; then
+    install_homebrew
+  fi
 }
 
 
-while getopts ':hbg:' opt; do
-  case "$opt" in
-    h) echo "[-h] | [-b] [-g <branch>]" ;;
-    b) unset HOMEBREW_INSTALL_ON_LINUX ;;
-    g) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
-    *) exit 1 ;;
-  esac
-done
-
-case $(uname -m) in (aarch*|arm*)
-  unset HOMEBREW_INSTALL_ON_LINUX ;;
+case $(uname --machine) in (aarch*|arm*)
+  SKIP_HOMEBREW_LINUX=1 ;;
 esac
 
-case $(uname -s) in
+case $(uname --kernel-name) in
   Darwin) bootstrap_mac ;;
   Linux)  bootstrap_linux ;;
   *)      exit 1 ;;
@@ -78,13 +68,12 @@ git checkout "$ANSIBLE_REPO_BRANCH"
 
 PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
 python3 -m venv venv
-#shellcheck disable=SC1091
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 
-echo "localhost ansible_connection=local" > "$ANSIBLE_REPO_INVENTORY"
-ansible-playbook playbooks/install_requirements.yml --inventory "$ANSIBLE_REPO_INVENTORY"
-ansible-playbook playbooks/build_inventory.yml --inventory "$ANSIBLE_REPO_INVENTORY"
+export ANSIBLE_PYTHON_INTERPRETER="${PWD}/venv/bin/python3"
+
+ansible-playbook play_bootstrap_ansible.yml
 
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
@@ -93,11 +82,11 @@ grep "^(#|-|$)" roles/*/defaults/main.yml \
   --color=never \
   | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
 
-vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running the install script.'"
+vim -c "e ${ANSIBLE_REPO_HOSTVARS}|redraw|echom 'Save and quit to continue running Ansible.'"
 
-export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.ansible/vault"
-ansible-playbook playbooks/site.yml --ask-become-pass --tags "all,never"
-ansible-playbook playbooks/password_manager.yml
+ansible-playbook play_init_onepassword.yml --ask-become-pass
 
-printf "\nVault passphrase: %s\n" "$(cat "$ANSIBLE_VAULT_PASSWORD_FILE")"
-rm -f "$ANSIBLE_VAULT_PASSWORD_FILE"
+. "${HOME}/.op_session"
+rm --force "${HOME}/.op_session"
+
+ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"

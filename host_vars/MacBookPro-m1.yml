@@ -1,0 +1,8 @@
+---
+
+global_email_address: "bfrank@fastmail.com"
+global_is_desktop_system: true
+global_desktop_environment: ""
+global_homebrew_prefix: "/opt/homebrew"
+
+cloud_packages: []

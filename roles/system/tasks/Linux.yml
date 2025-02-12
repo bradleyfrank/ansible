@@ -3,11 +3,11 @@
 - name: "Load per-system package definitions"
   ansible.builtin.include_vars:
     file: "{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: [system, linux_settings, dconf, dracut]
+  tags: [dconf, dracut]
 
 - name: "Add DNS fallback"
   become: true
-  tags: [system, linux_settings, dns, become]
+  tags: [dns]
   when: system_linux_dns_fallback | length > 0
   block:
     - name: "Ensure 'resolved' conf directory exists"
@@ -17,14 +17,14 @@
         state: "directory"
     - name: "Add DNS fallback for systemd-resolved"
       ansible.builtin.template:
-        src: "{{ lookup('ansible.builtin.first_found', system_template_resolved) }}"
+        src: "resolved.conf.j2"
         dest: "/etc/systemd/resolved.conf.d/fallback_dns.conf"
         mode: "0644"
 
 - name: "Apply dconf settings"
   become: true
-  tags: [system, linux_settings, dconf, become]
-  when: "'gnome' in system_current_desktop"
+  tags: [dconf]
+  when: "'gnome' in system_linux_current_desktop"
   block:
     - name: "Install dconf package"
       ansible.builtin.package:
@@ -35,6 +35,7 @@
         dconf_settings: "{{ item['keys'] }}"
       ansible.builtin.include_tasks:
         file: "dconf.yml"
+      # TODO: consider dropping defaults
       loop: "{{ system_linux_dconf_defaults \
           | community.general.lists_mergeby(system_linux_dconf_distro, 'path', recursive=True) }}"
       loop_control:
@@ -42,8 +43,8 @@
 
 - name: "Apply Dracut settings"
   become: true
-  tags: [system, linux_settings, dracut, become]
-  when: system_has_desktop
+  tags: [dracut]
+  when: system_linux_has_desktop
   block:
     - name: "Install dracut package"
       ansible.builtin.package:
@@ -65,4 +66,4 @@
         label: "{{ item['desc'] }}"
       become: true
       notify: Regenerate Dracut
-      tags: [system, linux_settings, dracut, become]
+      tags: [dracut]

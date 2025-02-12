@@ -1,0 +1,25 @@
+---
+
+- name: "Template 1Password json file for importing"
+  vars:
+    ed25519_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+    rsa_passphrase: "{{
+      lookup('community.general.random_words', numwords=5, delimiter='-', case='capitalize')
+    }}"
+  ansible.builtin.template:
+    src: "op.json.j2"
+    dest: "{{ onepassword_template }}"
+    mode: "0600"
+  notify: "Delete 1Password template"
+
+- name: "Import secrets into 1Password"
+  environment:
+    PATH: "{{ ansible_facts['env']['PATH'] }}:{{ global_homebrew_prefix }}/bin"
+  ansible.builtin.shell:
+    # https://1password.community/discussion/comment/703328/#Comment_703328
+    cmd: |
+      . {{ onepassword_session_file }}
+      op item create --template {{ onepassword_template }} --format json </dev/null 2>/dev/null
+  changed_when: true

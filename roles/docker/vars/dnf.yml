@@ -1,6 +1,7 @@
 docker_pkgs:
-  pkgs:
-    - "podman"
+  packages:
+    - podman
+    - hadolint
   optional:
-    - "buildah"
-    - "skopeo"
+    - buildah
+    - skopeo

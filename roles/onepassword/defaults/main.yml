@@ -1,8 +1,5 @@
 ---
 
-onepassword_use_gui_integration: "{{ host_has_desktop | default(true) }}"
-
-onepassword_vault_secrets:
-  github_token: "{{ git_github_token }}"
-  rsa_ssh_key: "{{ ssh_keys['rsa'] }}"
-  ed25519_ssh_key: "{{ ssh_keys['ed25519'] }}"
+onepassword_vault: "Private"
+onepassword_write_session_file: false
+onepassword_use_gui_integration: "{{ global_is_desktop_system | default(false) }}"

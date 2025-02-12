@@ -1,23 +1,23 @@
 ---
 
-git_email_address: "{{
-  host_email_address | default(ansible_facts['user_id'] + '@' + ansible_facts['hostname'])
-}}"
+git_packages:
+  - git
+  - gh
+
 git_github_token: ""
 git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
-git_config_dir: "{{ ansible_facts['user_dir'] }}/.gitconfig.d"
 
-git_template_gitconfig:
-  - "{{ inventory_dir }}/templates/gitconfig.j2"
-  - "templates/gitconfig.j2"
+git_ssh_auth_sock: ""
+git_ssh_auth_pid: ""
 
 git_ssh_authorized_keys_from_github: true
-git_ssh_authorized_keys_match: "[*]"
+git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"  # "[*]" (match all)
 
 git_ssh_key_upload: true
 git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
 git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
 git_ssh_key_public: "{{ git_ssh_key_private }}.pub"
+git_ssh_key_passphrase: "{{ ssh_keys['id_ed25519']['passphrase'] | default('') }}"
 
 git_signing_key_upload: true
 git_signing_key_type: "ssh"
@@ -26,5 +26,5 @@ git_signing_allowed_signers: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signe
 
 git_repos: []
 git_repos_update: false
-git_repos_as_worktrees: false
-git_repos_path: "{{ ansible_facts['user_dir'] }}/Git/"  # include trailing slash
+git_repos_as_worktrees: true
+git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"

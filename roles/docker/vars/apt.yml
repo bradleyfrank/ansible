@@ -1,21 +1,20 @@
 docker_repo_url: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}"
-docker_gpg_url: "{{ docker_repo_url }}/gpg"
-docker_gpg_key: "/etc/apt/keyrings/docker.asc"
 
 docker_repo:
-  options:
-    - "arch={{ ansible_facts['architecture'] }}"
-    - "signed-by={{ docker_gpg_key }}"
-  uri: "{{ docker_repo_url }}"
-  suite: "{{ ansible_facts['distribution_release'] }} stable"
+  name: docker
+  uris: ["{{ docker_repo_url }}"]
+  components: ["{{ ansible_facts['distribution_release'] }}"]
+  suites: ["stable"]
+  signed_by: "{{ docker_repo_url }}/gpg"
 
 docker_pkgs:
   prereqs:
     - "ca-certificates"
     - "curl"
-  pkgs:
+  packages:
     - "docker-ce"
     - "docker-ce-cli"
     - "containerd.io"
     - "docker-buildx-plugin"
     - "docker-compose-plugin"
+  optional: []

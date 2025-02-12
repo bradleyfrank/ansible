@@ -1,18 +1,22 @@
 ---
 
-desktop_replacement_icons: "{{ inventory_dir }}/files/icons"
+desktop_logi_app_install: false
+desktop_replacement_icons_dir: "icons"
 
-desktop_app_paths:
+desktop_fonts_dir: "{{ desktop_fonts_dir_defaults[ansible_facts['system']] }}"
+desktop_packages: "{{ desktop_packages_defaults[ansible_facts['system']] }}"
+
+desktop_current_environment: "{{ global_desktop_environment | default('') }}"
+desktop_has_desktop: "{{ global_is_desktop_system | default(false) }}"
+
+desktop_fonts_install:
+  - "JetBrainsMono"
+  - "SourceCodePro"
+
+desktop_fonts_current_version: "{{
+  ansible_facts['desktop_fonts_current_version'] | default('v0.0.0')
+}}"
+
+desktop_apps_paths:
   - "/Applications"
   - "{{ ansible_facts['user_dir'] }}/Applications"
-
-desktop_environment: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
-
-desktop_homebrew_prefix: "/opt/homebrew"
-
-desktop_fonts_github_user: "ryanoasis"
-desktop_fonts_github_repo: "nerd-fonts"
-desktop_fonts_to_install: []
-
-desktop_logi_copy_location: "{{ ansible_facts['user_dir'] }}/Downloads"
-desktop_logi_homebrew_prefix: "/opt/homebrew"

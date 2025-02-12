@@ -1,0 +1,48 @@
+---
+
+- name: "Bootstrap Ansible requirements"
+  hosts: all
+
+  vars:
+    galaxy_collections:
+      - name: "ansible.posix"
+      - name: "community.crypto"
+      - name: "community.general"
+      - name: "devsec.hardening"
+    _xdg_session_type: "{{ ansible_facts['env']['XDG_SESSION_TYPE'] | default('tty') }}"
+    _xdg_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') }}"
+    _distro: "{{ ansible_facts['distribution'] }}"
+    host_vars_yml: "host_vars/{{ ansible_facts['hostname'] }}.yml"
+    host_vars_globals:
+      homebrew_prefix:
+        Linux: "/home/linuxbrew/.linuxbrew"
+        Darwin: "/opt/homebrew"
+      email: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
+      is_desktop: "{{ _xdg_session_type != 'tty' or _distro == 'MacOSX' }}"
+      desktop_environment: "{{ _xdg_desktop | lower }}"
+
+  tasks:
+    - name: "Install Ansible Galaxy requirements"
+      community.general.ansible_galaxy_install:
+        name: "{{ item['name'] }}"
+        type: "{{ item['type'] | default('collection') }}"
+        force: true
+      loop: "{{ galaxy_collections }}"
+      tags: [collections]
+
+    - name: "Check if host_vars already exists"
+      ansible.builtin.stat:
+        path: "{{ host_vars_yml }}"
+      register: stat_host_vars_yml
+      tags: [host_vars]
+
+    - name: "Skip remaining tasks if host_vars exist"
+      when: stat_host_vars_yml['stat']['exists']
+      ansible.builtin.meta: end_play
+
+    - name: "Template host_vars file"
+      ansible.builtin.template:
+        src: "host_vars.yml.j2"
+        dest: "{{ host_vars_yml }}"
+        mode: "0644"
+      tags: [host_vars]

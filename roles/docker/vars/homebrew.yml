@@ -1,3 +1,6 @@
 docker_pkgs:
-  pkgs:
-    - "docker"
+  prereqs: []
+  packages:
+    - docker
+    - hadolint
+  optional: []

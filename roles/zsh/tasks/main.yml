@@ -1,48 +1,53 @@
 ---
 
-- name: "Install zsh (via OS package manager)"
+- name: "Install zsh packages"
   ansible.builtin.package:
-    name: "{{ zsh_package_name }}"
+    name: "{{ zsh_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [install]
+
+- name: "Get current Zsh version"
+  ansible.builtin.command:
+    cmd: "{{ zsh_bin }} --version"
+  register: cmd_zsh_version
+  changed_when: false
+  tags: [dots]
+
+- name: "Set current Zsh version"
+  ansible.builtin.set_fact:
+    zsh_current_version: "{{ (cmd_zsh_version['stdout'] | split)[1] }}"
+  tags: [dots]
+
+- name: "Ensure supplemental Zsh directories exist"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0744"
+  loop: "{{ zsh_supplemental_dirs }}"
+  tags: [moredots]
+
+- name: "Check if Zsh is an available shell"
+  ansible.builtin.find:
+    contains: "{{ zsh_bin }}"
+    read_whole_file: true
+    path: "/etc"
+    patterns: "^shells$"
+    use_regex: true
+  register: find_zsh_etc_shells
+
+- name: "Add Homebrew Zsh to available shells"
+  ansible.builtin.lineinfile:
+    path: "/etc/shells"
+    line: "{{ zsh_bin }}"
   become: true
-  when: (ansible_facts['system'] == "Linux") and (not zsh_prefer_homebrew)
-  tags: [zsh, install, become]
+  when: find_zsh_etc_shells['matched'] == 0
 
-- name: "Install zsh (via Homebrew)"
-  community.general.homebrew:
-    name: "{{ zsh_package_name }}"
-  when: (ansible_facts['system'] == "Darwin") or (zsh_prefer_homebrew)
-  tags: [zsh, install]
-
-- name: "Include tasks for setting vars"
-  ansible.builtin.import_tasks:
-    file: "vars.yml"
-
-- name: "Include tasks for managing supplemental directories"
-  ansible.builtin.import_tasks:
-    file: "dirs.yml"
-
-- name: "Configure Homebrew Zsh for MacOS"
-  when: (ansible_facts['system'] == "Darwin") and (zsh_prefer_homebrew)
-  become: true
-  tags: [zsh, shell, become]
-  block:
-    - name: "Add Homebrew Zsh to available shells"
-      ansible.builtin.lineinfile:
-        path: "/etc/shells"
-        line: "{{ zsh_homebrew_prefix }}/bin/zsh"
-    - name: "Fix Homebrew Zsh folder permissions"
-      ansible.builtin.file:
-        path: "{{ item }}"
-        mode: "0755"
-      loop: "{{ zsh_chmod_directories }}"
-
-- name: "Set Zsh as default shell"
-  ansible.builtin.user:
-    name: "{{ ansible_facts['user_id'] }}"
-    shell: "{{ zsh_bin_path }}"
-  when: ansible_facts['user_shell'] != zsh_bin_path
-  become: true
-  tags: [zsh, shell, become]
+- name: "Fix Homebrew Zsh folder permissions"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "0755"
+  loop: "{{ zsh_chmod_directories }}"
+  when: ansible_facts['system'] == "Darwin"
 
 - name: "Install Zsh plugins"
   ansible.builtin.git:
@@ -53,34 +58,16 @@
   loop: "{{ zsh_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [zsh, zsh_plugins, dotfiles]
-
-- name: "Generate Zsh completions"
-  ansible.builtin.shell:
-    cmd: "{{ item['command'] }} > {{ zsh_functions_dir }}/_{{ item['name'] }}"
-  changed_when: false
-  loop: "{{ zsh_completions }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  tags: [zsh, completions, dotfiles]
+  tags: [moredots]
 
 - name: "Apply zshrc template"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', zsh_template_zshrc) }}"
+    src: "zshrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     mode: "0644"
-  tags: [zsh, zshrc, dotfiles]
+  tags: [dots]
 
-- name: "Refresh zcompdump"
-  tags: [zsh, zcompdump, dotfiles]
-  when: zsh_manage_zcompdump
-  block:
-    - name: "Delete zcompdump"
-      ansible.builtin.file:
-        path: "{{ ansible_facts['user_dir'] }}/.zcompdump"
-        state: absent
-    - name: "Generate zcompdump"
-      ansible.builtin.shell:
-        cmd: "autoload -Uz compinit && compinit"
-        executable: "{{ zsh_bin_path }}"
-        creates: "{{ ansible_facts['user_dir'] }}/.zcompdump"
+- name: "Refresh Zsh completions"
+  ansible.builtin.import_tasks:
+    file: "completions.yml"
+  tags: [moredots, completions]

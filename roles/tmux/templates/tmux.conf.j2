@@ -1,71 +1,73 @@
-#
-# Example .tmux.conf
-#
-# By Nicholas Marriott. Public domain.
-#
+set -s  @status_position              "{{ item['status_position'] }}"
+set -s  @status_right                 "{{ item['status_right'] }}"
+set -s  @status_style                 "{{ item['status_style'] }}"
+set -s  @pane_border_color_default    "{{ item['pane_border_color']['default'] }}"
+set -s  @pane_border_color_sync       "{{ item['pane_border_color']['sync'] }}"
+set -s  @pane_border_color_zoom       "{{ item['pane_border_color']['zoom'] }}"
+set -s  @pane_border_lines            "{{ item['pane_border_lines'] }}"
+set -s  @pane_border_status           "{{ item['pane_border_status'] }}"
+set -s  @window_status_activity       "{{ item['window_status_activity'] }}"
+set -s  @window_status_current_format "{{ item['window_status_current_format'] }}"
+set -s  @window_status_format         "{{ item['window_status_format'] }}"
 
-# Some tweaks to the status line
-set -g status-right "%H:%M"
-set -g window-status-current-style "underscore"
+set -g  pane-active-border-style "#{?window_zoomed_flag,#{@pane_border_color_zoom},#{?pane_synchronized,#{@pane_border_color_sync},#{@pane_border_color_default}}}"
+set -g  pane-border-format "#{?window_zoomed_flag, ZOOM ,}"
+set -g  pane-border-indicators both
+set -g  pane-border-style "bg=default,#{?pane_synchronized,#{@pane_border_color_sync},fg=white}"
+set -gF pane-border-status "#{@pane_border_status}"
+set -gF pane-border-lines "#{@pane_border_lines}"
 
-# If running inside tmux ($TMUX is set), then change the status line to red
-%if #{TMUX}
-set -g status-bg red
-%endif
+set -g  window-status-activity-style "#{@window_status_activity}"
+set -gF window-status-current-format "#{@window_status_current_format}"
+set -gF window-status-format "#{@window_status_format}"
 
-# Enable RGB colour if running in xterm(1)
-set-option -sa terminal-overrides ",xterm*:Tc"
+set -g  status on
+set -g  status-justify left
+set -g  status-left ""
+set -g  status-style "#{@status_style}"
+set -gF status-right "#{@status_right}"
+set -gF status-position "#{@status_position}"
 
-# Change the default $TERM to tmux-256color
-set -g default-terminal "tmux-256color"
+set -g  message-style "bg=black,fg=default"
+set -g  mode-style "bg=white,fg=black"
 
-# No bells at all
-set -g bell-action none
+set -g  aggressive-resize off
+set -g  allow-passthrough on
+set -g  allow-rename on
+set -g  automatic-rename-format "#{b:pane_current_path}"
+set -g  base-index 1
+set -g  default-command "${SHELL}"
+set -g  default-terminal "tmux-256color"
+set -g  detach-on-destroy off
+set -g  history-limit 10000
+set -g  mouse on
+set -g  renumber-windows on
+set -g  status-interval 1
+set -g  terminal-overrides "alacritty:Tc,xterm-256color:Tc,gnome*:Tc"
 
-# Keep windows around after they exit
-set -g remain-on-exit on
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
+bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
+bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
 
-# Change the prefix key to C-a
-set -g prefix C-a
-unbind C-b
-bind C-a send-prefix
+bind '+' resize-pane -Z
+bind '%' split-window -h -c "#{pane_current_path}"
+bind '"' split-window -c "#{pane_current_path}"
+bind 'C' new-window -c "#{pane_current_path}"
+bind 'c' new-window -c "~/"
+bind 'D' run-shell -b "bmux dump"
+bind 'r' run-shell -b "bmux rename #{pane_current_path}"
+bind 'u' source-file "~/.config/tmux/{{ item['profile'] }}.conf"
+bind 'y' set synchronize-panes
+{% if item['profile'] == "tmux" %}
+bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
+bind 'M' choose-tree -Zs "move-window -t %%"
+bind 'm' choose-tree -Z "move-pane -t %%"
+bind 'O' run-shell -b "bmux open"
+bind 'S' run-shell -b "bmux open --new-session"
+bind 'N' display-popup -E -w 90% -h 90% -b rounded -S "fg=color234" "tmux -L notes -f ~/.config/tmux/popup.conf new-session -As notes -c ~/Development/Scratch 'tmuxp load nb -a'"
+bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/Development/Scratch"
+{% endif %}
 
-# Turn the mouse on, but without copy mode dragging
-set -g mouse on
-unbind -n MouseDrag1Pane
-unbind -Tcopy-mode MouseDrag1Pane
-
-# Some extra key bindings to select higher numbered windows
-bind F1 selectw -t:10
-bind F2 selectw -t:11
-bind F3 selectw -t:12
-bind F4 selectw -t:13
-bind F5 selectw -t:14
-bind F6 selectw -t:15
-bind F7 selectw -t:16
-bind F8 selectw -t:17
-bind F9 selectw -t:18
-bind F10 selectw -t:19
-bind F11 selectw -t:20
-bind F12 selectw -t:21
-
-# A key to toggle between smallest and largest sizes if a window is visible in
-# multiple places
-bind F set -w window-size
-
-# Keys to toggle monitoring activity in a window and the synchronize-panes option
-bind m set monitor-activity
-bind y set synchronize-panes\; display 'synchronize-panes #{?synchronize-panes,on,off}'
-
-# Create a single default session - because a session is created here, tmux
-# should be started with "tmux attach" rather than "tmux new"
-new -d -s0 -nirssi 'exec irssi'
-set -t0:0 monitor-activity on
-set -t0:0 aggressive-resize on
-neww -d -ntodo 'exec emacs ~/TODO'
-setw -t0:1 aggressive-resize on
-neww -d -nmutt 'exec mutt'
-setw -t0:2 aggressive-resize on
-neww -d
-neww -d
-neww -d
+{% for plugin in tmux_plugins %}
+run-shell {{ ansible_facts['user_dir'] }}/.local/share/{{ plugin['name'] }}/{{ plugin['exec'] }}
+{% endfor %}

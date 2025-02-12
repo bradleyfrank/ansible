@@ -1,6 +1,22 @@
 ---
 
+git_github_gitignore_repo: "https://raw.githubusercontent.com/github/gitignore/refs/heads/main"
+
 git_github_api_ssh_key_url: "https://api.github.com/user/keys"
 git_github_api_signing_key_url: "https://api.github.com/user/ssh_signing_keys"
 git_github_api_headers_accept: "application/vnd.github+json"
 git_github_api_headers_version: "2022-11-28"
+
+git_github_ghcli_repo:
+  dnf:
+    name: gh-cli
+    description: "packages for the GitHub CLI"
+    baseurl: "https://cli.github.com/packages/rpm"
+    gpgkey: "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059"
+  apt:
+    name: gh-cli
+    uris: ["https://cli.github.com/packages"]
+    components: ["main"]
+    suites: ["stable"]
+    enabled: true
+    signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"

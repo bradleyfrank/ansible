@@ -2,11 +2,12 @@ ansible
 ansible-lint
 bcrypt
 cryptography>=35.0.0
+distro
 github3.py
 jmespath
 pexpect
-pipx
 pre-commit
 psutil
 pyobjc-framework-Cocoa; sys_platform == 'darwin'
+python-debian; sys_platform == 'linux'
 xkcdpass

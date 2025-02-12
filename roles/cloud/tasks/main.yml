@@ -1,51 +1,16 @@
 ---
 
-- name: "Try installing packages via Homebrew"
-  tags: [cloud, kubectl, k9s, krew, install]
-  block:
-    - name: "Install K8s packages"
-      community.general.homebrew:
-        name: "{{ cloud_packages }}"
-  rescue:
-    - name: "Install manually"
-      ansible.builtin.include_tasks:
-        file: "binaries.yml"
+- name: "Install packages via Homebrew"
+  community.general.homebrew:
+    name: "{{ cloud_packages }}"
+  tags: [install, kubectl, k9s, krew]
+  when: cloud_install_from_homebrew
 
-- name: "Load per-OS variables"
-  ansible.builtin.include_vars:
-    file: "{{ ansible_facts['system'] }}.yml"
-  tags: [cloud, kubectl, k9s, krew, dotfiles]
-
-- name: "Set Homebrew prefix"
-  ansible.builtin.set_fact:
-    cloud_homebrew_prefix: "{{ cloud_default_homebrew_prefix }}"
-  when: cloud_homebrew_prefix is undefined
-  tags: [cloud, kubectl, k9s, krew, dotfiles]
-
-- name: "Set k9s config path"
-  ansible.builtin.set_fact:
-    cloud_k9s_config: "{{ cloud_default_k9s_config }}"
-  when: cloud_k9s_config is undefined
-  tags: [cloud, k9s, dotfiles]
-
-- name: "Ensure k9s config directory exists"
-  ansible.builtin.file:
-    path: "{{ cloud_k9s_config }}"
-    state: "directory"
-    mode: "0755"
-  when: "'k9s' in cloud_packages"
-  tags: [cloud, k9s, dotfiles]
-
-- name: "Template k9s config"
-  ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', cloud_k9s_template_config) }}"
-    dest: "{{ cloud_k9s_config }}/{{ item }}.yml"
-    mode: "0644"
-  loop: [config, skin]
-  loop_control:
-    label: "{{ item }}"
-  when: "'k9s' in cloud_packages"
-  tags: [cloud, k9s, dotfiles]
+- name: "Install manually"
+  ansible.builtin.include_tasks:
+    file: "binaries.yml"
+  tags: [install, kubectl, k9s, krew]
+  when: not cloud_install_from_homebrew
 
 - name: "Install krew plugins"
   ansible.builtin.command:
@@ -55,4 +20,23 @@
   changed_when: "'Installed plugin' in cmd_krew_install['stdout']"
   failed_when: "'does not exist in the plugin index' in cmd_krew_install['stdout']"
   when: "('krew' in cloud_packages) and (cloud_krew_plugins | length > 0)"
-  tags: [cloud, krew, dotfiles]
+  tags: [moredots, krew]
+
+- name: "Ensure k9s config directory exists"
+  ansible.builtin.file:
+    path: "{{ cloud_k9s_config_path }}"
+    state: directory
+    mode: "0755"
+  when: "'k9s' in cloud_packages"
+  tags: [dots, k9s]
+
+- name: "Template k9s config"
+  ansible.builtin.template:
+    src: "k9s.{{ item }}.yml.j2"
+    dest: "{{ cloud_k9s_config_path }}/{{ item }}.yml"
+    mode: "0644"
+  loop: [config, skin]
+  loop_control:
+    label: "{{ item }}"
+  when: "'k9s' in cloud_packages"
+  tags: [dots, k9s]

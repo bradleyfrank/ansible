@@ -1,4 +1,0 @@
----
-
-zsh_default_homebrew_prefix: "/opt/homebrew"
-zsh_default_bin: "/bin/zsh"

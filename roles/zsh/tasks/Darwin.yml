@@ -1,0 +1,24 @@
+---
+
+- name: "Check if Zsh is an available shell"
+  ansible.builtin.find:
+    contains: "{{ zsh_bin }}"
+    read_whole_file: true
+    path: "/etc"
+    patterns: "^shells$"
+    use_regex: true
+  register: find_zsh_etc_shells
+
+- name: "Add Homebrew Zsh to available shells"
+  ansible.builtin.lineinfile:
+    path: "/etc/shells"
+    line: "{{ zsh_bin }}"
+  become: true
+  when: find_zsh_etc_shells['matched'] == 0
+
+- name: "Fix Homebrew Zsh folder permissions"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "0755"
+  loop: "{{ zsh_chmod_directories }}"
+  when: ansible_facts['system'] == "Darwin"

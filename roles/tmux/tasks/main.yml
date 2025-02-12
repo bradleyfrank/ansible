@@ -1,35 +1,27 @@
 ---
 
-- name: "Install tmux (via OS package manager)"
+- name: "Install tmux packages"
   ansible.builtin.package:
-    name: "{{ tmux_package_name }}"
-  become: true
-  when: (ansible_facts['system'] == "Linux") and (not tmux_prefer_homebrew)
-  tags: [tmux, become]
-
-- name: "Install tmux (via Homebrew)"
-  community.general.homebrew:
-    name: "{{ tmux_package_name }}"
-  when: (ansible_facts['system'] == "Darwin") or (tmux_prefer_homebrew)
-  tags: [tmux, install]
+    name: "{{ tmux_packages }}"
+  become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  tags: [install]
 
 - name: "Ensure tmux config path exists"
   ansible.builtin.file:
-    path: "{{ tmux_rc_path }}"
+    path: "{{ tmux_config_dir }}"
     mode: "0755"
-    state: "directory"
-  tags: [tmux, dotfiles]
+    state: directory
+  tags: [dots]
 
 - name: "Template tmux config"
-  vars:
-    name: "{{ item['key'] }}"
-    config: "{{ item['value'] }}"
   ansible.builtin.template:
-    src: "{{ lookup('ansible.builtin.first_found', tmux_template_conf) }}"
-    dest: "{{ tmux_rc_path }}/{{ name }}.conf"
+    src: "tmux.conf.j2"
+    dest: "{{ tmux_config_dir }}/{{ item['profile'] }}.conf"
     mode: "0755"
-  loop: "{{ tmux_config | ansible.builtin.combine(tmux_config_custom, recursive=true) | dict2items }}"
-  tags: [tmux, dotfiles]
+  loop: "{{ tmux_config }}"
+  loop_control:
+    label: "{{ item['profile'] }}"
+  tags: [dots]
 
 - name: "Install tmux plugins"
   ansible.builtin.git:
@@ -40,4 +32,4 @@
   loop: "{{ tmux_plugins }}"
   loop_control:
     label: "{{ item['name'] }}"
-  tags: [tmux, tmux_plugins, dotfiles]
+  tags: [moredots]

@@ -8,4 +8,4 @@
   loop_control:
     label: "{{ dconf_prefix }}/{{ dconf['key'] }}"
     loop_var: "dconf"
-  tags: [system, linux_settings, dconf]
+  tags: [dconf]

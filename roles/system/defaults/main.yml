@@ -1,12 +1,7 @@
 ---
 
-system_hostname: "{{ host_hostname | default(ansible_facts['hostname']) }}"
-system_has_desktop: "{{ host_has_desktop | default(false) }}"
-system_current_desktop: "{{ ansible_facts['env']['XDG_CURRENT_DESKTOP'] | default('') | lower }}"
-
-system_template_resolved:
-  - "{{ inventory_dir }}/templates/resolved.conf.j2"
-  - "templates/resolved.conf.j2"
+system_linux_has_desktop: "{{ global_is_desktop_system | default(false) }}"
+system_linux_current_desktop: "{{ global_desktop_environment | default('') }}"
 
 system_linux_dconf_defaults: []
 system_linux_dconf_distro: []

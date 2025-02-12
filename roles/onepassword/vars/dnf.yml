@@ -9,5 +9,7 @@ onepassword_linux_repo:
   description: "1Password"
   baseurl: "https://downloads.1password.com/linux/rpm/stable/$basearch"
   gpgkey: "https://downloads.1password.com/linux/keys/1password.asc"
+  gpgcheck: true
+  skip_if_unavailable: true
 
 onepassword_repo_file: "/etc/yum.repos.d/1password.repo"

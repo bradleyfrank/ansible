@@ -1,0 +1,5 @@
+--theme="Solarized-Light"
+--pager="less -R"
+--map-syntax .ignore:.gitignore
+--tabs 2
+--style plain
