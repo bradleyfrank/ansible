@@ -26,17 +26,28 @@
   loop: "{{ zsh_supplemental_dirs }}"
   tags: [moredots]
 
-- name: "Configure Homebrew Zsh for MacOS"
-  ansible.builtin.import_tasks:
-    file: "config_macos_zsh.yml"
-  when: ansible_facts['system'] == "Darwin"
+- name: "Check if Zsh is an available shell"
+  ansible.builtin.find:
+    contains: "{{ zsh_bin }}"
+    read_whole_file: true
+    path: "/etc"
+    patterns: "^shells$"
+    use_regex: true
+  register: find_zsh_etc_shells
 
-- name: "Set Zsh as default shell"
-  ansible.builtin.user:
-    name: "{{ ansible_facts['user_id'] }}"
-    shell: "{{ zsh_bin }}"
+- name: "Add Homebrew Zsh to available shells"
+  ansible.builtin.lineinfile:
+    path: "/etc/shells"
+    line: "{{ zsh_bin }}"
   become: true
-  tags: [never]
+  when: find_zsh_etc_shells['matched'] == 0
+
+- name: "Fix Homebrew Zsh folder permissions"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "0755"
+  loop: "{{ zsh_chmod_directories }}"
+  when: ansible_facts['system'] == "Darwin"
 
 - name: "Install Zsh plugins"
   ansible.builtin.git:
@@ -57,7 +68,6 @@
   tags: [dots]
 
 - name: "Refresh Zsh completions"
-  ansible.builtin.import:
+  ansible.builtin.import_tasks:
     file: "completions.yml"
   tags: [moredots, completions]
-

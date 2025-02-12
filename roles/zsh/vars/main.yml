@@ -2,6 +2,13 @@
 
 zsh_homebrew_prefix: "{{ global_homebrew_prefix | default('/opt/homebrew') }}"
 
+zsh_bin_search_paths:
+  - "{{ ansible_facts['user_dir'] }}/.local/bin"
+  - "{{ zsh_homebrew_prefix }}/bin"
+  - "/usr/local/bin"
+  - "/usr/bin"
+  - "/bin"
+
 zsh_chmod_directories:
   - "{{ zsh_homebrew_prefix }}/share"
   - "{{ zsh_homebrew_prefix }}/share/zsh"

@@ -5,17 +5,9 @@ zsh_packages:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
 
+zsh_bin: "{{ lookup('ansible.builtin.first_found', files=['zsh'], paths=zsh_bin_search_paths) }}"
+
 zsh_manage_zcompdump: true
-
-zsh_bin_search_paths:
-  - "{{ ansible_facts['user_dir']/bin"
-  - "{{ ansible_facts['user_dir']/.local/bin"
-  - "{{ zsh_homebrew_prefix }}/bin"
-  - "/usr/local/bin"
-  - "/usr/bin"
-  - "/bin"
-
-zsh_bin: "{{ lookup('ansible.builtin.first_found') }}"
 
 zsh_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.zshrc.d"
