@@ -4,7 +4,7 @@
   ansible.builtin.file:
     path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
     state: directory
-    mode: "0644"
+    mode: "0755"
     recurse: false
   loop:
     - "Development/Projects"
