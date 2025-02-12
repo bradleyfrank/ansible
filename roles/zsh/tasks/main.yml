@@ -75,8 +75,8 @@
 
 - name: "Copy zshrc scripts"
   ansible.builtin.copy:
-    src: "zshrc.d"
-    dest: "{{ ansible_facts['user_dir'] }}/.zshrc.d"
+    src: "zshrc.d/"
+    dest: "{{ ansible_facts['user_dir'] }}/.zshrc.d/"
     mode: "0644"
   tags: [dots]
 
