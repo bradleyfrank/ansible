@@ -55,6 +55,9 @@ export HOMEBREW_PREFIX={{ global_homebrew_prefix }}
 export HOMEBREW_REPOSITORY={{ global_homebrew_prefix }}/Homebrew
 export INFOPATH={{ global_homebrew_prefix }}/share/info:"${INFOPATH:-}"
 {% endif %}
+{% if not global_is_desktop_system %}
+export OPCLI=1
+{% endif %}
 {% if ansible_facts['distribution'] == "Fedora" %}
 export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
 {% endif %}
@@ -164,6 +167,7 @@ compinit -C && bashcompinit
 zle -N edit-command-line
 
 
+for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
 {% for plugin in zsh_plugins %}
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
 {% endfor %}
@@ -179,14 +183,9 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
-for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
 source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
-
 
 eval "$(batman --export-env)"
 eval "$(atuin init zsh)"
-{% if not global_is_desktop_system %}
-eval "$(op signin)"
-{% endif %}
 
 base16_solarized-light
