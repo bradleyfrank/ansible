@@ -26,3 +26,7 @@
     - ansible.builtin.import_role:
         name: "zsh"
       tags: [zsh]
+
+    - ansible.builtin.import_role:
+        name: "dotfiles"
+      tags: [dotfiles]
