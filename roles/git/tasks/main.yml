@@ -5,11 +5,10 @@
     file: "install.yml"
   tags: [install]
 
-- name: "Ensure git config directory exists"
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/.config/git"
-    state: directory
-  tags: [dots]
+- name: "Import config tasks"
+  ansible.builtin.import_tasks:
+    file: "config.yml"
+  tags: [dots, gitconfig]
 
 - name: "Import authorized keys tasks"
   ansible.builtin.import_tasks:
@@ -25,11 +24,6 @@
   when: git_ssh_key_upload
   tags: [never, ssh_keys]
 
-- name: "Import repo cloning tasks"
-  ansible.builtin.import_tasks:
-    file: "clone_repos.yml"
-  tags: [git_repos]
-
 - name: "Create allowed signers file"
   ansible.builtin.template:
     src: "allowed_signers.j2"
@@ -38,18 +32,7 @@
   when: git_signing_key_type == "ssh"
   tags: [moredots, gitconfig]
 
-- name: "Template gitconfig"
-  vars:
-    key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
-  ansible.builtin.template:
-    src: "gitconfig.j2"
-    dest: "{{ git_config_path }}"
-    mode: "0700"
-  tags: [dots, gitconfig]
-
-- name: "Copy gitignore"
-  ansible.builtin.copy:
-    src: "gitignore"
-    dest: "{{ ansible_facts['user_dir'] }}/.config/git/ignore"
-    mode: "0644"
-  tags: [dots, gitconfig]
+- name: "Import repo cloning tasks"
+  ansible.builtin.import_tasks:
+    file: "clone_repos.yml"
+  tags: [git_repos]
