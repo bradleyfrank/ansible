@@ -73,6 +73,13 @@
     mode: "0644"
   tags: [dots]
 
+- name: "Copy zshrc scripts"
+  ansible.builtin.copy:
+    src: "zshrc.d"
+    dest: "{{ ansible_facts['user_dir }}/.zshrc.d"
+    mode: "0644"
+  tags: [dots]
+
 - name: "Refresh Zsh completions"
   ansible.builtin.import_tasks:
     file: "completions.yml"
