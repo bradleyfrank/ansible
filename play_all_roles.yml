@@ -4,6 +4,10 @@
   hosts: all
   tasks:
     - ansible.builtin.import_role:
+        name: "dotfiles"
+      tags: [dotfiles]
+
+    - ansible.builtin.import_role:
         name: "pkg_mgr"
       tags: [pkg_mgr]
 
@@ -38,7 +42,3 @@
     - ansible.builtin.import_role:
         name: "zsh"
       tags: [zsh]
-
-    - ansible.builtin.import_role:
-        name: "dotfiles"
-      tags: [dotfiles]
