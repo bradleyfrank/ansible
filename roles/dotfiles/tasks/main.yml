@@ -4,7 +4,7 @@
   ansible.builtin.file:
     path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
     state: directory
-    mode: "0644"
+    mode: "0755"
     recurse: false
   loop:
     - "Development/Projects"
@@ -16,7 +16,7 @@
 
 - name: "Sync dotfiles to home directory"
   ansible.posix.synchronize:
-    src: "home"
+    src: "home/"
     dest: "{{ ansible_facts['user_dir'] }}/"
     compress: false
     owner: false

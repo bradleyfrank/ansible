@@ -5,7 +5,10 @@ git_packages:
   - gh
 
 git_github_token: ""
-git_config_path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
+
+git_global_config_dir: "{{ ansible_facts['user_dir'] }}/.config/git"
+git_global_config_file: "{{ git_global_config_dir }}/config"
+git_global_ignore_file: "{{ git_global_config_dir }}/ignore"
 
 git_ssh_auth_sock: ""
 git_ssh_auth_pid: ""

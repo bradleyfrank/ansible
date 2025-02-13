@@ -58,26 +58,17 @@ export INFOPATH={{ global_homebrew_prefix }}/share/info:"${INFOPATH:-}"
 {% if ansible_facts['distribution'] == "Fedora" %}
 export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
 {% endif %}
-{% if ansible_facts['distribution'] == "MacOSX" %}
-
-# Set XDG environment variables for MacOS
-export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_STATE_HOME="${HOME}/.local/state"
-export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_RUNTIME_DIR="${HOME}/Library/Caches/TemporaryItems"
-{% endif %}
 
 # Set app XDG environment variables
-export CARGO_HOME="${XDG_DATA_HOME}/cargo"
-export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
-export GOPATH="${XDG_DATA_HOME}/go"
-export MINIKUBE_HOME="${XDG_DATA_HOME}/minikube"
-export NVM_DIR="${XDG_DATA_HOME}/nvm"
-export TERMINFO="${XDG_DATA_HOME}/terminfo"
-export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
-export SQLITE_HISTORY="${XDG_CACHE_HOME}/sqlite_history"
-export W3M_DIR="${XDG_DATA_HOME}/w3m"
+export CARGO_HOME="${HOME}/.local/share/cargo"
+export DOCKER_CONFIG="${HOME}/.config/docker"
+export GOPATH="${HOME}/.local/share/go"
+export MINIKUBE_HOME="${HOME}/.local/share/minikube"
+export NVM_DIR="${HOME}/.local/share/nvm"
+export TERMINFO="${HOME}/.local/share/terminfo"
+export TERMINFO_DIRS="${HOME}/.local/share/terminfo:/usr/share/terminfo"
+export SQLITE_HISTORY="${HOME}/.cache/sqlite_history"
+export W3M_DIR="${HOME}/.local/share/w3m"
 
 
 alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
@@ -98,7 +89,6 @@ unalias run-help
 
 {% endif %}
 alias bwatch='batwatch'
-alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dirdiff='git diff --no-index'
 alias e='aunpack'
@@ -116,7 +106,7 @@ alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias sc='shellcheck'
 alias scp='rsync -va'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
-alias wget='wget --hsts-file="${XDG_DATA_HOME}/wget-hsts"'
+alias wget='wget --hsts-file="${HOME}/.local/share/wget-hsts"'
 {% if ansible_facts['system'] == "Linux" %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
@@ -190,8 +180,9 @@ source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
 for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
+{% if global_is_desktop_system %}
 source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
-
+{% endif %}
 
 eval "$(batman --export-env)"
 eval "$(atuin init zsh)"

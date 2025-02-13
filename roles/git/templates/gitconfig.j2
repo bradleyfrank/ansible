@@ -37,7 +37,12 @@
 [init]
   defaultBranch = main
 [merge]
+{% if (ansible_facts['distribution'] == 'Ubuntu') and
+      (ansible_facts['distribution_version'] | int < 24) %}
+  conflictstyle = diff3
+{% else %}
   conflictstyle = zdiff3
+{% endif %}
 [pull]
   rebase = true
 [push]

@@ -49,6 +49,12 @@
   loop: "{{ zsh_chmod_directories }}"
   when: ansible_facts['system'] == "Darwin"
 
+- name: "Set Zsh as default shell"
+  ansible.builtin.user:
+    name: "{{ ansible_facts['user_id'] }}"
+    shell: "{{ zsh_bin }}"
+  become: true
+
 - name: "Install Zsh plugins"
   ansible.builtin.git:
     repo: "{{ item['repo'] }}"
@@ -64,6 +70,13 @@
   ansible.builtin.template:
     src: "zshrc.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
+    mode: "0644"
+  tags: [dots]
+
+- name: "Copy zshrc scripts"
+  ansible.builtin.copy:
+    src: "zshrc.d/"
+    dest: "{{ zsh_rcd_dir }}"
     mode: "0644"
   tags: [dots]
 

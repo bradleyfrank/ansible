@@ -1,0 +1,20 @@
+---
+
+- name: "Ensure git config directory exists"
+  ansible.builtin.file:
+    path: "{{ git_global_config_dir }}"
+    state: directory
+
+- name: "Template gitconfig"
+  vars:
+    key_contents: "{{ lookup('ansible.builtin.file', git_signing_key_file) | split(' ') }}"
+  ansible.builtin.template:
+    src: "gitconfig.j2"
+    dest: "{{ git_global_config_file }}"
+    mode: "0700"
+
+- name: "Copy gitignore"
+  ansible.builtin.copy:
+    src: "gitignore"
+    dest: "{{ git_global_ignore_file }}"
+    mode: "0644"

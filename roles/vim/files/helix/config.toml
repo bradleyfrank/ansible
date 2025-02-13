@@ -1,0 +1,18 @@
+theme = "solarized_light"
+
+[editor]
+bufferline = "multiple"
+cursorline = true
+rulers = [100]
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+character = "╎"
+render = true
+
+[editor.statusline]
+left = ["mode", "spinner", "version-control", "file-name"]
