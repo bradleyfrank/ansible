@@ -6,6 +6,13 @@
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
   tags: [install]
 
+- name: "Copy config files"
+  ansible.builtin.copy:
+    src: "helix/"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/"
+    mode: "0644"
+  tags: [dots]
+
 - name: "Template vimrc"
   ansible.builtin.template:
     src: "vimrc.j2"
