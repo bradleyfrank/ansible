@@ -106,7 +106,6 @@ pkg_mgr_packages:
     - gnome-characters
     - gnome-connections
     - gnome-extensions-app
-    - gnome-games
     - gnome-shell-extension-gpaste
     - gnome-tweaks
     - gnote
@@ -117,13 +116,15 @@ pkg_mgr_packages:
     - meld
     - mpv
     - transmission-gtk
+  taps:
+    - charmbracelet/tap
   formulas:
     - atuin
     - bandwhich
     - bat-extras
-    - charmbracelet/tap/freeze
-    - charmbracelet/tap/glow
     - csvlens
+    - freeze
+    - glow
     - lazygit
     - nb
     - qsv
