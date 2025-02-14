@@ -8,7 +8,7 @@ git_github_api_headers_accept: "application/vnd.github+json"
 git_github_api_headers_version: "2022-11-28"
 
 git_github_ghcli_repo:
-  dnf:
+  dnf5:
     name: gh-cli
     description: "packages for the GitHub CLI"
     baseurl: "https://cli.github.com/packages/rpm"

@@ -13,19 +13,19 @@
   tags: [repos]
 
 - name: "Update dnf cache"
-  ansible.builtin.dnf:
+  ansible.builtin.dnf5:
     update_cache: true
   tags: [repos]
 
 - name: "Install cli packages"
-  ansible.builtin.dnf:
+  ansible.builtin.dnf5:
     name: "{{ onepassword_packages['cli'] }}"
     state: present
   become: true
   tags: [install]
 
 - name: "Install gui packages"
-  ansible.builtin.dnf:
+  ansible.builtin.dnf5:
     name: "{{ onepassword_packages['gui'] }}"
     state: present
   become: true
