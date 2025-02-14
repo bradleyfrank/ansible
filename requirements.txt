@@ -10,4 +10,5 @@ pre-commit
 psutil
 pyobjc-framework-Cocoa; sys_platform == 'darwin'
 python-debian; sys_platform == 'linux'
+selinux; sys_platform == 'linux'
 xkcdpass

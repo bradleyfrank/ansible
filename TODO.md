@@ -1,5 +1,6 @@
 # TODO
 
+- venv needs access to global packages in Fedora for `selinux`
 - fix `ffmpeg` packages for Fedora
 - Activate Atuin
 - Archive an existing host in 1Password if hostname matches
