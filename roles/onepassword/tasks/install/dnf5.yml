@@ -44,6 +44,6 @@
   ansible.builtin.file:
     src: "/etc/yum.repos.d/{{ onepassword_linux_repo['name'] }}.repo"
     dest: "{{ onepassword_repo_file }}"
-    state: absent
+    state: link
   become: true
   tags: [repos]
