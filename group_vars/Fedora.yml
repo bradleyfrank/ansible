@@ -24,7 +24,6 @@ pkg_mgr_packages:
     - fd-find
     - fdkaac
     - fdupes
-    - ffmpeg
     - figlet
     - fwupd
     - fzf
