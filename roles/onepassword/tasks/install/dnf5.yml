@@ -2,7 +2,7 @@
 
 - name: "Install gpg keys"
   ansible.builtin.rpm_key:
-    key: "{{ item['gpgkey'] }}"
+    key: "{{ onepassword_linux_repo['gpgkey'] }}"
     state: "present"
   become: true
   tags: [repos]
