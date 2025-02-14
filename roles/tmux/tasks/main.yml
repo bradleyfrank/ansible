@@ -1,5 +1,10 @@
 ---
 
+- name: "Include per-distro variables"
+  ansible.builtin.include_vars:
+    name: "{{ ansible_facts['pkg_mgr'] }}"
+  tags: [install]
+
 - name: "Install tmux packages"
   ansible.builtin.package:
     name: "{{ tmux_packages }}"

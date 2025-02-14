@@ -5,10 +5,6 @@ tmux_clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 tmux_config_dir: "{{ ansible_facts['user_dir'] }}/.config/tmux"
 
-tmux_packages:
-  - tmux
-  - tmuxp
-
 tmux_plugins:
   - name: "tmux-resurrect"
     repo: "https://github.com/tmux-plugins/tmux-resurrect.git"

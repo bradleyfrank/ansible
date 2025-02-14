@@ -1,0 +1,5 @@
+---
+
+tmux_packages:
+  - tmux
+  - python3-tmuxp
