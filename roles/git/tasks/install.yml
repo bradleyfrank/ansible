@@ -8,7 +8,7 @@
       ansible.builtin.rpm_key:
         key: "{{ git_github_ghcli_repo['dnf']['gpgkey'] }}"
     - name: "Add repository (dnf)"
-      ansible.builtin.dnf5: "{{ git_github_ghcli_repo['dnf5'] }}"
+      ansible.builtin.dnf5: "{{ git_github_ghcli_repo['dnf'] }}"
 
 - name: "Add repository (apt)"
   ansible.builtin.deb822_repository: "{{ git_github_ghcli_repo['apt'] }}"
