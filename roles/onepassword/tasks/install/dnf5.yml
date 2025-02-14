@@ -15,6 +15,7 @@
 - name: "Update dnf cache"
   ansible.builtin.dnf5:
     update_cache: true
+  become: true
   tags: [repos]
 
 - name: "Install cli packages"
