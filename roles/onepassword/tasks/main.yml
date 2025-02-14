@@ -18,5 +18,11 @@
     file: "auth.yml"
   when: not onepassword_use_gui_integration
 
-- name: "Include tasks to add 1Password entry"
+- name: "Write 1Password session to file"
+  ansible.builtin.copy:
+    content: "{{ cmd_op_signin['stdout'] | default('') }}"
+    dest: "{{ onepassword_session_file }}"
+    mode: "0400"
+
+- name: "Include tasks to add host to 1Password"
   ansible.builtin.include_tasks: "import.yml"
