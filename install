@@ -67,7 +67,7 @@ cd "$ANSIBLE_REPO_PATH" >/dev/null
 git checkout "$ANSIBLE_REPO_BRANCH"
 
 PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
-python3 -m venv venv
+python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
 . venv/bin/activate
 pip install --no-cache-dir --requirement requirements.txt
 

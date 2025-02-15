@@ -2,7 +2,7 @@
 
 - name: "Include per-distro variables"
   ansible.builtin.include_vars:
-    name: "{{ ansible_facts['pkg_mgr'] }}"
+    name: "{{ ansible_facts['pkg_mgr'] }}.yml"
   tags: [install]
 
 - name: "Install tmux packages"
