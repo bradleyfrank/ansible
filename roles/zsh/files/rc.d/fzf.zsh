@@ -34,6 +34,6 @@ typeset -a eza_opts=(
 
 export FZF_DEFAULT_OPTS="${(j' ')fzf_default_opts}"
 
-zstyle ':fzf-tab:*' switch-group "<" ">"
+zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' fzf-flags --color='light' --border='rounded' --height='~100%'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "eza ${(j' ')eza_opts} $realpath"
