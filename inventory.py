@@ -6,6 +6,7 @@ import platform
 import distro
 
 hostname = getattr(platform.uname(), "node")
+distribution = distro.id().capitalize()
 
 inventory = {
   "_meta": {
@@ -15,7 +16,7 @@ inventory = {
       }
     }
   },
-  distro.name(): {
+  distribution: {
     "hosts": [hostname],
   }
 }

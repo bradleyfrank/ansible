@@ -57,5 +57,3 @@
   name = {{ ansible_facts['user_gecos'] }}
   email = {{ global_email_address }}
   signingkey = {{ key_contents[0] }} {{ key_contents[1] }}
-[include]
-  path = ~/.gitconfig.d/config

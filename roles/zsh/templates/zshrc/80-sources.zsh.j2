@@ -1,0 +1,16 @@
+{% for plugin in zsh_plugins %}
+source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
+{% endfor %}
+{% if ansible_facts['distribution'] == "MacOSX" %}
+source {{ global_homebrew_prefix }}/opt/fzf/shell/completion.zsh
+source {{ global_homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
+source {{ global_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{% elif ansible_facts['distribution'] == "Fedora" %}
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/fzf/shell/key-bindings.zsh
+{% else %}
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+{% endif %}
+for rc in {{ zsh_rcd_dir }}/*.zsh; do source "$rc"; done

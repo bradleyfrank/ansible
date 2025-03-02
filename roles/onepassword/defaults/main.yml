@@ -1,5 +1,4 @@
 ---
 
 onepassword_vault: "Private"
-onepassword_write_session_file: false
 onepassword_use_gui_integration: "{{ global_is_desktop_system | default(false) }}"

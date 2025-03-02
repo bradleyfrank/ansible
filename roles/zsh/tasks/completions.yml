@@ -10,11 +10,11 @@
 
 - name: "Delete zcompdump"
   ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/.zcompdump"
+    path: "{{ zsh_zcompdump }}"
     state: absent
 
 - name: "Generate zcompdump"
   ansible.builtin.shell:
     cmd: "autoload -Uz compinit && compinit"
     executable: "{{ zsh_bin }}"
-    creates: "{{ ansible_facts['user_dir'] }}/.zcompdump"
+    creates: "{{ zsh_zcompdump }}"

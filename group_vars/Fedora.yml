@@ -24,7 +24,6 @@ pkg_mgr_packages:
     - fd-find
     - fdkaac
     - fdupes
-    - ffmpeg
     - figlet
     - fwupd
     - fzf
@@ -106,7 +105,6 @@ pkg_mgr_packages:
     - gnome-characters
     - gnome-connections
     - gnome-extensions-app
-    - gnome-games
     - gnome-shell-extension-gpaste
     - gnome-tweaks
     - gnote
@@ -117,13 +115,15 @@ pkg_mgr_packages:
     - meld
     - mpv
     - transmission-gtk
+  taps:
+    - charmbracelet/tap
   formulas:
     - atuin
     - bandwhich
     - bat-extras
-    - charmbracelet/tap/freeze
-    - charmbracelet/tap/glow
     - csvlens
+    - freeze
+    - glow
     - lazygit
     - nb
     - qsv
@@ -138,27 +138,27 @@ pkg_mgr_repos:
     description: "negativo17 - Multimedia"
     baseurl: "https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch"
     gpgkey: "https://negativo17.org/repos/RPM-GPG-KEY-slaanesh"
-    includepackages: ['*nvidia*']  # https://negativo17.org/nvidia-driver
+    includepkgs: ['*nvidia*']  # https://negativo17.org/nvidia-driver
   - name: rpmfusion-free
     description: "RPM Fusion for Fedora - Free"
     metalink: "https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch"
     gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
-    exclude: ['*nvidia*']
+    exclude: ['*nvidia*', '*ffmpeg*']
   - name: rpmfusion-free-updates
     description: "RPM Fusion for Fedora - Free - Updates"
     metalink: "https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch"
     gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
-    exclude: ['*nvidia*']
+    exclude: ['*nvidia*', '*ffmpeg*']
   - name: rpmfusion-nonfree
     description: "RPM Fusion for Fedora - Nonfree"
     metalink: "https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch"
     gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
-    exclude: ['*nvidia*']
+    exclude: ['*nvidia*', '*ffmpeg*']
   - name: rpmfusion-nonfree-updates
     description: "RPM Fusion for Fedora - Nonfree - Updates"
     metalink: "https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch"
     gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
-    exclude: ['*nvidia*']
+    exclude: ['*nvidia*', '*ffmpeg*']
   - name: ghostty
     description: "Copr repo for ghostty owned by pgdev"
     baseurl: "https://download.copr.fedorainfracloud.org/results/pgdev/ghostty/fedora-$releasever-$basearch/"

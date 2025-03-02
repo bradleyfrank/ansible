@@ -2,7 +2,7 @@
 
 - name: "Install gpg keys"
   ansible.builtin.rpm_key:
-    key: "{{ item['gpgkey'] }}"
+    key: "{{ onepassword_linux_repo['gpgkey'] }}"
     state: "present"
   become: true
   tags: [repos]
@@ -13,19 +13,20 @@
   tags: [repos]
 
 - name: "Update dnf cache"
-  ansible.builtin.dnf:
+  ansible.builtin.dnf5:
     update_cache: true
+  become: true
   tags: [repos]
 
 - name: "Install cli packages"
-  ansible.builtin.dnf:
+  ansible.builtin.dnf5:
     name: "{{ onepassword_packages['cli'] }}"
     state: present
   become: true
   tags: [install]
 
 - name: "Install gui packages"
-  ansible.builtin.dnf:
+  ansible.builtin.dnf5:
     name: "{{ onepassword_packages['gui'] }}"
     state: present
   become: true
@@ -43,6 +44,6 @@
   ansible.builtin.file:
     src: "/etc/yum.repos.d/{{ onepassword_linux_repo['name'] }}.repo"
     dest: "{{ onepassword_repo_file }}"
-    state: absent
+    state: link
   become: true
   tags: [repos]

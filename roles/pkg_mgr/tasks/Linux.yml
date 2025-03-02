@@ -26,7 +26,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  when: ansible_facts['pkg_mgr'] == "dnf"
+  when: ansible_facts['pkg_mgr'] == "dnf5"
   tags: [dnf]
 
 - name: "Add repositories (dnf)"
@@ -35,7 +35,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   become: true
-  when: ansible_facts['pkg_mgr'] == "dnf"
+  when: ansible_facts['pkg_mgr'] == "dnf5"
   tags: [dnf]
 
 - name: "Update package manager cache"

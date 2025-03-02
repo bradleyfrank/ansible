@@ -23,6 +23,7 @@
     responses:
       Enter the password: "{{ onepassword_account_password }}"
   register: cmd_op_session_token
+  log_no: true
 
 - name: "Generate 1Password session"
   vars:
@@ -32,10 +33,3 @@
     cmd: "op signin --session {{ onepassword_session_token }} --force"
   changed_when: true
   register: cmd_op_signin
-
-- name: "Write 1Password session to file"
-  ansible.builtin.copy:
-    content: "{{ cmd_op_signin['stdout'] }}"
-    dest: "{{ onepassword_session_file }}"
-    mode: "0400"
-  when: onepassword_write_session_file

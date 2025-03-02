@@ -11,12 +11,12 @@
     cmd: "{{ zsh_bin }} --version"
   register: cmd_zsh_version
   changed_when: false
-  tags: [dots]
+  tags: [dots, zshrc]
 
 - name: "Set current Zsh version"
   ansible.builtin.set_fact:
     zsh_current_version: "{{ (cmd_zsh_version['stdout'] | split)[1] }}"
-  tags: [dots]
+  tags: [dots, zshrc]
 
 - name: "Ensure supplemental Zsh directories exist"
   ansible.builtin.file:
@@ -54,6 +54,7 @@
     name: "{{ ansible_facts['user_id'] }}"
     shell: "{{ zsh_bin }}"
   become: true
+  when: ansible_facts['user_shell'] != zsh_bin
 
 - name: "Install Zsh plugins"
   ansible.builtin.git:
@@ -66,19 +67,10 @@
     label: "{{ item['name'] }}"
   tags: [moredots]
 
-- name: "Apply zshrc template"
-  ansible.builtin.template:
-    src: "zshrc.j2"
-    dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
-    mode: "0644"
-  tags: [dots]
-
-- name: "Copy zshrc scripts"
-  ansible.builtin.copy:
-    src: "zshrc.d/"
-    dest: "{{ zsh_rcd_dir }}"
-    mode: "0644"
-  tags: [dots]
+- name: "Build zshrc"
+  ansible.builtin.import_tasks:
+    file: "zshrc.yml"
+  tags: [dots, zshrc]
 
 - name: "Refresh Zsh completions"
   ansible.builtin.import_tasks:

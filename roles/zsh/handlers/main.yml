@@ -1,0 +1,6 @@
+---
+
+- name: "Delete zshrc tempfile"
+  ansible.builtin.file:
+    state: absent
+    path: "{{ zsh_temp_dir }}"
