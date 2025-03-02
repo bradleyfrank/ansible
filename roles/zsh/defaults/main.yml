@@ -7,11 +7,15 @@ zsh_packages:
 
 zsh_bin: "{{ lookup('ansible.builtin.first_found', files=['zsh'], paths=zsh_bin_search_paths) }}"
 
-zsh_manage_zcompdump: true
-
+zsh_dot_dir: "{{ ansible_facts['user_dir'] }}/.config/zsh"
+zsh_rcd_dir: "{{ zsh_dot_dir }}/rc.d"
+zsh_functions_dir: "{{ zsh_dot_dir }}/site-functions"
 zsh_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
-zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.zshrc.d"
-zsh_functions_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/site-functions"
+
+zsh_rc: "{{ zsh_dot_dir }}/.zshrc"
+
+zsh_manage_zcompdump: true
+zsh_zcompdump: "{{ zsh_dot_dir }}/.zcompdump"
 
 zsh_supplemental_dirs:
   - "{{ zsh_plugins_dir }}"

@@ -1,0 +1,43 @@
+PATH="${HOME}/.local/bin:/opt/bin"
+PATH="${PATH}:${HOME}/.krew/bin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/bin:{{ global_homebrew_prefix }}/sbin"
+{% if ansible_facts['distribution'] == "MacOSX" %}
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/coreutils/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gnu-tar/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/grep/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gnu-sed/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gsed/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gawk/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/findutils/libexec/gnubin"
+PATH="${PATH}:{{ global_homebrew_prefix }}/opt/gnu-which/libexec/gnubin"
+{% endif %}
+{% if ansible_facts['distribution'] == "Ubuntu" %}
+PATH="${PATH}:/snap/bin"
+{% endif %}
+PATH="${PATH}:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+
+MANPATH="${HOME}/.local/share/man"
+{% if ansible_facts['distribution'] == "MacOSX" %}
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/coreutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gnu-tar/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/grep/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gnu-sed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gsed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gawk/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/findutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/opt/gnu-which/libexec/gnuman"
+MANPATH="${MANPATH}:{{ global_homebrew_prefix }}/share/man"
+{% endif %}
+MANPATH="${MANPATH}:/usr/local/share/man:/usr/share/man"
+
+INFOPATH={{ global_homebrew_prefix }}/share/info:"${INFOPATH:-}"
+{% if ansible_facts['distribution'] == "Fedora" %}
+HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
+{% elif ansible_facts['distribution'] == "MacOSX" %}
+HELPDIR={{ global_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
+{% endif %}
+
+export PATH
+export MANPATH
+export INFOPATH
+export HELPDIR

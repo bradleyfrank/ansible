@@ -1,0 +1,12 @@
+zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
+zstyle ':completion:*' list-suffixes true   # Show ambiguous components for partial pathnames
+zstyle ':completion:*' rehash true          # Auto find new executables in path
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on         # Speed up completions
+zstyle ':completion:*' cache-path "$HOME/.cache/zsh/.zcompcache"
+
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'
+zstyle ':completion:*:*:*:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'

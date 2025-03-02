@@ -1,0 +1,36 @@
+---
+
+- name: "Create ~/.zshenv which defines ZDOTDIR"
+  ansible.builtin.copy:
+    content: "export ZDOTDIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+    dest: "{{ ansible_facts['user_dir'] }}/.zshenv"
+    mode: "0644"
+
+- name: "Create temp directory for templating"
+  ansible.builtin.tempfile:
+    state: directory
+  register: zsh_temp_dir
+  notify: "Delete zshrc tempfile"
+
+- name: "Apply zshrc templates"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ zsh_temp_dir['path'] }}"
+    mode: "0644"
+  with_fileglob:
+    - "templates/zshrc/*.zsh.j2"
+  loop_control:
+    label: "{{ item | basename }}"
+
+- name: "Build zshrc"
+  ansible.builtin.assemble:
+    src: "{{ zsh_temp_dir['path'] }}"
+    dest: "{{ zsh_rc }}"
+    delimiter: "\n"
+    mode: "0644"
+
+- name: "Copy zshrc scripts"
+  ansible.builtin.copy:
+    src: "rc.d/"
+    dest: "{{ zsh_rcd_dir }}"
+    mode: "0644"

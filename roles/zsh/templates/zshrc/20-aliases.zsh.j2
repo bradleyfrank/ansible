@@ -1,0 +1,36 @@
+alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
+alias lz='eza --color always --classify --long --all --group-directories-first --no-quotes'
+alias lk='lz --sort type'
+alias ll='lz --octal-permissions'
+alias lt='lz --tree'
+alias lT='lz --sort time'
+alias lS='lz --sort size'
+
+unalias run-help &> /dev/null || true
+alias help='run-help'  # help topics path set via $HELPDIR
+
+{% if ansible_facts['os_family'] == "Debian" -%} alias bat='batcat' {%- endif %}
+alias bwatch='batwatch'
+alias cp='cp -i'
+alias dirdiff='git diff --no-index'
+alias e='aunpack'
+alias ff='fastfetch'
+alias glow='glow --config ~/.config/glow.yml'
+alias isodate='date --iso-8601=seconds'
+alias man='batman'
+alias mkpasswd='pwgen -1y'
+alias mp='multipass'
+alias mux='tmux new-session -A -s main'
+alias psync='rsync -a --info=progress2'
+alias pubip='dig myip.opendns.com @resolver1.opendns.com'
+alias sc='shellcheck'
+alias scp='rsync -va'
+alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
+alias wget='wget --hsts-file="${HOME}/.local/share/wget-hsts"'
+{% if ansible_facts['system'] == "Linux" %}
+alias iowatch='watch -n 1 iostat -xy --human 1 1'
+alias ipa='ip -c a'
+alias lsblk='lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
+alias lsports='lsof -i -P -n'
+alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
+{% endif %}

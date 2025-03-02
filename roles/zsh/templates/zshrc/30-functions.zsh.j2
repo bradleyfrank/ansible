@@ -1,0 +1,26 @@
+# for quickly moving around the zsh dir stack
+cdf() { cd $(dirs -lp | fzf --no-multi) ; }
+
+# serve a website with jekyll
+jekyll() {
+  docker run \
+    --rm \
+    --volume="${1:-$PWD}:/srv/jekyll" \
+    --publish "${2:-4000}:4000" \
+    jekyll/jekyll jekyll serve
+}
+
+# archive a directory and names the file for the directory
+tardir() { tar -czf "${1%/}".tar.gz "$1" ; }
+
+# cd directly to the root of a git repo
+gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .) ; }
+
+# makes a diceword password suffixed with a number the same length and the number of words
+numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")" ; }
+
+# create a random number by restricting 'pwgen' to numbers [by removing alphabetical characters]
+random() { pwgen -1 --no-capitalize --numerals --remove-chars "$(echo {a..z})" "${1:-5}" ; }
+
+# rebind atuin after zsh-vi-mode loads
+zvm_after_init() { bindkey -M viins '^R' atuin-search ; }
