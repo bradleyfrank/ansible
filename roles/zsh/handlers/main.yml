@@ -1,6 +1,5 @@
 ---
 
-
 - name: "Delete zshrc tempfile"
   ansible.builtin.file:
     state: absent
