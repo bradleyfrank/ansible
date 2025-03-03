@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+from pathlib import PosixPath
+
+home = PosixPath.home()
+
+dotfiles = [
+  ".zshrc",
+  ".zsh_history",
+  ".vimrc",
+  ".cargo",
+  ".docker",
+  ".go"
+  ".minikube",
+  ".nb",
+  ".nbrc",
+  ".sqlite_history",
+  ".terminfo",
+  ".w3m",
+  ".vim"
+]
+
+def _unlink(file):
+  try:
+    current_file.unlink()
+    print(f"{file} deleted successfully")
+  except PermissionError:
+    print(f"{file} permission denied, check file permissions")
+
+def _rmdir(file):
+  for root, dirs, files in current_file.walk(top_down=False):
+    for name in files:
+      (root / name).unlink()
+    for name in dirs:
+      (root / name).rmdir()
+  current_file.rmdir()
+  print(f"{file} deleted successfully")
+
+for file in dotfiles:
+  current_file = (home / file)
+  if current_file.is_file():
+    _unlink(current_file)
+  elif current_file.is_dir():
+    _rmdir(current_file)
+  else:
+    print(f"{file} not found, nothing to delete")
