@@ -16,7 +16,7 @@
 - name: "Template vimrc"
   ansible.builtin.template:
     src: "vimrc.j2"
-    dest: "{{ ansible_facts['user_dir'] }}/.vimrc"
+    dest: "{{ vim_rc }}"
     mode: "0644"
   tags: [dots]
 

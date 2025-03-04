@@ -3,9 +3,9 @@
 vim_packages:
   - vim
 
-vim_rc: "{{ ansible_facts['user_dir'] }}/.vimrc"
+vim_rc: "{{ ansible_facts['user_dir'] }}/.config/vim/vimrc"
 
-vim_extensions_dir: "{{ ansible_facts['user_dir'] }}/.vim/pack/default/start"
+vim_extensions_dir: "{{ ansible_facts['user_dir'] }}/.config/vim/pack/default/start"
 vim_extensions:
   - name: "vim-airline"
     repo: "https://github.com/vim-airline/vim-airline.git"
