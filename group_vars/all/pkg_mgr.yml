@@ -23,7 +23,6 @@ pkg_mgr_flatpak_packages:
   - name: com.github.liferooter.textpieces
   - name: com.github.marktext.marktext
   - name: com.github.rajsolai.textsnatcher
-  - name: com.makemkv.MakeMKV
   - name: com.plexamp.Plexamp
   - name: com.spotify.Client
   - name: fr.romainvigier.MetadataCleaner

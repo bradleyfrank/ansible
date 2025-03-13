@@ -225,4 +225,13 @@ switch() {
 }
 
 
+# @cmd Add, commit, and push a work-in-progress
+wip() {
+  _in_git_repo || exit 1
+  git add --all
+  git commit --message "Work-In-Progress"
+  git push
+}
+
+
 eval "$(argc --argc-eval "$0" "$@")"

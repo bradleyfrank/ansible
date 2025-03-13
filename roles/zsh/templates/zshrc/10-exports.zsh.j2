@@ -5,7 +5,6 @@ export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
 export LESS="-R --mouse"
 
 # external programs
-export BASE16_SHELL="${HOME}/.local/share/base16-shell"
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DOCKER_CLI_HINTS=false
 export GH_PAGER=glow
@@ -21,13 +20,12 @@ export HOMEBREW_PREFIX={{ global_homebrew_prefix }}
 export HOMEBREW_REPOSITORY={{ global_homebrew_prefix }}/Homebrew
 
 # program XDG environment variables
+export ANSIBLE_HOME="${HOME}/.config/ansible"
 export CARGO_HOME="${HOME}/.local/share/cargo"
 export DOCKER_CONFIG="${HOME}/.config/docker"
 export GOPATH="${HOME}/.local/share/go"
 export HISTFILE="${HOME}/.cache/zsh/history"
 export MINIKUBE_HOME="${HOME}/.local/share/minikube"
-export NB_DIR="${HOME}/.local/share/nb"
-export NBRC_PATH="${HOME}/.config/nbrc"
 export NVM_DIR="${HOME}/.local/share/nvm"
 export PYTHON_HISTORY="${HOME}/.config/python/history"
 export TERMINFO="${HOME}/.local/share/terminfo"

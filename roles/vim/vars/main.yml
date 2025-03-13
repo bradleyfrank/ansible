@@ -1,0 +1,11 @@
+---
+
+vim_helix_package:
+  apt: "hx"
+  brew: "helix"
+  dnf5: "helix"
+
+vim_vim_package:
+  apt: "vim"
+  brew: "vim"
+  dnf5: "vim"

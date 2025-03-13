@@ -9,7 +9,7 @@ nnoremap <Leader>f :RG<CR>
 nnoremap <Leader>i :IndentGuidesToggle<CR>
 nnoremap <Leader>s :set spell!<CR>
 nnoremap <Leader>t :let _s="[ ]  #TODO"<Bar>put=_s<CR>
-nnoremap <Leader>u :source ~/.vimrc<CR>
+nnoremap <Leader>u :source ~/.config/vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>  " rm trailing whitespace
 nnoremap <Space> :nohlsearch<CR>
 nnoremap H :bp<CR>
@@ -44,10 +44,10 @@ set tabstop=2
 
 " functionality
 set backspace=indent,eol,start
-{% if 'MacOSX' in ansible_facts['distribution'] -%}
+{% if ansible_facts['distribution'] == "MacOSX" -%}
 set clipboard=unnamed
 set rtp+={{ global_homebrew_prefix }}/opt/fzf
-{% elif 'Ubuntu' in ansible_facts['distribution'] -%}
+{% elif ansible_facts['distribution'] == "Ubuntu" -%}
 set rtp+=/usr/share/doc/fzf/examples/
 {% endif -%}
 set laststatus=2

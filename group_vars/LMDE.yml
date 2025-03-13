@@ -78,7 +78,6 @@ pkg_mgr_packages:
     - tidy
     - tlp
     - toilet
-    - trash-cli
     - tree
     - trurl
     - wget

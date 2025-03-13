@@ -25,8 +25,6 @@ zsh_supplemental_dirs:
 zsh_completions:
   - name: "cht"
     command: "curl -L https://cheat.sh/:zsh"
-  - name: "nb"
-    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
 
 zsh_plugins:
   - name: "fzf-tab"
@@ -35,6 +33,3 @@ zsh_plugins:
   - name: "zsh-vi-mode"
     repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
     source: "zsh-vi-mode.plugin.zsh"
-  - name: "base16-shell"
-    repo: "https://github.com/chriskempson/base16-shell.git"
-    source: "profile_helper.sh"

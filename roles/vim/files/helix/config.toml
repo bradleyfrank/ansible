@@ -1,4 +1,4 @@
-theme = "solarized_light"
+theme = "flexoki_light"
 
 [editor]
 bufferline = "multiple"

@@ -9,6 +9,7 @@
 - name: "Install Homebrew formulas"
   community.general.homebrew:
     name: "{{ pkg_mgr_packages['formulas'] }}"
+    force_formula: true
     upgrade_all: "{{ pkg_mgr_homebrew_formulas_upgrade }}"
   when: pkg_mgr_packages['formulas'] | default([]) | length > 0
   tags: [never, formulas]

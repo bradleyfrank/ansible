@@ -6,7 +6,7 @@ set -o errexit
 ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
 ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
 ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
-ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/$(uname --nodename).yml"
+ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/$(uname -n).yml"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 
 
@@ -22,6 +22,7 @@ install_homebrew() {
 
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
+  sudo scutil --set HostName "$(uname -n | sed 's|.local||g')"
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ID=macos install_homebrew
   brew install python3 git
@@ -52,11 +53,11 @@ bootstrap_linux() {
 }
 
 
-case $(uname --machine) in (aarch*|arm*)
+case $(uname -s) in (aarch*|arm*)
   SKIP_HOMEBREW_LINUX=1 ;;
 esac
 
-case $(uname --kernel-name) in
+case $(uname -s) in
   Darwin) bootstrap_mac ;;
   Linux)  bootstrap_linux ;;
   *)      exit 1 ;;

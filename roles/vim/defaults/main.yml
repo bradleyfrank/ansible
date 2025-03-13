@@ -1,9 +1,12 @@
 ---
 
 vim_packages:
-  - vim
+  - "{{ vim_vim_package[ansible_facts['pkg_mgr']] }}"
+  - "{{ vim_helix_package[ansible_facts['pkg_mgr']] }}"
 
-vim_rc: "{{ ansible_facts['user_dir'] }}/.vimrc"
+helix_rcd: "{{ ansible_facts['user_dir'] }}/.config"
+vim_rcd: "{{ ansible_facts['user_dir'] }}/.config/vim"
+vim_rc: "{{ vim_rcd }}/.vimrc"
 
 vim_extensions_dir: "{{ ansible_facts['user_dir'] }}/.vim/pack/default/start"
 vim_extensions:

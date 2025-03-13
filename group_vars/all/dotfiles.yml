@@ -1,0 +1,22 @@
+---
+
+dotfiles_to_remove:
+  - ".ansible"
+  - ".cargo"
+  - ".docker"
+  - ".go"
+# - ".gphoto"  # https://github.com/gphoto/libgphoto2/issues/994
+  - ".lesshst"
+  - ".minikube"
+  - ".nb"
+  - ".nbrc"
+  - ".python_history"
+  - ".sqlite_history"
+  - ".terminfo"
+  - ".vim"
+  - ".viiminfo"
+  - ".vimrc"
+  - ".w3m"
+  - ".zsh"
+  - ".zsh_history"
+  - ".zshrc"
