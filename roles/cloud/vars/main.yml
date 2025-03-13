@@ -1,23 +1,24 @@
 ---
 
-cloud_bin_path_defaults:
-  arm64: "{{ ansible_facts['user_dir'] }}/.local/bin"
-  amd64: "{{ global_homebrew_prefix | default('/opt/homebrew') }}/bin"
-
-cloud_install_from_homebrew_defaults:
-  arm64: false
-  amd64: true
-
 cloud_package_arch_defaults:
   aarch64: "arm64"
   arm64: "arm64"
   x86_64: "amd64"
   amd64: "amd64"
 
+cloud_architecture: "{{ cloud_package_arch_defaults[ansible_facts['machine']] }}"
+
+cloud_bin_path_defaults:
+  arm64: "{{ ansible_facts['user_dir'] }}/.local/bin"
+  amd64: "{{ global_homebrew_prefix | default('/opt/homebrew') }}/bin"
+
+cloud_install_from_homebrew_defaults:
+  Darwin: true
+  Linux: "{{ true if cloud_architecture == 'amd64' else false }}"
+
 cloud_k9s_config_defaults:
   Linux: "{{ ansible_facts['user_dir'] }}/.config/k9s"
   Darwin: "{{ ansible_facts['user_dir'] }}/Library/Application Support/k9s"
-
 
 cloud_k9s:
   github_user: "derailed"
