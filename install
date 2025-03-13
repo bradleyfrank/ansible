@@ -89,6 +89,6 @@ ${VISUAL:-${EDITOR:-vi}} "$ANSIBLE_REPO_HOSTVARS"
 ansible-playbook play_init_onepassword.yml --ask-become-pass
 
 . "${HOME}/.op_session"
-rm --force "${HOME}/.op_session"
+rm -f "${HOME}/.op_session"
 
 ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
