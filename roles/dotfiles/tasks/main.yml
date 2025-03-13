@@ -29,3 +29,11 @@
     owner: false
     group: false
   tags: [dots]
+
+- name: "Setup Atuin sync"
+  ansible.builtin.expect:
+    command: "atuin login -u {{ dotfiles_atuin['username'] }}"
+    responses:
+      Please enter password: "{{ dotfiles_atuin['password'] }}"
+      Please enter encryption key: "{{ dotfiles_atuin['key'] }}"
+  tags: [moredots]

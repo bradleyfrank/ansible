@@ -1,5 +1,10 @@
 ---
 
+dotfiles_atuin:
+  username: "lookup('community.general.onepassword', 'Atuin', field='username') }}"
+  password: "lookup('community.general.onepassword', 'Atuin', field='password') }}"
+  key: "lookup('community.general.onepassword', 'Atuin', field='key') }}"
+
 dotfiles_to_remove:
   - ".ansible"
   - ".cargo"
