@@ -73,7 +73,6 @@ pip install --no-cache-dir --requirement requirements.txt
 
 export ANSIBLE_PYTHON_INTERPRETER="${PWD}/venv/bin/python3"
 export ANSIBLE_HOME="${HOME}/.config/ansible"
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES  # https://github.com/ansible/ansible/issues/76322
 
 ansible-playbook play_bootstrap_ansible.yml
 

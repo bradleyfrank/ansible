@@ -357,9 +357,6 @@ system_macos_defaults:
     value: "true"
 
 pkg_mgr_packages:
-  taps:
-    - charmbracelet/tap
-    - noahgorstein/tap
   formulas:
     - asciinema
     - atuin
@@ -385,7 +382,6 @@ pkg_mgr_packages:
     - fdupes
     - ffmpeg
     - findutils
-    - freeze
     - fzf
     - fx
     - gawk
@@ -408,9 +404,7 @@ pkg_mgr_packages:
     - markdown
     - moreutils
     - mtr
-    - nb
     - nmap
-    - jqp
     - ocrmypdf
     - p7zip
     - par
