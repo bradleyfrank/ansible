@@ -2,7 +2,7 @@
 
 vim_helix_package:
   apt: "hx"
-  brew: "helix"
+  homebrew: "helix"
   dnf5: "helix"
 
 vim_vim_package:
