@@ -1,32 +1,22 @@
-set -s  @status_position              "{{ item['status_position'] }}"
-set -s  @status_right                 "{{ item['status_right'] }}"
-set -s  @status_style                 "{{ item['status_style'] }}"
-set -s  @pane_border_color_default    "{{ item['pane_border_color']['default'] }}"
-set -s  @pane_border_color_sync       "{{ item['pane_border_color']['sync'] }}"
-set -s  @pane_border_color_zoom       "{{ item['pane_border_color']['zoom'] }}"
-set -s  @pane_border_lines            "{{ item['pane_border_lines'] }}"
-set -s  @pane_border_status           "{{ item['pane_border_status'] }}"
-set -s  @window_status_activity       "{{ item['window_status_activity'] }}"
-set -s  @window_status_current_format "{{ item['window_status_current_format'] }}"
-set -s  @window_status_format         "{{ item['window_status_format'] }}"
+source-file ~/.config/tmux/{{ tmux_config['theme'] }}.theme
 
-set -g  pane-active-border-style "#{?window_zoomed_flag,#{@pane_border_color_zoom},#{?pane_synchronized,#{@pane_border_color_sync},#{@pane_border_color_default}}}"
+set -g  pane-active-border-style "#{?window_zoomed_flag,#{fg={{ tmux_config['colors']['zoom'] }},bg=$color_bg_2},#{?pane_synchronized,#{fg={{ tmux_config['colors']['sync'] }},bg=default},#{fg={{ tmux_config['colors']['pane'] }},bg=default}}}"
 set -g  pane-border-format "#{?window_zoomed_flag, ZOOM ,}"
 set -g  pane-border-indicators both
-set -g  pane-border-style "bg=default,#{?pane_synchronized,#{@pane_border_color_sync},fg=white}"
-set -gF pane-border-status "#{@pane_border_status}"
-set -gF pane-border-lines "#{@pane_border_lines}"
+set -g  pane-border-style "bg=default,#{?pane_synchronized,#{fg={{ tmux_config['colors']['sync'] }},bg=default},fg=white}"
+set -gF pane-border-status "top"
+set -gF pane-border-lines "{{ tmux_config['border_lines'] }}"
 
-set -g  window-status-activity-style "#{@window_status_activity}"
-set -gF window-status-current-format "#{@window_status_current_format}"
-set -gF window-status-format "#{@window_status_format}"
+set -g  window-status-activity-style "#{fg={{ tmux_config['colors']['activity'] }},bg=default}"
+set -gF window-status-current-format "#{fg=$color_bg_1,bg={{ tmux_config['colors']['window'] }}]#[bold] [#I] #W #[nobold]}"
+set -gF window-status-format "#[fg={{ tmux_config['colors']['window'] }},bg=default]#[bold] [#I] #W #[nobold]}"
 
 set -g  status on
 set -g  status-justify left
 set -g  status-left ""
-set -g  status-style "#{@status_style}"
-set -gF status-right "#{@status_right}"
-set -gF status-position "#{@status_position}"
+set -g  status-style "fg=default,bg=default"
+set -gF status-right "#[bg=default,fg={{ tmux_config['colors']['session'] }},bold]#{session_name}"
+set -gF status-position "top"
 
 set -g  message-style "bg=black,fg=default"
 set -g  mode-style "bg=white,fg=black"
@@ -45,7 +35,7 @@ set -g  renumber-windows on
 set -g  status-interval 1
 set -g  terminal-overrides "alacritty:Tc,xterm-256color:Tc,gnome*:Tc"
 
-bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_config['clipboard'] }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
 

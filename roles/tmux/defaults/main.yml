@@ -1,7 +1,29 @@
 ---
 
-tmux_config: {}
-tmux_clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
+tmux_config:
+  - profile: "tmux"
+    theme: "flexoki"
+    clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
+    border_lines: "heavy"
+    colors:
+      pane: "$color_blue"
+      zoom: "$color_magenta"
+      window: "$color_blue"
+      sync: "$color_cyan"
+      session: "$color_orange"
+      activity: "$color_purple"
+  - profile: "popup"
+    theme: "flexoki"
+    clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
+    border_lines: "simple"
+    colors:
+      pane: "$color_orange"
+      zoom: "$color_magenta"
+      window: "$color_orange"
+      sync: "$color_cyan"
+      session: "$color_magenta"
+      activity: "$color_purple"
+
 tmux_plugins_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
 tmux_config_dir: "{{ ansible_facts['user_dir'] }}/.config/tmux"
 
