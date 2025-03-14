@@ -11,7 +11,7 @@ alias help='run-help'  # help topics path set via $HELPDIR
 
 {% if ansible_facts['os_family'] == "Debian" -%} alias bat='batcat' {%- endif %}
 alias cp='cp -i'
-alias dig='dog'
+alias dig='dig +noall +answer'
 alias dirdiff='git diff --no-index'
 alias e='aunpack'
 alias ff='fastfetch'
@@ -21,7 +21,7 @@ alias man='batman'
 alias mp='multipass'
 alias mux='tmux new-session -A -s main'
 alias psync='rsync -a --info=progress2'
-alias pubip='dog myip.opendns.com @resolver1.opendns.com -1'
+alias pubip='dig myip.opendns.com @resolver1.opendns.com -1'
 alias sc='shellcheck'
 alias scp='rsync -va'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
