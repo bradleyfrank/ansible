@@ -36,4 +36,4 @@
     responses:
       Please enter password: "{{ dotfiles_atuin['password'] }}"
       Please enter encryption key: "{{ dotfiles_atuin['key'] }}"
-  tags: [moredots]
+  tags: [never, atuin]
