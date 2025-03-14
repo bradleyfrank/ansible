@@ -1,6 +1,6 @@
 ---
 
-helix_rcd: "{{ ansible_facts['user_dir'] }}/.config/helix"
+vim_helix_rcd: "{{ ansible_facts['user_dir'] }}/.config/helix"
 
 vim_packages:
   - "{{ vim_vim_package[ansible_facts['pkg_mgr']] }}"
