@@ -7,5 +7,5 @@ vim_helix_package:
 
 vim_vim_package:
   apt: "vim"
-  brew: "vim"
+  homebrew: "vim"
   dnf5: "vim"
