@@ -1,4 +1,4 @@
---theme="Solarized-Light"
+--theme="Flexoki"
 --pager="less -R"
 --map-syntax .ignore:.gitignore
 --tabs 2

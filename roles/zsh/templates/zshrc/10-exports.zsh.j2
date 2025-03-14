@@ -2,12 +2,12 @@
 export EDITOR=vim
 export VISUAL=vim
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
-export LESS="-R --mouse"
 
-# external programs
+# application configs
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DOCKER_CLI_HINTS=false
 export GH_PAGER=glow
+export LESS="-R --mouse"
 
 # Homebrew settings
 export HOMEBREW_CELLAR={{ global_homebrew_prefix }}/Cellar
@@ -19,10 +19,11 @@ export HOMEBREW_NO_INSTALL_UPGRADE=1
 export HOMEBREW_PREFIX={{ global_homebrew_prefix }}
 export HOMEBREW_REPOSITORY={{ global_homebrew_prefix }}/Homebrew
 
-# program XDG environment variables
+# application XDG configs
 export ANSIBLE_HOME="${HOME}/.config/ansible"
 export CARGO_HOME="${HOME}/.local/share/cargo"
 export DOCKER_CONFIG="${HOME}/.config/docker"
+export EZA_CONFIG_DIR="${HOME}/.config/eza"
 export GOPATH="${HOME}/.local/share/go"
 export HISTFILE="${HOME}/.cache/zsh/history"
 export MINIKUBE_HOME="${HOME}/.local/share/minikube"
