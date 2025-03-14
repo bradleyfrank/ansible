@@ -1,4 +1,4 @@
 ---
 
-onepassword_template: "{{ ansible_facts['user_dir'] }}/.ansible/op.json"
+onepassword_template: "{{ ansible_facts['user_dir'] }}/op.json"
 onepassword_session_file: "{{ ansible_facts['user_dir'] }}/.op_session"
