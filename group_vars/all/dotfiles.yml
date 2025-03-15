@@ -8,6 +8,7 @@ dotfiles_atuin:
 dotfiles_to_remove:
   - ".ansible"
   - ".cargo"
+  - ".config/vim/.vimrc"
   - ".docker"
   - ".go"
 # - ".gphoto"  # https://github.com/gphoto/libgphoto2/issues/994
