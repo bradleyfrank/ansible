@@ -22,5 +22,8 @@ numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")" ; }
 # create a random number by restricting 'pwgen' to numbers [by removing alphabetical characters]
 random() { pwgen -1 --no-capitalize --numerals --remove-chars "$(echo {a..z})" "${1:-5}" ; }
 
+# save scratch work to Git repo
+gip() { git add -A; git commit -m "Work-in-Progress"; git push; }
+
 # rebind atuin after zsh-vi-mode loads
 zvm_after_init() { bindkey -M viins '^R' atuin-search ; }

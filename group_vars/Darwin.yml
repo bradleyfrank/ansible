@@ -359,6 +359,7 @@ system_macos_defaults:
 pkg_mgr_packages:
   taps: []
   formulas:
+    - argc
     - asciinema
     - atuin
     - atool
@@ -447,6 +448,8 @@ pkg_mgr_packages:
     - musicbrainz-picard
     - netnewswire
     - nextcloud
+    - notesnook
+    - numi
     - pearcleaner
     - plexamp
     - ppsspp
@@ -462,7 +465,6 @@ pkg_mgr_packages:
     - zoom
   mas:
     - 1320666476  # Wipr Safari extension
-    - 1529448980  # Reeder
     - 1555925018  # Genki Arcade
     - 1569813296  # 1Password Safari extension
     - 1591303229  # Vinegar Safari extension
