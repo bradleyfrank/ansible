@@ -357,6 +357,7 @@ system_macos_defaults:
     value: "true"
 
 pkg_mgr_packages:
+  taps: []
   formulas:
     - asciinema
     - atuin
