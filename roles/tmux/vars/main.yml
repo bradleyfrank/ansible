@@ -3,22 +3,3 @@
 tmux_clipboard_defaults:
   Darwin: "pbcopy"
   Linux: "wl-copy"
-
-tmux_themes:
-  flexoki:
-    black:    "#100F0F"  # tx   (primary text)
-    base-600: "#6F6E69"  # tx-2 (muted text)
-    base-300: "#B7B5AC"  # tx-3 (faint text)
-    base-200: "#CECDC3"  # ui-3 (active borders)
-    base-150: "#DAD8CE"  # ui-2 (hover borders)
-    base-100: "#E6E4D9"  # ui   (borders)
-    base-50:  "#F2F0E5"  # bg-2 (2nd bg)
-    white:    "#FFFCF0"  # bg   (main bg)
-    red:      "#AF3029"  # re
-    orange:   "#BC5215"  # or
-    yellow:   "#AD8301"  # ye
-    green:    "#66800B"  # gr
-    cyan:     "#24837B"  # cy
-    blue:     "#205EA6"  # bl
-    purple:   "#5E409D"  # pu
-    magenta:  "#A02F6F"  # ma
