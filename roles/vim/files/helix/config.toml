@@ -1,9 +1,13 @@
-theme = "solarized_light"
+theme = "flexoki_light"
 
 [editor]
 bufferline = "multiple"
 cursorline = true
 rulers = [100]
+#clipboard-provider = "pasteboard"
+
+[editor.soft-wrap]
+enable = true
 
 [editor.cursor-shape]
 insert = "bar"

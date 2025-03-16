@@ -357,7 +357,9 @@ system_macos_defaults:
     value: "true"
 
 pkg_mgr_packages:
+  taps: []
   formulas:
+    - argc
     - asciinema
     - atuin
     - atool
@@ -368,8 +370,6 @@ pkg_mgr_packages:
     - bat-extras
     - bcal
     - cabextract
-    - charmbracelet/tap/freeze
-    - charmbracelet/tap/glow
     - coreutils
     - csvlens
     - diceware
@@ -390,6 +390,7 @@ pkg_mgr_packages:
     - gh
     - ghostscript
     - git-absorb
+    - glow
     - gnu-sed
     - gnu-tar
     - gnu-which
@@ -405,9 +406,7 @@ pkg_mgr_packages:
     - markdown
     - moreutils
     - mtr
-    - nb
     - nmap
-    - noahgorstein/tap/jqp
     - ocrmypdf
     - p7zip
     - par
@@ -426,7 +425,6 @@ pkg_mgr_packages:
     - shfmt
     - slides
     - tidy-html5
-    - trash
     - tree
     - trippy
     - watch
@@ -434,26 +432,27 @@ pkg_mgr_packages:
     - yamllint
     - yt-dlp
   casks:
-    - appcleaner
-    - balenaetcher
     - calibre
     - expressions
     - fantastical
     - firefox
     - ghostty
     - iina
+    - ghostty
     - keepassxc
     - keepingyouawake
-    - kindle
     - libreoffice
     - maccy
     - multipass
     - mullvadvpn
     - musicbrainz-picard
+    - netnewswire
     - nextcloud
+    - notesnook
+    - numi
+    - pearcleaner
     - plexamp
     - ppsspp
-    - raindropio
     - signal
     - sony-ps-remote-play
     - spotify
@@ -462,11 +461,10 @@ pkg_mgr_packages:
     - transmit
     - utm
     - vlc
+    - waterfox
     - zoom
   mas:
     - 1320666476  # Wipr Safari extension
-    - 1529448980  # Reeder
-    - 1549370672  # Raindrop.io Safari extension
     - 1555925018  # Genki Arcade
     - 1569813296  # 1Password Safari extension
     - 1591303229  # Vinegar Safari extension

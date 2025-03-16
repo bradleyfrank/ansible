@@ -45,7 +45,7 @@ set -g  renumber-windows on
 set -g  status-interval 1
 set -g  terminal-overrides "alacritty:Tc,xterm-256color:Tc,gnome*:Tc"
 
-bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ item['clipboard'] }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
 

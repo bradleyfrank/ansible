@@ -6,10 +6,20 @@
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
   tags: [install]
 
-- name: "Copy config files"
+- name: "Create config directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ vim_rcd }}"
+    - "{{ vim_helix_rcd }}"
+    - "{{ vim_extensions_dir }}"
+  tags: [dots]
+
+- name: "Copy Helix config files"
   ansible.builtin.copy:
     src: "helix/"
-    dest: "{{ ansible_facts['user_dir'] }}/.config/"
+    dest: "{{ vim_helix_rcd }}/"
     mode: "0644"
   tags: [dots]
 

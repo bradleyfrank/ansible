@@ -16,6 +16,7 @@
     dest: "{{ cloud_bin_path }}/kubectl"
     mode: "0755"
   tags: [install, kubectl]
+  when: "'kubectl' in cloud_packages"
 
 - name: "Create temp download directory"
   ansible.builtin.tempfile:
@@ -24,6 +25,7 @@
   tags: [install, k9s, krew]
 
 - name: "Install krew"
+  when: "'krew' in cloud_packages"
   tags: [install, krew]
   vars:
     temp_dir: "{{ cloud_temp_dir['path'] }}"
@@ -53,6 +55,7 @@
         creates: "{{ ansible_facts['user_dir'] }}/.krew"
 
 - name: "Install k9s"
+  when: "'k9s' in cloud_packages"
   tags: [install, k9s]
   vars:
     temp_dir: "{{ cloud_temp_dir['path'] }}"

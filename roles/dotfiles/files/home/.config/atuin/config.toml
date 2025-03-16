@@ -1,5 +1,7 @@
 enter_accept = true
 keymap_mode = "vim-insert"
+sync_address = "https://atuin.francopuccini.casa"
+style = "auto"
 show_preview = true
 stats.common_subcommands=["apt","brew","dnf","docker","git","ip","kubectl","nix","nmcli","npm","podman","systemctl","tmux","nb"]
 stats.ignored_commands = ["cd","echo","ll","ls","lt","vim"]

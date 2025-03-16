@@ -14,6 +14,13 @@
     - "Development/Build"
   tags: [dots]
 
+- name: "Remove dotfiles"
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
+    state: absent
+  loop: "{{ dotfiles_to_remove }}"
+  tags: [dots]
+
 - name: "Sync dotfiles to home directory"
   ansible.posix.synchronize:
     src: "home/"
@@ -22,3 +29,11 @@
     owner: false
     group: false
   tags: [dots]
+
+- name: "Setup Atuin sync"
+  ansible.builtin.expect:
+    command: "atuin login -u {{ dotfiles_atuin['username'] }}"
+    responses:
+      Please enter password: "{{ dotfiles_atuin['password'] }}"
+      Please enter encryption key: "{{ dotfiles_atuin['key'] }}"
+  tags: [never, atuin]

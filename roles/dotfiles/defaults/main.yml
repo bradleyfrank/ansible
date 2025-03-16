@@ -1,0 +1,8 @@
+---
+
+dotfiles_to_delete: []
+
+dotfiles_atuin:
+  username: ""
+  password: ""
+  key: ""
