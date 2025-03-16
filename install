@@ -52,7 +52,7 @@ bootstrap_linux() {
 }
 
 
-case $(uname -s) in (aarch*|arm*)
+case $(uname -m) in (aarch*|arm*)
   SKIP_HOMEBREW_LINUX=1 ;;
 esac
 
