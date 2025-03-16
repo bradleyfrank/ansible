@@ -1,4 +1,4 @@
 macos-titlebar-style = native
-theme = flexoki-light
+theme = Builtin Solarized Light
 window-padding-y = 10,2
 window-theme = system
