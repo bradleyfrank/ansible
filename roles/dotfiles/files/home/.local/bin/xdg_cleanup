@@ -10,7 +10,7 @@ dotfiles = [
   ".vimrc",
   ".cargo",
   ".docker",
-  ".go"
+  ".go",
   ".minikube",
   ".nb",
   ".nbrc",
