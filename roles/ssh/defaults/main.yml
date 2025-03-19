@@ -1,10 +1,7 @@
 ---
 
 ssh_packages: "{{ ssh_packages_defaults[ansible_facts['system']] }}"
-
 ssh_manage_config: true
-ssh_manage_config_force: false
-
 ssh_harden_security: true
 
 ssh_config:

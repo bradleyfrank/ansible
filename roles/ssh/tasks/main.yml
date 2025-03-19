@@ -21,13 +21,6 @@
     state: touch
   tags: [dots]
 
-- name: "Symlink ssh config"
-  ansible.builtin.file:
-    src: "{{ ansible_facts['user_dir'] }}/Nextcloud/Documents/ssh_config"
-    dest: "{{ ansible_facts['user_dir'] }}/.ssh/config"
-    state: link
-  tags: [dots]
-
 - name: "Create SSH keys"
   community.crypto.openssh_keypair:
     comment: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
@@ -42,10 +35,9 @@
 
 - name: "Template SSH config"
   ansible.builtin.template:
-    src: "ssh.config.j2"
+    src: "ssh_config.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.ssh/config"
     mode: "0644"
-    force: "{{ ssh_manage_config_force }}"
   when: ssh_manage_config
   tags: [dots]
 

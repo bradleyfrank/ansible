@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ansible = "*"
+bcrypt = "*"
+cryptography = ">=35.0.0"
+distro = "*"
+"github3.py" = "*"
+jmespath = "*"
+pexpect = "*"
+psutil = "*"
+pyobjc-framework-cocoa = "*"
+python-debian = "*"
+selinux = "*"
+xkcdpass = "*"
+
+[dev-packages]
+ansible-lint = "*"
+
+[requires]
+python_version = "3.13"
