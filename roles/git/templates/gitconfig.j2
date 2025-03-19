@@ -20,7 +20,7 @@
   gpgsign = true
   verbose = true
 [core]
-  excludesfile = {{ ansible_facts['user_dir'] }}/.gitignore
+  excludesfile = {{ ansible_facts['user_dir'] }}/.config/git/ignore
   editor = vim
 {% if ansible_facts['system'] == 'Darwin' %}
   fsmonitor = true
