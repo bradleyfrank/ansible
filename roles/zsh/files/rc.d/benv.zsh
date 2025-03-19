@@ -1,7 +1,7 @@
 #
 # Wrappers around `virtualenv` to keep venvs centralized
 # Author: Brad Frank
-# Date: June 2024
+# Date: June 2024; Updated: March 2025
 # Tested: zsh 5.9 (arm-apple-darwin23.0.0)
 # Requires: virtualenv, git, fzf, md5sum, trurl
 #
@@ -38,22 +38,23 @@ benv_usage() {
 
 export VENVS_HOME="${HOME}/.local/share/venvs"
 
-a8() { benv_activate; }
-da8() { benv_deactivate; }
-envin() { benv_activate; benv_sync; }
-envout() { benv_deactivate; }
-
 
 benv_get_venv_dir() {
-  local git_toplevel md5 benv_project; benv_project="$(pwd)"
-  git_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)" && benv_project="$git_toplevel"
-  md5="$(md5sum <<< "$benv_project" | awk '{print $1}')"
-  print "${VENVS_HOME}/${md5}"
+  local git_toplevel benv_project
+
+  if git_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)"; then
+    benv_project="$git_toplevel"
+  else
+    benv_project="$(pwd)"
+  fi
+
+  print "project_dir='$benv_project'"
+  print "virtualenv='${VENVS_HOME}/$(md5sum <<< "$benv_project" | awk '{print $1}')'"
 }
 
 
 benv_get_project_dir() {
-  realpath -P "${1:-$VIRTUAL_ENV_PROJECT}/project"
+  realpath -P "${1}/project"
 }
 
 
@@ -65,36 +66,15 @@ benv_get_all_venvs() {
 benv_msg() {
   local -A output
   local -r base03="%F{234}" cyan="%F{37}" yellow="%F{136}" blue="%F{33}" reset="%f"
-  local msg venv project; msg="$1" venv="$2" project="$3"
+  local msg virtualenv project_dir; msg="$1" virtualenv="$2" project_dir="$3"
 
-  [[ -z $project ]] && project="$(benv_get_project_dir)"
-  venv="$(dirname "$venv")/$(basename "$venv" | cut -b 1-4)…"
+  venv="$(dirname "$virtualenv")/$(basename "$virtualenv" | cut -b 1-4)…"
 
   output[prefix]="${base03}==>${yellow} ${msg}${reset}"
   output[venv]="${cyan}${venv/$HOME/~}${reset}"
-  output[project]="${blue}${project/$HOME/~}${reset}"
+  output[project]="${blue}${project_dir/$HOME/~}${reset}"
 
   print -P "${output[prefix]} :: ${output[venv]} -> ${output[project]}"
-}
-
-
-benv_gar_auth() {
-  local index_url domain backends
-
-  index_url="$(python3 -m pip config get "global.index-url" 2>/dev/null)" || return 0
-  domain="$(trurl --get "{host}" "$index_url")"
-  grep --quiet "pkg.dev" <<< "$domain" || return 0
-
-  benv_msg "authenticating" "$VIRTUAL_ENV_PROJECT"
-  pip install keyring keyrings.google-artifactregistry-auth \
-    --index-url https://pypi.org/simple \
-    --disable-pip-version-check \
-    --require-virtualenv \
-    --quiet
-
-  backends="$(keyring --list-backends \
-    | grep --extended-regex --count '(ChainerBackend|GooglePythonAuth)')"
-  case "$backends" in (2) return 0 ;; (*) return 1 ;; esac
 }
 
 
@@ -102,41 +82,49 @@ benv_gar_auth() {
 ## Feature functions
 ## ----------------------------------------------------------------------------------------------
 
-benv_deactivate() {
-  unset VIRTUAL_ENV_PROJECT
-  deactivate
-}
-
-
 benv_activate() {
-  [[ -z $VIRTUAL_ENV_PROJECT ]] && export VIRTUAL_ENV_PROJECT="$(benv_get_venv_dir)"
-  [[ ! -d "$VIRTUAL_ENV_PROJECT" ]] && benv_create "$@"
-  benv_msg "activating" "$VIRTUAL_ENV_PROJECT"
-  source "${VIRTUAL_ENV_PROJECT}/venv/bin/activate"
-  benv_gar_auth
-}
+  local virtualenv project_dir requirements; eval "$(benv_get_venv_dir)"
 
-
-benv_create() {
-  [[ -z $VIRTUAL_ENV_PROJECT ]] && export VIRTUAL_ENV_PROJECT="$(benv_get_venv_dir)"
-  if [[ ! -e "$VIRTUAL_ENV_PROJECT" ]]; then
-    mkdir --parents "${VIRTUAL_ENV_PROJECT}/venv"
-    pushd "$VIRTUAL_ENV_PROJECT" > /dev/null || return 1
-    ln -s "$(dirs -lp | tail -n1)" project
-    popd > /dev/null || return 1
-    benv_msg "creating" "$VIRTUAL_ENV_PROJECT"
-    virtualenv --quiet "${VIRTUAL_ENV_PROJECT}/venv" "$@"
+  # Create the virtualenv if necessary
+  if [[ ! -d "$virtualenv" ]]; then
+    rm --recrusive --force "$virtualenv"
+    mkdir --parents "${virtualenv}/venv"
+    ln -s "$project_id" "{$virtualenv}/project"
+    benv_msg "creating" "$virtualenv" "$project_dir"
+    virtualenv --quiet "${virtualenv}/venv" "$@"
   fi
-}
 
+  benv_msg "activating" "$virtualenv" "$project_dir"
+  source "${virtualenv}/venv/bin/activate"
 
-benv_sync() {
-  local requirements
-  [[ -z $VIRTUAL_ENV ]] && return 1
-  requirements="$(find . -maxdepth 2 -type f -name 'requirements.txt' -print -quit)"
-  benv_msg "syncing" "$VIRTUAL_ENV_PROJECT"
-  [[ -z $requirements ]] && return 0
-  pip install -r "$requirements" > /dev/null
+  # Google Artifact Registry requires additional packages for authentication
+  if python3 -m pip config get "global.index-url" \
+    | trurl --get "{host}" --url-file - \
+    | grep --quiet "pkg.dev"
+  then
+    benv_msg "authenticating" "$virtualenv" "$project_dir"
+
+    pip install keyring keyrings.google-artifactregistry-auth \
+      --index-url https://pypi.org/simple \
+      --disable-pip-version-check \
+      --require-virtualenv \
+      --quiet
+
+    if [[ "$(keyring --list-backends \
+      | grep --extended-regex --count '(ChainerBackend|GooglePythonAuth)')" -ne 2 ]]
+    then
+      return 1
+    fi
+  fi
+
+  requirements="$(find "$project_dir" -type f -name 'requirements.txt' -print -quit)"
+
+  if [[ -n $requirements ]]; then
+    benv_msg "syncing" "$virtualenv" "$project_dir"
+    pip install --requirement "$requirements" --quiet
+  fi
+
+  pip install --upgrade pip > /dev/null
 }
 
 
@@ -152,10 +140,9 @@ benv_cleanup() {
 
 
 benv_info() {
-  local benv_dir
-  benv_dir="$(benv_get_venv_dir)"
-  [[ ! -d "$benv_dir" ]] && { print "No virtualenv for this project." >&2; return 1; }
-  benv_msg "virtualenv" "$VIRTUAL_ENV_PROJECT"
+  local virtualenv project_dir; eval "$(benv_get_venv_dir)"
+  [[ ! -d "$virtualenv" ]] && { print "No virtualenv for this project." >&2; return 1; }
+  benv_msg "virtualenv" "$virtualenv" "$project_dir"
 }
 
 
@@ -200,9 +187,8 @@ benv() {
   local subcmd; subcmd="$1"
   [[ "$#" -ge 1 ]] && shift
   case "$subcmd" in
-    a8|activate) benv_activate "$@" ;;
-    da8|deactivate) benv_deactivate ;;
-    sync|update) benv_sync "$@" ;;
+    in|activate) benv_activate "$@" ;;
+    out|deactivate) deactivate ;;
     clean|cleanup) benv_cleanup ;;
     info|show) benv_info ;;
     list|ls) benv_list ;;
