@@ -16,6 +16,8 @@ git_clone_repos:
   - url: "git@github.com:bradleyfrank/util-containers.git"
   - url: "git@github.com:bradleyfrank/cliday.git"
 
+infractl_token: "{{ lookup('community.general.onepassword', 'Infractl Token', field='credential') }}"
+
 packages_homebrew_casks:
   - 1password
   - 1password-cli
