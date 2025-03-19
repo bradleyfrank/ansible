@@ -20,7 +20,7 @@
   gpgsign = true
   verbose = true
 [core]
-  excludesfile = {{ ansible_facts['user_dir'] }}/.gitignore
+  excludesfile = {{ ansible_facts['user_dir'] }}/.config/git/ignore
   editor = vim
 {% if ansible_facts['system'] == 'Darwin' %}
   fsmonitor = true
@@ -53,6 +53,10 @@
   enabled = true
 [status]
   showUntrackedfiles = all
+{% if ansible_facts['hostname'] == "mac06770" %}
+[url "https://{{ infractl_token }}@github.com"]
+  insteadOf = https://github.com
+{% endif %}
 [user]
   name = {{ ansible_facts['user_gecos'] }}
   email = {{ global_email_address }}
