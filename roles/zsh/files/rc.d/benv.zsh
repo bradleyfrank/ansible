@@ -98,7 +98,7 @@ benv_activate() {
   source "${virtualenv}/venv/bin/activate"
 
   # Google Artifact Registry requires additional packages for authentication
-  if python3 -m pip config get "global.index-url" \
+  if python3 -m pip config get "global.index-url" 2>/dev/null \
     | trurl --get "{host}" --url-file - \
     | grep --quiet "pkg.dev"
   then
@@ -161,8 +161,7 @@ benv_remove() {
   if [[ "$#" -eq 0 ]]; then
     projects="$(benv_get_all_venvs | fzf-tmux -p --multi \
         --delimiter / --with-nth -1 \
-        --preview='realpath -P {}/project' --preview-window 'down'
-    )"
+        --preview='realpath -P {}/project' --preview-window 'down')"
   else
     projects="$(for project in $(benv_get_all_venvs); do basename "$project"; done | xargs)"
     match="$(sed 's/[^a-f0-9]/|/g' <<< "$match")"  # convert input to regex
@@ -170,7 +169,9 @@ benv_remove() {
       | xargs -I{} echo "${VENVS_HOME}/{}")"
   fi
 
-  [[ -z $projects ]] && return 0
+  if [[ -z $projects ]]; then
+    return 0
+  fi
 
   while read -r project; do
     benv_msg "removing" "${project}" "$(benv_get_project_dir "$project")"
@@ -178,10 +179,6 @@ benv_remove() {
   done <<< "$projects"
 }
 
-
-## ==============================================================================================
-## Main program
-## ----------------------------------------------------------------------------------------------
 
 benv() {
   local subcmd; subcmd="$1"
