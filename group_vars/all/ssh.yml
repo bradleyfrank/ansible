@@ -1,5 +1,22 @@
 ---
 
+ssh_config:
+  - host: "memory-alpha"
+    args:
+      HostName: "192.168.1.40"
+      IdentityFile: "~/.ssh/id_ed25519"
+  - host: "rsync.net"
+    args:
+      HostName: "de3481b.rsync.net"
+      User: "root"
+  - host: "*"
+    args:
+      User: "{{ ansible_facts['user_id'] }}"
+      IdentitiesOnly: "yes"
+      CanonicalizeHostname: "yes"
+      ServerAliveCountMax: "4"
+      ServerAliveInterval: "15"
+
 ssh_keys:
   id_rsa:
     type: "rsa"

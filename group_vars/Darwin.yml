@@ -427,6 +427,7 @@ pkg_mgr_packages:
     - tidy-html5
     - tree
     - trippy
+    - trurl
     - watch
     - wget
     - yamllint
