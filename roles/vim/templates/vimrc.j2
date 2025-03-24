@@ -100,3 +100,9 @@ colorscheme solarized8
 highlight Normal                             guibg=NONE
 highlight IndentGuidesOdd   guifg=NONE       guibg=Cornsilk1
 highlight IndentGuidesEven  guifg=NONE       guibg=NONE
+
+
+" macros and functions
+function! s:twoTab()
+  set ts=4 sts=4 noet | retab! | set ts=2 sts=2 et | retab!
+endfunction
