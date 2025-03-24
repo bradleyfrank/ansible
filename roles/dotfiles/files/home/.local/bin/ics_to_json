@@ -1,0 +1,40 @@
+import json
+import sys
+from ics import Calendar
+
+def ics_to_json(ics_path, json_path):
+  try:
+    with open(ics_path, 'r', encoding='utf-8') as file:
+      calendar = Calendar(file.read())
+  except FileNotFoundError:
+    print(f"Error: File not found -> {ics_path}")
+    return
+  except Exception as e:
+    print(f"Failed to parse .ics file: {e}")
+    return
+
+  events_data = []
+  for event in calendar.events:
+    event_dict = {
+      "name": event.name,
+      "begin": event.begin.isoformat() if event.begin else None,
+      "end": event.end.isoformat() if event.end else None,
+      "location": event.location,
+      "description": event.description,
+      "status": event.status,
+      "uid": event.uid
+    }
+    events_data.append(event_dict)
+
+  try:
+    with open(json_path, 'w', encoding='utf-8') as out_file:
+      json.dump(events_data, out_file, indent=2)
+    print(f"Successfully converted to JSON: {json_path}")
+  except Exception as e:
+    print(f"Failed to write JSON: {e}")
+
+if __name__ == "__main__":
+  if len(sys.argv) != 3:
+    print("Usage: python ics_to_json.py input.ics output.json")
+  else:
+    ics_to_json(sys.argv[1], sys.argv[2])
