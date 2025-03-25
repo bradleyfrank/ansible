@@ -28,7 +28,7 @@ dotfiles_to_remove:
   - ".sqlite_history"  # no longer needed
   - ".terminfo"  # moved to `~/.local/share/`
   - ".vim"  # moved to `~/.config/`
-  - ".viiminfo"  # moved to `~/.config/`
+  - ".viminfo"  # moved to `~/.config/`
   - ".vimrc"  # moved to `~/.config/`
   - ".zcompdump"  # moved to `~/.config/`
   - ".zsh"  # moved to `~/.config/`
