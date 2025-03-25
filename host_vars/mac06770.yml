@@ -42,8 +42,6 @@ zsh_completions:
     command: "k9s completion zsh"
   - name: "cht"
     command: "curl -L https://cheat.sh/:zsh"
-  - name: "nb"
-    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
 
 system_macos_sleep_display: -1
 system_macos_sleep_computer: -1

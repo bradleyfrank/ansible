@@ -103,7 +103,6 @@ packages_homebrew_formulas:
   - eza
   - fastfetch
   - lazygit
-  - nb
   - qsv
   - trurl
   - yq

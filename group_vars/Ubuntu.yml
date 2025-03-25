@@ -141,7 +141,6 @@ pkg_mgr_packages:
     - csvlens
     - eza
     - fastfetch
-    - nb
     - qsv
     - trurl  # available in Ubuntu as of 24.04
     - yq
