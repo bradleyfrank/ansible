@@ -6,32 +6,33 @@ dotfiles_atuin:
   key: "{{ lookup('community.general.onepassword', 'Atuin', field='key') }}"
 
 dotfiles_to_remove:
-  - ".abcde.conf"
-  - ".ansible"
-  - ".cargo"
-  - ".config/vim/.vimrc"
-  - ".dir_colors"
-  - ".docker"
-  - ".edgerc"
-  - ".gitconfig"
-  - ".gitconfig.d"
-  - ".gitignore"
-  - ".go"
-# - ".gphoto"  # https://github.com/gphoto/libgphoto2/issues/994
-  - ".lesshst"
-  - ".MakeMKV"
-  - ".minikube"
-  - ".nb"
-  - ".nbrc"
-  - ".python_history"
-  - ".sqlite_history"
-  - ".terminfo"
-  - ".vim"
-  - ".viiminfo"
-  - ".vimrc"
-  - ".w3m"
-  - ".zcompdump"
-  - ".zsh"
-  - ".zsh_history"
-  - ".zsh_sessions"
-  - ".zshrc"
+  - ".abcde.conf"  # moved to 'media' role (temp unused)
+  - ".ansible"  # moved to `~/.config/`
+  - ".bundle"  # moved to `~/.config`, `~/.cache`, `~/.local/share`
+  - ".cargo"  # no longer needed
+  - ".config/vim/.vimrc"  # proper filename is `vimrc`
+  - ".diceware.ini"  # moved to `~/.config/`
+  - ".dir_colors"  # no longer needed with eza
+  - ".docker"  # moved to `~/.config/`
+  - ".edgerc"  # no longer needed
+  - ".gitconfig"  # moved to `~/.config/`
+  - ".gitconfig.d"  # no longer needed
+  - ".gitignore"  # moved to `~/.config/`
+  - ".lesshst"  # moved to `~/.config/`
+  - ".MakeMKV"  # moved to 'media' role (temp unused)
+  - ".minikube"  # no longer needed
+  - ".nb"  # no longer needed
+  - ".nbrc"  # no longer needed
+  - ".npm"  # moved to `~/.config`, `~/.cache`, `~/.local/run`
+  - ".python_history"  # moved to `~/.config/`
+  - ".sqlite_history"  # no longer needed
+  - ".terminfo"  # moved to `~/.local/share/`
+  - ".vim"  # moved to `~/.config/`
+  - ".viiminfo"  # moved to `~/.config/`
+  - ".vimrc"  # moved to `~/.config/`
+  - ".zcompdump"  # moved to `~/.config/`
+  - ".zsh"  # moved to `~/.config/`
+  - ".zsh_history"   # moved to `~/.config/`
+  - ".zsh_sessions"  # only used for macOS Terminal
+  - ".zshrc"  # moved to `~/.config/`
+  - ".zshrc.d"  # moved to `~/.config/`
