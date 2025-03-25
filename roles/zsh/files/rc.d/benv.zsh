@@ -124,7 +124,7 @@ benv_activate() {
     pip install --requirement "$requirements" --quiet
   fi
 
-  pip install --upgrade pip > /dev/null
+  pip install --upgrade pip --quiet
 }
 
 
