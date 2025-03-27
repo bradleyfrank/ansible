@@ -23,4 +23,7 @@ numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")" ; }
 random() { pwgen -1 --no-capitalize --numerals --remove-chars "$(echo {a..z})" "${1:-5}" ; }
 
 # rebind atuin after zsh-vi-mode loads
-zvm_after_init() { bindkey -M viins '^R' atuin-search ; }
+zvm_after_init() {
+  bindkey -M viins '^R' atuin-search
+  bindkey -M vicmd '^R' atuin-search
+}

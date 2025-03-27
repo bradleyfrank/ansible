@@ -1,3 +1,5 @@
 autoload -Uz compinit bashcompinit zmv zcalc vcs_info edit-command-line run-help
 compinit -C && bashcompinit
 zle -N edit-command-line
+bindkey -M vicmd "^X" edit-command-line
+bindkey -M viins "^X" edit-command-line
