@@ -1,5 +1,5 @@
 PATH="${HOME}/.local/bin:/opt/bin"
-PATH="${PATH}:${HOME}/.krew/bin"
+PATH="${PATH}:${HOME}/.local/share/krew/bin"
 PATH="${PATH}:{{ global_homebrew_prefix }}/bin:{{ global_homebrew_prefix }}/sbin"
 {% if ansible_facts['distribution'] == "MacOSX" %}
 PATH="${PATH}:{{ global_homebrew_prefix }}/opt/coreutils/libexec/gnubin"
