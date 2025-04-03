@@ -35,7 +35,7 @@ _open_in_tmux() {
 }
 
 
-_worktree_list() {
+_worktree_select() {
   git worktree list --porcelain \
     | grep --extended-regexp '^worktree' \
     | grep --invert-match "$GIT_TOPLEVEL_PATH" \
@@ -157,7 +157,7 @@ delete() {
     [[ -z $worktree ]] && exit 0
     git worktree remove --force "$worktree"
     git branch --delete --force "$(basename "$worktree")"
-  done <<< "$(_worktree_list "$argc_branch_name")"
+  done <<< "$(_worktree_select "$argc_branch_name")"
 }
 
 
@@ -216,7 +216,7 @@ switch() {
   local selected_branches branch
   _in_git_repo || exit 1
 
-  selected_branches="$(_worktree_list "$argc_branch_name")"
+  selected_branches="$(_worktree_select "$argc_branch_name")"
   [[ -z $selected_branches ]] && exit 0  # handles repos with only a single branch
 
   while read -r branch; do
@@ -245,6 +245,27 @@ reset() {
   fi
   git fetch origin
   git reset --hard origin/"$(git rev-parse --abbrev-ref HEAD)"
+}
+
+
+# @cmd List all worktrees
+# @alias ls
+list() {
+  _in_git_repo || exit 1
+  while read -r dir; do
+    branch="$(basename "$dir")"
+    if [[ ! -d "$dir" ]]; then
+      _error "$branch"
+    else
+      echo -n "${branch} "
+      git -C "$dir" status --porcelain \
+        | cut -c1-2 \
+        | sort \
+        | uniq -c \
+        | awk '{printf "%s: %s  ", $2, $1}'
+      echo
+    fi
+  done < <(git worktree list --porcelain | grep --extended-regexp '^worktree' | awk '{print $2}')
 }
 
 
