@@ -132,8 +132,9 @@ clone() {
     git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}" --branch "$argc_branch_name"
   else
     git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}"
-    # There should only be one file after a fresh clone: the default branch.
-    argc_branch_name="$(find "${tmpdir}/${repo_name}/.git/logs/refs/heads/" -maxdepth 1 -type f)"
+    argc_branch_name="$(basename \
+      "$(git -C "${tmpdir}/${repo_name}" symbolic-ref refs/remotes/origin/HEAD)"
+    )"
   fi
 
   mkdir --parents "${PROJECTS_DIR}/${repo_name}" || exit 1
@@ -231,6 +232,19 @@ wip() {
   git add --all
   git commit --message "Work-In-Progress"
   git push
+}
+
+
+# @cmd Completely reset a local branch to match remote
+# @flag -f --force Skip confirmation and proceed with reset
+reset() {
+  _in_git_repo || exit 1
+  if [[ -z $argc_force ]]; then
+    local confirm; read -p "Are you sure you want to proceed? [y/N]: " confirm
+    [[ $confirm =~ ^[Yy]$ ]] || exit 0
+  fi
+  git fetch origin
+  git reset --hard origin/"$(git rev-parse --abbrev-ref HEAD)"
 }
 
 
