@@ -10,6 +10,20 @@
 
 PROJECTS_DIR="$HOME/Development/Projects"
 
+C_BLACK=$(tput setaf 0)
+C_RED=$(tput setaf 1)
+C_GREEN=$(tput setaf 2)
+C_YELLOW=$(tput setaf 3)
+C_BLUE=$(tput setaf 4)
+C_MAGENTA=$(tput setaf 5)
+C_CYAN=$(tput setaf 6)
+C_WHITE=$(tput setaf 7)
+C_RESET=$(tput sgr0)
+
+C_BOLD=$(tput bold)
+C_UNDERLINE=$(tput smul)
+C_NO_UNDERLINE=$(tput rmul)
+
 
 ##
 ## Helper functions
@@ -25,7 +39,7 @@ _in_git_repo() {
 
 
 _error() {
-  printf "\033[0;31m%s\033[0m\n" "$1" >&2
+  echo "${C_RED}$1${C_RESET}" >&2
 }
 
 
@@ -57,7 +71,8 @@ _github_branch_list() {
 
 
 _github_repo_list() {
-  local preview; preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
+  local preview
+  preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
 
   #shellcheck disable=SC2016
   gh api graphql --paginate --field owner="$1" --raw-field query='
@@ -252,20 +267,32 @@ reset() {
 # @alias ls
 list() {
   _in_git_repo || exit 1
-  while read -r dir; do
+  local branch dir worktrees worktree chars length
+  worktrees="$(git worktree list --porcelain)"
+
+  while read -r worktree; do
+    branch="$(echo "$worktree" | awk '{print $2}' | xargs basename)"
+    chars="$(wc --chars <<< "$branch")"
+    if (( chars > length )); then length="$chars"; fi
+  done < <(grep --extended-regexp '^branch' <<< "$worktrees")
+
+  while read -r worktree; do
+    dir="$(awk '{print $2}' <<< "$worktree")"
     branch="$(basename "$dir")"
+    branch_dir="${C_GREEN}${dir/$HOME/\~}${C_RESET}"
+
     if [[ ! -d "$dir" ]]; then
       _error "$branch"
     else
-      echo -n "${branch} "
-      git -C "$dir" status --porcelain \
-        | cut -c1-2 \
-        | sort \
-        | uniq -c \
-        | awk '{printf "%s %s  ", $2, $1}'
-      echo
+      if [[ -n $(git -C "$dir" status --porcelain) ]]; then
+        branch="${C_BOLD}${C_RED}${branch}${C_RESET}"
+      else
+        branch="${C_BOLD}${C_BLUE}${branch}${C_RESET}"
+      fi
     fi
-  done < <(git worktree list --porcelain | grep --extended-regexp '^worktree' | awk '{print $2}')
+
+    printf "%-*s [%s]\n" "$(( 30 - length ))" "$branch" "$branch_dir"
+  done < <(grep --extended-regexp '^worktree' <<< "$worktrees")
 }
 
 
