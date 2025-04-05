@@ -9,8 +9,8 @@ cloud_package_arch_defaults:
 cloud_architecture: "{{ cloud_package_arch_defaults[ansible_facts['machine']] }}"
 
 cloud_bin_path_defaults:
-  arm64: "{{ ansible_facts['user_dir'] }}/.local/bin"
-  amd64: "{{ global_homebrew_prefix | default('/opt/homebrew') }}/bin"
+  amd64: "{{ ansible_facts['user_dir'] }}/.local/bin"
+  arm64: "{{ global_homebrew_prefix | default('/opt/homebrew') }}/bin"
 
 cloud_install_from_homebrew_defaults:
   Darwin: true
@@ -31,5 +31,7 @@ cloud_k9s_unarchive_excludes:
 cloud_krew:
   github_user: "kubernetes-sigs"
   github_repo: "krew"
+
+cloud_krew_root: "{{ ansible_facts['user_dir'] }}/.local/share"
 
 cloud_kubectl_version_url: "https://dl.k8s.io/release/stable.txt"

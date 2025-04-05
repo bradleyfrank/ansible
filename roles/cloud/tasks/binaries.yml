@@ -51,8 +51,8 @@
         remote_src: true
     - name: "Install krew"
       ansible.builtin.command:
-        cmd: "{{ temp_dir }}/{{ filename }} install krew"
-        creates: "{{ ansible_facts['user_dir'] }}/.krew"
+        cmd: "KREW_ROOT={{ cloud_krew_root }} {{ temp_dir }}/{{ filename }} install krew"
+        creates: "{{ cloud_krew_root }}/krew"
 
 - name: "Install k9s"
   when: "'k9s' in cloud_packages"
