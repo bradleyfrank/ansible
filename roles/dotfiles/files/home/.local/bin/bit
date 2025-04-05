@@ -3,26 +3,18 @@
 # @meta describe Wrappers around `git` to support worktrees in a tmux session.
 # @meta author Brad Frank
 # @meta require-tools tmux,fzf,gh,git
-# @meta version 3.0.0
+# @meta version 3.1.0
 # @meta combine-shorts
 # @meta inherit-flag-options
 # @flag -s --session Open a new session instead of a window (when applicable)
 
 PROJECTS_DIR="$HOME/Development/Projects"
 
-C_BLACK=$(tput setaf 0)
+C_BOLD=$(tput bold)
 C_RED=$(tput setaf 1)
 C_GREEN=$(tput setaf 2)
-C_YELLOW=$(tput setaf 3)
 C_BLUE=$(tput setaf 4)
-C_MAGENTA=$(tput setaf 5)
-C_CYAN=$(tput setaf 6)
-C_WHITE=$(tput setaf 7)
 C_RESET=$(tput sgr0)
-
-C_BOLD=$(tput bold)
-C_UNDERLINE=$(tput smul)
-C_NO_UNDERLINE=$(tput rmul)
 
 
 ##
@@ -62,7 +54,7 @@ _worktree_select() {
 }
 
 
-_github_branch_list() {
+_github_branch_select() {
   git ls-remote --heads --quiet \
     | sed -rn 's|[a-z0-9]+\s+refs/heads/(.*)$|\1|p' \
     | grep "$1" \
@@ -70,7 +62,7 @@ _github_branch_list() {
 }
 
 
-_github_repo_list() {
+_github_repos_select() {
   local preview
   preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
 
@@ -118,8 +110,7 @@ clone() {
   local gh_repo repo_url tmpdir org_name branch_name branch_path
 
   if [[ -z $argc_repo_url ]]; then
-    # If repo URL has not been provided, present a choice between the user's
-    # repositories, or any orgs the user belongs to.
+    # if repo URL not provided, select between user's repos or [if applicable] org's repos
     org_name="$(printf "%s\n%s" \
       "$(GH_PAGER="cat" gh api user --jq '.login')" \
       "$(GH_PAGER="cat" gh api user/orgs --jq '.[].login')" \
@@ -127,8 +118,7 @@ clone() {
     )"
     [[ -z $org_name ]] && exit 0
 
-    # Select the repository from the chosen org/profile
-    gh_repo="$(_github_repo_list "$org_name")"
+    gh_repo="$(_github_repos_select "$org_name")"
     [[ -z $gh_repo ]] && exit 0
 
     repo_url="git@github.com:${gh_repo}.git"
@@ -143,7 +133,6 @@ clone() {
   tmpdir="$(mktemp --directory)"
 
   if [[ -n $argc_branch_name ]]; then
-    # If a branch name was provided, checkout that branch when cloning.
     git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}" --branch "$argc_branch_name"
   else
     git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}"
@@ -194,7 +183,7 @@ pull() {
   _in_git_repo || exit 1
   git fetch origin --prune
 
-  argc_branch_name="$(_github_branch_list "$argc_branch_name")"
+  argc_branch_name="$(_github_branch_select "$argc_branch_name")"
   [[ -z $argc_branch_name ]] && exit 0
 
   branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/${argc_branch_name}"
@@ -255,7 +244,7 @@ wip() {
 reset() {
   _in_git_repo || exit 1
   if [[ -z $argc_force ]]; then
-    local confirm; read -p "Are you sure you want to proceed? [y/N]: " confirm
+    local confirm; read -rp "Are you sure you want to proceed? [y/N]: " confirm
     [[ $confirm =~ ^[Yy]$ ]] || exit 0
   fi
   git fetch origin
@@ -263,13 +252,14 @@ reset() {
 }
 
 
-# @cmd List all worktrees
+# @cmd List all worktrees and their directories
 # @alias ls
 list() {
   _in_git_repo || exit 1
   local branch dir worktrees worktree chars length
   worktrees="$(git worktree list --porcelain)"
 
+  length=0
   while read -r worktree; do
     branch="$(echo "$worktree" | awk '{print $2}' | xargs basename)"
     chars="$(wc --chars <<< "$branch")"
@@ -291,6 +281,7 @@ list() {
       fi
     fi
 
+    # pad the length to account for formatting
     printf "%-*s [%s]\n" "$(( 30 - length ))" "$branch" "$branch_dir"
   done < <(grep --extended-regexp '^worktree' <<< "$worktrees")
 }
