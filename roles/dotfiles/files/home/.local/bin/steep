@@ -9,10 +9,20 @@ set -o errexit
 # Tested: zsh 5.9 (arm-apple-darwin23.0.0)
 #
 
+
+_hr() {
+  printf '\n\n%s%s' "$(tput bold)" "$(tput setaf 6)"
+  printf '%*s\n' "$(tput cols)" "" | tr ' ' '='
+  printf '%s\n' "$1"
+  printf '%*s\n' "$(tput cols)" "" | tr ' ' '-'
+  printf '%s\n' "$(tput sgr0)"
+}
+
 pkg_installed() { grep --quiet "$1" "$INSTALLED_PACKAGES"; }
 
 
 macos_update() {
+  _hr "SYSTEM UPDATE"
   sudo softwareupdate --list | grep --quiet 'Action: restart' && RESTART_NEEDED=1
   sudo softwareupdate --install --all --agree-to-license
   homebrew_update
@@ -20,8 +30,11 @@ macos_update() {
 
 
 linux_update() {
+  _hr "SYSTEM UPDATE"
+
   sudo systemctl stop packagekit
   source /etc/os-release
+
   case "$ID" in
     fedora)
       sudo dnf clean all
@@ -38,13 +51,26 @@ linux_update() {
       if [[ -e /var/run/reboot-required ]]; then RESTART_NEEDED=1; fi
       ;;
   esac
-  if [[ -n $HOMEBREW_PREFIX ]]; then  homebrew_update; fi
-  if pkg_installed flatpak;     then  flatpak update; fi
-  if pkg_installed fwupd;       then  sudo fwupdmgr refresh; sudo fwupdmgr update; fi
+
+  if pkg_installed flatpak; then
+    _hr "FLATPAK UPDATE"
+    flatpak update
+  fi
+
+  if pkg_installed fwupd; then
+    _hr "FIRMWARE UPDATE"
+    sudo fwupdmgr refresh
+    sudo fwupdmgr update
+  fi
+
+  if [[ -n $HOMEBREW_PREFIX ]]; then
+    homebrew_update
+  fi
 }
 
 
 homebrew_update() {
+  _hr "HOMEBREW UPDATE"
   brew update
   brew upgrade
   brew autoremove
@@ -55,26 +81,50 @@ homebrew_update() {
 
 
 INSTALLED_PACKAGES="$(mktemp)"
-bmux save
 
 case "$(uname -s)" in
   Darwin) macos_update ;;
    Linux) linux_update ;;
 esac
 
-if [[ -f ~/.zshrc.d/benv.zsh ]];   then source ~/.zshrc.d/benv.zsh; benv cleanup; fi
-if pkg_installed bat;              then bat cache --clear; bat cache --build; fi
-if pkg_installed google-cloud-sdk; then gcloud components update --quiet; fi
-if pkg_installed krew;             then kubectl krew update; kubectl krew upgrade; fi
-if pkg_installed multipass;        then multipass purge; fi
-if pkg_installed atuin;            then atuin sync; fi
+if pkg_installed google-cloud-sdk; then
+  _hr "GCLOUD UPDATE"
+  gcloud components update --quiet
+fi
 
-sudo rm --recursive --force \
-  "/Library/Application Support/Logitech.localized/LogiOptionsPlus/logi_ai_prompt_builder" \
-  "${HOME}/ai_overlay_tmp"
+if pkg_installed krew; then
+  _hr "KREW UPDATE"
+  kubectl krew update
+  kubectl krew upgrade
+fi
 
-if [[ -n $RESTART_NEEDED ]]; then
-  toilet --font future --filter border --gay RESTART NEEDED
+if [[ -f ~/.zshrc.d/benv.zsh ]]; then
+  _hr "CLEANUP: VIRTUALENV"
+  source ~/.zshrc.d/benv.zsh
+  benv cleanup
+fi
+
+if pkg_installed multipass; then
+  _hr "MULTIPASS PURGE"
+  multipass list
+  multipass purge
+fi
+
+if pkg_installed bat; then
+  _hr "CACHE BAT THEMES"
+  bat cache --clear && bat cache --build
+fi
+
+if pkg_installed atuin; then
+  _hr "SYNC HISTORY"
+  atuin sync
 fi
 
 rm --recursive --force "$INSTALLED_PACKAGES"
+
+if [[ -n $RESTART_NEEDED ]]; then
+  _hr "NOTES"
+  toilet --font future --filter border --gay RESTART NEEDED
+fi
+
+printf '\n\n'
