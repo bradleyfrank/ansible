@@ -1,0 +1,96 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$os\
+$hostname\
+$nodejs\
+$python\
+$directory\
+$git_branch\
+$git_status\
+\n  \
+$character\
+"""
+
+palette = "rose-pine-dawn"
+
+[palettes.rose-pine-dawn]
+overlay = '#f2e9e1'
+love = '#b4637a'
+gold = '#ea9d34'
+rose = '#d7827e'
+pine = '#286983'
+foam = '#56949f'
+iris = '#907aa9'
+
+[character]
+success_symbol = "[󱞪](fg:iris) "
+error_symbol = "[󱞪](fg:rose)"
+
+[directory]
+format = "[](fg:overlay)[ $path ]($style)[](fg:overlay) "
+repo_root_format = """
+[](fg:overlay)\
+[ $before_root_path]($before_repo_root_style)\
+[$repo_root]($repo_root_style)\
+[$path ]($style)\
+[](fg:overlay) \
+"""
+before_repo_root_style = "bg:overlay fg:pine"
+repo_root_style = "bg:overlay fg:love"
+style = "bg:overlay fg:pine"
+truncation_length = 0
+truncation_symbol = "…/"
+
+[git_branch]
+format = "[](fg:overlay)[ $symbol $branch ]($style)[](fg:overlay) "
+style = "bg:overlay fg:pine"
+symbol = ""
+
+[git_status]
+disabled = false
+style = "bg:overlay fg:love"
+format = """
+[](fg:overlay)\
+([ $conflicted$untracked$stashed$modified$staged$renamed$deleted$typechanged ]($style))\
+[](fg:overlay) \
+"""
+untracked = '[?\($count\)](bg:overlay fg:gold)'
+stashed = '[\$](bg:overlay fg:iris)'
+modified = '[!\($count\)](bg:overlay fg:gold)'
+renamed = '[»\($count\)](bg:overlay fg:iris)'
+deleted = '[✘\($count\)](style)'
+staged = '[++\($count\)](bg:overlay fg:gold)'
+
+[hostname]
+disabled = false
+format = "[](fg:overlay)[  $hostname ]($style)[](fg:overlay) "
+style = "bg:overlay fg:iris"
+ssh_only = true
+
+[nodejs]
+style = "bg:overlay fg:iris"
+format = "[](fg:overlay)[ $symbol$version ]($style)[](fg:overlay) "
+disabled = false
+symbol = "󰎙 "
+
+[os]
+format = "[](fg:overlay)[ $symbol ]($style)[](fg:overlay) "
+style = "bg:overlay fg:foam"
+disabled = false
+
+[os.symbols]
+Macos = ""
+Fedora = ""
+Ubuntu = ""
+Mint = "󰣭"
+Debian = ""
+
+[python]
+style = "bg:overlay fg:foam"
+format = "[](fg:overlay)[ $symbol$version ]($style)[](fg:overlay) "
+disabled = false
+detect_files = []
+detect_extensions = []
+version_format = "${major}.${minor}"
+symbol = ' '

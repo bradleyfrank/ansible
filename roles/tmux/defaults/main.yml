@@ -1,10 +1,15 @@
 ---
 
+tmux_colors:
+  solarized:
+    blue: "33"
+    cyan: "37"
+
 tmux_config:
   - profile: "tmux"
     clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
     pane_border_color:
-      default: "fg=color33,bg=default"
+      default: "fg=#286983,bg=default"
       sync: "fg=color37,bg=default"
       zoom: "fg=color125,bg=default"
     pane_border_lines: "double"
@@ -13,8 +18,8 @@ tmux_config:
     status_right: "#[fg=color61,bg=default,bold]#{session_name}"
     status_style: "fg=default,bg=default"
     window_status_activity: "fg=color61,bg=default"
-    window_status_current_format: "#[fg=color230,bg=color33]#[bold] [#I] #W #[nobold]"
-    window_status_format: "#[fg=color33,bg=default]#[bold] [#I] #W #[nobold]"
+    window_status_current_format: "#[fg=color230,bg=#286983]#[bold] [#I] #W #[nobold]"
+    window_status_format: "#[fg=#286983,bg=default]#[bold] [#I] #W #[nobold]"
   - profile: "popup"
     clipboard: "{{ tmux_clipboard_defaults[ansible_facts['system']] }}"
     pane_border_color:

@@ -424,6 +424,7 @@ pkg_mgr_packages:
     - shellharden
     - shfmt
     - slides
+    - starship
     - tidy-html5
     - tree
     - trippy

@@ -5,6 +5,11 @@ vim_helix_package:
   homebrew: "helix"
   dnf5: "helix"
 
+vim_neovim_package:
+  apt: ["neovim", "python3-neovim"]
+  homebrew: "neovim"
+  dnf5: ["neovim", "python3-neovim"]
+
 vim_vim_package:
   apt: "vim"
   homebrew: "vim"
