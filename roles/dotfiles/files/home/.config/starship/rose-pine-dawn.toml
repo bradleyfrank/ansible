@@ -51,9 +51,9 @@ symbol = ""
 disabled = false
 style = "bg:overlay fg:love"
 format = """
-[](fg:overlay)\
-([ $conflicted$untracked$stashed$modified$staged$renamed$deleted$typechanged ]($style))\
-[](fg:overlay) \
+([](fg:overlay)\
+[ $conflicted$untracked$stashed$modified$staged$renamed$deleted$typechanged ]($style)\
+[](fg:overlay)) \
 """
 untracked = '[?\($count\)](bg:overlay fg:gold)'
 stashed = '[\$](bg:overlay fg:iris)'
