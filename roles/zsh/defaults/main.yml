@@ -1,6 +1,7 @@
 ---
 
 zsh_packages:
+  - atuin
   - zsh
   - zsh-autosuggestions
   - zsh-syntax-highlighting
