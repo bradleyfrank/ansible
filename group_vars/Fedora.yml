@@ -19,7 +19,6 @@ pkg_mgr_packages:
     - dnf-utils
     - dua-cli
     - duf
-    - eza
     - fastfetch
     - fd-find
     - fdkaac
@@ -60,6 +59,7 @@ pkg_mgr_packages:
     - rdfind
     - ripgrep
     - ruby
+    - rust-eza
     - ShellCheck
     - stow
     - strace
