@@ -1,16 +1,16 @@
 ---
 
 vim_helix_package:
-  apt: "hx"
-  homebrew: "helix"
-  dnf5: "helix"
+  apt: ["hx"]
+  homebrew: ["helix"]
+  dnf5: ["helix"]
 
 vim_neovim_package:
   apt: ["neovim", "python3-neovim"]
-  homebrew: "neovim"
+  homebrew: ["neovim"]
   dnf5: ["neovim", "python3-neovim"]
 
 vim_vim_package:
-  apt: "vim"
-  homebrew: "vim"
-  dnf5: "vim"
+  apt: ["vim"]
+  homebrew: ["vim"]
+  dnf5: ["vim"]
