@@ -3,6 +3,7 @@
 - name: "Install Homebrew taps"
   community.general.homebrew_tap:
     name: "{{ pkg_mgr_packages['taps'] }}"
+  when: "'taps' in pkg_mgr_packages"
   tags: [never, taps]
 
 - name: "Install Homebrew formulas"

@@ -37,7 +37,7 @@ bootstrap_linux() {
     fedora)
       sudo dnf clean all
       sudo dnf makecache
-      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git redhat-lsb-core
+      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git
       ;;
     debian|ubuntu|linuxmint|pop)
       sudo apt-get clean
