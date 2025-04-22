@@ -59,7 +59,6 @@ pkg_mgr_packages:
     - rdfind
     - ripgrep
     - ruby
-    - rust-eza
     - ShellCheck
     - stow
     - strace
@@ -122,6 +121,7 @@ pkg_mgr_packages:
     - bat-extras
     - csvlens
     - freeze
+    - eza  # https://github.com/eza-community/eza/issues/1456
     - glow
     - lazygit
     - qsv
