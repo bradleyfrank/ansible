@@ -1,7 +1,6 @@
 # TODO
 
 - fix ssh-agent not adding keys on Linux
-- fix tmux not showing session name
 - fix `ffmpeg` packages for Fedora
 - Archive an existing host in 1Password if hostname matches
 - dconf package variables should be simplified
