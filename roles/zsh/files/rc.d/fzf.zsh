@@ -1,14 +1,18 @@
 typeset -a fzf_default_colors=(
-  "info:33"
-  "prompt:33"
-  "pointer:166"
-  "marker:166"
-  "spinner:33"
-  "fg:240"
-  "fg+:241"
-  "bg+:255"
-  "hl:33"
-  "hl+:33:bold"
+  "border:#dfdad9"
+  "header:#286983"
+  "info:#56949f"
+  "gutter:#faf4ed"
+  "prompt:#797593"
+  "pointer:#907aa9"
+  "marker:#b4637a"
+  "spinner:#ea9d34"
+  "fg:#797593"
+  "fg+:#575279"
+  "bg:#faf4ed"
+  "bg+:#f2e9e1"
+  "hl:#d7827e"
+  "hl+:#d7827e"
 )
 
 typeset -a fzf_default_opts=(

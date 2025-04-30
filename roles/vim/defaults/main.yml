@@ -1,10 +1,13 @@
 ---
 
 vim_helix_rcd: "{{ ansible_facts['user_dir'] }}/.config/helix"
+vim_neovim_rcd: "{{ ansible_facts['user_dir'] }}/.config/nvim"
 
-vim_packages:
-  - "{{ vim_vim_package[ansible_facts['pkg_mgr']] }}"
-  - "{{ vim_helix_package[ansible_facts['pkg_mgr']] }}"
+vim_packages: "{{
+  vim_vim_package[ansible_facts['pkg_mgr']] +
+  vim_neovim_package[ansible_facts['pkg_mgr']] +
+  vim_helix_package[ansible_facts['pkg_mgr']]
+}}"
 
 vim_rcd: "{{ ansible_facts['user_dir'] }}/.config/vim"
 vim_rc: "{{ vim_rcd }}/vimrc"
@@ -22,8 +25,8 @@ vim_extensions:
     repo: "https://github.com/preservim/vim-indent-guides.git"
   - name: "vim-terraform"
     repo: "https://github.com/hashivim/vim-terraform.git"
-  - name: "vim-solarized8"
-    repo: "https://github.com/lifepillar/vim-solarized8.git"
+  - name: "rosepine"
+    repo: "https://github.com/rose-pine/vim"
   - name: "vim-jinja2-syntax"
     repo: "https://github.com/Glench/Vim-Jinja2-Syntax.git"
   - name: "fzf.vim"

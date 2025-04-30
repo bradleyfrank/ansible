@@ -16,6 +16,12 @@ tardir() { tar -czf "${1%/}".tar.gz "$1" ; }
 # cd directly to the root of a git repo
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .) ; }
 
+# (re-)start a tmux session
+mux() {
+  [[ "$TERM_PROGRAM" == "ghostty" ]] && export TERM=xterm-256color
+  tmux new-session -As main
+}
+
 # makes a diceword password suffixed with a number the same length and the number of words
 numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")" ; }
 

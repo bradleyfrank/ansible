@@ -12,6 +12,7 @@
     state: directory
   loop:
     - "{{ vim_rcd }}"
+    - "{{ vim_neovim_rcd }}"
     - "{{ vim_helix_rcd }}"
     - "{{ vim_extensions_dir }}"
   tags: [dots]
@@ -20,6 +21,13 @@
   ansible.builtin.copy:
     src: "helix/"
     dest: "{{ vim_helix_rcd }}/"
+    mode: "0644"
+  tags: [dots]
+
+- name: "Copy Neovim config files"
+  ansible.builtin.copy:
+    src: "nvim/"
+    dest: "{{ vim_neovim_rcd }}/"
     mode: "0644"
   tags: [dots]
 

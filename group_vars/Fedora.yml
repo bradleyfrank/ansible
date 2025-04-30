@@ -19,7 +19,6 @@ pkg_mgr_packages:
     - dnf-utils
     - dua-cli
     - duf
-    - eza
     - fastfetch
     - fd-find
     - fdkaac
@@ -122,6 +121,7 @@ pkg_mgr_packages:
     - bat-extras
     - csvlens
     - freeze
+    - eza  # https://github.com/eza-community/eza/issues/1456
     - glow
     - lazygit
     - qsv

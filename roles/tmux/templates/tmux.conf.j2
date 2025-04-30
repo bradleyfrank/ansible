@@ -1,3 +1,5 @@
+##### THEME SETTINGS #####
+
 # unicode "pill" design (default,highlighted,zoom)
 set -s  @cap_l_df   "#[fg=#f2e9e1,bg=default]#[default]"
 set -s  @cap_r_df   "#[fg=#f2e9e1,bg=default]#[default]"
@@ -15,6 +17,9 @@ set -s  @pane_zm    "fg=#b4637a,bg=default"
 set -s  @window_df  "#[fg=#56949f,bg=#f2e9e1,bold]#I: #W#[default]"
 set -s  @window_hi  "#[fg=#fffaf3,bg=#56949f,bold]#I: #W#[default]"
 
+
+##### PANE SETTINGS #####
+
 set -g  pane-active-border-style "#{?window_zoomed_flag,#{@pane_zm},#{?pane_synchronized,#{@pane_sy},#{@pane_df}}}"
 set -g  pane-border-format "#{?window_zoomed_flag,#[#{@pane_zm}] ZOOM #[default],}"
 set -g  pane-border-indicators "off"
@@ -22,21 +27,38 @@ set -g  pane-border-style "bg=default,#{?pane_synchronized,#{@pane_sy},fg=#cecac
 set -gF pane-border-status "top"
 set -gF pane-border-lines "double"
 
+
+##### WINDOW SETTINGS #####
+
 set -g  window-status-activity-style ""
 set -g  window-status-style ""
 set -g  window-status-current-style ""
 set -gF window-status-format "#{@cap_l_df}#{@window_df}#{@cap_r_df}"
 set -gF window-status-current-format "#{@cap_l_hi}#{@window_hi}#{@cap_r_hi}"
 
+
+##### STATUS LINE SETTINGS #####
+
+set -g  message-style "bg=black,fg=default"
+set -g  mode-style "bg=white,fg=black"
 set -g  status "on"
 set -g  status-justify "left"
 set -g  status-left " "
 set -g  status-style "bg=default"
-set -gF status-right "#{@cap_l_df}#[fg=#907aa9,bg=#f2e9e1,bold]#{session_name}#{@cap_r_df} #{@cap_l_df}#[fg=#b4637a,bg=#f2e9e1,bold]#{host_short}#{@cap_r_df} "
+set -g  status-right "#{@cap_l_df}#[fg=#907aa9,bg=#f2e9e1,bold]#{session_name}#{@cap_r_df} #{@cap_l_df}#[fg=#b4637a,bg=#f2e9e1,bold]#{host_short}#{@cap_r_df} "
 set -gF status-position "top"
 
 set -g  message-style "bg=black,fg=default"
 set -g  mode-style "bg=white,fg=black"
+set -g  status "on"
+set -g  status-justify "left"
+set -g  status-left " "
+set -g  status-style "bg=default"
+set -g  status-right "#{@cap_l_df}#[fg=#907aa9,bg=#f2e9e1,bold]#{session_name}#{@cap_r_df} #{@cap_l_df}#[fg=#b4637a,bg=#f2e9e1,bold]#{host_short}#{@cap_r_df} "
+set -gF status-position "top"
+
+
+##### GENERAL SETTINGS #####
 
 set -g  aggressive-resize "off"
 set -g  allow-passthrough "on"
@@ -51,7 +73,10 @@ set -g  monitor-activity "off"
 set -g  mouse "on"
 set -g  renumber-windows "on"
 set -g  status-interval 1
-set -g  terminal-overrides "alacritty:Tc,xterm-256color:Tc,gnome*:Tc"
+set -g  terminal-overrides "xterm-*:Tc,gnome*:Tc"
+
+
+##### COPY MODE SETTINGS #####
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ item['clipboard'] }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
@@ -71,7 +96,6 @@ bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
 bind 'M' choose-tree -Zs "move-window -t %%"
 bind 'm' choose-tree -Z "move-pane -t %%"
 bind 'O' run-shell -b "bmux open"
-bind 'S' run-shell -b "bmux open --new-session"
 bind 'N' display-popup -E -w 90% -h 90% -b rounded -S "fg=color234" "tmux -L notes -f ~/.config/tmux/popup.conf new-session -As notes -c ~/Development/Scratch 'tmuxp load nb -a'"
 bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/Development/Scratch"
 {% endif %}
