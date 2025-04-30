@@ -48,6 +48,15 @@ set -g  status-style "bg=default"
 set -g  status-right "#{@cap_l_df}#[fg=#907aa9,bg=#f2e9e1,bold]#{session_name}#{@cap_r_df} #{@cap_l_df}#[fg=#b4637a,bg=#f2e9e1,bold]#{host_short}#{@cap_r_df} "
 set -gF status-position "top"
 
+set -g  message-style "bg=black,fg=default"
+set -g  mode-style "bg=white,fg=black"
+set -g  status "on"
+set -g  status-justify "left"
+set -g  status-left " "
+set -g  status-style "bg=default"
+set -g  status-right "#{@cap_l_df}#[fg=#907aa9,bg=#f2e9e1,bold]#{session_name}#{@cap_r_df} #{@cap_l_df}#[fg=#b4637a,bg=#f2e9e1,bold]#{host_short}#{@cap_r_df} "
+set -gF status-position "top"
+
 
 ##### GENERAL SETTINGS #####
 
@@ -64,7 +73,7 @@ set -g  monitor-activity "off"
 set -g  mouse "on"
 set -g  renumber-windows "on"
 set -g  status-interval 1
-set -g  terminal-overrides "alacritty:Tc,xterm-256color:Tc,gnome*:Tc"
+set -g  terminal-overrides "xterm-*:Tc,gnome*:Tc"
 
 
 ##### COPY MODE SETTINGS #####
