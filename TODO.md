@@ -1,5 +1,15 @@
 # TODO
 
+## SSH keys and agent
+
+- Two options:
+    - Generate ssh keys & use [`keychain`](https://github.com/funtoo/keychain) to manage agent
+    - Don't generate ssh keys & use 1Password to manage agent
+- Use 1Password for agent by default
+- I can test if 1Password agent is enabled by checking that `agent.sock` exists
+
+## Ungrouped
+
 - "Paper" no longer being maintained for Linux (flatpak)
 - "Cider" and "Annotator" don't launch
 - "Papers" vs "Iotas" for note-taking

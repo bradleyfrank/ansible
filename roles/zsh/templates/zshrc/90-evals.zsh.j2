@@ -1,3 +1,6 @@
 eval "$(batman --export-env)"
 eval "$(atuin init zsh)"
 eval "$(starship init zsh)"
+eval "$(keychain --eval --ignore-missing --quiet
+{%- if 'MacOSX' in ansible_distribution %} --inherit any
+{%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
