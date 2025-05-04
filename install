@@ -4,11 +4,12 @@
 set -o errexit
 
 SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
-ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
-ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
-ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
-ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/${SYSTEM_HOSTNAME}.yml"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+ANSIBLE_REPO_PATH="${HOME}/dotfiles"
+ANSIBLE_REPO_BRANCH="main"
+ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
+ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/${SYSTEM_HOSTNAME}.yml"
+
 
 install_homebrew() {
   case "$ID" in
@@ -30,6 +31,7 @@ bootstrap_mac() {
 
 
 bootstrap_linux() {
+  pgrep systemd-inhibit >/dev/null || (systemd-inhibit sleep infinity &)
   sudo hostnamectl set-hostname "$SYSTEM_HOSTNAME"
   sudo systemctl stop packagekit
   . /etc/os-release
@@ -48,51 +50,97 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
+  case $(uname -m) in (aarch*|arm*)
+    SKIP_HOMEBREW_LINUX=1 ;;  # https://github.com/Homebrew/brew/issues/19208
+  esac
+
   if [ -z "$SKIP_HOMEBREW_LINUX" ]; then
     install_homebrew
   fi
 }
 
 
-case $(uname -m) in (aarch*|arm*)
-  SKIP_HOMEBREW_LINUX=1 ;;
-esac
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -b|--branch)
+      [ -z "$2" ] && { echo "Error: --branch requires an argument" >&2; exit 1; }
+      ANSIBLE_REPO_BRANCH="$2"
+      shift 2
+      ;;
+    -d|--skip-1password)
+      SKIP_1PASSWORD=true
+      shift 1
+      ;;
+    -p|--skip-bootstrap)
+      SKIP_BOOTSTRAP=true
+      shift 1
+      ;;
+    -r|--repo)
+      [ -z "$2" ] && { echo "Error: --repo requires an argument" >&2; exit 1; }
+      ANSIBLE_REPO_URL="$2"
+      shift 2
+      ;;
+    -w|--skip-homebrew)
+      SKIP_HOMEBREW_LINUX=true 
+      shift 1
+      ;;
+    -*)
+      echo "Unknown option: $1" >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
-printf "Enter hostname [$SYSTEM_HOSTNAME]: "
-read -r SYSTEM_HOSTNAME
 
-case $(uname -s) in
-  Darwin) bootstrap_mac ;;
-  Linux)  bootstrap_linux ;;
-  *)      exit 1 ;;
-esac
+if [ -z "$SKIP_BOOTSTRAP" ]; then
+  printf "Enter hostname [%s]: " "$SYSTEM_HOSTNAME"
+  read -r SYSTEM_HOSTNAME
 
-git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
-cd "$ANSIBLE_REPO_PATH" >/dev/null
-git checkout "$ANSIBLE_REPO_BRANCH"
+  case $(uname -s) in
+    Darwin) bootstrap_mac ;;
+    Linux)  bootstrap_linux ;;
+    *)      exit 1 ;;
+  esac
+fi
 
-PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
-python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
-. venv/bin/activate
-pip install --no-cache-dir --requirement requirements.txt
 
-export ANSIBLE_PYTHON_INTERPRETER="${PWD}/venv/bin/python3"
+export PATH="$(python3 -m site --user-base)/bin:${PATH}"
+export ANSIBLE_PYTHON_INTERPRETER="venv/bin/python3"
 export ANSIBLE_HOME="${HOME}/.config/ansible"
 
-ansible-playbook play_bootstrap_ansible.yml
 
+if [ -d "$ANSIBLE_REPO_PATH" ]; then
+  cd "$ANSIBLE_REPO_PATH"
+  git pull
+  . venv/bin/activate
+else
+  git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
+  cd "$ANSIBLE_REPO_PATH"
+  git checkout "$ANSIBLE_REPO_BRANCH"
+  python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
+  . venv/bin/activate
+  pip install --no-cache-dir --requirement requirements.txt
+fi
+
+
+ansible-playbook play_bootstrap_ansible.yml
 grep "^(#|-|$)" roles/*/defaults/main.yml \
   --invert-match \
   --no-filename \
   --extended-regexp \
   --color=never \
   | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
+vi "$ANSIBLE_REPO_HOSTVARS"
 
-${VISUAL:-${EDITOR:-vi}} "$ANSIBLE_REPO_HOSTVARS"
 
-ansible-playbook play_init_onepassword.yml --ask-become-pass
+if [ -z "$SKIP_1PASSWORD" ]; then
+  ansible-playbook play_init_onepassword.yml --ask-become-pass
+  . "${HOME}/.op_session"
+  rm -f "${HOME}/.op_session"
+fi
 
-. "${HOME}/.op_session"
-rm -f "${HOME}/.op_session"
 
 ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
