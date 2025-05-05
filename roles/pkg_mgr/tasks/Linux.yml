@@ -59,12 +59,11 @@
   become: true
   tags: [apt, dnf]
 
-- name: "Install DE/WM packages"
+- name: "Install desktop packages"
   ansible.builtin.package:
-    name: "{{ pkg_mgr_packages[item] }}"
+    name: "{{ pkg_mgr_packages[pkg_mgr_current_desktop] }}"
     state: present
-  loop: "{{ pkg_mgr_packages.keys() | list }}"
-  when: item in pkg_mgr_current_desktop
+  when: pkg_mgr_current_desktop in pkg_mgr_packages
   become: true
   tags: [apt, dnf]
 
