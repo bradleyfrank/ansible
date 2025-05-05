@@ -8,5 +8,5 @@
 - name: "Install Mac App Store apps"
   ansible.builtin.include_tasks:
     file: "mas.yml"
-  when: pkg_mgr['mas'] | default([]) | length > 0
+  when: pkg_mgr_packages['mas'] | length > 0
   tags: [mas]

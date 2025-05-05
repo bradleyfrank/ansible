@@ -4,7 +4,7 @@
   hosts: all
   tasks:
     - ansible.builtin.include_vars:
-        file: "{{ ansible_facts['user_gecos'] }}/.config/dotfiles.yml"
+        file: "{{ ansible_facts['user_dir'] }}/.config/dotfiles.yml"
       tags: [always]
 
     - ansible.builtin.import_role:

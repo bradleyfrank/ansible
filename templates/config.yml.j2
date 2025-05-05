@@ -7,9 +7,11 @@ global_email_address: "{{ config_globals['email'] }}"
 global_is_desktop_system: {{ config_globals['is_desktop'] }}
 global_desktop_environment: "{{ config_globals['desktop_environment'] }}"
 global_vars_find:
-  - "defaults/{{ ansible_facts['distribution'] | replace(' ','_') }}.yml"
-  - "defaults/{{ config_globals['id_like'] }}.yml"
-  - "defaults/{{ ansible_facts['system'] }}.yml"
+  - "vars/defaults/{{ ansible_facts['distribution'] | replace(' ','_') }}.yml"
+{% if ansible_facts['system'] == "Linux" %}
+  - "vars/defaults/{{ config_globals['id_like'] }}.yml"
+  - "vars/defaults/{{ ansible_facts['system'] }}.yml"
+{% endif %}
 
 ## ROLES
 

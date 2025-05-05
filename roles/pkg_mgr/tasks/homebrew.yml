@@ -18,6 +18,6 @@
   community.general.homebrew_cask:
     name: "{{ pkg_mgr_packages['casks'] }}"
     accept_external_apps: "{{ pkg_mgr_homebrew_casks_external }}"
-    install_options: "{{ pkg_mgr_homebrew_casks_install_options | default(omit) }}"
+    install_options: "{{ pkg_mgr_homebrew_casks_install_options }}"
   when: "'casks' in pkg_mgr_packages"
   tags: [never, casks]
