@@ -1,0 +1,32 @@
+---
+
+pkg_mgr_flatpak_remotes_default:
+  - name: "flathub"
+    flatpakrepo_url: "https://flathub.org/repo/flathub.flatpakrepo"
+
+pkg_mgr_flatpak_packages_default:
+  - name: app.drey.EarTag  # ID3 tagging
+  - name: app.drey.Warp  # Airdrop
+  - name: com.felipekinoshita.Wildcard  # Regex tester
+  - name: com.github.avojak.warble  # Wordle
+  - name: com.github.geigi.cozy  # Audiobook player
+  - name: com.github.huluti.Curtail  # Image compresser
+  - name: com.github.johnfactotum.Foliate  # ebook reader
+  - name: com.github.junrrein.PDFSlicer
+  - name: com.github.liferooter.textpieces  # Filter and manipulate text/code
+  - name: com.plexamp.Plexamp
+  - name: com.spotify.Client
+  - name: fr.romainvigier.MetadataCleaner  # Remove metadata from various filetypes
+  - name: io.bassi.Amberol  # Music player like plexamp
+  - name: io.github.alainm23.planify  # Reminders
+  - name: io.github.diegoivan.pdf_metadata_editor  # Paper Clip - PDF metadata editor
+  - name: io.github.seadve.Kooha  # Screen recorder
+  - name: io.gitlab.news_flash.NewsFlash  # RSS reader
+  - name: io.missioncenter.MissionCenter  # Activity monitor
+  - name: org.gnome.gitlab.somas.Apostrophe  # Markdown editor
+  - name: org.gnome.Papers  # PDF viewer
+  - name: org.gnome.World.Iotas  # Markdown note taking
+  - name: org.ppsspp.PPSSPP
+  - name: org.signal.Signal
+  - name: tv.plex.PlexDesktop
+  - name: us.zoom.Zoom

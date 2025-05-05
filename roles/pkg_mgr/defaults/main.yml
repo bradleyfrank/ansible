@@ -1,10 +1,12 @@
 ---
 
-pkg_mgr_current_desktop: "{{ global_desktop_environment | default('') }}"
-pkg_mgr_desktop_present: "{{ global_is_desktop_system | default(false) }}"
+pkg_mgr_bat_exec: "{{ pkg_mgr_bat_exec_default }}"
 
-pkg_mgr_packagekit_enabled: true
-pkg_mgr_bat_exec: "{{ pkg_mgr_bat_exec_defaults[ansible_facts['distribution']] }}"
+pkg_mgr_binaries:
+  - name: "cht"
+    url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
+
+pkg_mgr_bin_dir: "{{ ansible_facts['user_dir'] }}/.local/bin"
 
 pkg_mgr_bin_path:
   - "/opt/homebrew/bin"
@@ -14,21 +16,33 @@ pkg_mgr_bin_path:
   - "{{ ansible_facts['user_dir'] }}/bin"
   - "{{ ansible_facts['env']['PATH'] }}"
 
-pkg_mgr_homebrew_taps: []
-pkg_mgr_homebrew_casks: []
+pkg_mgr_current_desktop: "{{ global_desktop_environment | default('') }}"
+
+pkg_mgr_desktop_present: "{{ global_is_desktop_system | default(false) }}"
+
+pkg_mgr_homebrew_taps: "{{ pkg_mgr_taps_default }}"
+
+pkg_mgr_homebrew_casks: "{{ pkg_mgr_casks_default }}"
 pkg_mgr_homebrew_casks_upgrade: true
 pkg_mgr_homebrew_casks_external: true
-pkg_mgr_homebrew_formulas: []
+pkg_mgr_homebrew_casks_install_options: ["no-quarantine"]
+
+pkg_mgr_homebrew_formulas: "{{ pkg_mgr_formulas_default }}"
 pkg_mgr_homebrew_formulas_upgrade: true
 
-pkg_mgr_repos: []
-pkg_mgr_packages: []
-
 pkg_mgr_flatpak_install: "{{ pkg_mgr_desktop_present }}"
-pkg_mgr_flatpak_remotes: []
-pkg_mgr_flatpak_packages: {}
+pkg_mgr_flatpak_remotes: "{{ pkg_mgr_flatpak_remotes_default }}"
+pkg_mgr_flatpak_packages: "{{ pkg_mgr_flatpak_packages_default }}"
 
-pkg_mgr_mas_apps: []
+pkg_mgr_mas_apps: "{{ pkg_mgr_mas_apps_default }}"
 
-pkg_mgr_bin_dir: "{{ ansible_facts['user_dir'] }}/.local/bin"
-pkg_mgr_binaries: []
+pkg_mgr_packagekit_enabled: true
+
+pkg_mgr_packages:
+  cli: "{{ pkg_mgr_cli_default }}"
+  gui: "{{ pkg_mgr_gui_default }}"
+  gnome: "{{ pkg_mgr_gnome_default }}"
+  kde: "{{ pkg_mgr_kde_default }}"
+  cinnamon: "{{ pkg_mgr_cinnamon_default }}"
+
+pkg_mgr_repos: "{{ pkg_mgr_repos_default }}"

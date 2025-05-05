@@ -1,0 +1,15 @@
+---
+
+## GLOBAL
+
+global_homebrew_prefix: "{{ config_globals['homebrew_prefix'][ansible_facts['system']] }}"
+global_email_address: "{{ config_globals['email'] }}"
+global_is_desktop_system: {{ config_globals['is_desktop'] }}
+global_desktop_environment: "{{ config_globals['desktop_environment'] }}"
+global_vars_find:
+  - "defaults/{{ ansible_facts['distribution'] | replace(' ','_') }}.yml"
+  - "defaults/{{ config_globals['id_like'] }}.yml"
+  - "defaults/{{ ansible_facts['system'] }}.yml"
+
+## ROLES
+

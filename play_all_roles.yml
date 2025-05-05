@@ -3,6 +3,10 @@
 - name: "Run all the things"
   hosts: all
   tasks:
+    - ansible.builtin.include_vars:
+        file: "{{ ansible_facts['user_gecos'] }}/.config/dotfiles.yml"
+      tags: [always]
+
     - ansible.builtin.import_role:
         name: "dotfiles"
       tags: [dotfiles]

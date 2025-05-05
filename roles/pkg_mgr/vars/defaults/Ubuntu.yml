@@ -1,0 +1,115 @@
+---
+
+pkg_mgr_bat_exec: "/usr/bin/batcat"
+
+pkg_mgr_repos_default:
+  - name: charm
+    uris: ["https://repo.charm.sh/apt"]
+    components: ["*"]
+    suites: ["*"]
+    enabled: true
+    signed_by: "https://apt.fury.io/charmcli/gpg.key"
+
+pkg_mgr_cli_default:
+  - apt-file
+  - atool
+  - bash-completion
+  - bat
+  - bcal
+  - diceware
+  - dictd
+  - duf
+  - fd-find
+  - fdupes
+  - ffmpeg
+  - figlet
+  - freeze
+  - fwupd
+  - fzf
+  - ghostscript
+  - glow
+  - htop
+  - httpie
+  - iftop
+  - inxi
+  - jq
+  - libmp4-info-perl
+  - libvirt-clients
+  - mtr
+  - nmap
+  - p7zip-*
+  - par
+  - perf-tools-unstable
+  - pdfgrep
+  - pwgen
+  - python3
+  - python3-dev
+  - python3-pip
+  - ripgrep
+  - ruby
+  - shellcheck
+  - stow
+  - strace
+  - tidy
+  - tlp
+  - toilet
+  - tree
+  - trurl
+  - virtualenv
+  - wget
+  - xz-utils
+  - yt-dlp
+
+pkg_mgr_gui_default:
+  - 1password
+  - asciinema
+  - audacious
+  - drawing
+  - fonts-noto-color-emoji
+  - keepassxc
+  - libreoffice
+  - picard
+  - shutter
+  - system-config-printer
+  - timeshift
+  - torbrowser-launcher
+  - vlc
+
+pkg_mgr_gnome_default:
+  - celluloid
+  - geary
+  - gnome-characters
+  - gnome-connections
+  - gnome-games-app
+  - gnome-keyring
+  - gnome-shell-extension-manager
+  - gnome-shell-extensions
+  - gnome-shell-extensions-gpaste
+  - gnome-sushi
+  - gnome-tweaks
+  - gnote
+  - gpaste*
+  - gthumb
+  - mpv
+  - transmission-gtk
+
+pkg_mgr_cinnamon_default:
+  - celluloid
+  - gpaste*
+  - mpv
+  - transmission-gtk
+
+pkg_mgr_kde_default:
+  - transmission-qt
+
+pkg_mgr_taps_default:
+  - charmbracelet/tap
+
+pkg_mgr_formulas_default:
+  - atuin
+  - bat-extras
+  - csvlens
+  - eza
+  - fastfetch
+  - qsv
+  - yq

@@ -3,6 +3,7 @@
 git_packages:
   - git
   - gh
+  - lazygit
 
 git_github_token: ""
 

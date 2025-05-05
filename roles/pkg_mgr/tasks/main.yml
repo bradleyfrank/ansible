@@ -1,5 +1,9 @@
 ---
 
+- name: "Include vars"
+  ansible.builtin.include_vars:
+    file: "{{ lookup('ansible.builtin.first_found', global_vars_find) }}"
+
 - name: "Include per-system tasks"
   ansible.builtin.include_tasks:
     file: "{{ ansible_facts['system'] }}.yml"

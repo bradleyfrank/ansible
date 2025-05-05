@@ -8,7 +8,7 @@ HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD
 ANSIBLE_REPO_PATH="${HOME}/dotfiles"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_URL="https://github.com/bradleyfrank/ansible.git"
-ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/${SYSTEM_HOSTNAME}.yml"
+ANSIBLE_REPO_CONFIG="${HOME}/.config/dotfiles.yml"
 
 
 install_homebrew() {
@@ -60,37 +60,15 @@ bootstrap_linux() {
 }
 
 
-while [ $# -gt 0 ]; do
-  case "$1" in
-    -b|--branch)
-      [ -z "$2" ] && { echo "Error: --branch requires an argument" >&2; exit 1; }
-      ANSIBLE_REPO_BRANCH="$2"
-      shift 2
-      ;;
-    -d|--skip-1password)
-      SKIP_1PASSWORD=true
-      shift 1
-      ;;
-    -p|--skip-bootstrap)
-      SKIP_BOOTSTRAP=true
-      shift 1
-      ;;
-    -r|--repo)
-      [ -z "$2" ] && { echo "Error: --repo requires an argument" >&2; exit 1; }
-      ANSIBLE_REPO_URL="$2"
-      shift 2
-      ;;
-    -w|--skip-homebrew)
-      SKIP_HOMEBREW_LINUX=true 
-      shift 1
-      ;;
-    -*)
-      echo "Unknown option: $1" >&2
-      exit 1
-      ;;
-    *)
-      break
-      ;;
+while getopts "hb:dpr:w" opt; do
+  case "$opt" in
+    b) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
+    d) SKIP_1PASSWORD=true ;;
+    h) usage; exit 0 ;;
+    p) SKIP_BOOTSTRAP=true ;;
+    r) ANSIBLE_REPO_URL="$OPTARG" ;;
+    w) SKIP_HOMEBREW_LINUX=true ;;
+    *) usage; exit 1 ;;
   esac
 done
 
