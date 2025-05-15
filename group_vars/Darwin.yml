@@ -1,6 +1,6 @@
 ---
 
-glow_config_path: "{{ ansible_facts['user_dir'] }}/Library/Preferences/glow"
+tmux_clipboard: "pbcopy"
 system_macos_launchd: {}
 
 system_macos_defaults:

@@ -21,11 +21,9 @@
 - name: "Template tmux config"
   ansible.builtin.template:
     src: "tmux.conf.j2"
-    dest: "{{ tmux_config_dir }}/{{ item['profile'] }}.conf"
+    dest: "{{ tmux_config_dir }}/{{ item }}.conf"
     mode: "0755"
-  loop: "{{ tmux_config }}"
-  loop_control:
-    label: "{{ item['profile'] }}"
+  loop: [tmux, popup]
   tags: [dots]
 
 - name: "Install tmux plugins"
