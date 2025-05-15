@@ -1,3 +1,4 @@
+# THEME: Solarized Light
 typeset -a fzf_default_colors=(
   "border:#dfdad9"
   "header:#286983"
@@ -14,6 +15,24 @@ typeset -a fzf_default_colors=(
   "hl:#d7827e"
   "hl+:#d7827e"
 )
+
+# THEME: Rose Pine Dawn
+# typeset -a fzf_default_colors=(
+#   "border:#dfdad9"
+#   "header:#286983"
+#   "info:#b58900"
+#   "gutter:#faf4ed"
+#   "prompt:#b58900"
+#   "pointer:#002b36"
+#   "marker:#002b36"
+#   "spinner:#b58900"
+#   "fg:#839496"
+#   "fg+:#073642"
+#   "bg:#eee8d5"
+#   "bg+:#eee8d5"
+#   "hl:#268bd2"
+#   "hl+:#268bd2"
+# )
 
 typeset -a fzf_default_opts=(
   "--color=${(j',')fzf_default_colors}"

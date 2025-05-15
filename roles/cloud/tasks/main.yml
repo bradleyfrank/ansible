@@ -22,21 +22,10 @@
   when: "('krew' in cloud_packages) and (cloud_krew_plugins | length > 0)"
   tags: [moredots, krew]
 
-- name: "Ensure k9s config directory exists"
-  ansible.builtin.file:
-    path: "{{ cloud_k9s_config_path }}"
-    state: directory
-    mode: "0755"
-  when: "'k9s' in cloud_packages"
-  tags: [dots, k9s]
-
-- name: "Template k9s config"
-  ansible.builtin.template:
-    src: "k9s.{{ item }}.yml.j2"
-    dest: "{{ cloud_k9s_config_path }}/{{ item }}.yml"
+- name: "Copy k9s configs"
+  ansible.builtin.copy:
+    src: "k9s/"
+    dest: "{{ cloud_k9s_config_path }}"
     mode: "0644"
-  loop: [config, skin]
-  loop_control:
-    label: "{{ item }}"
   when: "'k9s' in cloud_packages"
   tags: [dots, k9s]

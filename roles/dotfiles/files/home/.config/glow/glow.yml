@@ -1,0 +1,6 @@
+# https://github.com/charmbracelet/glow/issues/713
+# style: ~/.config/glow/themes/solarized-light.json
+local: false
+mouse: true
+pager: true
+width: 100

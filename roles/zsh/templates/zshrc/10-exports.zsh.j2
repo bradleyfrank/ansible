@@ -7,6 +7,8 @@ export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DOCKER_CLI_HINTS=false
 export GH_PAGER=glow
+# https://github.com/charmbracelet/glow/issues/713
+export GLOW_STYLE="${HOME}/.config/glow/themes/solarized-light.json"
 export LESS="-R --mouse"
 
 # Homebrew settings
@@ -27,6 +29,7 @@ export BUNDLE_USER_PLUGIN="${HOME}/.local/share/bundle"
 export CARGO_HOME="${HOME}/.local/share/cargo"
 export DOCKER_CONFIG="${HOME}/.config/docker"
 export EZA_CONFIG_DIR="${HOME}/.config/eza"
+export GLOW_CONFIG_HOME="${HOME}/.config/glow"
 export GOPATH="${HOME}/.local/share/go"
 export HISTFILE="${HOME}/.cache/zsh/history"
 export KREW_ROOT="${HOME}/.local/share/krew"
@@ -40,6 +43,5 @@ export NVM_DIR="${HOME}/.local/share/nvm"
 export PYTHON_HISTORY="${HOME}/.config/python/history"
 export TERMINFO="${HOME}/.local/share/terminfo"
 export TERMINFO_DIRS="${HOME}/.local/share/terminfo:/usr/share/terminfo"
-export STARSHIP_CONFIG="${HOME}/.config/starship/rose-pine-dawn.toml"
 export SQLITE_HISTORY="${HOME}/.cache/sqlite_history"
 export W3M_DIR="${HOME}/.local/share/w3m"
