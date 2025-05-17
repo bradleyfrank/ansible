@@ -1,0 +1,7 @@
+--border='rounded'
+--color='border:#93a1a1,header:#586e75,info:#2aa198,gutter:#eee8d5,prompt:#586e75,pointer:#6c71c4,marker:#dc322f,spinner:#dc322f,fg:#839496,fg+:#586e75,bg:#fdf6e3,bg+:#eee8d5,hl:#839496,hl+:#586e75'
+--info='inline'
+--select-1
+--exit-0
+--reverse
+--height='~100%'
