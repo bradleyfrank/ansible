@@ -1,8 +1,3 @@
-# -----------------------------------------------------------------------------
-# Solarized Light Skin
-# Author: [@leg100](louisgarman@gmail.com)
-# -----------------------------------------------------------------------------
-
 # Styles...
 foreground: &foreground "#657b83"
 background: &background "#fdf6e3"
