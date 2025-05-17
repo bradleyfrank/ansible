@@ -1,6 +1,7 @@
 ---
 
 k9s:
+  skin: solarized-light
   refreshRate: 2
   maxConnRetry: 5
   enableMouse: false
