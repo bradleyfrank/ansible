@@ -1,5 +1,7 @@
 ---
 
+tmux_clipboard: "wl-copy"
+
 system_linux_dconf_distro:
   - path: "/org/gnome/shell"
     keys:

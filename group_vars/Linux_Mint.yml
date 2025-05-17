@@ -1,5 +1,6 @@
 ---
 
+tmux_clipboard: "xsel --clipboard --input"
 bat_exec: "/usr/bin/batcat"
 
 pkg_mgr_repos:
