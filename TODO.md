@@ -5,6 +5,7 @@
 
 
 - [ ] Remove unnecessary items from Neovim status bar
+- [ ] Make Neovim default to two spaces per tab
 - [ ] Make **atuin** setup dependent on `atuin status`
 - [ ] Fix `ffmpeg` packages for Fedora (specify repo)
 - [ ] Archive an existing host in 1Password if hostname exists
