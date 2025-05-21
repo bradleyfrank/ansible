@@ -6,7 +6,7 @@ import platform
 import distro
 
 hostname = getattr(platform.uname(), "node")
-distribution = distro.id().capitalize()
+distro_name = distro.id().capitalize()
 
 inventory = {
   "_meta": {
@@ -16,10 +16,13 @@ inventory = {
       }
     }
   },
-  distribution: {
+  distro_name: {
     "hosts": [hostname],
-  }
+  },
 }
+
+if distro_like := distro.like().capitalize():
+  inventory[distro_like] = { "hosts": [hostname] }
 
 if __name__ == "__main__":
   try:
