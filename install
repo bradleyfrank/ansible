@@ -19,8 +19,8 @@ usage() {
   echo "OPTIONS:"
   echo "  -h          Show help and exit"
   echo "  -b <branch> Name of git branch to use"
-  echo "  -p          Resume a failed Ansible run"
-  echo "  -r          Start a bootstrap from scratch"
+  echo "  -p          Resume an interrupted Ansible run"
+  echo "  -r          Cleanup a previous bootstrap and start fresh"
   echo "  -u <url>    URL of Ansible repo to use"
   echo "  -w          Skip Homebrew install on Linux (noop for macOS)"
   echo
@@ -76,13 +76,15 @@ bootstrap_linux() {
 }
 
 
-reset_install() {
+reset_bootstrap() {
   rm -rf "$ANSIBLE_REPO_PATH" "${HOME}/.ssh"
 
   export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:${PATH}"
-
   [ -x op ] || return 0
-  op account get >/dev/null 2>&1 || eval "$(op signin)"
+
+  if ! op account get >/dev/null 2>&1; then
+    eval "$(op signin)"
+  fi
 
   op_item_list="$(mktemp)"
 
@@ -101,7 +103,7 @@ while getopts "hb:pru:w" opt; do
     b) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     h) usage; exit 0 ;;
     p) SKIP_BOOTSTRAP=true ;;
-    r) reset_install ;;
+    r) reset_bootstrap ;;
     u) ANSIBLE_REPO_URL="$OPTARG" ;;
     w) SKIP_HOMEBREW_LINUX=true ;;
     *) usage; exit 1 ;;
