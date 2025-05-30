@@ -5,5 +5,3 @@ pkg_mgr_desktop_present: "{{ global_is_desktop_system | default(false) }}"
 pkg_mgr_packagekit_enabled: true
 pkg_mgr_homebrew_casks_external: true
 pkg_mgr_homebrew_casks_install_options: ["no-quarantine"]
-pkg_mgr_homebrew_casks_upgrade: true
-pkg_mgr_homebrew_formulas_upgrade: true

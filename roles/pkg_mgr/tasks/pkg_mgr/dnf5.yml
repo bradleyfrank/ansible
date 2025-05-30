@@ -10,7 +10,7 @@
   become: true
 
 - name: "Add repositories"
-  ansible.builtin.yum_repository: "{{ item }}"
+  ansible.builtin.yum_repository: "{{ item }}"  # noqa: args[module]
   loop: "{{ pkg_mgr_repos['base'] }}"
   loop_control:
     label: "{{ item['name'] }}"
@@ -20,7 +20,7 @@
   ansible.builtin.dnf5:
     name: "*"
     update_cache: true
-    state: latest
+    state: latest  # noqa: package-latest
   become: true
 
 - name: "Install cli packages"
