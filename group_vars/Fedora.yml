@@ -98,7 +98,7 @@ pkg_mgr_cli:
     - yq
 
 pkg_mgr_gui:
-  common:
+  base:
     - 1password
     - foliate
     - keepassxc

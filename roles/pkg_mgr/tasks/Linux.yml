@@ -9,62 +9,9 @@
   notify: Start packagekit
   tags: [apt, dnf]
 
-- name: "Add repositories (apt)"
-  ansible.builtin.deb822_repository: "{{ item }}"
-  loop: "{{ pkg_mgr_repos['base'] }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "apt"
-  tags: [apt]
-
-- name: "Install gpg keys (dnf)"
-  ansible.builtin.rpm_key:
-    key: "{{ item['gpgkey'] }}"
-    state: present
-  loop: "{{ pkg_mgr_repos['base'] }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "dnf5"
-  tags: [dnf]
-
-- name: "Add repositories (dnf)"
-  ansible.builtin.yum_repository: "{{ item }}"
-  loop: "{{ pkg_mgr_repos['base'] }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "dnf5"
-  tags: [dnf]
-
-- name: "Update package manager cache"
-  ansible.builtin.package:
-    update_cache: true
-  become: true
-  tags: [apt, dnf]
-
-- name: "Install cli packages"
-  ansible.builtin.package:
-    name: "{{ pkg_mgr_cli['base'] }}"
-    state: present
-  become: true
-  tags: [apt, dnf]
-
-- name: "Install gui packages"
-  ansible.builtin.package:
-    name: "{{ pkg_mgr_gui['common'] }}"
-    state: present
-  when: pkg_mgr_desktop_present
-  become: true
-  tags: [apt, dnf]
-
-- name: "Install desktop packages"
-  ansible.builtin.package:
-    name: "{{ pkg_mgr_gui[pkg_mgr_current_desktop] }}"
-    state: present
-  when: "'pkg_mgr_current_desktop' in pkg_mgr_gui"
-  become: true
+- name: "Include OS package manager tasks"
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
   tags: [apt, dnf]
 
 - name: "Include Homebrew tasks"
