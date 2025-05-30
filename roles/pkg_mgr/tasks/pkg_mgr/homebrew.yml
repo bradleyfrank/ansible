@@ -2,22 +2,22 @@
 
 - name: "Install Homebrew taps"
   community.general.homebrew_tap:
-    name: "{{ pkg_mgr_packages['taps'] }}"
-  when: "'taps' in pkg_mgr_packages"
+    name: "{{ pkg_mgr_repos['taps'] }}"
+  when: "'taps' in pkg_mgr_repos"
   tags: [never, taps]
 
 - name: "Install Homebrew formulas"
   community.general.homebrew:
-    name: "{{ pkg_mgr_packages['formulas'] }}"
+    name: "{{ pkg_mgr_cli['formulas'] }}"
     force_formula: true
     upgrade_all: "{{ pkg_mgr_homebrew_formulas_upgrade }}"
-  when: "'formulas' in pkg_mgr_packages"
+  when: "'formulas' in pkg_mgr_cli"
   tags: [never, formulas]
 
 - name: "Install Homebrew casks"
   community.general.homebrew_cask:
-    name: "{{ pkg_mgr_packages['casks'] }}"
+    name: "{{ pkg_mgr_gui['casks'] }}"
     accept_external_apps: "{{ pkg_mgr_homebrew_casks_external }}"
-    install_options: "{{ pkg_mgr_homebrew_casks_install_options | default(omit) }}"
-  when: "'casks' in pkg_mgr_packages"
+    install_options: "{{ pkg_mgr_homebrew_casks_install_options }}"
+  when: "'casks' in pkg_mgr_gui"
   tags: [never, casks]

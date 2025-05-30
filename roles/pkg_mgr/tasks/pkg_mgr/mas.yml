@@ -10,6 +10,6 @@
   environment:
     PATH: "{{ pkg_mgr_bin_path | join(':') }}"
   community.general.mas:
-    id: "{{ pkg_mgr_packages['mas'] }}"
+    id: "{{ pkg_mgr_gui['mas'] }}"
     upgrade_all: true
   tags: [mas]
