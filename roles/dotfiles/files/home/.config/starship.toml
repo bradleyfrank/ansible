@@ -1,0 +1,91 @@
+'$schema' = 'https://starship.rs/config-schema.json'
+
+format = """
+[\\[](fg:base01)\
+$hostname\
+$python\
+$directory\
+$git_branch\
+$git_status\
+[\\]](fg:base01)\n \
+󱞪 $status\
+$character\
+"""
+
+add_newline = true
+palette = 'solarized_light'
+
+[palettes.solarized_light]
+base01 = '#586e75'
+base2 = '#eee8d5'
+blue = '#268bd2'
+cyan = '#2aa198'
+magenta = '#d33682'
+orange = '#cb4b16'
+red = '#dc322f'
+violet = '#6c71c4'
+yellow = '#b58900'
+
+[character]
+success_symbol = '[%](fg:green)'
+error_symbol = '[%](fg:red)'
+
+[directory]
+format = '[](fg:base2)[ $path]($style)[](fg:base2)'
+repo_root_format = """
+[](fg:base2)\
+[$before_root_path]($before_repo_root_style)\
+[ $repo_root]($repo_root_style)\
+[$path](bg:base2 fg:base01)\
+[](fg:base2) \
+"""
+before_repo_root_style = 'bg:base2 fg:blue'
+repo_root_style = 'bg:base2 fg:blue'
+style = 'bg:base2 fg:blue'
+truncation_length = 0
+truncation_symbol = ''
+
+[directory.substitutions]
+'~/Development' = '~/Dev'
+
+[git_branch]
+format = '[](fg:base2)[$symbol $branch]($style)[](fg:base2)'
+style = 'bg:base2 fg:green'
+symbol = ''
+
+[git_status]
+disabled = false
+style = 'bg:base2 fg:yellow'
+format = """
+( [](fg:base2)\
+[$conflicted$deleted$modified$renamed$staged$stashed$untracked]($style)\
+[](fg:base2))\
+"""
+conflicted = 'C'
+deleted = 'D'
+modified = 'M'
+renamed = 'R'
+staged = 'S'
+stashed = '\$'
+untracked = 'U'
+
+[hostname]
+disabled = false
+format = '[](fg:base2)[$hostname]($style)[](fg:base2) '
+style = 'bg:base2 fg:magenta'
+ssh_only = true
+
+[python]
+style = 'bg:base2 fg:cyan'
+format = '[](fg:base2)[$version]($style)[](fg:base2) '
+disabled = false
+detect_files = []
+detect_extensions = []
+version_format = '${major}.${minor}'
+
+[status]
+disabled = false
+format = '[\[$status\]]($style)'
+success_symbol = '+'  # required to show return code "0"
+success_style = 'fg:green'
+failure_style = 'fg:red'

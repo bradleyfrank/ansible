@@ -1,4 +1,8 @@
 ---
 
+system_pkg_dconf:
+  apt: "dconf-cli"
+  dnf5: "dconf"
+
 system_macos_firewall_cmd: "/usr/libexec/ApplicationFirewall/socketfilterfw"
 system_macos_hidden_xattr: "0000000000000000400000000000000000000000000000000000000000000000"

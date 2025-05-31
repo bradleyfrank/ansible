@@ -1,20 +1,39 @@
 ---
 
+_bat_exec: "/usr/bin/bat"
+_rpmfusion:
+  gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target"
+  metalink: "https://mirrors.rpmfusion.org/metalink?arch=$basearch&repo"
+
 tmux_clipboard: "wl-copy"
 
-system_linux_dconf_distro:
-  - path: "/org/gnome/shell"
-    keys:
-      enabled-extensions: "['GPaste@gnome-shell-extensions.gnome.org','background-logo@fedorahosted.org']"
-      favorite-apps: "['org.gnome.Terminal.desktop','firefox.desktop','org.gnome.Nautilus.desktop','1password.desktop','org.gnome.gedit.desktop','signal-desktop.desktop']"
+pkg_mgr_repos:
+  base:
+    - name: "rpmfusion-free"
+      description: "RPM Fusion for Fedora - Free"
+      metalink: "{{ _rpmfusion['metalink'] }}=free-fedora-$releasever"
+      gpgkey: "{{ _rpmfusion['gpgkey'] }}=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+    - name: "rpmfusion-free-updates"
+      description: "RPM Fusion for Fedora - Free - Updates"
+      metalink: "{{ _rpmfusion['metalink'] }}=free-fedora-updates-released-$releasever"
+      gpgkey: "{{ _rpmfusion['gpgkey'] }}=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+    - name: "rpmfusion-nonfree"
+      description: "RPM Fusion for Fedora - Nonfree"
+      metalink: "{{ _rpmfusion['metalink'] }}=nonfree-fedora-$releasever"
+      gpgkey: "{{ _rpmfusion['gpgkey'] }}=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
+    - name: "rpmfusion-nonfree-updates"
+      description: "RPM Fusion for Fedora - Nonfree - Updates"
+      metalink: "{{ _rpmfusion['metalink'] }}=nonfree-fedora-updates-released-$releasever"
+      gpgkey: "{{ _rpmfusion['gpgkey'] }}=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
 
-pkg_mgr_packages:
-  cli:
+pkg_mgr_cli:
+  base:
+    - asciinema
     - atool
+    - atuin
     - bash-completion
     - bat
     - bcal
-    - borgbackup
     - diceware
     - dictd
     - dnf-plugin-system-upgrade
@@ -29,11 +48,10 @@ pkg_mgr_packages:
     - fwupd
     - fzf
     - gcc-c++
+    - gh
     - ghostscript
-    - git-delta
-    - glances
+    - glow
     - gron
-    - hadolint
     - htop
     - httpie
     - iftop
@@ -45,7 +63,6 @@ pkg_mgr_packages:
     - libvirt-client
     - mkvtoolnix
     - moreutils
-    - most
     - msmtp
     - mtr
     - nmap
@@ -62,7 +79,6 @@ pkg_mgr_packages:
     - ripgrep
     - ruby
     - ShellCheck
-    - stow
     - strace
     - tidy
     - tlp
@@ -73,93 +89,51 @@ pkg_mgr_packages:
     - wget
     - xz
     - yt-dlp
-  gui:
-    - 1password  # 1password-gui
-    - asciinema
-    - audacious
-    - calibre
-    - distrobox
-    - fragments
-    - ghostty
-    - ghostwriter
-    - google-chrome-stable  # google-chrome
-    - google-noto-emoji-color-fonts
-    - google-noto-sans-fonts
-    - google-noto-sans-mono-fonts
-    - google-noto-serif-fonts
+  formulas:
+    - argc
+    - bat-extras
+    - eza  # https://github.com/eza-community/eza/issues/1456
+    - lazygit
+    - starship
+    - yq
+
+pkg_mgr_gui:
+  base:
+    - 1password
+    - foliate
     - keepassxc
     - libreoffice
     - mediawriter
-    - nextcloud-client
-    - nextcloud-client-nautilus
+    - metadata-cleaner
+    - papers
     - picard
-    - remmina
-    - seahorse
-    - system-config-printer
-    - thunderbird
-    - timeshift
-    - torbrowser-launcher
+    - wildcard  # regex testing
     - vlc
+  flatpak:
+    - app.drey.EarTag  # ID3 tagging
+    - app.drey.Warp  # airdrop
+    - com.github.huluti.Curtail  # image compresser
+    - com.github.junrrein.PDFSlicer
+    - com.github.liferooter.textpieces  # filter and manipulate text/code
+    - com.plexamp.Plexamp
+    - com.spotify.Client
+    - io.github.diegoivan.pdf_metadata_editor  # Paper Clip - pdf metadata editor
+    - io.github.seadve.Kooha  # screen recorder
+    - io.gitlab.news_flash.NewsFlash  # rss reader
+    - org.gnome.gitlab.somas.Apostrophe  # markdown editor
+    - org.ppsspp.PPSSPP
+    - org.signal.Signal
+    - tv.plex.PlexDesktop
+    - us.zoom.Zoom
   gnome:
-    - celluloid
-    - gnome-characters
-    - gnome-connections
-    - gnome-extensions-app
+    - celluloid  # mpv frontend
+    - gnome-characters  # emoji picker
+    - gnome-connections  # vnc viewer
     - gnome-shell-extension-gpaste
-    - gnome-tweaks
-    - gnote
     - gpaste*
-    - gthumb
-    - hydrapaper
+    - gthumb  # image viewer and editor
     - libgnome-keyring
-    - meld
-    - mpv
+    - mpv  # video player
     - transmission-gtk
-  taps:
-    - charmbracelet/tap
-  formulas:
-    - atuin
-    - bandwhich
-    - bat-extras
-    - csvlens
-    - freeze
-    - eza  # https://github.com/eza-community/eza/issues/1456
-    - glow
-    - lazygit
-    - qsv
-    - yq
-
-pkg_mgr_repos:
-  - name: google-chrome
-    description: "Google Chrome"
-    baseurl: "http://dl.google.com/linux/chrome/rpm/stable/$basearch"
-    gpgkey: "https://dl.google.com/linux/linux_signing_key.pub"
-  - name: negativo17-multimedia
-    description: "negativo17 - Multimedia"
-    baseurl: "https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch"
-    gpgkey: "https://negativo17.org/repos/RPM-GPG-KEY-slaanesh"
-    includepkgs: ['*nvidia*']  # https://negativo17.org/nvidia-driver
-  - name: rpmfusion-free
-    description: "RPM Fusion for Fedora - Free"
-    metalink: "https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch"
-    gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
-    exclude: ['*nvidia*', '*ffmpeg*']
-  - name: rpmfusion-free-updates
-    description: "RPM Fusion for Fedora - Free - Updates"
-    metalink: "https://mirrors.rpmfusion.org/metalink?repo=free-fedora-updates-released-$releasever&arch=$basearch"
-    gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
-    exclude: ['*nvidia*', '*ffmpeg*']
-  - name: rpmfusion-nonfree
-    description: "RPM Fusion for Fedora - Nonfree"
-    metalink: "https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-$releasever&arch=$basearch"
-    gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
-    exclude: ['*nvidia*', '*ffmpeg*']
-  - name: rpmfusion-nonfree-updates
-    description: "RPM Fusion for Fedora - Nonfree - Updates"
-    metalink: "https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-updates-released-$releasever&arch=$basearch"
-    gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
-    exclude: ['*nvidia*', '*ffmpeg*']
-  - name: ghostty
-    description: "Copr repo for ghostty owned by pgdev"
-    baseurl: "https://download.copr.fedorainfracloud.org/results/pgdev/ghostty/fedora-$releasever-$basearch/"
-    gpgkey: "https://download.copr.fedorainfracloud.org/results/pgdev/ghostty/pubkey.gpg"
+  kde:
+    - transmission-qt

@@ -9,73 +9,19 @@
   notify: Start packagekit
   tags: [apt, dnf]
 
-- name: "Add repositories (apt)"
-  ansible.builtin.deb822_repository: "{{ item }}"
-  loop: "{{ pkg_mgr_repos }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "apt"
-  tags: [apt]
-
-- name: "Install gpg keys (dnf)"
-  ansible.builtin.rpm_key:
-    key: "{{ item['gpgkey'] }}"
-    state: present
-  loop: "{{ pkg_mgr_repos }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "dnf5"
-  tags: [dnf]
-
-- name: "Add repositories (dnf)"
-  ansible.builtin.yum_repository: "{{ item }}"
-  loop: "{{ pkg_mgr_repos }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: ansible_facts['pkg_mgr'] == "dnf5"
-  tags: [dnf]
-
-- name: "Update package manager cache"
-  ansible.builtin.package:
-    update_cache: true
-  become: true
-  tags: [apt, dnf]
-
-- name: "Install cli packages"
-  ansible.builtin.package:
-    name: "{{ pkg_mgr_packages['cli'] }}"
-    state: present
-  become: true
-  tags: [apt, dnf]
-
-- name: "Install gui packages"
-  ansible.builtin.package:
-    name: "{{ pkg_mgr_packages['gui'] }}"
-    state: present
-  when: pkg_mgr_desktop_present
-  become: true
-  tags: [apt, dnf]
-
-- name: "Install DE/WM packages"
-  ansible.builtin.package:
-    name: "{{ pkg_mgr_packages[item] }}"
-    state: present
-  loop: "{{ pkg_mgr_packages.keys() | list }}"
-  when: item in pkg_mgr_current_desktop
-  become: true
+- name: "Include OS package manager tasks"
+  ansible.builtin.include_tasks:
+    file: "pkg_mgr/{{ ansible_facts['pkg_mgr'] }}.yml"
   tags: [apt, dnf]
 
 - name: "Include Homebrew tasks"
   ansible.builtin.include_tasks:
-    file: "homebrew.yml"
+    file: "pkg_mgr/homebrew.yml"
   when: (ansible_facts['architecture'] == 'x86_64') or (ansible_facts['architecture'] == 'amd64')
   tags: [formulas]
 
 - name: "Include Flakpak tasks"
   ansible.builtin.include_tasks:
-    file: "flatpak.yml"
-  when: (pkg_mgr_flatpak_install) and (pkg_mgr_flatpak_packages | length > 0)
-  tags: [flatpaks]
+    file: "pkg_mgr/flatpak.yml"
+  when: pkg_mgr_desktop_present
+  tags: [flatpak]
