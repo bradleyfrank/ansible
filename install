@@ -5,6 +5,7 @@ set -o errexit
 
 SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+EXTRA_VARS=""
 ANSIBLE_REPO_PATH="${HOME}/dotfiles"
 ANSIBLE_REPO_BRANCH="main"
 ANSIBLE_REPO_HOSTVARS_DIR="${ANSIBLE_REPO_PATH}/host_vars"
@@ -19,9 +20,8 @@ usage() {
   echo "OPTIONS:"
   echo "  -h          Show help and exit"
   echo "  -b <branch> Name of git branch to use"
-  echo "  -p          Resume an interrupted Ansible run"
-  echo "  -r          Cleanup a previous bootstrap and start fresh"
-  echo "  -u <url>    URL of Ansible repo to use"
+  echo "  -r          Resume an interrupted Ansible run"
+  echo "  -s          Cleanup a previous bootstrap and start fresh"
   echo "  -w          Skip Homebrew install on Linux (noop for macOS)"
   echo
 }
@@ -41,6 +41,7 @@ bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   sudo scutil --set HostName "$SYSTEM_HOSTNAME"
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
+  1PASSWORD_GRAPHICAL_INSTALL=1
   ID=macos install_homebrew
   brew install python3 git
 }
@@ -66,6 +67,10 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
+  if [[ -n $XDG_CURRENT_DESKTOP ]]; then
+    1PASSWORD_GRAPHICAL_INSTALL=1
+  fi
+
   case $(uname -m) in (aarch*|arm*)
     SKIP_HOMEBREW_LINUX=1 ;;  # https://github.com/Homebrew/brew/issues/19208
   esac
@@ -76,7 +81,7 @@ bootstrap_linux() {
 }
 
 
-reset_bootstrap() {
+scratch_bootstrap() {
   rm -rf "$ANSIBLE_REPO_PATH" "${HOME}/.ssh"
 
   export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:${PATH}"
@@ -98,13 +103,12 @@ reset_bootstrap() {
 }
 
 
-while getopts "hb:pru:w" opt; do
+while getopts "hb:rsw" opt; do
   case "$opt" in
     b) ANSIBLE_REPO_BRANCH="$OPTARG" ;;
     h) usage; exit 0 ;;
-    p) SKIP_BOOTSTRAP=true ;;
-    r) reset_bootstrap ;;
-    u) ANSIBLE_REPO_URL="$OPTARG" ;;
+    r) SKIP_BOOTSTRAP=true ;;
+    s) scratch_bootstrap ;;
     w) SKIP_HOMEBREW_LINUX=true ;;
     *) usage; exit 1 ;;
   esac
@@ -156,7 +160,15 @@ if [ ! -s "$ANSIBLE_REPO_HOSTVARS" ]; then
 fi
 
 
-ansible-playbook play_init_onepassword.yml --ask-become-pass
+# setting extra-vars bypasses vars_prompt in the playbook
+if [[ -n $1PASSWORD_GRAPHICAL_INSTALL ]]; then
+  EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
+  EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
+  EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
+  EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
+fi
+
+ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
 . "${HOME}/.op_session"
 rm -f "${HOME}/.op_session"
 
