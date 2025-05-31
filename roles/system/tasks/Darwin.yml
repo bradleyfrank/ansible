@@ -10,17 +10,7 @@
   loop_control:
     label: "{{ item['name'] }}"
   notify: Restart macOS dock
-  tags: [system, mac_settings, defaults]
-
-- name: "Set launchd services"
-  community.general.launchd:
-    name: "{{ name }}"
-    state: "{{ state }}"
-  loop: "{{ system_macos_launchd | dict2items(key_name='name', value_name='state') }}"
-  loop_control:
-    label: "{{ name }}"
-  when: system_macos_launchd | length > 0
-  tags: [system, mac_settings, launchd]
+  tags: [mac_defaults]
 
 - name: "Put display to sleep after X minutes"
   ansible.builtin.command:
@@ -28,7 +18,7 @@
   changed_when: false
   become: true
   when: system_macos_sleep_display >= 0
-  tags: [system, mac_settings, sleep, become]
+  tags: [sleep, become]
 
 - name: "Put computer to sleep after X minutes"
   ansible.builtin.command:
@@ -36,53 +26,29 @@
   changed_when: false
   become: true
   when: system_macos_sleep_computer >= 0
-  tags: [system, mac_settings, sleep, become]
+  tags: [sleep, become]
 
-- name: "Set firewall state"
-  tags: [system, mac_settings, firewall, become]
-  block:
-    - name: "Enable firewall"
-      ansible.builtin.command:
-        cmd: "{{ system_macos_firewall_cmd }} --setglobalstate on"
-      changed_when: false
-      become: true
-      when: system_macos_firewall_enabled
-    - name: "Disable firewall"
-      ansible.builtin.command:
-        cmd: "{{ system_macos_firewall_cmd }} --setglobalstate off"
-      changed_when: false
-      become: true
-      when: not system_macos_firewall_enabled
-
-- name: "Set ~/Library hidden state"
-  tags: [system, mac_settings, library]
-  block:
-    - name: "Unhide ~/Library"
-      ansible.builtin.shell:
-        cmd: |
-          chflags nohidden ~/Library
-          xattr -d com.apple.FinderInfo ~/Library || true  # xattr not idempotent
-      changed_when: false
-      when: system_macos_unhide_user_library
-    - name: "Hide ~/Library"
-      ansible.builtin.shell:
-        cmd: |
-          chflags hidden ~/Library
-          xattr -wx com.apple.FinderInfo "{{ system_macos_hidden_xattr }}" ~/Library
-      changed_when: false
-      when: not system_macos_unhide_user_library
-
-- name: "Set /Volumes hidden state"
-  tags: [system, mac_settings, volumes, become]
+- name: "Enable firewall"
+  ansible.builtin.command:
+    cmd: "{{ system_macos_firewall_cmd }} --setglobalstate on"
+  changed_when: true
   become: true
-  block:
-    - name: "Unhide ~/Volumes"
-      ansible.builtin.command:
-        cmd: "chflags nohidden /Volumes"
-      changed_when: false
-      when: system_macos_unhide_volumes
-    - name: "Hide ~/Volumes"
-      ansible.builtin.command:
-        cmd: "chflags hidden /Volumes"
-      changed_when: false
-      when: not system_macos_unhide_volumes
+  when: system_macos_firewall_enabled
+  tags: [firewall, become]
+
+- name: "Unhide ~/Library"
+  ansible.builtin.shell:
+    cmd: |
+      chflags nohidden ~/Library
+      xattr -d com.apple.FinderInfo ~/Library || true  # xattr not idempotent
+  changed_when: true
+  when: system_macos_unhide_user_library
+  tags: [dir_flags]
+
+- name: "Unhide /Volumes"
+  ansible.builtin.command:
+    cmd: "chflags nohidden /Volumes"
+  changed_when: true
+  become: true
+  when: system_macos_unhide_volumes
+  tags: [dir_flags, become]

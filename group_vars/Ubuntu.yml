@@ -4,32 +4,6 @@ _bat_exec: "/usr/bin/batcat"
 
 tmux_clipboard: "wl-copy"
 
-system_linux_dconf_distro:
-  - path: "/org/gnome/desktop/interface"
-    keys:
-      gtk-theme: "'Yaru-light'"
-  - path: "/org/gnome/shell"
-    keys:
-      disabled-extensions: "[\
-        'ding@rastersoft.com',
-        'window-list@gnome-shell-extensions.gcampax.github.com',
-        'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
-        'places-menu@gnome-shell-extensions.gcampax.github.com',
-        'ubuntu-dock@ubuntu.com',
-        'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
-      enabled-extensions: "[\
-        'GPaste@gnome-shell-extensions.gnome.org',
-        'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
-        'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
-        'ubuntu-appindicators@ubuntu.com']"
-      favorite-apps: "[\
-        'org.gnome.Terminal.desktop',
-        'firefox_firefox.desktop',
-        'org.gnome.Nautilus.desktop',
-        '1password.desktop',
-        'org.gnome.gedit.desktop',
-        'org.signal.Signal.desktop']"
-
 pkg_mgr_repos:
   base:
     - name: "charm"
@@ -56,6 +30,7 @@ pkg_mgr_cli:
     - diceware
     - dictd
     - duf
+    - fastfetch
     - fd-find
     - fdupes
     - ffmpeg
@@ -101,9 +76,7 @@ pkg_mgr_cli:
     - argc
     - atuin
     - bat-extras
-    - csvlens
     - eza
-    - fastfetch
     - qsv
     - yq
 
