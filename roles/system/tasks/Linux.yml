@@ -23,7 +23,7 @@
   block:
     - name: "Install dconf package"
       ansible.builtin.package:
-        name: "{{ system_pkg_dconf }}"
+        name: "{{ system_pkg_dconf[ansible_facts['pkg_mgr']] }}"
     - name: "Load dconf tasks"
       vars:
         dconf_prefix: "{{ item['path'] }}"

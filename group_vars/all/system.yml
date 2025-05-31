@@ -21,7 +21,7 @@ system_linux_dconf:
     keys:
       datetime/automatic-timezone: "true"
       input-sources/xkb-options: "['ctrl:nocaps']"
-      interface/accent-color: "teal"
+      interface/accent-color: "'teal'"
       interface/clock-format: "'12h'"
       interface/clock-show-date: "true"
       interface/clock-show-seconds: "false"
