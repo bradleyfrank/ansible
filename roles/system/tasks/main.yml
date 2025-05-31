@@ -3,4 +3,4 @@
 - name: "Include system-specific tasks"
   ansible.builtin.include_tasks:
     file: "{{ ansible_facts['system'] }}.yml"
-  tags: [system, hostname, become]
+  tags: [always]

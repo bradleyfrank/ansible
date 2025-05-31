@@ -1,19 +1,13 @@
 ---
 
-system_linux_has_desktop: "{{ global_is_desktop_system | default(false) }}"
-system_linux_current_desktop: "{{ global_desktop_environment | default('') }}"
-
-system_linux_dconf_defaults: []
-system_linux_dconf_distro: []
+system_linux_current_desktop: "{{ global_desktop_environment | default('none') }}"
+system_linux_dconf: []
 system_linux_dns_fallback: ["9.9.9.9", "1.1.1.1"]
-system_linux_dracut_settings: []
+system_linux_enable_bluetooth_boot: true
 
 system_macos_defaults: []
-system_macos_launchd: {}
-system_macos_reset_dock: true
 system_macos_sleep_display: 15
 system_macos_sleep_computer: 30
 system_macos_firewall_enabled: true
-system_macos_locate_enabled: true
 system_macos_unhide_user_library: true
 system_macos_unhide_volumes: true

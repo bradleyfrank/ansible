@@ -1,29 +1,36 @@
 ---
 
-_bat_exec: "/opt/homebrew/bin/bat"
-
-tmux_clipboard: "pbcopy"
-system_macos_launchd: {}
-
 system_macos_defaults:
+    #
+    # TIME MACHINE
+    #
   - name: "[Time Machine] Disable prompting to use new exteral drives"
     domain: "com.apple.TimeMachine"
     key: "DoNotOfferNewDisksForBackup"
     type: "bool"
     value: "true"
 
+    #
+    # TERMINAL
+    #
   - name: "[Terminal] Open new tabs in the default directory"
     domain: "com.apple.Terminal"
     key: "NewTabWorkingDirectoryBehavior"
     type: "int"
     value: "1"
 
+    #
+    # TEXTEDIT
+    #
   - name: "[TextEdit] Set plain text mode as default"
     domain: "com.apple.TextEdit"
     key: "RichText"
     type: "int"
     value: "0"
 
+    #
+    # FINDER
+    #
   - name: "[Finder] Show filename extensions by default"
     domain: "NSGlobalDomain"
     key: "AppleShowAllExtensions"
@@ -95,6 +102,9 @@ system_macos_defaults:
     type: "string"
     value: "file://{{ ansible_facts['user_dir'] }}/Downloads/"
 
+    #
+    # DOCK
+    #
   - name: "[Dock] Enable auto-hide"
     domain: "com.apple.dock"
     key: "autohide"
@@ -116,6 +126,9 @@ system_macos_defaults:
     type: "int"
     value: "43"
 
+    #
+    # WINDOW MANAGER
+    #
   - name: "[Window Manager] Disable automatic Spaces rearranging"
     domain: "com.apple.dock"
     key: "mru-spaces"
@@ -137,12 +150,18 @@ system_macos_defaults:
     type: "bool"
     value: "false"
 
+    #
+    # SCREENSHOTS
+    #
   - name: "[Screenshots] Save to ~/Downloads"
     domain: "com.apple.screencapture"
     key: "location"
     type: "string"
     value: "{{ ansible_facts['user_dir'] }}/Downloads"
 
+    #
+    # EXPOSE
+    #
   - name: "[Expose] Set bottom-left corner to application windows"
     domain: "com.apple.dock"
     key: "wvous-bl-corner"
@@ -184,6 +203,9 @@ system_macos_defaults:
     type: "int"
     value: "0"
 
+    #
+    # SCREENSAVER
+    #
   - name: "[Screensaver] Set timeout"
     domain: "com.apple.screensaver"
     key: "idleTime"
@@ -200,6 +222,9 @@ system_macos_defaults:
     type: "int"
     value: "5"
 
+    #
+    # BLUETOOTH TRACKPAD
+    #
   - name: "[BT Trackpad] Enable tap-to-click"
     domain: "com.apple.driver.AppleBluetoothMultitouch.trackpad"
     key: "Clicking"
@@ -241,6 +266,9 @@ system_macos_defaults:
     type: "int"
     value: "2"
 
+    #
+    # BUILTIN TRACKPAD
+    #
   - name: "[Trackpad] Enable tap-to-click"
     domain: "com.apple.AppleMultitouchtrackpad"
     key: "Clicking"
@@ -286,13 +314,15 @@ system_macos_defaults:
     key: "AppleEnableSwipeNavigateWithScrolls"
     type: "bool"
     value: "true"
-
   - name: "[Trackpad] Enable tap-to-click on Apple mouse"
     domain: "NSGlobalDomain"
     key: "com.apple.mouse.tapBehavior"
     type: "int"
     value: "1"
 
+    #
+    # KEYBOARD
+    #
   - name: "[Keyboard] Set very low key repeat rates"
     domain: "NSGlobalDomain"
     key: "InitialKeyRepeat"
@@ -304,12 +334,18 @@ system_macos_defaults:
     type: "int"
     value: "1"
 
-  - name: "[Software Updates] Check for updates daily"
+    #
+    # SOFTWARE UPDATE
+    #
+  - name: "[Software Update] Check for updates daily"
     domain: "com.apple.SoftwareUpdate"
     key: "ScheduleFrequency"
     type: "int"
     value: "1"
 
+    #
+    # SAVE & PRINT DIALOGS
+    #
   - name: "[Save] Expand save panel by default (1/2)"
     domain: "NSGlobalDomain"
     key: "NSNavPanelExpandedStateForSaveMode"
@@ -320,7 +356,6 @@ system_macos_defaults:
     key: "NSNavPanelExpandedStateForSaveMode2"
     type: "bool"
     value: "true"
-
   - name: "[Print] Expand print panel by default (1/2)"
     domain: "NSGlobalDomain"
     key: "PMPrintingExpandedStateForPrint"
@@ -337,6 +372,9 @@ system_macos_defaults:
     type: "bool"
     value: "true"
 
+    #
+    # MACCY
+    #
   - name: "[Maccy] Set ignored apps"
     domain: "org.p0deje.Maccy"
     key: "ignoredApps"
@@ -362,110 +400,3 @@ system_macos_defaults:
     key: "removeFormattingByDefault"
     type: "bool"
     value: "true"
-
-pkg_mgr_cli:
-  formulas:
-    - argc
-    - asciinema
-    - atuin
-    - atool
-    - bash
-    - bash-completion@2
-    - bat
-    - bat-extras
-    - bcal
-    - cabextract
-    - coreutils
-    - diceware
-    - dict
-    - dua-cli
-    - duf
-    - dust
-    - eye-d3
-    - eza
-    - fastfetch
-    - fd
-    - fdupes
-    - ffmpeg
-    - findutils
-    - fzf
-    - fx
-    - gawk
-    - gh
-    - ghostscript
-    - git-absorb
-    - glow
-    - gnu-sed
-    - gnu-tar
-    - gnu-which
-    - grep
-    - gzip
-    - httpie
-    - iftop
-    - jq
-    - jo
-    - kpcli
-    - lame
-    - less
-    - markdown
-    - moreutils
-    - mtr
-    - nmap
-    - ocrmypdf
-    - p7zip
-    - par
-    - pdfgrep
-    - pwgen
-    - qpdf
-    - qsv
-    - rdfind
-    - rename
-    - ripgrep
-    - rpm2cpio
-    - rsync
-    - shellcheck
-    - shellharden
-    - shfmt
-    - tidy-html5
-    - tree
-    - trippy
-    - trurl
-    - watch
-    - wget
-    - yamllint
-    - yt-dlp
-
-pkg_mgr_gui:
-  casks:
-    - expressions
-    - fantastical
-    - firefox
-    - ghostty
-    - iina
-    - keepassxc
-    - keepingyouawake
-    - libreoffice
-    - maccy
-    - multipass
-    - mullvadvpn
-    - musicbrainz-picard
-    - netnewswire
-    - notesnook
-    - numi
-    - pearcleaner
-    - plexamp
-    - ppsspp
-    - signal
-    - sony-ps-remote-play
-    - spotify
-    - transmission
-    - transmit
-    - utm
-    - vlc
-    - zoom
-  mas:
-    - 1320666476  # Wipr Safari extension
-    - 1555925018  # Genki Arcade
-    - 1569813296  # 1Password Safari extension
-    - 1591303229  # Vinegar Safari extension
-    - 1622835804  # Kagi Safari extension

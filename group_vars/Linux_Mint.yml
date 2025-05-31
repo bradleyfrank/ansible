@@ -24,6 +24,7 @@ pkg_mgr_cli:
     - diceware
     - dictd
     - duf
+    - fastfetch
     - fd-find
     - fdupes
     - ffmpeg
@@ -68,9 +69,7 @@ pkg_mgr_cli:
     - argc
     - atuin
     - bat-extras
-    - csvlens
     - eza
-    - fastfetch
     - qsv
     - yq
 

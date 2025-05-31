@@ -1,13 +1,8 @@
 ---
 
-- name: "Load per-system package definitions"
-  ansible.builtin.include_vars:
-    file: "{{ ansible_facts['pkg_mgr'] }}.yml"
-  tags: [dconf, dracut]
-
 - name: "Add DNS fallback"
   become: true
-  tags: [dns]
+  tags: [dns, become]
   when: system_linux_dns_fallback | length > 0
   block:
     - name: "Ensure 'resolved' conf directory exists"
@@ -23,47 +18,37 @@
 
 - name: "Apply dconf settings"
   become: true
-  tags: [dconf]
+  tags: [dconf, become]
   when: "'gnome' in system_linux_current_desktop"
   block:
     - name: "Install dconf package"
       ansible.builtin.package:
-        name: "{{ system_pkg_dconf }}"
+        name: "{{ system_pkg_dconf[ansible_facts['pkg_mgr']] }}"
     - name: "Load dconf tasks"
       vars:
         dconf_prefix: "{{ item['path'] }}"
         dconf_settings: "{{ item['keys'] }}"
       ansible.builtin.include_tasks:
         file: "dconf.yml"
-      # TODO: consider dropping defaults
-      loop: "{{ system_linux_dconf_defaults \
-          | community.general.lists_mergeby(system_linux_dconf_distro, 'path', recursive=True) }}"
+      loop: "{{ system_linux_dconf }}"
       loop_control:
         label: "{{ dconf_prefix }}"
 
-- name: "Apply Dracut settings"
+- name: "Set Yaru light theme (Ubuntu)"
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface"
+    value: "'Yaru-light'"
   become: true
-  tags: [dracut]
-  when: system_linux_has_desktop
-  block:
-    - name: "Install dracut package"
-      ansible.builtin.package:
-        name: "{{ system_pkg_dracut }}"
-    - name: "Create dracut module(s)"
-      ansible.builtin.lineinfile:
-        create: "{{ item['create'] | default(true) }}"
-        mode: "0644"
-        path: "{{ item['path'] }}"
-        line: "{{ item['line'] | default(omit) }}"
-        regexp: "{{ item['regexp'] | default(omit) }}"
-        state: "{{ item['state'] | default('present') }}"
-        search_string: "{{ item['search_string'] | default(omit) }}"
-        insertafter: "{{ item['insertafter'] | default(omit) }}"
-        insertbefore: "{{ item['insertbefore'] | default(omit) }}"
-        backrefs: "{{ item['backrefs'] | default(omit) }}"
-      loop: "{{ system_linux_dracut_settings }}"
-      loop_control:
-        label: "{{ item['desc'] }}"
-      become: true
-      notify: Regenerate Dracut
-      tags: [dracut]
+  when: ansible_facts['distribution'] == "Ubuntu"
+  tags: [dconf, become]
+
+- name: "Enable bluetooth at boot"
+  ansible.builtin.lineinfile:
+    mode: "0644"
+    path: "/etc/dracut.conf.d/ble.conf"
+    line: "add_dracutmodules+=' bluetooth '"
+    state: present
+  become: true
+  notify: Regenerate Dracut
+  when: ansible_facts['distribution'] == "Fedora"  # Remove as of Ubuntu 25.10
+  tags: [never, bluetooth]

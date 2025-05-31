@@ -1,0 +1,4 @@
+---
+
+_bat_exec: "/opt/homebrew/bin/bat"
+tmux_clipboard: "pbcopy"

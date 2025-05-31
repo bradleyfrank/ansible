@@ -1,0 +1,108 @@
+---
+
+pkg_mgr_cli:
+  formulas:
+    - argc
+    - asciinema
+    - atuin
+    - atool
+    - bash
+    - bash-completion@2
+    - bat
+    - bat-extras
+    - bcal
+    - cabextract
+    - coreutils
+    - diceware
+    - dict
+    - dua-cli
+    - duf
+    - dust
+    - eye-d3
+    - eza
+    - fastfetch
+    - fd
+    - fdupes
+    - ffmpeg
+    - findutils
+    - fzf
+    - fx
+    - gawk
+    - gh
+    - ghostscript
+    - git-absorb
+    - glow
+    - gnu-sed
+    - gnu-tar
+    - gnu-which
+    - grep
+    - gzip
+    - httpie
+    - iftop
+    - jq
+    - jo
+    - kpcli
+    - lame
+    - less
+    - markdown
+    - moreutils
+    - mtr
+    - nmap
+    - ocrmypdf
+    - p7zip
+    - par
+    - pdfgrep
+    - pwgen
+    - qpdf
+    - qsv
+    - rdfind
+    - rename
+    - ripgrep
+    - rpm2cpio
+    - rsync
+    - shellcheck
+    - shellharden
+    - shfmt
+    - tidy-html5
+    - tree
+    - trippy
+    - trurl
+    - watch
+    - wget
+    - yamllint
+    - yt-dlp
+
+pkg_mgr_gui:
+  casks:
+    - expressions
+    - fantastical
+    - firefox
+    - ghostty
+    - iina
+    - keepassxc
+    - keepingyouawake
+    - libreoffice
+    - maccy
+    - multipass
+    - mullvadvpn
+    - musicbrainz-picard
+    - netnewswire
+    - notesnook
+    - numi
+    - pearcleaner
+    - plexamp
+    - ppsspp
+    - signal
+    - sony-ps-remote-play
+    - spotify
+    - transmission
+    - transmit
+    - utm
+    - vlc
+    - zoom
+  mas:
+    - 1320666476  # Wipr Safari extension
+    - 1555925018  # Genki Arcade
+    - 1569813296  # 1Password Safari extension
+    - 1591303229  # Vinegar Safari extension
+    - 1622835804  # Kagi Safari extension
