@@ -1,0 +1,44 @@
+---
+
+- name: "Install gpg keys"
+  ansible.builtin.rpm_key:
+    key: "{{ item['gpgkey'] }}"
+    state: present
+  loop: "{{ pkg_mgr_repos['base'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+
+- name: "Add repositories"
+  ansible.builtin.yum_repository: "{{ item }}"  # noqa: args[module]
+  loop: "{{ pkg_mgr_repos['base'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  become: true
+
+- name: "Refresh packages"
+  ansible.builtin.dnf5:
+    name: "*"
+    update_cache: true
+    state: latest  # noqa: package-latest
+  become: true
+
+- name: "Install cli packages"
+  ansible.builtin.dnf5:
+    name: "{{ pkg_mgr_cli['base'] }}"
+    state: present
+  become: true
+
+- name: "Install gui packages"
+  ansible.builtin.dnf5:
+    name: "{{ pkg_mgr_gui['base'] | default([]) }}"
+    state: present
+  when: pkg_mgr_desktop_present
+  become: true
+
+- name: "Install desktop packages"
+  ansible.builtin.dnf5:
+    name: "{{ pkg_mgr_gui[pkg_mgr_current_desktop] | default([]) }}"
+    state: present
+  when: pkg_mgr_desktop_present
+  become: true

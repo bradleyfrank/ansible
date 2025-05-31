@@ -4,7 +4,10 @@
   ansible.builtin.include_tasks:
     file: "{{ ansible_facts['system'] }}.yml"
 
-- name: "Build `bat` cache"
+- name: "Post-install commands"
   ansible.builtin.command:
-    cmd: "{{ pkg_mgr_bat_exec }} cache --build"
+    cmd: "{{ item['cmd'] }}"
+  loop: "{{ pkg_mgr_post_install_commands }}"
+  loop_control:
+    label: "{{ item['label'] }}"
   changed_when: true

@@ -1,5 +1,7 @@
 ---
 
+_bat_exec: "/opt/homebrew/bin/bat"
+
 tmux_clipboard: "pbcopy"
 system_macos_launchd: {}
 
@@ -129,6 +131,11 @@ system_macos_defaults:
     key: "appswitcher-all-displays"
     type: "bool"
     value: "true"
+  - name: "[Window Manager] Disable tiled windows margin"
+    domain: "com.apple.WindowManager"
+    key: "EnableTiledWindowMargins"
+    type: "bool"
+    value: "false"
 
   - name: "[Screenshots] Save to ~/Downloads"
     domain: "com.apple.screencapture"
@@ -356,14 +363,12 @@ system_macos_defaults:
     type: "bool"
     value: "true"
 
-pkg_mgr_packages:
-  taps: []
+pkg_mgr_cli:
   formulas:
     - argc
     - asciinema
     - atuin
     - atool
-    - bandwhich
     - bash
     - bash-completion@2
     - bat
@@ -371,7 +376,6 @@ pkg_mgr_packages:
     - bcal
     - cabextract
     - coreutils
-    - csvlens
     - diceware
     - dict
     - dua-cli
@@ -411,7 +415,6 @@ pkg_mgr_packages:
     - p7zip
     - par
     - pdfgrep
-    - prettyping
     - pwgen
     - qpdf
     - qsv
@@ -423,7 +426,6 @@ pkg_mgr_packages:
     - shellcheck
     - shellharden
     - shfmt
-    - slides
     - tidy-html5
     - tree
     - trippy
@@ -432,14 +434,14 @@ pkg_mgr_packages:
     - wget
     - yamllint
     - yt-dlp
+
+pkg_mgr_gui:
   casks:
-    - calibre
     - expressions
     - fantastical
     - firefox
     - ghostty
     - iina
-    - ghostty
     - keepassxc
     - keepingyouawake
     - libreoffice
@@ -448,7 +450,6 @@ pkg_mgr_packages:
     - mullvadvpn
     - musicbrainz-picard
     - netnewswire
-    - nextcloud
     - notesnook
     - numi
     - pearcleaner
@@ -457,12 +458,10 @@ pkg_mgr_packages:
     - signal
     - sony-ps-remote-play
     - spotify
-    - tor-browser
     - transmission
     - transmit
     - utm
     - vlc
-    - waterfox
     - zoom
   mas:
     - 1320666476  # Wipr Safari extension
@@ -470,5 +469,3 @@ pkg_mgr_packages:
     - 1569813296  # 1Password Safari extension
     - 1591303229  # Vinegar Safari extension
     - 1622835804  # Kagi Safari extension
-
-pkg_mgr_homebrew_casks_install_options: ["no-quarantine"]
