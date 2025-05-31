@@ -4,10 +4,11 @@ system_linux_dconf:
   - path: "/org/gnome"
     keys:
       calendar/follow-night-light: "false"
+      clock-show-weekday: "true"
       shell/disable-user-extensions: "false"
       system/location/enabled: "true"
-      settings-daemon/plugins/color/night-light-enabled: "true"
-      settings-daemon/plugins/color/night-light-schedule-automatic: "true"
+      night-light-enabled: "true"
+      night-light-schedule-automatic: "true"
   - path: "/org/gnome/nautilus"
     keys:
       list-view/default-zoom-level: "'small'"
