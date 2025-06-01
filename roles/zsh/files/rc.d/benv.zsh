@@ -86,7 +86,6 @@ benv_activate() {
   local virtualenv project_dir requirements; eval "$(benv_get_venv_dir)"
 
   # Create the virtualenv if necessary
-  set -x
   if [[ ! -d "$virtualenv" ]]; then
     rm --recursive --force "$virtualenv"
     mkdir --parents "${virtualenv}/venv"
@@ -94,7 +93,6 @@ benv_activate() {
     benv_msg "creating" "$virtualenv" "$project_dir"
     virtualenv --quiet "${virtualenv}/venv" "$@"
   fi
-  set +x
 
   benv_msg "activating" "$virtualenv" "$project_dir"
   source "${virtualenv}/venv/bin/activate"
