@@ -116,7 +116,8 @@ done
 
 if [ -z "$SKIP_BOOTSTRAP" ]; then
   printf "Enter hostname [%s]: " "$SYSTEM_HOSTNAME"
-  read -r SYSTEM_HOSTNAME
+  read -r read_system_hostname
+  SYSTEM_HOSTNAME="${read_system_hostname:-${SYSTEM_HOSTNAME}}"
 
   case $(uname -s) in
     Darwin) bootstrap_mac ;;
