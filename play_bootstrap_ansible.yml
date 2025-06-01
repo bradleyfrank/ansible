@@ -30,18 +30,9 @@
       loop: "{{ galaxy_collections }}"
       tags: [collections]
 
-    - name: "Check if host_vars already exists"
-      ansible.builtin.stat:
-        path: "{{ host_vars_yml }}"
-      register: stat_host_vars_yml
-      tags: [host_vars]
-
-    - name: "Skip remaining tasks if host_vars exist"
-      when: stat_host_vars_yml['stat']['exists']
-      ansible.builtin.meta: end_play
-
     - name: "Template host_vars file"
       ansible.builtin.template:
+        backup: true
         src: "host_vars.yml.j2"
         dest: "{{ host_vars_yml }}"
         mode: "0644"
