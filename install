@@ -41,14 +41,13 @@ bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   sudo scutil --set HostName "$SYSTEM_HOSTNAME"
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
-  1PASSWORD_GRAPHICAL_INSTALL=1
+  ONEPASSWORD_GRAPHICAL_INSTALL=1
   ID=macos install_homebrew
   brew install python3 git
 }
 
 
 bootstrap_linux() {
-  pgrep systemd-inhibit >/dev/null || (sudo systemd-inhibit sleep infinity &)
   sudo hostnamectl set-hostname "$SYSTEM_HOSTNAME"
   sudo systemctl stop packagekit
   . /etc/os-release
@@ -67,8 +66,8 @@ bootstrap_linux() {
     *) exit 1 ;;
   esac
 
-  if [[ -n $XDG_CURRENT_DESKTOP ]]; then
-    1PASSWORD_GRAPHICAL_INSTALL=1
+  if [ -n "$XDG_CURRENT_DESKTOP" ]; then
+    ONEPASSWORD_GRAPHICAL_INSTALL=1
   fi
 
   case $(uname -m) in (aarch*|arm*)
@@ -161,7 +160,7 @@ fi
 
 
 # setting extra-vars bypasses vars_prompt in the playbook
-if [[ -n $1PASSWORD_GRAPHICAL_INSTALL ]]; then
+if [ -n "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
   EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
   EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
   EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
