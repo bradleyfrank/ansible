@@ -4,7 +4,7 @@ ssh_config:
   - host: "memory-alpha"
     args:
       HostName: "192.168.1.40"
-      IdentityFile: "~/.ssh/id_ed25519"
+      ForwardAgent: "yes"
   - host: "rsync.net"
     args:
       HostName: "de3481b.rsync.net"
@@ -12,6 +12,7 @@ ssh_config:
   - host: "*"
     args:
       User: "{{ ansible_facts['user_id'] }}"
+      SetEnv: "TERM=xterm-256color"
       IdentitiesOnly: "yes"
       CanonicalizeHostname: "yes"
       ServerAliveCountMax: "4"

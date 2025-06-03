@@ -4,11 +4,6 @@ ssh_packages: "{{ ssh_packages_defaults[ansible_facts['system']] }}"
 ssh_manage_config: true
 ssh_harden_security: true
 
-ssh_config:
-  - host: "*"
-    args:
-      User: "{{ ansible_facts['user_id'] }}"
-
 ssh_keys:
   id_rsa:
     type: "rsa"
