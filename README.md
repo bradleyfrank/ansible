@@ -8,12 +8,9 @@ Because these playbooks are meant to be run locally instead of over SSH, the inv
 
 ## Running the Playbooks
 
-> [!NOTE]
-> * Upon completion, a full reboot is recommended for a clean shell.
-> * On macOS, in order to install apps via `mas`, log in to the App Store prior to running.
-
-1. Clone the repository locally
-2. `cd` into the git repo and run `sh install`
+1. On macOS, authenticate to the App Store (required if using `mas`)
+2. Clone the repository locally
+3. `cd` into the git repo and run `sh install`
 
 > [!TIP]
 > Run `sh install -h` to show available script flags
@@ -27,6 +24,9 @@ Because these playbooks are meant to be run locally instead of over SSH, the inv
 3. **Initialize 1Password**: the user is prompted for 1Password credentials, Ansible authenticates with the option of using the GUI or just the CLI version. A new entry is created for the host machine under the category `SERVER`.
 
 4. **System bootstrap**: runs the `play_all_roles` playbook which includes all roles and tasks, specifically `all,never` to target tasks where idompotence isn't desireable (e.g. completely resetting a dock).
+
+> [!NOTE]
+> Upon completion, a full reboot is recommended for a clean shell.
 
 ## Managing Dotfiles
 
