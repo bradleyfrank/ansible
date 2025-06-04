@@ -31,3 +31,6 @@ Because these playbooks are meant to be run locally instead of over SSH, the inv
 ## Managing Dotfiles
 
 Run the playbook `play_dots`. Tasks that fall under dotfile management are tagged with `dots`. Add the tag `moredots` to include additional tasks that are complimentary to dotfile management.
+
+> [!TIP]
+> A Makefile is provided to use frequently used playbook settings; e.g. `make dots`
