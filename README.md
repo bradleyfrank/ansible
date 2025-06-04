@@ -8,22 +8,9 @@ Because these playbooks are meant to be run locally instead of over SSH, the inv
 
 ## Running the Playbooks
 
-On macOS, in order to install apps via `mas`, log in to the App Store prior to running. Then download and run the install script:
-
-    ```shell
-    curl -sO https://dotfiles.franklybrad.com/install
-    sh install
-    ```
-
-> [!TIP]
-> Upon completion, a full reboot is recommended for a clean shell.
-
-> [!TIP]
-> Check the `install` script for environment variables that can be set prior to running.
-> e.g. `ANSIBLE_REPO_BRANCH=develop sh install`
-
-> [!IMPORTANT]
-> Do not pipe `curl` into `sh` as Ansible won't run in interactive mode and will skip setup prompts.
+> [!NOTE]
+> * Upon completion, a full reboot is recommended for a clean shell.
+> * On macOS, in order to install apps via `mas`, log in to the App Store prior to running.
 
 ### Setup Workflow
 
