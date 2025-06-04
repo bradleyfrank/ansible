@@ -38,7 +38,7 @@ bootstrap_mac() {
   export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ONEPASSWORD_GRAPHICAL_INSTALL=1
   ID=macos install_homebrew
-  brew install python3 git
+  brew install python3
 }
 
 
@@ -51,12 +51,12 @@ bootstrap_linux() {
     fedora)
       sudo dnf clean all
       sudo dnf makecache
-      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git
+      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc
       ;;
     debian|ubuntu|linuxmint)
       sudo apt-get clean
       sudo apt-get update
-      sudo apt-get install -y python3 python3-pip python3-venv git lsb-release
+      sudo apt-get install -y python3 python3-pip python3-venv lsb-release
       ;;
     *) exit 1 ;;
   esac

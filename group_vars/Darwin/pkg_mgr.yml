@@ -30,6 +30,7 @@ pkg_mgr_cli:
     - gawk
     - gh
     - ghostscript
+    - git
     - git-absorb
     - glow
     - gnu-sed
