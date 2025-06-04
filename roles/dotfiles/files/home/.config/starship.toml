@@ -1,13 +1,13 @@
 '$schema' = 'https://starship.rs/config-schema.json'
 
 format = """
-[\\[](fg:base01)\
+[\\[](bold fg:base01)\
 $hostname\
 $python\
 $directory\
 $git_branch\
 $git_status\
-[\\]](fg:base01)\n \
+[\\]](bold fg:base01)\n \
 󱞪 $status\
 $character\
 """
@@ -31,11 +31,11 @@ success_symbol = '[%](fg:green)'
 error_symbol = '[%](fg:red)'
 
 [directory]
-format = '[](fg:base2)[ $path]($style)[](fg:base2)'
+format = '[](fg:base2)[$path]($style)[](fg:base2)'
 repo_root_format = """
 [](fg:base2)\
 [$before_root_path]($before_repo_root_style)\
-[ $repo_root]($repo_root_style)\
+[$repo_root]($repo_root_style)\
 [$path](bg:base2 fg:base01)\
 [](fg:base2) \
 """
@@ -49,9 +49,8 @@ truncation_symbol = ''
 '~/Development' = '~/Dev'
 
 [git_branch]
-format = '[](fg:base2)[$symbol $branch]($style)[](fg:base2)'
+format = '[](fg:base2)[$branch]($style)[](fg:base2)'
 style = 'bg:base2 fg:green'
-symbol = ''
 
 [git_status]
 disabled = false

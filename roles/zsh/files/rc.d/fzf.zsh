@@ -13,4 +13,5 @@ typeset -a __eza_opts=(
 export FZF_DEFAULT_OPTS_FILE="${HOME}/.config/fzf/config"
 
 zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:*' fzf-flags --height=~100%  # resolves problem with single line results list
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "eza ${(j' ')__eza_opts} $realpath"
