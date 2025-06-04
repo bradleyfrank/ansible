@@ -43,8 +43,11 @@ bootstrap_mac() {
 
 
 bootstrap_linux() {
+  if sudo systemctl is-active packagekit.service --quiet; then
+    sudo systemctl stop packagekit
+  fi
+
   sudo hostnamectl set-hostname "$SYSTEM_HOSTNAME"
-  sudo systemctl stop packagekit
   . /etc/os-release
 
   case "$ID" in
