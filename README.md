@@ -12,9 +12,15 @@ Because these playbooks are meant to be run locally instead of over SSH, the inv
 > * Upon completion, a full reboot is recommended for a clean shell.
 > * On macOS, in order to install apps via `mas`, log in to the App Store prior to running.
 
+1. Clone the repository locally
+2. `cd` into the git repo and run `sh install`
+
+> [!TIP]
+> Run `sh install -h` to show available script flags
+
 ### Setup Workflow
 
-1. **Bootstrap the OS:** the `install` script installs the necessary packages to check out the repository and run Ansible; this includes Homebrew (excluding ARM systems), Python, and Git. _This script requires `sudo` access on Linux only._
+1. **Bootstrap the OS:** the `install` script installs necessary packages to setup and run Ansible; this includes e.g. Homebrew, Python, and Git. _This script requires `sudo` access on Linux only._
 
 2. **Bootstrap Ansible**: this playbook installs the necessary Ansible collections, and creates a host YAML file that is pre-filled with global variables (used as default values in roles).
 
