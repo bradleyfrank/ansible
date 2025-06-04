@@ -43,10 +43,10 @@ linux_update() {
       sudo dnf list installed >> "$INSTALLED_PACKAGES"
       if ! sudo dnf needs-restarting -r; then RESTART_NEEDED=1; fi
       ;;
-    debian|ubuntu|linuxmint|pop)
+    debian|ubuntu|linuxmint)
       sudo apt-get clean
       sudo apt-get update --yes
-      sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade
+      sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes
       sudo dpkg --list | grep --extended-regexp "^ii" | awk '{print $2}' >> "$INSTALLED_PACKAGES"
       if [[ -e /var/run/reboot-required ]]; then RESTART_NEEDED=1; fi
       ;;
@@ -101,6 +101,7 @@ fi
 if [[ -f ~/.config/zsh/rc.d/benv.zsh ]]; then
   _hr "CLEANUP: VIRTUALENV"
   source ~/.config/zsh/rc.d/benv.zsh
+  benv list
   benv cleanup
 fi
 
