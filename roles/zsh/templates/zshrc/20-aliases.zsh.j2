@@ -9,7 +9,9 @@ alias lS='lz --sort size'
 unalias run-help &> /dev/null || true
 alias help='run-help'  # help topics path set via $HELPDIR
 
-{% if ansible_facts['os_family'] == "Debian" -%} alias bat='batcat' {%- endif %}
+{% if ansible_facts['os_family'] == "Debian" %}
+alias bat='batcat'
+{% endif %}
 alias cp='cp -i'
 alias dig='dig +noall +answer'
 alias dirdiff='git diff --no-index'
