@@ -1,11 +1,15 @@
 ---
 
 - name: "Install Homebrew taps"
+  environment:
+    PATH: "{{ global_homebrew_prefix }}:{{ ansible_facts['env']['PATH'] }}"
   community.general.homebrew_tap:
     name: "{{ pkg_mgr_repos['taps'] | default([]) }}"
   tags: [never, taps]
 
 - name: "Install Homebrew formulas"
+  environment:
+    PATH: "{{ global_homebrew_prefix }}:{{ ansible_facts['env']['PATH'] }}"
   community.general.homebrew:
     name: "{{ pkg_mgr_cli['formulas'] | default([]) }}"
     force_formula: true
