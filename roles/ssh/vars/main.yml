@@ -1,8 +1,11 @@
 ---
 
-ssh_packages:
-  Darwin: [keychain, ssh-copy-id]
-  Linux: [keychain]
+ssh_packages_defaults:
+  Darwin:
+    - keychain
+    - ssh-copy-id
+  Linux:
+    - keychain
 
 ssh_1password_agent_sock:
   Darwin: "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
