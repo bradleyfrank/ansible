@@ -79,7 +79,7 @@ bootstrap_linux() {
 
 
 scratch_bootstrap() {
-  rm -rf "$ANSIBLE_REPO_PATH" "${HOME}/.ssh"
+  rm -rf "$ANSIBLE_REPO_PATH" "${HOME}/.ssh" "${HOME}/.op_session"
 
   export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:${PATH}"
   [ -x op ] || return 0
@@ -160,9 +160,12 @@ if [ -n "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
   EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
 fi
 
-ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
+
+if [ ! -s "${HOME}/.op_session" ]; then
+  ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
+fi
+
+
 . "${HOME}/.op_session"
-rm -f "${HOME}/.op_session"
-
-
 ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
+rm -f "${HOME}/.op_session"
