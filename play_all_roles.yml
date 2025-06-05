@@ -17,6 +17,7 @@
 
     - ansible.builtin.import_role:
         name: "desktop"
+      when: global_is_desktop_system
       tags: [desktop]
 
     - ansible.builtin.import_role:
