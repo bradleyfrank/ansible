@@ -128,6 +128,7 @@ export PATH="$(python3 -m site --user-base)/bin:${PATH}"
 export ANSIBLE_PYTHON_INTERPRETER="venv/bin/python3"
 export ANSIBLE_HOME="${HOME}/.config/ansible"
 
+git pull
 
 if [ ! -d venv ]; then
   python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora

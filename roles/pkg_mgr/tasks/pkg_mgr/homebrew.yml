@@ -14,6 +14,8 @@
   tags: [never, formulas]
 
 - name: "Install Homebrew casks"
+  environment:
+    PATH: "{{ global_homebrew_prefix }}:{{ ansible_facts['env']['PATH'] }}"
   community.general.homebrew_cask:
     name: "{{ pkg_mgr_gui['casks'] | default([]) }}"
     accept_external_apps: "{{ pkg_mgr_homebrew_casks_external }}"
