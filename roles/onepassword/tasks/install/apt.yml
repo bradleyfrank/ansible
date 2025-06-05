@@ -1,7 +1,7 @@
 ---
 
 - name: "Install 1Password repository"
-  ansible.builtin.deb822_repository: "{{ onepassword_linux_repo }}"
+  ansible.builtin.deb822_repository: "{{ onepassword_linux_repo }}"  # noqa: args[module]
   become: true
   tags: [repos]
 

@@ -10,7 +10,7 @@
   tags: [docker, never]
 
 - name: "Add repositories"
-  ansible.builtin.deb822_repository: "{{ docker_repos }}"
+  ansible.builtin.deb822_repository: "{{ docker_repos }}"  # noqa: args[module]
   become: true
   tags: [docker, never]
 

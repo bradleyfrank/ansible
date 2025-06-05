@@ -8,7 +8,7 @@
   tags: [repos]
 
 - name: "Install repository"
-  ansible.builtin.yum_repository: "{{ onepassword_linux_repo }}"
+  ansible.builtin.yum_repository: "{{ onepassword_linux_repo }}"  # noqa: args[module]
   become: true
   tags: [repos]
 
