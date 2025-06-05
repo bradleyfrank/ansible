@@ -5,6 +5,7 @@ set -o errexit
 
 SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+ANSIBLE_SKIP_TAGS=""
 EXTRA_VARS=""
 
 
@@ -59,12 +60,13 @@ bootstrap_linux() {
     debian|ubuntu|linuxmint)
       sudo apt-get clean
       sudo apt-get update
-      sudo apt-get install -y python3 python3-pip python3-venv lsb-release rsync
+      sudo apt-get install -y python3 python3-pip python3-venv lsb-release rsync curl
       ;;
     *) exit 1 ;;
   esac
 
   if [ -n "$XDG_CURRENT_DESKTOP" ]; then
+    ANSIBLE_SKIP_TAGS="${ANSIBLE_SKIP_TAGS} desktop"
     ONEPASSWORD_GRAPHICAL_INSTALL=1
   fi
 
@@ -168,5 +170,8 @@ fi
 
 
 . "${HOME}/.op_session"
-ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
+ansible-playbook play_all_roles.yml \
+  --ask-become-pass \
+  --tags "all,never" \
+  --skip-tags "$ANSIBLE_SKIP_TAGS"
 rm -f "${HOME}/.op_session"

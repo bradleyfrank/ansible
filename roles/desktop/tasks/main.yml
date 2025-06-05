@@ -5,6 +5,7 @@
     name: "{{ desktop_packages }}"
     state: present
   become: "{{ true if ansible_facts['system'] == 'Linux' else false }}"
+  when: desktop_has_desktop
   tags: [install, fonts, icons]
 
 - name: "Reset macOS dock"
