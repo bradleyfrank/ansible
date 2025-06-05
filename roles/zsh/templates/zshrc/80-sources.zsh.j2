@@ -13,4 +13,4 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
-source {{ zsh_rcd_dir }}/*(.)
+for zshrc in {{ zsh_rcd_dir }}/*; do source "$zshrc"; done

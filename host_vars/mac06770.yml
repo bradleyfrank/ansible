@@ -5,6 +5,7 @@ global_is_desktop_system: true
 global_desktop_environment: ""
 global_homebrew_prefix: "/opt/homebrew"
 global_onepassword_vault: "Employee"
+global_use_1password_ssh_agent: true
 
 desktop_app_paths:
   - "/Applications"

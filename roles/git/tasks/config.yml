@@ -4,7 +4,7 @@
   ansible.builtin.file:
     path: "{{ git_global_config_dir }}"
     state: directory
-    mode: "0640"
+    mode: "0744"
 
 - name: "Template gitconfig"
   vars:

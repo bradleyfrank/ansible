@@ -10,6 +10,13 @@ export GH_PAGER=glow
 export GLOW_STYLE="${HOME}/.config/glow/themes/solarized-light.json"
 export LESS="-R --mouse"
 
+# ssh settings
+{% if (ansible_facts['system'] == "Darwin") and ssh_use_1password_agent %}
+export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{% elif (ansible_facts['system'] == "Linux") and ssh_use_1password_agent %}
+export SSH_AUTH_SOCK="${HOME}/.1password/agent.sock"
+{% endif %}
+
 # Homebrew settings
 export HOMEBREW_CELLAR={{ global_homebrew_prefix }}/Cellar
 export HOMEBREW_NO_AUTO_UPDATE=1
