@@ -1,12 +1,18 @@
 ---
 
+- name: "Enumerate services"
+  ansible.builtin.service_facts:
+  become: true
+  tags: [apt, dnf]
+
 - name: "Stop packagekit"
   ansible.builtin.systemd:
-    name: "packagekit"
+    name: "packagekit.service"
     state: stopped
     enabled: false
   become: true
   notify: Start packagekit
+  when: "'packagekit.service' in ansible_facts['services']"
   tags: [apt, dnf]
 
 - name: "Include OS package manager tasks"
