@@ -152,21 +152,19 @@ if [ ! -s "$HOST_VARS" ]; then
 fi
 
 
-if [ -n "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
-  # setting extra-vars bypasses vars_prompt in the playbook
-  EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
-  EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
-  EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
-  EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
-fi
-
-
 if op account list >/dev/null 2>&1; then
   if [ -z "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
     # 1Password-cli session token only has 30min TTL; refresh
     op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
   fi
 else
+  if [ -n "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
+    # setting extra-vars bypasses vars_prompt in the playbook
+    EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
+    EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
+    EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
+    EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
+  fi
   ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
 fi
 
