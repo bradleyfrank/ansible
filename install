@@ -6,6 +6,7 @@ set -o errexit
 SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
 EXTRA_VARS=""
+PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:${PATH}"; export $PATH
 
 
 usage() {
@@ -35,7 +36,6 @@ install_homebrew() {
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   sudo scutil --set HostName "$SYSTEM_HOSTNAME"
-  export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ONEPASSWORD_GRAPHICAL_INSTALL=1
   ID=macos install_homebrew
   brew install python3
@@ -81,8 +81,7 @@ bootstrap_linux() {
 scratch_bootstrap() {
   rm -rf "$ANSIBLE_REPO_PATH" "${HOME}/.ssh" "${HOME}/.op_session"
 
-  export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:${PATH}"
-  [ -x op ] || return 0
+  which op >/dev/null 2>&1 || return 0
 
   if ! op account get >/dev/null 2>&1; then
     eval "$(op signin)"
@@ -162,11 +161,14 @@ if [ -n "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
 fi
 
 
-if [ ! -s "${HOME}/.op_session" ]; then
-  ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
+if op account list >/dev/null 2>&1; then
+  eval $(op signin)
+else
+  ansible-playbook play_init_onepassword.yml \
+    --ask-become-pass --extra-vars "$EXTRA_VARS"
 fi
 
 
 . "${HOME}/.op_session"
-ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
 rm -f "${HOME}/.op_session"
+ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
