@@ -38,7 +38,6 @@ pkg_mgr_cli:
     - freeze
     - fwupd
     - fzf
-    - gh  # comes from 'githubcli' repo
     - ghostscript
     - glow  # 'charm' repo
     - htop
