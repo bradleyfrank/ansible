@@ -162,10 +162,9 @@ fi
 
 
 if op account list >/dev/null 2>&1; then
-  eval $(op signin)
+  op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
 else
-  ansible-playbook play_init_onepassword.yml \
-    --ask-become-pass --extra-vars "$EXTRA_VARS"
+  ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
 fi
 
 
