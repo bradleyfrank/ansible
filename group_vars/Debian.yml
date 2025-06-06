@@ -12,12 +12,6 @@ pkg_mgr_repos:
       suites: ["*"]
       enabled: true
       signed_by: "https://apt.fury.io/charmcli/gpg.key"
-    - name: "githubcli"
-      uris: ["https://cli.github.com/packages"]
-      components: ["main"]
-      suites: ["stable"]
-      enabled: true
-      signed_by: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
     - name: "backports"
       uris: "http://deb.debian.org/debian"
       components: ["main"]
