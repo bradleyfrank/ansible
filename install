@@ -3,11 +3,10 @@
 
 set -o errexit
 
+EXTRA_VARS=""
 SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-EXTRA_VARS=""
 PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:${PATH}"; export PATH
-
 
 usage() {
   echo "install: system and Ansible bootstrap script"
@@ -17,10 +16,14 @@ usage() {
   echo "OPTIONS:"
   echo "  -h  Show help and exit"
   echo "  -r  Resume an interrupted Ansible run"
-  echo "  -s  Cleanup a previous bootstrap and start fresh"
   echo "  -w  Skip Homebrew install on Linux (noop for macOS)"
   echo
 }
+
+
+# -------------------------------------
+# Bootstrap functions
+# -------------------------------------
 
 
 install_homebrew() {
@@ -36,7 +39,7 @@ install_homebrew() {
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   sudo scutil --set HostName "$SYSTEM_HOSTNAME"
-  ONEPASSWORD_GRAPHICAL_INSTALL=1
+  ONEPASSWORD_USE_GUI=1
   ID=macos install_homebrew
   brew install python3
 }
@@ -65,7 +68,7 @@ bootstrap_linux() {
   esac
 
   if [ -n "$XDG_CURRENT_DESKTOP" ]; then
-    ONEPASSWORD_GRAPHICAL_INSTALL=1
+    ONEPASSWORD_USE_GUI=1
   fi
 
   case $(uname -m) in (aarch*|arm*)
@@ -78,37 +81,83 @@ bootstrap_linux() {
 }
 
 
-scratch_bootstrap() {
-  rm -rf "$ANSIBLE_REPO_PATH" "${HOME}/.ssh" "${HOME}/.op_session"
+# -------------------------------------
+# Main functions
+# -------------------------------------
 
-  which op >/dev/null 2>&1 || return 0
 
-  if ! op account get >/dev/null 2>&1; then
-    eval "$(op signin)"
+main_setup_venv() {
+  export PATH="$(python3 -m site --user-base)/bin:${PATH}"
+  export ANSIBLE_PYTHON_INTERPRETER="venv/bin/python3"
+  export ANSIBLE_HOME="${HOME}/.config/ansible"
+
+  git pull
+
+  if [ ! -d venv ]; then
+    python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
   fi
 
-  op_item_list="$(mktemp)"
-
-  op item list --categories SERVER \
-    | grep "$(uname -n)" \
-    | awk '{print $1}' > "$op_item_list"
-
-  while read -r item_id; do
-    op item delete "$item_id" --archive
-  done < "$op_item_list"
+  . venv/bin/activate
+  pip install --no-cache-dir --requirement requirements.txt
 }
 
 
-while getopts "hrsw" opt; do
+main_build_host_vars() {
+  HOST_VARS="host_vars/${SYSTEM_HOSTNAME}.yml"
+
+  if [ ! -s "$HOST_VARS" ]; then
+    ansible-playbook play_bootstrap_ansible.yml
+    # reminder: these grep flags are BSD-compatible
+    grep "^(#|-|$)" roles/*/defaults/main.yml \
+      --invert-match \
+      --no-filename \
+      --extended-regexp \
+      --color=never \
+      | sed "s/^/# /g" >> "${HOST_VARS}"
+    vi "$HOST_VARS"
+  fi
+}
+
+
+main_initialize_onepassword() {
+  if op account list >/dev/null 2>&1; then
+    if [ -z "$ONEPASSWORD_USE_GUI" ]; then
+      # 1Password-cli session token only has 30min TTL; refresh
+      op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
+    fi
+  else
+    if [ -n "$ONEPASSWORD_USE_GUI" ]; then
+      # setting extra-vars bypasses vars_prompt in the playbook
+      EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
+      EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
+      EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
+      EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
+    fi
+    ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
+  fi
+}
+
+
+main_play_all_roles() {
+  . "${HOME}/.op_session"
+  rm -f "${HOME}/.op_session"
+  ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
+}
+
+
+# -------------------------------------
+# Main script
+# -------------------------------------
+
+
+while getopts "hrw" opt; do
   case "$opt" in
     h) usage; exit 0 ;;
     r) SKIP_BOOTSTRAP=true ;;
-    s) scratch_bootstrap ;;
     w) SKIP_HOMEBREW_LINUX=true ;;
     *) usage; exit 1 ;;
   esac
 done
-
 
 if [ -z "$SKIP_BOOTSTRAP" ]; then
   printf "Enter hostname [%s]: " "$SYSTEM_HOSTNAME"
@@ -122,53 +171,7 @@ if [ -z "$SKIP_BOOTSTRAP" ]; then
   esac
 fi
 
-
-export PATH="$(python3 -m site --user-base)/bin:${PATH}"
-export ANSIBLE_PYTHON_INTERPRETER="venv/bin/python3"
-export ANSIBLE_HOME="${HOME}/.config/ansible"
-
-git pull
-
-if [ ! -d venv ]; then
-  python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
-fi
-
-. venv/bin/activate
-pip install --no-cache-dir --requirement requirements.txt
-
-
-HOST_VARS="host_vars/${SYSTEM_HOSTNAME}.yml"
-
-if [ ! -s "$HOST_VARS" ]; then
-  ansible-playbook play_bootstrap_ansible.yml
-  # reminder: these grep flags are BSD-compatible
-  grep "^(#|-|$)" roles/*/defaults/main.yml \
-    --invert-match \
-    --no-filename \
-    --extended-regexp \
-    --color=never \
-    | sed "s/^/# /g" >> "${HOST_VARS}"
-  vi "$HOST_VARS"
-fi
-
-
-if op account list >/dev/null 2>&1; then
-  if [ -z "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
-    # 1Password-cli session token only has 30min TTL; refresh
-    op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
-  fi
-else
-  if [ -n "$ONEPASSWORD_GRAPHICAL_INSTALL" ]; then
-    # setting extra-vars bypasses vars_prompt in the playbook
-    EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
-    EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
-    EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
-    EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
-  fi
-  ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
-fi
-
-
-. "${HOME}/.op_session"
-rm -f "${HOME}/.op_session"
-ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
+main_setup_venv
+main_build_host_vars
+main_initialize_onepassword
+main_play_all_roles
