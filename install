@@ -4,8 +4,9 @@
 set -o errexit
 
 EXTRA_VARS=""
-SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
+SYSTEM_TYPE="$(uname -s)"
 PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:${PATH}"; export PATH
 
 usage() {
@@ -24,7 +25,6 @@ usage() {
 # -------------------------------------
 # Bootstrap functions
 # -------------------------------------
-
 
 install_homebrew() {
   case "$ID" in
@@ -80,7 +80,6 @@ bootstrap_linux() {
 # Main functions
 # -------------------------------------
 
-
 main_setup_venv() {
   export PATH="$(python3 -m site --user-base)/bin:${PATH}"
   export ANSIBLE_PYTHON_INTERPRETER="venv/bin/python3"
@@ -118,13 +117,13 @@ main_initialize_onepassword() {
   if op account list >/dev/null 2>&1; then
     # 1Password is installed and callable but the cli needs to re-auth
     # due to the session token having a 30min TTL
-    if [ -z "$XDG_CURRENT_DESKTOP" ] && [ "$(uname -s)" = "Linux" ]; then
+    if [ -z "$XDG_CURRENT_DESKTOP" ] && [ "$SYSTEM_TYPE" = "Linux" ]; then
       op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
     fi
   else
-    if [ -n "$XDG_CURRENT_DESKTOP" ] || [ "$(uname -s)" = "Darwin" ]; then
-      # setting extra-vars bypasses vars_prompt in the playbook which are
-      # not used when enabling the 1Password CLI integration from the GUI
+    # setting extra-vars bypasses vars_prompt in the playbook which are
+    # not used when enabling the 1Password CLI integration from the GUI
+    if [ -n "$XDG_CURRENT_DESKTOP" ] || [ "$SYSTEM_TYPE" = "Darwin" ]; then
       EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
       EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
       EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
@@ -146,12 +145,11 @@ main_play_all_roles() {
 # Main script
 # -------------------------------------
 
-
 while getopts "hrw" opt; do
   case "$opt" in
     h) usage; exit 0 ;;
-    r) SKIP_BOOTSTRAP=true ;;
-    w) SKIP_HOMEBREW_LINUX=true ;;
+    r) SKIP_BOOTSTRAP=1 ;;
+    w) SKIP_HOMEBREW_LINUX=1 ;;
     *) usage; exit 1 ;;
   esac
 done
@@ -161,7 +159,7 @@ if [ -z "$SKIP_BOOTSTRAP" ]; then
   read -r read_system_hostname
   SYSTEM_HOSTNAME="${read_system_hostname:-${SYSTEM_HOSTNAME}}"
 
-  case $(uname -s) in
+  case $SYSTEM_TYPE in
     Darwin) bootstrap_mac ;;
     Linux)  bootstrap_linux ;;
     *)      exit 1 ;;
