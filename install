@@ -39,7 +39,6 @@ install_homebrew() {
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   sudo scutil --set HostName "$SYSTEM_HOSTNAME"
-  ONEPASSWORD_USE_GUI=1
   ID=macos install_homebrew
   brew install python3
 }
@@ -66,10 +65,6 @@ bootstrap_linux() {
       ;;
     *) exit 1 ;;
   esac
-
-  if [ -n "$XDG_CURRENT_DESKTOP" ]; then
-    ONEPASSWORD_USE_GUI=1
-  fi
 
   case $(uname -m) in (aarch*|arm*)
     SKIP_HOMEBREW_LINUX=1 ;;  # https://github.com/Homebrew/brew/issues/19208
@@ -121,13 +116,15 @@ main_build_host_vars() {
 
 main_initialize_onepassword() {
   if op account list >/dev/null 2>&1; then
-    if [ -z "$ONEPASSWORD_USE_GUI" ]; then
-      # 1Password-cli session token only has 30min TTL; refresh
+    # 1Password is installed and callable but the cli needs to re-auth
+    # due to the session token having a 30min TTL
+    if [ -z "$XDG_CURRENT_DESKTOP" ] && [ "$(uname -s)" = "Linux" ]; then
       op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
     fi
   else
-    if [ -n "$ONEPASSWORD_USE_GUI" ]; then
-      # setting extra-vars bypasses vars_prompt in the playbook
+    if [ -n "$XDG_CURRENT_DESKTOP" ] || [ "$(uname -s)" = "Darwin" ]; then
+      # setting extra-vars bypasses vars_prompt in the playbook which are
+      # not used when enabling the 1Password CLI integration from the GUI
       EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
       EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
       EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
