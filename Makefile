@@ -9,4 +9,6 @@ vim:
 	ansible-playbook play_dots.yml --tags vim --skip-tags become,install
 zsh:
 	ansible-playbook play_dots.yml --tags zsh --skip-tags become,install
-.PHONY: all dots moredots tmux vim zsh
+shellcheck:
+	shellcheck --shell sh install
+.PHONY: all dots moredots tmux vim zsh shellcheck
