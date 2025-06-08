@@ -24,12 +24,14 @@ pkg_mgr_cli:
     - apt-file
     - asciinema
     - atool
+    - atuin
     - bash-completion
     - bat
     - bcal
     - diceware
     - dictd
     - duf
+    - eza
     - fastfetch
     - fd-find
     - fdupes
@@ -63,6 +65,7 @@ pkg_mgr_cli:
     - python3-pip
     - ripgrep
     - shellcheck
+    - starship
     - strace
     - tidy
     - tlp
@@ -75,9 +78,7 @@ pkg_mgr_cli:
     - yt-dlp
   formulas:
     - argc
-    - atuin
     - bat-extras
-    - eza
     - qsv
     - yq
 
