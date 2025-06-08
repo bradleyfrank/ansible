@@ -1,8 +1,15 @@
 ---
 
 ssh_packages_defaults:
-  Darwin: [ssh-copy-id]
-  Linux: []
+  Darwin:
+    - keychain
+    - ssh-copy-id
+  Linux:
+    - keychain
+
+ssh_1password_agent_sock:
+  Darwin: "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+  Linux: "~/.1password/agent.sock"
 
 ssh_required_dirs:
   - "{{ ansible_facts['user_dir'] }}/.ssh"

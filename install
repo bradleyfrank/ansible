@@ -1,19 +1,35 @@
 #!/usr/bin/env sh
-# shellcheck disable=SC1090,SC1091
+# shellcheck disable=SC1090,SC1091,SC2155
 
 set -o errexit
 
-SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
-ANSIBLE_REPO_PATH="${HOME}/ansible.$(date +%H%M%S)"
-ANSIBLE_REPO_BRANCH="${ANSIBLE_REPO_BRANCH:-main}"
-ANSIBLE_REPO_URL="${ANSIBLE_REPO_URL:-https://github.com/bradleyfrank/ansible.git}"
-ANSIBLE_REPO_HOSTVARS="${ANSIBLE_REPO_PATH}/host_vars/${SYSTEM_HOSTNAME}.yml"
+EXTRA_VARS=""
 HOMEBREW_INSTALL_SCRIPT="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+SYSTEM_HOSTNAME="$(uname -n | sed 's|.local||g')"
+SYSTEM_TYPE="$(uname -s)"
+PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:${PATH}"; export PATH
+
+usage() {
+  echo "install: system and Ansible bootstrap script"
+  echo
+  echo "USAGE: sh install [OPTIONS]"
+  echo
+  echo "OPTIONS:"
+  echo "  -h  Show help and exit"
+  echo "  -r  Resume an interrupted Ansible run"
+  echo "  -w  Skip Homebrew install on Linux (noop for macOS)"
+  echo
+}
+
+
+# -------------------------------------
+# Bootstrap functions
+# -------------------------------------
 
 install_homebrew() {
   case "$ID" in
     fedora) sudo dnf install -y procps-ng file @development-tools python3-libdnf5 ;;
-    debian|ubuntu|linuxmint|pop) sudo apt-get install -y build-essential procps file ;;
+    debian|ubuntu|linuxmint) sudo apt-get install -y build-essential procps file ;;
     macos) sudo softwareupdate --install-rosetta ;;
   esac
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL $HOMEBREW_INSTALL_SCRIPT)"
@@ -23,29 +39,35 @@ install_homebrew() {
 bootstrap_mac() {
   pgrep caffeinate >/dev/null || (caffeinate -d -i -m -u &)
   sudo scutil --set HostName "$SYSTEM_HOSTNAME"
-  export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
   ID=macos install_homebrew
-  brew install python3 git
+  brew install python3
 }
 
 
 bootstrap_linux() {
+  if sudo systemctl is-active packagekit.service --quiet; then
+    sudo systemctl stop packagekit
+  fi
+
   sudo hostnamectl set-hostname "$SYSTEM_HOSTNAME"
-  sudo systemctl stop packagekit
   . /etc/os-release
 
   case "$ID" in
     fedora)
       sudo dnf clean all
       sudo dnf makecache
-      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc git
+      sudo dnf install -y python3 python3-devel python3-pip python3-wheel gcc
       ;;
-    debian|ubuntu|linuxmint|pop)
+    debian|ubuntu|linuxmint)
       sudo apt-get clean
       sudo apt-get update
-      sudo apt-get install -y python3 python3-pip python3-venv git lsb-release
+      sudo apt-get install -y python3 python3-pip python3-venv lsb-release rsync curl
       ;;
     *) exit 1 ;;
+  esac
+
+  case $(uname -m) in (aarch*|arm*)
+    SKIP_HOMEBREW_LINUX=1 ;;  # https://github.com/Homebrew/brew/issues/19208
   esac
 
   if [ -z "$SKIP_HOMEBREW_LINUX" ]; then
@@ -54,45 +76,101 @@ bootstrap_linux() {
 }
 
 
-case $(uname -m) in (aarch*|arm*)
-  SKIP_HOMEBREW_LINUX=1 ;;
-esac
+# -------------------------------------
+# Main functions
+# -------------------------------------
 
-printf "Enter hostname [$SYSTEM_HOSTNAME]: "
-read -r SYSTEM_HOSTNAME
+main_setup_venv() {
+  export PATH="$(python3 -m site --user-base)/bin:${PATH}"
+  export ANSIBLE_PYTHON_INTERPRETER="venv/bin/python3"
+  export ANSIBLE_HOME="${HOME}/.config/ansible"
 
-case $(uname -s) in
-  Darwin) bootstrap_mac ;;
-  Linux)  bootstrap_linux ;;
-  *)      exit 1 ;;
-esac
+  git pull
 
-git clone "$ANSIBLE_REPO_URL" "$ANSIBLE_REPO_PATH"
-cd "$ANSIBLE_REPO_PATH" >/dev/null
-git checkout "$ANSIBLE_REPO_BRANCH"
+  if [ ! -d venv ]; then
+    python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
+  fi
 
-PATH="$(python3 -m site --user-base)/bin:${PATH}"; export PATH
-python3 -m venv venv --system-site-packages  # required for selinux libs on Fedora
-. venv/bin/activate
-pip install --no-cache-dir --requirement requirements.txt
+  . venv/bin/activate
+  pip install --no-cache-dir --requirement requirements.txt
+}
 
-export ANSIBLE_PYTHON_INTERPRETER="${PWD}/venv/bin/python3"
-export ANSIBLE_HOME="${HOME}/.config/ansible"
 
-ansible-playbook play_bootstrap_ansible.yml
+main_build_host_vars() {
+  HOST_VARS="host_vars/${SYSTEM_HOSTNAME}.yml"
 
-grep "^(#|-|$)" roles/*/defaults/main.yml \
-  --invert-match \
-  --no-filename \
-  --extended-regexp \
-  --color=never \
-  | sed "s/^/# /g" >> "$ANSIBLE_REPO_HOSTVARS"
+  if [ ! -s "$HOST_VARS" ]; then
+    ansible-playbook play_bootstrap_ansible.yml
+    # reminder: these grep flags are BSD-compatible
+    grep "^(#|-|$)" roles/*/defaults/main.yml \
+      --invert-match \
+      --no-filename \
+      --extended-regexp \
+      --color=never \
+      | sed "s/^/# /g" >> "${HOST_VARS}"
+    vi "$HOST_VARS"
+  fi
+}
 
-${VISUAL:-${EDITOR:-vi}} "$ANSIBLE_REPO_HOSTVARS"
 
-ansible-playbook play_init_onepassword.yml --ask-become-pass
+main_initialize_onepassword() {
+  if op account list >/dev/null 2>&1; then
+    # 1Password is installed and callable but the cli needs to re-auth
+    # due to the session token having a 30min TTL
+    if [ -z "$XDG_CURRENT_DESKTOP" ] && [ "$SYSTEM_TYPE" = "Linux" ]; then
+      op signin --session "$(op signin --raw)" > "${HOME}/.op_session"
+    fi
+  else
+    # setting extra-vars bypasses vars_prompt in the playbook which are
+    # not used when enabling the 1Password CLI integration from the GUI
+    if [ -n "$XDG_CURRENT_DESKTOP" ] || [ "$SYSTEM_TYPE" = "Darwin" ]; then
+      EXTRA_VARS="${EXTRA_VARS} onepassword_signin_url=''"
+      EXTRA_VARS="${EXTRA_VARS} onepassword_email_address=''"
+      EXTRA_VARS="${EXTRA_VARS} onepassword_secret_key=''"
+      EXTRA_VARS="${EXTRA_VARS} onepassword_account_password=''"
+    fi
+    ansible-playbook play_init_onepassword.yml --ask-become-pass --extra-vars "$EXTRA_VARS"
+  fi
+}
 
-. "${HOME}/.op_session"
-rm -f "${HOME}/.op_session"
 
-ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
+main_play_all_roles() {
+  . "${HOME}/.op_session"
+  rm -f "${HOME}/.op_session"
+  ansible-playbook play_all_roles.yml --ask-become-pass --tags "all,never"
+}
+
+
+# -------------------------------------
+# Main script
+# -------------------------------------
+
+while getopts "hrw" opt; do
+  case "$opt" in
+    h) usage; exit 0 ;;
+    r) SKIP_BOOTSTRAP=1 ;;
+    w) SKIP_HOMEBREW_LINUX=1 ;;
+    *) usage; exit 1 ;;
+  esac
+done
+
+if [ -z "$SKIP_BOOTSTRAP" ]; then
+  printf "Enter hostname [%s]: " "$SYSTEM_HOSTNAME"
+  read -r read_system_hostname
+  SYSTEM_HOSTNAME="${read_system_hostname:-${SYSTEM_HOSTNAME}}"
+
+  case $SYSTEM_TYPE in
+    Darwin) bootstrap_mac ;;
+    Linux)  bootstrap_linux ;;
+    *)      exit 1 ;;
+  esac
+fi
+
+if [ ! -e "${HOME}/.config/ansible" ]; then
+  mkdir "${HOME}/.config/ansible"
+fi
+
+main_setup_venv
+main_build_host_vars
+main_initialize_onepassword
+main_play_all_roles

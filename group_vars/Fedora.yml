@@ -59,6 +59,7 @@ pkg_mgr_cli:
     - jq
     - jo
     - lame
+    - keychain
     - libmp4v2
     - libvirt-client
     - mkvtoolnix

@@ -1,3 +1,8 @@
 eval "$(batman --export-env)"
 eval "$(atuin init zsh)"
 eval "$(starship init zsh)"
+{% if (ansible_facts['system'] == "Darwin") and not ssh_use_1password_agent %}
+eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_keychain_keys | join(' ') }})"
+{% elif (ansible_facts['system'] == "Linux") and not ssh_use_1password_agent %}
+eval "$(keychain --eval --ignore-missing --quiet {{ ssh_keychain_keys | join(' ') }})"
+{% endif %}

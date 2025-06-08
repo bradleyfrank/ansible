@@ -8,11 +8,9 @@ source {{ global_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-hig
 {% elif ansible_facts['distribution'] == "Fedora" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
-{% else %}
+{% elif ansible_facts['os_family'] == "Debian" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
-for rc in {{ zsh_rcd_dir }}/*.zsh; do source "$rc"; done
-
-source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
+for zshrc in {{ zsh_rcd_dir }}/*; do source "$zshrc"; done

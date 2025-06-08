@@ -39,6 +39,7 @@ pkg_mgr_cli:
     - iftop
     - inxi
     - jq
+    - keychain
     - libmp4-info-perl
     - libvirt-clients
     - mkvtoolnix

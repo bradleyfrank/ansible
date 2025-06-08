@@ -7,3 +7,14 @@ Host {{ host['host'] }}
 {% endfilter %}
 
 {% endfor %}
+Host *
+  User {{ ansible_facts['user_id'] }}
+  IdentitiesOnly yes
+  CanonicalizeHostname yes
+  ServerAliveCountMax 4
+  ServerAliveInterval 15
+  SetEnv TERM=xterm-256color  # workaround for SSHing from Ghostty
+
+{% if ssh_use_1password_agent %}
+Include ~/.ssh/1Password/config
+{% endif %}

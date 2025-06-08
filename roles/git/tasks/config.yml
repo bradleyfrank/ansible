@@ -4,6 +4,7 @@
   ansible.builtin.file:
     path: "{{ git_global_config_dir }}"
     state: directory
+    mode: "0744"
 
 - name: "Template gitconfig"
   vars:
@@ -11,10 +12,10 @@
   ansible.builtin.template:
     src: "gitconfig.j2"
     dest: "{{ git_global_config_file }}"
-    mode: "0700"
+    mode: "0640"
 
 - name: "Copy gitignore"
   ansible.builtin.copy:
     src: "gitignore"
     dest: "{{ git_global_ignore_file }}"
-    mode: "0644"
+    mode: "0640"

@@ -20,5 +20,7 @@ onepassword_linux_repo:
   signed_by: "https://downloads.1password.com/linux/keys/1password.asc"
   enabled: true
 
+onepassword_repo_file: "/etc/apt/sources.list.d/1password.list"
+
 onepassword_debsig_url: "https://downloads.1password.com/linux/debian/debsig/1password.pol"
 onepassword_debsig_dir: "/etc/debsig/policies/AC2D62742012EA22"

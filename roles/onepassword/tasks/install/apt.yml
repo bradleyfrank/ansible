@@ -1,7 +1,7 @@
 ---
 
 - name: "Install 1Password repository"
-  ansible.builtin.deb822_repository: "{{ onepassword_linux_repo }}"
+  ansible.builtin.deb822_repository: "{{ onepassword_linux_repo }}"  # noqa: args[module]
   become: true
   tags: [repos]
 
@@ -47,3 +47,10 @@
   become: true
   when: onepassword_use_gui_integration
   tags: [install]
+
+- name: "Remove repo installed by package"
+  ansible.builtin.file:
+    path: "{{ onepassword_repo_file }}"
+    state: absent
+  become: true
+  tags: [repos]

@@ -5,6 +5,7 @@ global_is_desktop_system: true
 global_desktop_environment: ""
 global_homebrew_prefix: "/opt/homebrew"
 global_onepassword_vault: "Employee"
+global_use_1password_ssh_agent: true
 
 desktop_app_paths:
   - "/Applications"
@@ -44,8 +45,6 @@ zsh_completions:
     command: "kubectl stern --completion=zsh"
   - name: "k9s"
     command: "k9s completion zsh"
-  - name: "cht"
-    command: "curl -L https://cheat.sh/:zsh"
 
 system_macos_sleep_display: -1
 system_macos_sleep_computer: -1

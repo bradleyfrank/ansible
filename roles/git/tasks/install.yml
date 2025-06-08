@@ -8,10 +8,10 @@
       ansible.builtin.rpm_key:
         key: "{{ git_github_ghcli_repo['dnf']['gpgkey'] }}"
     - name: "Add repository (dnf)"
-      ansible.builtin.yum_repository: "{{ git_github_ghcli_repo['dnf'] }}"
+      ansible.builtin.yum_repository: "{{ git_github_ghcli_repo['dnf'] }}"  # noqa: args[module]
 
 - name: "Add repository (apt)"
-  ansible.builtin.deb822_repository: "{{ git_github_ghcli_repo['apt'] }}"
+  ansible.builtin.deb822_repository: "{{ git_github_ghcli_repo['apt'] }}"  # noqa: args[module]
   become: true
   when: ansible_facts['pkg_mgr'] == "apt"
 
