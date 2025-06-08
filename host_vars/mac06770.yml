@@ -18,20 +18,24 @@ git_clone_repos:
 
 infractl_token: "{{ lookup('community.general.onepassword', 'Infractl Token', field='credential') }}"
 
-packages_homebrew_casks:
-  - 1password
-  - 1password-cli
-  - appcleaner
-  - google-cloud-sdk
-  - itsycal
-  - keepingyouawake
-  - maccy
-  - multipass
-  - utm
-  - vlc
-  - zoom
+pkg_mgr_gui:
+  casks:
+    - 1password
+    - 1password-cli
+    - ghostty
+    - google-cloud-sdk
+    - itsycal
+    - keepingyouawake
+    - maccy
+    - multipass
+    - netnewswire
+    - numi
+    - pearcleaner
+    - vlc
+    - zoom
+  mas: []
 
-packages_mas_apps: []
+ssh_manage_config: false
 
 zsh_completions:
   - name: "kubectl"

@@ -3,5 +3,6 @@
 pkg_mgr_current_desktop: "{{ global_desktop_environment | default('none') }}"
 pkg_mgr_desktop_present: "{{ global_is_desktop_system | default(false) }}"
 pkg_mgr_packagekit_enabled: true
+pkg_mgr_homebrew_bin_path: "{{ global_homebrew_prefix }}/bin"
 pkg_mgr_homebrew_casks_external: true
 pkg_mgr_homebrew_casks_install_options: ["no-quarantine"]
