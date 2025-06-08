@@ -50,8 +50,10 @@
         dest: "{{ temp_dir }}"
         remote_src: true
     - name: "Install krew"
+      environment:
+        KREW_ROOT: "{{ cloud_krew_root }}"
       ansible.builtin.command:
-        cmd: "KREW_ROOT={{ cloud_krew_root }} {{ temp_dir }}/{{ filename }} install krew"
+        cmd: "{{ temp_dir }}/{{ filename }} install krew"
         creates: "{{ cloud_krew_root }}/krew"
 
 - name: "Install k9s"
