@@ -11,4 +11,6 @@ zsh:
 	ansible-playbook play_dots.yml --tags zsh --skip-tags become,install
 shellcheck:
 	shellcheck --shell sh install
-.PHONY: all dots moredots tmux vim zsh shellcheck
+lint:
+	ansible-lint roles --exclude roles/*/files -q
+.PHONY: all dots moredots tmux vim zsh shellcheck lint
