@@ -14,7 +14,5 @@
 - [ ] Fix `ffmpeg` packages for Fedora (specify repo)
 - [ ] Archive an existing host in 1Password if hostname exists
 - [ ] Refactor **dconf** package variables to be simplier
-- [ ] Remove `cht.sh` script alltogether
 - [ ] The **docker** role should use `dnf5`
-- [ ] For macOS, is there a `defaults` setting for removing tiling margin?
 - [ ] Why are `lesshst` and `viminfo` being recreated even with env var set?

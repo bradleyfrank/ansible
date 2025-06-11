@@ -75,7 +75,7 @@
 - name: "Refresh Zsh completions"
   ansible.builtin.import_tasks:
     file: "completions.yml"
-  tags: [moredots, completions]
+  tags: [dots, completions]
 
 - name: "Setup Atuin sync"
   ansible.builtin.expect:

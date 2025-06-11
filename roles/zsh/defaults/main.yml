@@ -23,9 +23,7 @@ zsh_supplemental_dirs:
   - "{{ zsh_functions_dir }}"
   - "{{ zsh_rcd_dir }}"
 
-zsh_completions:
-  - name: "cht"
-    command: "curl -L https://cheat.sh/:zsh"
+zsh_completions: []
 
 zsh_plugins:
   - name: "fzf-tab"
