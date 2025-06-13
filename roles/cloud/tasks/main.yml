@@ -4,7 +4,6 @@
   community.general.homebrew:
     name: "{{ cloud_packages }}"
   tags: [install]
-  when: cloud_install_from_homebrew
 
 - name: "Install krew plugins"
   ansible.builtin.command:
