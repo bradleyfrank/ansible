@@ -7,7 +7,13 @@ global_email_address: "bradfrank@fastmail.com"
 global_is_desktop_system: true
 global_desktop_environment: ""
 global_use_1password_ssh_agent: true
-
-## ROLES
-
-cloud_packages: []
+global_host_roles:
+  - desktop
+  - dotfiles
+  - git
+  - pkg_mgr
+  - ssh
+  - system
+  - tmux
+  - vim
+  - zsh

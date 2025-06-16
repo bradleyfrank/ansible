@@ -4,33 +4,44 @@
   hosts: all
   tasks:
     - ansible.builtin.import_role:
-        name: "dotfiles"
-      tags: [dotfiles]
-
-    - ansible.builtin.import_role:
-        name: "pkg_mgr"
-      tags: [pkg_mgr]
-
-    - ansible.builtin.import_role:
-        name: "system"
-      tags: [system]
+        name: "cloud"
+      tags: [cloud]
 
     - ansible.builtin.import_role:
         name: "desktop"
-      when: global_is_desktop_system
       tags: [desktop]
 
     - ansible.builtin.import_role:
-        name: "ssh"
-      tags: [ssh]
+        name: "docker"
+      tags: [docker]
+
+    - ansible.builtin.import_role:
+        name: "dotfiles"
+      tags: [dotfiles]
 
     - ansible.builtin.import_role:
         name: "git"
       tags: [git]
 
     - ansible.builtin.import_role:
-        name: "cloud"
-      tags: [cloud]
+        name: "media"
+      tags: [media]
+
+    - ansible.builtin.import_role:
+        name: "onepassword"
+      tags: [onepassword]
+
+    - ansible.builtin.import_role:
+        name: "pkg_mgr"
+      tags: [pkg_mgr]
+
+    - ansible.builtin.import_role:
+        name: "ssh"
+      tags: [ssh]
+
+    - ansible.builtin.import_role:
+        name: "system"
+      tags: [system]
 
     - ansible.builtin.import_role:
         name: "tmux"

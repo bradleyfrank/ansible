@@ -7,17 +7,23 @@ global_email_address: "{{ host_vars_globals['email'] }}"
 global_is_desktop_system: {{ host_vars_globals['is_desktop'] }}
 global_desktop_environment: "{{ host_vars_globals['desktop_environment'] }}"
 global_use_1password_ssh_agent: {{ host_vars_globals['is_desktop'] }}
-global_optional_roles:
+global_host_roles:
 # - cloud
 {% if host_vars_globals['is_desktop'] %}
   - desktop
-# - self_hosted
 {% else %}
 # - desktop
-  - self_hosted
 {% endif %}
 # - docker
+  - dotfiles
+  - git
 # - media
+  - pkg_mgr
+  - ssh
+  - system
+  - tmux
+  - vim
+  - zsh
 
 ## ROLES
 
