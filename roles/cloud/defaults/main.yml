@@ -1,9 +1,10 @@
 ---
 
-cloud_install_from_homebrew: "{{ cloud_install_from_homebrew_defaults[ansible_facts['system']] }}"
-cloud_bin_path: "{{ cloud_bin_path_defaults[cloud_architecture] }}"
-cloud_krew_bin: "{{ cloud_bin_path }}/kubectl krew"
-cloud_k9s_config_path: "{{ cloud_k9s_config_defaults[ansible_facts['system']] }}"
+cloud_packages:
+  - google-cloud-sdk
+  - kubectl
+  - krew
+  - k9s
 
 cloud_krew_plugins:
   - cert-manager
@@ -11,8 +12,3 @@ cloud_krew_plugins:
   - get-all
   - neat
   - stern
-
-cloud_packages:
-  - kubectl
-  - krew
-  - k9s

@@ -8,14 +8,7 @@
 - name: "Install packages via Homebrew"
   community.general.homebrew:
     name: "{{ cloud_packages }}"
-  tags: [install, kubectl, k9s, krew]
-  when: cloud_install_from_homebrew
-
-- name: "Install manually"
-  ansible.builtin.include_tasks:
-    file: "binaries.yml"
-  tags: [install, kubectl, k9s, krew]
-  when: not cloud_install_from_homebrew
+  tags: [install]
 
 - name: "Install krew plugins"
   ansible.builtin.command:
@@ -30,7 +23,7 @@
 - name: "Copy k9s configs"
   ansible.builtin.copy:
     src: "k9s/"
-    dest: "{{ cloud_k9s_config_path }}"
+    dest: "{{ cloud_k9s_configs[ansible_facts['system']] }}"
     mode: "0644"
   when: "'k9s' in cloud_packages"
   tags: [dots, k9s]
