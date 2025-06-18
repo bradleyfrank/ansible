@@ -4,7 +4,6 @@ ssh_packages: "{{ ssh_packages_defaults[ansible_facts['system']] }}"
 ssh_manage_config: true
 ssh_harden_security: true
 
-ssh_use_1password_agent: "{{ global_use_1password_ssh_agent | default(false) }}"
 ssh_keychain_keys:
   - id_ed25519
   - id_rsa
