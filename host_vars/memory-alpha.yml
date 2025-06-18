@@ -1,13 +1,16 @@
 ---
 
-## GLOBAL
-
 global_homebrew_prefix: "/home/linuxbrew/.linuxbrew"
 global_email_address: "bradfrank@fastmail.com"
 global_is_desktop_system: False
 global_desktop_environment: ""
 global_use_1password_ssh_agent: true
-
-## ROLES
-
-cloud_packages: []
+global_host_roles:
+  - dotfiles
+  - git
+  - pkg_mgr
+  - ssh
+  - system
+  - tmux
+  - vim
+  - zsh

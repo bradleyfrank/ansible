@@ -1,5 +1,10 @@
 ---
 
+- name: "Skip role if not in host_vars"
+  ansible.builtin.meta: end_role
+  when: role_name not in global_host_roles
+  tags: [always]
+
 - name: "Install desktop utilities"
   ansible.builtin.package:
     name: "{{ desktop_packages }}"

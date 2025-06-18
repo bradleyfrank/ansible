@@ -6,6 +6,17 @@ global_desktop_environment: ""
 global_homebrew_prefix: "/opt/homebrew"
 global_onepassword_vault: "Employee"
 global_use_1password_ssh_agent: true
+global_host_roles:
+  - cloud
+  - desktop
+  - dotfiles
+  - git
+  - pkg_mgr
+  - ssh
+  - system
+  - tmux
+  - vim
+  - zsh
 
 desktop_app_paths:
   - "/Applications"
