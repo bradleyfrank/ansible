@@ -1,20 +1,39 @@
 ---
 
-git_github_gitignore_repo: "https://raw.githubusercontent.com/github/gitignore/refs/heads/main"
+git_packages:
+  - git
+  - git-lfs
+  - gh
 
-git_github_api_ssh_key_url: "https://api.github.com/user/keys"
-git_github_api_signing_key_url: "https://api.github.com/user/ssh_signing_keys"
-git_github_api_headers_accept: "application/vnd.github+json"
-git_github_api_headers_version: "2022-11-28"
+git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+
+git_ssh_auth_sock: ""
+git_ssh_auth_pid: ""
+
+git_config_dir: "{{ ansible_facts['user_dir'] }}/.config/git"
+git_config_file: "{{ git_config_dir }}/config"
+git_ignore_file: "{{ git_config_dir }}/ignore"
+
+git_signing_allowed_signers: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers"
+
+git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
+git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
+git_ssh_key_public: "{{ git_ssh_key_private }}.pub"
+
+git_github_api:
+  ssh_key_url: "https://api.github.com/user/keys"
+  signing_key_url: "https://api.github.com/user/ssh_signing_keys"
+  headers_accept: "application/vnd.github+json"
+  headers_version: "2022-11-28"
 
 git_github_ghcli_repo:
   dnf:
-    name: gh-cli
+    name: "gh-cli"
     description: "packages for the GitHub CLI"
     baseurl: "https://cli.github.com/packages/rpm"
     gpgkey: "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059"
   apt:
-    name: gh-cli
+    name: "gh-cli"
     uris: ["https://cli.github.com/packages"]
     components: ["main"]
     suites: ["stable"]

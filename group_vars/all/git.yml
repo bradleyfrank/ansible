@@ -12,3 +12,8 @@ git_repos:
   - url: "ssh://git@github.com/bradleyfrank/util-containers.git"
   - url: "ssh://git@github.com/bradleyfrank/cliday.git"
     branch: "gh-pages"
+
+git_signing_pub_key: "{{
+  lookup('community.general.onepassword', '7hepch5pzjetmlksffpnum2bzq',
+         field='public key') | split(' ')
+}}"

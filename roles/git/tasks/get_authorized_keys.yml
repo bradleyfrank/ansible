@@ -2,15 +2,14 @@
 
 - name: "Get list of existing Github SSH keys"
   ansible.builtin.uri:
-    url: "{{ git_github_api_ssh_key_url }}"
+    url: "{{ git_github_api['ssh_key_url'] }}"
     method: "GET"
     status_code: [200]
     headers:
       Authorization: "Bearer {{ git_github_token }}"
-      Accept: "{{ git_github_api_headers_accept }}"
-      X-GitHub-Api-Version: "{{ git_github_api_headers_version }}"
+      Accept: "{{ git_github_api['headers_accept'] }}"
+      X-GitHub-Api-Version: "{{ git_github_api['headers_version'] }}"
   register: git_ssh_keys
-  when: git_ssh_authorized_keys_from_github
 
 - name: "Add matching public keys to `authorized_keys`"
   ansible.posix.authorized_key:
@@ -19,4 +18,3 @@
   loop: "{{ git_ssh_keys['json'] | community.general.json_query(git_ssh_authorized_keys_match) }}"
   loop_control:
     label: "{{ item['title'] }}"
-  when: git_ssh_authorized_keys_from_github

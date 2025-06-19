@@ -26,15 +26,14 @@
     pubkey: "{{ lookup('ansible.builtin.file', git_ssh_key_public) }}"
     state: "present"
     token: "{{ git_github_token }}"
-  when: git_ssh_key_upload
+  when: not global_use_1password_ssh_agent
   tags: [never, ssh_keys]
 
-- name: "Create allowed signers file"
+- name: "Create allowed_signers file"
   ansible.builtin.template:
     src: "allowed_signers.j2"
     dest: "{{ git_signing_allowed_signers }}"
     mode: "0644"
-  when: git_signing_key_type == "ssh"
   tags: [moredots, gitconfig]
 
 - name: "Import repo cloning tasks"

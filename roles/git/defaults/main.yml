@@ -1,33 +1,6 @@
 ---
 
-git_packages:
-  - git
-  - gh
-
 git_github_token: ""
-
-git_global_config_dir: "{{ ansible_facts['user_dir'] }}/.config/git"
-git_global_config_file: "{{ git_global_config_dir }}/config"
-git_global_ignore_file: "{{ git_global_config_dir }}/ignore"
-
-git_ssh_auth_sock: ""
-git_ssh_auth_pid: ""
-
-git_ssh_authorized_keys_from_github: true
-git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"  # "[*]" (match all)
-
-git_ssh_key_upload: "{{ not global_use_1password_ssh_agent | default(true) }}"
-git_ssh_key_name: "{{ ansible_facts['user_id'] }}@{{ ansible_facts['hostname'] }}"
-git_ssh_key_private: "{{ ansible_facts['user_dir'] }}/.ssh/id_ed25519"
-git_ssh_key_public: "{{ git_ssh_key_private }}.pub"
-git_ssh_key_passphrase: "{{ ssh_keys['id_ed25519']['passphrase'] | default('') }}"
-
-git_signing_key_upload: "{{ not global_use_1password_ssh_agent | default(true) }}"
-git_signing_key_type: "ssh"
-git_signing_key_file: "{{ git_ssh_key_private }}.pub"
-git_signing_allowed_signers: "{{ ansible_facts['user_dir'] }}/.ssh/allowed_signers"
-
 git_repos: []
-git_repos_update: false
-git_repos_as_worktrees: true
-git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"  # "[*]" (match all)
+git_signing_pub_key: "{{ lookup('ansible.builtin.file', 'git_ssh_key_public') | split(' ') }}"
