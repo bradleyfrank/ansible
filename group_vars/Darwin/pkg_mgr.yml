@@ -80,6 +80,7 @@ pkg_mgr_gui:
     - firefox
     - ghostty
     - iina
+    - jordanbaird-ice
     - keepassxc
     - keepingyouawake
     - libreoffice

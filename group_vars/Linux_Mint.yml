@@ -70,6 +70,7 @@ pkg_mgr_cli:
     - argc
     - atuin
     - bat-extras
+    - dua-cli
     - eza
     - qsv
     - yq

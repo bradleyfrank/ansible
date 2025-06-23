@@ -78,6 +78,7 @@ pkg_mgr_cli:
   formulas:
     - argc
     - bat-extras
+    - dua-cli
     - qsv
     - yq
 
