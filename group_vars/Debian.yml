@@ -34,7 +34,6 @@ pkg_mgr_cli:
     - eza
     - fastfetch
     - fd-find
-    - fdupes
     - ffmpeg
     - figlet
     - freeze
@@ -79,6 +78,7 @@ pkg_mgr_cli:
     - argc
     - bat-extras
     - dua-cli
+    - fclones
     - qsv
     - yq
 

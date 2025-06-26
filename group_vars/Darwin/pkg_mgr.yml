@@ -21,8 +21,8 @@ pkg_mgr_cli:
     - eye-d3
     - eza
     - fastfetch
+    - fclones
     - fd
-    - fdupes
     - ffmpeg
     - findutils
     - fzf
