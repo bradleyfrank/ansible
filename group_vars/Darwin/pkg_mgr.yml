@@ -86,7 +86,7 @@ pkg_mgr_gui:
     - libreoffice
     - maccy
     - multipass
-    - mullvadvpn
+    - mullvad-vpn
     - musicbrainz-picard
     - netnewswire
     - notesnook
