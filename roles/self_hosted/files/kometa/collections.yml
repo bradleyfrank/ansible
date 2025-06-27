@@ -1,0 +1,1801 @@
+collections:
+  AI_and_Robots:
+    name: "AI and Robots"
+    name_mapping: "AI_and_Robots"
+    sort_title: "AI and Robots"
+    tmdb_movie:
+    - 2362  # Westworld
+    - 218  # The Terminator
+    - 280  # Terminator 2: Judgment Day
+    - 9323  # Ghost in the Shell
+    - 603  # The Matrix
+    - 644  # A.I. Artificial Intelligence
+    - 604  # The Matrix Reloaded
+    - 296  # Terminator 3: Rise of the Machines
+    - 605  # The Matrix Revolutions
+    - 534  # Terminator Salvation
+    - 39254  # Real Steel
+    - 264660  # Ex Machina
+    - 198184  # Chappie
+    - 87101  # Terminator Genisys
+    - 335984  # Blade Runner 2049
+    - 290859  # Terminator: Dark Fate
+    - 624860  # The Matrix Resurrections
+    - 670292  # The Creator
+    - 614933  # Atlas
+  A_Quiet_Place:
+    name: "A Quiet Place"
+    name_mapping: "A_Quiet_Place"
+    tmdb_movie:
+    - 447332
+    - 520763
+    - 762441
+  Airplane:
+    name: "Airplane!"
+    name_mapping: "Airplane"
+    tmdb_movie:
+    - 2665
+    - 813
+  Alien:
+    name: "Alien"
+    name_mapping: "Alien"
+    tmdb_movie:
+    - 348
+    - 8078
+    - 8077
+    - 679
+    - 440
+    - 395
+    - 70981
+    - 126889
+    - 945961
+  Alien_Invasion:
+    name: "Alien Invasion"
+    name_mapping: "Alien_Invasion"
+    sort_title: "Alien Invasion"
+    tmdb_movie:
+    - 8851
+    - 1091
+    - 9599
+    - 2756
+    - 9348
+    - 602
+    - 5491
+    - 2114
+    - 2675
+    - 74
+    - 17654
+    - 42684
+    - 59678
+    - 44833
+    - 68726
+    - 107985
+    - 137113
+    - 47933
+    - 329865
+    - 395992
+    - 300668
+    - 268896
+    - 429471
+    - 762441
+  Anchorman:
+    name: "Anchorman"
+    name_mapping: "Anchorman"
+    tmdb_movie:
+    - 8699
+    - 109443
+  Aquatic_Horror:
+    name: "Aquatic Horror"
+    name_mapping: "Aquatic_Horror"
+    sort_title: "Aquatic Horror"
+    tmdb_movie:
+    - 578
+    - 579
+    - 17692
+    - 580
+    - 14372
+    - 2756
+    - 10153
+    - 9825
+    - 8914
+    - 1255
+    - 205321
+    - 443791
+  Austin_Powers:
+    name: "Austin Powers"
+    name_mapping: "Austin_Powers"
+    tmdb_movie:
+    - 816
+    - 817
+    - 818
+  Avatar:
+    name: "Avatar"
+    name_mapping: "Avatar"
+    tmdb_movie:
+    - 19995
+    - 76600
+  Back_to_the_Future:
+    name: "Back to the Future"
+    name_mapping: "Back_to_the_Future"
+    tmdb_movie:
+    - 105
+    - 165
+    - 196
+  Barbenheimer:
+    name: "Barbenheimer"
+    name_mapping: "Barbenheimer"
+    tmdb_movie:
+    - 346698
+    - 872585
+  Batman:
+    name: "Batman"
+    name_mapping: "Batman"
+    tmdb_movie:
+    - 268
+    - 364
+    - 414
+    - 415
+    - 272
+    - 155
+    - 49026
+    - 475557
+    - 414906
+    - 889737
+  Beetlejuice:
+    name: "Beetlejuice"
+    name_mapping: "Beetlejuice"
+    tmdb_movie:
+    - 4011
+    - 917496
+  Before_Trilogy:
+    name: "Before Trilogy"
+    name_mapping: "Before_Trilogy"
+    tmdb_movie:
+    - 76
+    - 80
+    - 132344
+  Bill_and_Ted:
+    name: "Bill and Ted"
+    name_mapping: "Bill_and_Ted"
+    tmdb_movie:
+    - 1649
+    - 501979
+  Bird_Box:
+    name: "Bird Box"
+    name_mapping: "Bird_Box"
+    tmdb_movie:
+    - 405774
+    - 805320
+  Blade:
+    name: "Blade"
+    name_mapping: "Blade"
+    tmdb_movie:
+    - 36647
+    - 36586
+    - 36648
+  Blade_Runner:
+    name: "Blade Runner"
+    name_mapping: "Blade_Runner"
+    tmdb_movie:
+    - 78
+    - 475946
+    - 473072
+    - 475759
+    - 335984
+    - 57656
+  Bourne:
+    name: "Bourne"
+    name_mapping: "Bourne"
+    tmdb_movie:
+    - 2501
+    - 2502
+    - 2503
+    - 49040
+    - 324668
+  Cassette_Futurism:
+    name: "Cassette Futurism"
+    name_mapping: "Cassette_Futurism"
+    sort_title: "Cassette Futurism"
+    tmdb_movie:
+    - 62
+    - 10514
+    - 1410
+    - 10540
+    - 1103
+    - 1857
+    - 14372
+    - 165
+    - 9886
+    - 281
+    - 9323
+    - 8413
+    - 17431
+    - 253312
+    - 335984
+    - 506072
+  Christmas:
+    name: "Christmas"
+    name_mapping: "Christmas"
+    sort_title: "Christmas"
+    tmdb_movie:
+    - 1585
+    - 11881
+    - 13368
+    - 74849
+    - 850
+    - 562
+    - 9647
+    - 24951
+    - 771
+    - 772
+    - 10437
+    - 9479
+    - 11395
+    - 10510
+    - 9279
+    - 9021
+    - 13352
+    - 10719
+    - 508
+    - 13767
+    - 1581
+    - 5375
+    - 81332
+    - 235662
+    - 360603
+    - 474982
+    - 454467
+    - 622855
+    - 732670
+    - 744952
+    - 1047431
+    - 1028553
+    - 1027324
+    - 1180841
+    - 1145635
+    - 1064137
+    - 1180706
+  Christopher_Nolan:
+    name: "Christopher Nolan"
+    name_mapping: "Christopher_Nolan"
+    tmdb_movie:
+    - 77
+    - 272
+    - 1124
+    - 155
+    - 27205
+    - 49026
+    - 157336
+    - 374720
+    - 577922
+    - 872585
+  Cinema_Italiano:
+    name: "Cinema Italiano"
+    name_mapping: "Cinema_Italiano"
+    tmdb_movie:
+    - 307
+    - 2748
+    - 439
+    - 27632
+    - 41050
+    - 24188
+    - 422
+    - 1040
+    - 8416
+    - 11906
+    - 11216
+    - 637
+    - 56378
+    - 179144
+  Cloverfield:
+    name: "Cloverfield"
+    name_mapping: "Cloverfield"
+    tmdb_movie:
+    - 7191
+    - 333371
+    - 384521
+  Cornetto_Trilogy:
+    name: "Cornetto Trilogy"
+    name_mapping: "Cornetto_Trilogy"
+    tmdb_movie:
+    - 747
+    - 4638
+    - 107985
+  Creed:
+    name: "Creed"
+    name_mapping: "Creed"
+    tmdb_movie:
+    - 312221
+    - 480530
+    - 677179
+  Crouching_Tiger_Hidden_Dragon:
+    name: "Crouching Tiger, Hidden Dragon"
+    name_mapping: "Crouching_Tiger_Hidden_Dragon"
+    tmdb_movie:
+    - 146
+    - 263341
+  Cyberpunk:
+    name: "Cyberpunk"
+    name_mapping: "Cyberpunk"
+    sort_title: "Cyberpunk"
+    tmdb_movie:
+    - 9323
+    - 14092
+    - 12140
+    - 334376
+    - 196750
+    - 212168
+    - 240341
+    - 279254
+    - 1157408
+    - 97
+    - 20526
+    - 5548
+    - 5549
+    - 5550
+    - 603
+    - 604
+    - 605
+    - 624860
+    - 475946
+    - 473072
+    - 475759
+    - 335984
+    - 49049
+    - 149
+    - 401371
+    - 10428
+    - 1025463
+    - 775996
+    - 281
+    - 38248
+    - 9886
+    - 180
+  Die_Hard:
+    name: "Die Hard"
+    name_mapping: "Die_Hard"
+    tmdb_movie:
+    - 562
+    - 1573
+    - 1572
+    - 1571
+    - 47964
+  Disaster:
+    name: "Disaster"
+    name_mapping: "Disaster"
+    sort_title: "Disaster"
+    tmdb_movie:
+    - 11228
+    - 9619
+    - 10357
+    - 8656
+    - 95
+    - 9341
+    - 435
+    - 14161
+    - 49830
+    - 254128
+    - 251979
+    - 1080713
+    - 524047
+    - 406759
+  DragonHeart:
+    name: "DragonHeart"
+    name_mapping: "DragonHeart"
+    tmdb_movie:
+    - 8840
+    - 10473
+    - 300803
+    - 451644
+    - 666750
+  Dune:
+    name: "Dune"
+    name_mapping: "Dune"
+    tmdb_movie:
+    - 841
+    - 191720
+    - 438631
+    - 693134
+  Dystopian:
+    name: "Dystopian"
+    name_mapping: "Dystopian"
+    sort_title: "Dystopian"
+    tmdb_movie:
+    - 1103
+    - 149
+    - 861
+    - 281
+    - 9323
+    - 63
+    - 782
+    - 2666
+    - 644
+    - 2114
+    - 752
+    - 9693
+    - 10681
+    - 17431
+    - 17654
+    - 20766
+    - 70160
+    - 49049
+    - 75612
+    - 110415
+    - 101299
+    - 157845
+    - 157336
+    - 131631
+    - 131634
+    - 263115
+    - 335984
+    - 405774
+    - 670292
+    - 956262
+    - 695721
+    - 929590
+  Eastrail_177:
+    name: "Eastrail 177"
+    name_mapping: "Eastrail_177"
+    tmdb_movie:
+    - 9741
+    - 381288
+    - 450465
+  Eddie_Izzard:
+    name: "Eddie Izzard"
+    name_mapping: "Eddie_Izzard"
+    tmdb_movie:
+    - 13589
+    - 13587
+    - 25629
+    - 238206
+  Evil_Dead:
+    name: "Evil Dead"
+    name_mapping: "Evil_Dead"
+    tmdb_movie:
+    - 764
+    - 765
+    - 766
+    - 109428
+    - 713704
+  Final_Destination:
+    name: "Final Destination"
+    name_mapping: "Final_Destination"
+    tmdb_movie:
+    - 9532
+    - 9358
+    - 9286
+    - 19912
+    - 55779
+    - 574475
+  Final_Fantasy:
+    name: "Final Fantasy"
+    name_mapping: "Final_Fantasy"
+    tmdb_movie:
+    - 2114
+    - 647
+    - 13274
+    - 59300
+    - 390734
+    - 844390
+    - 611424
+  Finding_Nemo:
+    name: "Finding Nemo"
+    name_mapping: "Finding_Nemo"
+    tmdb_movie:
+    - 12
+    - 127380
+  Ghost_in_the_Shell:
+    name: "Ghost in the Shell"
+    name_mapping: "Ghost_in_the_Shell"
+    tmdb_movie:
+    - 9323
+    - 14092
+    - 12140
+    - 196750
+    - 212168
+    - 240341
+    - 279254
+    - 1157408
+    - 334376
+    - 315837
+  Ghostbusters:
+    name: "Ghostbusters"
+    name_mapping: "Ghostbusters"
+    tmdb_movie:
+    - 620
+    - 2978
+    - 43074
+    - 425909
+    - 967847
+  Gladiator:
+    name: "Gladiator"
+    name_mapping: "Gladiator"
+    tmdb_movie:
+    - 98
+    - 558449
+  Godzilla:
+    name: "Godzilla"
+    name_mapping: "Godzilla"
+    tmdb_movie:
+    - 1680
+    - 39256
+    - 929
+    - 124905
+    - 373571
+    - 399566
+    - 823464
+    - 449574
+    - 492719
+    - 536115
+    - 315011
+    - 940721
+  Gremlins:
+    name: "Gremlins"
+    name_mapping: "Gremlins"
+    tmdb_movie:
+    - 927
+    - 928
+  Guillermo_del_Toro:
+    name: "Guillermo del Toro"
+    name_mapping: "Guillermo_del_Toro"
+    tmdb_movie:
+    - 11655
+    - 4961
+    - 1433
+    - 36586
+    - 1487
+    - 1417
+    - 11253
+    - 68726
+    - 201085
+    - 399055
+    - 597208
+    - 555604
+  Hannibal:
+    name: "Hannibal"
+    name_mapping: "Hannibal"
+    tmdb_movie:
+    - 274
+    - 9533
+  Harry_Potter:
+    name: "Harry Potter"
+    name_mapping: "Harry_Potter"
+    tmdb_movie:
+    - 671
+    - 672
+    - 673
+    - 674
+    - 675
+    - 767
+    - 12444
+    - 12445
+  Hellboy:
+    name: "Hellboy"
+    name_mapping: "Hellboy"
+    tmdb_movie:
+    - 1487
+    - 16774
+    - 13204
+    - 11253
+    - 1487
+    - 1087822
+  Hocus_Pocus:
+    name: "Hocus Pocus"
+    name_mapping: "Hocus_Pocus"
+    tmdb_movie:
+    - 10439
+    - 642885
+  Home_Alone:
+    name: "Home Alone"
+    name_mapping: "Home_Alone"
+    tmdb_movie:
+    - 771
+    - 772
+  Hot_Tub_Time_Machine:
+    name: "Hot Tub Time Machine"
+    name_mapping: "Hot_Tub_Time_Machine"
+    tmdb_movie:
+    - 23048
+    - 243938
+  Hotel_Transylvania:
+    name: "Hotel Transylvania"
+    name_mapping: "Hotel_Transylvania"
+    tmdb_movie:
+    - 76492
+    - 159824
+    - 400155
+    - 585083
+  ID4:
+    name: "ID4"
+    name_mapping: "ID4"
+    tmdb_movie:
+    - 602
+    - 47933
+  Incredibles:
+    name: "Incredibles"
+    name_mapping: "Incredibles"
+    tmdb_movie:
+    - 9806
+    - 260513
+  Indiana_Jones:
+    name: "Indiana Jones"
+    name_mapping: "Indiana_Jones"
+    tmdb_movie:
+    - 85
+    - 87
+    - 89
+    - 217
+    - 335977
+  Jack_Ryan:
+    name: "Jack Ryan"
+    name_mapping: "Jack_Ryan"
+    tmdb_movie:
+    - 1669
+    - 9869
+    - 9331
+    - 4614
+    - 137094
+  Jaws:
+    name: "Jaws"
+    name_mapping: "Jaws"
+    tmdb_movie:
+    - 578
+    - 579
+    - 17692
+    - 580
+  Jay_and_Silent_Bob:
+    name: "Jay and Silent Bob"
+    name_mapping: "Jay_and_Silent_Bob"
+    tmdb_movie:
+    - 2292
+    - 2293
+    - 2255
+    - 1832
+    - 2294
+    - 2295
+    - 440762
+    - 635891
+  Jean-Pierre_Jeunet:
+    name: "Jean-Pierre Jeunet"
+    name_mapping: "Jean-Pierre_Jeunet"
+    tmdb_movie:
+    - 1023114
+    - 157841
+    - 27936
+    - 2841
+    - 194
+    - 8078
+    - 902
+    - 892
+  John_Wick:
+    name: "John Wick"
+    name_mapping: "John_Wick"
+    tmdb_movie:
+    - 245891
+    - 324552
+    - 458156
+    - 603692
+  Journalism:
+    name: "Journalism"
+    name_mapping: "Journalism"
+    sort_title: "Journalism"
+    tmdb_movie:
+    - 891
+    - 11541
+    - 1949
+    - 11499
+    - 73358
+    - 242582
+    - 314365
+    - 446354
+    - 399248
+    - 837881
+  Jumanji:
+    name: "Jumanji"
+    name_mapping: "Jumanji"
+    tmdb_movie:
+    - 8844
+    - 353486
+    - 512200
+  Jump_Street:
+    name: "Jump Street"
+    name_mapping: "Jump_Street"
+    tmdb_movie:
+    - 64688
+    - 187017
+  Jurassic_Park:
+    name: "Jurassic Park"
+    name_mapping: "Jurassic_Park"
+    tmdb_movie:
+    - 329
+    - 330
+    - 331
+    - 135397
+    - 351286
+    - 630322
+    - 507086
+  Kaiju:
+    name: "Kaiju"
+    name_mapping: "Kaiju"
+    sort_title: "Kaiju"
+    tmdb_movie:
+    - 1680
+    - 10730
+    - 31947
+    - 39256
+    - 929
+    - 244
+    - 7191
+    - 43933
+    - 68726
+    - 145221
+    - 124905
+    - 339967
+    - 315011
+    - 449574
+    - 293167
+    - 492719
+    - 427641
+    - 536115
+    - 268896
+    - 373571
+    - 399566
+    - 940721
+    - 823464
+    - 1255
+  Kick-Ass:
+    name: "Kick-Ass"
+    name_mapping: "Kick-Ass"
+    tmdb_movie:
+    - 23483
+    - 59859
+  Kill_Bill:
+    name: "Kill Bill"
+    name_mapping: "Kill_Bill"
+    tmdb_movie:
+    - 24
+    - 393
+  King_Kong:
+    name: "King Kong"
+    name_mapping: "King_Kong"
+    tmdb_movie:
+    - 244
+    - 1680
+    - 10730
+    - 31947
+    - 244
+    - 293167
+    - 399566
+    - 823464
+  Knives_Out:
+    name: "Knives Out"
+    name_mapping: "Knives_Out"
+    tmdb_movie:
+    - 546554
+    - 661374
+  Machete:
+    name: "Machete"
+    name_mapping: "Machete"
+    tmdb_movie:
+    - 23631
+    - 106747
+  Mad_Max:
+    name: "Mad Max"
+    name_mapping: "Mad_Max"
+    tmdb_movie:
+    - 9659
+    - 8810
+    - 9355
+    - 76341
+    - 786892
+  Men_in_Black:
+    name: "Men in Black"
+    name_mapping: "Men_in_Black"
+    tmdb_movie:
+    - 607
+    - 608
+    - 607
+    - 479455
+  Millennium:
+    name: "Millennium"
+    name_mapping: "Millennium"
+    tmdb_movie:
+    - 15472
+    - 24253
+    - 33613
+    - 65754
+    - 446807
+  Mission_Impossible:
+    name: "Mission: Impossible"
+    name_mapping: "Mission_Impossible"
+    tmdb_movie:
+    - 954
+    - 955
+    - 956
+    - 56292
+    - 177677
+    - 353081
+    - 575264
+  Monsters:
+    name: "Monsters"
+    name_mapping: "Monsters"
+    tmdb_movie:
+    - 43933
+    - 145221
+  Monsters_Inc:
+    name: "Monsters, Inc"
+    name_mapping: "Monsters_Inc"
+    tmdb_movie:
+    - 585
+    - 62211
+  Monsterverse:
+    name: "Monsterverse"
+    name_mapping: "Monsterverse"
+    tmdb_movie:
+    - 124905
+    - 293167
+    - 373571
+    - 399566
+    - 823464
+  Mortal_Kombat:
+    name: "Mortal Kombat"
+    name_mapping: "Mortal_Kombat"
+    tmdb_movie:
+    - 9312
+    - 9823
+    - 460465
+  Music:
+    name: "Music"
+    name_mapping: "Music"
+    sort_title: "Music"
+    tmdb_movie:
+    - 13368
+    - 499
+    - 15121
+    - 74849
+    - 11176
+    - 16858
+    - 525
+    - 14900
+    - 11314
+    - 88
+    - 24348
+    - 1648
+    - 17990
+    - 1649
+    - 8872
+    - 15300
+    - 10437
+    - 8873
+    - 13595
+    - 13531
+    - 698609
+    - 18984
+    - 21925
+    - 65
+    - 883
+    - 20910
+    - 69
+    - 1407
+    - 5723
+    - 14353
+    - 64328
+    - 244786
+    - 319075
+    - 313369
+    - 339403
+    - 501979
+    - 622855
+    - 508442
+    - 508947
+  National_Treasure:
+    name: "National Treasure"
+    name_mapping: "National_Treasure"
+    tmdb_movie:
+    - 2059
+    - 6637
+  Oceans:
+    name: "Oceans"
+    name_mapping: "Oceans"
+    tmdb_movie:
+    - 161
+    - 163
+    - 298
+    - 402900
+  Pacific_Rim:
+    name: "Pacific Rim"
+    name_mapping: "Pacific_Rim"
+    tmdb_movie:
+    - 68726
+    - 268896
+  Pandemic:
+    name: "Pandemic"
+    name_mapping: "Pandemic"
+    sort_title: "Pandemic"
+    tmdb_movie:
+    - 6950
+    - 63
+    - 170
+    - 1562
+    - 49830
+    - 72190
+    - 396535
+  Pixar:
+    name: "Pixar"
+    name_mapping: "Pixar"
+    tmdb_company: 3-pixar
+  Planet_of_the_Apes:
+    name: "Planet of the Apes"
+    name_mapping: "Planet_of_the_Apes"
+    tmdb_movie:
+    - 61791
+    - 119450
+    - 281338
+    - 653346
+  Political_and_Military:
+    name: "Political and Military"
+    name_mapping: "Political_and_Military"
+    sort_title: "Political and Military"
+    tmdb_movie:
+    - 28
+    - 744
+    - 1669
+    - 9869
+    - 881
+    - 9331
+    - 9772
+    - 563
+    - 11831
+    - 857
+    - 676
+    - 855
+    - 4614
+    - 2501
+    - 2502
+    - 1985
+    - 231
+    - 612
+    - 752
+    - 2503
+    - 6538
+    - 12162
+    - 11499
+    - 16995
+    - 49517
+    - 49040
+    - 68734
+    - 72976
+    - 97630
+    - 76203
+    - 137094
+    - 296098
+    - 324668
+    - 524348
+    - 361743
+    - 929590
+  Predator:
+    name: "Predator"
+    name_mapping: "Predator"
+    tmdb_movie:
+    - 106
+    - 169
+    - 34851
+    - 346910
+    - 395
+    - 440
+    - 766507
+    - 1376434 # predator-killer-of-killers
+  Qatsi:
+    name: "Qatsi"
+    name_mapping: "Qatsi"
+    tmdb_movie:
+    - 11314
+    - 24348
+    - 21925
+  Rebel_Moon:
+    name: "Rebel Moon"
+    name_mapping: "Rebel_Moon"
+    tmdb_movie:
+    - 848326
+    - 934632
+  Resident_Evil:
+    name: "Resident Evil"
+    name_mapping: "Resident_Evil"
+    tmdb_movie:
+    - 1576
+    - 1577
+    - 7737
+    - 35791
+    - 71679
+    - 173897
+    - 460458
+  Riddick:
+    name: "Riddick"
+    name_mapping: "Riddick"
+    tmdb_movie:
+    - 2787
+    - 2789
+    - 2791
+    - 87421
+  RoboCop:
+    name: "RoboCop"
+    name_mapping: "RoboCop"
+    tmdb_movie:
+    - 5548
+    - 5549
+    - 5550
+    - 5548
+  Rocky:
+    name: "Rocky"
+    name_mapping: "Rocky"
+    tmdb_movie:
+    - 1366
+    - 1367
+    - 1371
+    - 1374
+    - 1375
+    - 1246
+    - 312221
+    - 480530
+    - 677179
+  Scary:
+    name: "Scary"
+    name_mapping: "Scary"
+    sort_title: "Scary"
+    tmdb_movie:
+    - 9552
+    - 11449
+    - 814
+    - 764
+    - 609
+    - 1091
+    - 377
+    - 765
+    - 766
+    - 4232
+    - 8413
+    - 4961
+    - 4233
+    - 11618
+    - 2667
+    - 4234
+    - 2655
+    - 1433
+    - 1933
+    - 9378
+    - 565
+    - 10320
+    - 9392
+    - 588
+    - 23827
+    - 13310
+    - 41446
+    - 60935
+    - 22970
+    - 109428
+    - 242224
+    - 270303
+    - 201085
+    - 333371
+    - 14564
+    - 300668
+    - 458723
+    - 501170
+    - 646385
+    - 762504
+    - 934433
+    - 713704
+  Scream:
+    name: "Scream"
+    name_mapping: "Scream"
+    tmdb_movie:
+    - 4232
+    - 4233
+    - 4234
+    - 41446
+    - 646385
+    - 934433
+  Shakespeare:
+    name: "Shakespeare"
+    name_mapping: "Shakespeare"
+    sort_title: "Shakespeare"
+    tmdb_movie:
+    - 18971
+    - 454
+    - 10549
+    - 101173
+    - 336671
+  Short_Circuit:
+    name: "Short Circuit"
+    name_mapping: "Short_Circuit"
+    tmdb_movie:
+    - 2605
+    - 11966
+  Silent_Hill:
+    name: "Silent Hill"
+    name_mapping: "Silent_Hill"
+    tmdb_movie:
+    - 588
+    - 61012
+  Sin_City:
+    name: "Sin City"
+    name_mapping: "Sin_City"
+    tmdb_movie:
+    - 187
+    - 189
+  Slasher:
+    name: "Slasher"
+    name_mapping: "Slasher"
+    sort_title: "Slasher"
+    tmdb_movie:
+    - 948
+    - 377
+    - 10285
+    - 4232
+    - 4233
+    - 4234
+    - 11470
+    - 6466
+    - 13207
+    - 41446
+    - 646385
+    - 934433
+  Snake_Plissken_Chronicles:
+    name: "Snake Plissken Chronicles"
+    name_mapping: "Snake_Plissken_Chronicles"
+    tmdb_movie:
+    - 1103
+    - 10061
+  Space_Horror:
+    name: "Space Horror"
+    name_mapping: "Space_Horror"
+    sort_title: "Space Horror"
+    tmdb_movie:
+    - 62
+    - 8077
+    - 8413
+    - 8078
+    - 2787
+    - 10016
+    - 11470
+    - 8814
+    - 1272
+    - 17431
+    - 34069
+    - 19898
+    - 34851
+    - 50357
+    - 70981
+    - 174772
+    - 49047
+    - 395992
+    - 126889
+    - 384521
+    - 945961
+  Space_Jam:
+    name: "Space Jam"
+    name_mapping: "Space_Jam"
+    tmdb_movie:
+    - 2300
+    - 379686
+  Space_Sci-Fi:
+    name: "Space Sci-Fi"
+    name_mapping: "Space_Sci-Fi"
+    sort_title: "Space Sci-Fi"
+    tmdb_movie:
+    - 62
+    - 1410
+    - 11
+    - 152
+    - 9570
+    - 1892
+    - 157
+    - 11884
+    - 168
+    - 957
+    - 172
+    - 174
+    - 2164
+    - 193
+    - 199
+    - 563
+    - 2157
+    - 200
+    - 10350
+    - 1893
+    - 926
+    - 2067
+    - 7450
+    - 8870
+    - 1894
+    - 201
+    - 7453
+    - 1895
+    - 16320
+    - 13001
+    - 12914
+    - 13475
+    - 54138
+    - 80274
+    - 284606
+    - 253312
+    - 286217
+    - 140607
+    - 188927
+    - 330459
+    - 181808
+    - 348350
+    - 419704
+    - 181812
+    - 848326
+    - 934632
+  Species:
+    name: "Species"
+    name_mapping: "Species"
+    tmdb_movie:
+    - 9348
+    - 10216
+    - 9711
+    - 15212
+  Speed:
+    name: "Speed"
+    name_mapping: "Speed"
+    tmdb_movie:
+    - 1637
+    - 1639
+  Spider-Verse:
+    name: "Spider-Verse"
+    name_mapping: "Spider-Verse"
+    tmdb_movie:
+    - 324857
+    - 569094
+  Star_Trek:
+    name: "Star Trek"
+    name_mapping: "Star_Trek"
+    tmdb_movie:
+    - 152
+    - 154
+    - 157
+    - 168
+    - 172
+    - 174
+    - 193
+    - 199
+    - 200
+    - 201
+    - 13475
+    - 54138
+    - 188927
+    - 284606
+    - 522055
+    - 926
+    - 1114894
+    - 958752
+  Star_Wars:
+    name: "Star Wars"
+    name_mapping: "Star_Wars"
+    tmdb_movie:
+      - 11      # Star Wars: A New Hope
+      - 1891    # The Empire Strikes Back
+      - 1892    # Return of the Jedi
+      - 1893    # The Phantom Menace
+      - 1894    # Attack of the Clones
+      - 1895    # Revenge of the Sith
+      - 74849   # The Star Wars Holiday Special
+      - 12180   # Star Wars: The Clone Wars
+      - 330459  # Rogue One: A Star Wars Story
+      - 348350  # Solo: A Star Wars Story
+      - 140607  # The Force Awakens
+      - 181812  # The Last Jedi
+      - 181808  # The Rise of Skywalker
+    filters:
+      edition.not:
+      - "DESPECIALIZED"
+      - "PROJECT 4K"
+  Star_Wars_4K_Theatrical:
+    name: "Star Wars (4K Theatrical)"
+    name_mapping: "Star_Wars_4K_Theatrical"
+    tmdb_movie:
+      - 11      # Star Wars: A New Hope
+      - 1891    # The Empire Strikes Back
+      - 1892    # Return of the Jedi
+    filters:
+      edition: "PROJECT 4K"
+  Star_Wars_Despecialized:
+    name: "Star Wars (Despecialized)"
+    name_mapping: "Star_Wars_Despecialized"
+    tmdb_movie:
+      - 11      # Star Wars: A New Hope
+      - 1891    # The Empire Strikes Back
+      - 1892    # Return of the Jedi
+    filters:
+      edition: "DESPECIALIZED"
+  Stargate:
+    name: "Stargate"
+    name_mapping: "Stargate"
+    tmdb_movie:
+    - 2164
+    - 13001
+    - 12914
+  Street_Fighter:
+    name: "Street Fighter"
+    name_mapping: "Street_Fighter"
+    tmdb_movie:
+    - 12613
+    - 15268
+  Studio_Ghibli:
+    name: "Studio Ghibli"
+    name_mapping: "Studio_Ghibli"
+    tmdb_movie:
+    - 4935
+    - 16859
+    - 8392
+    - 128
+    - 129
+    - 149871
+  Super_Troopers:
+    name: "Super Troopers"
+    name_mapping: "Super_Troopers"
+    tmdb_movie:
+    - 39939
+    - 50022
+  Superman:
+    name: "Superman"
+    name_mapping: "Superman"
+    tmdb_movie:
+    - 1924
+    - 8536
+    - 9531
+    - 9651
+    - 11411
+    - 1452
+  Swamp_Thing:
+    name: "Swamp Thing"
+    name_mapping: "Swamp_Thing"
+    tmdb_movie:
+    - 17918
+    - 19142
+  Taken:
+    name: "Taken"
+    name_mapping: "Taken"
+    tmdb_movie:
+    - 8681
+    - 82675
+    - 260346
+  Teenage_Mutant_Ninja_Turles:
+    name: "Teenage Mutant Ninja Turles"
+    name_mapping: "Teenage_Mutant_Ninja_Turles"
+    tmdb_movie:
+    - 1498
+    - 1497
+    - 1499
+    - 614930
+  Terminator:
+    name: "Terminator"
+    name_mapping: "Terminator"
+    tmdb_movie:
+    - 218
+    - 280
+    - 296
+    - 534
+    - 87101
+    - 290859
+  The_Addams_Family:
+    name: "The Addams Family"
+    name_mapping: "The_Addams_Family"
+    tmdb_movie:
+    - 2907
+    - 2758
+    - 11508
+  The_Corporation:
+    name: "The Corporation"
+    name_mapping: "The_Corporation"
+    tmdb_movie:
+    - 11420
+    - 728870
+  The_Dead:
+    name: "The Dead"
+    name_mapping: "The_Dead"
+    tmdb_movie:
+    - 10331
+    - 923
+    - 8408
+    - 19185
+    - 924
+    - 11683
+    - 13025
+    - 29426
+    - 503736
+  The_Fast_and_the_Furious:
+    name: "The Fast and the Furious"
+    name_mapping: "The_Fast_and_the_Furious"
+    tmdb_movie:
+    - 9799
+    - 77959
+    - 584
+    - 9615
+    - 13804
+    - 253835
+    - 51497
+    - 82992
+    - 168259
+    - 337339
+    - 384018
+    - 385128
+    - 385687
+  The_Godfather:
+    name: "The Godfather"
+    name_mapping: "The_Godfather"
+    tmdb_movie:
+    - 238
+    - 240
+    - 242
+  The_Hangover:
+    name: "The Hangover"
+    name_mapping: "The_Hangover"
+    tmdb_movie:
+    - 18785
+    - 45243
+    - 109439
+  The_Hunger_Games:
+    name: "The Hunger Games"
+    name_mapping: "The_Hunger_Games"
+    tmdb_movie:
+    - 70160
+    - 101299
+    - 131631
+    - 131634
+    - 695721
+  The_Lion_King:
+    name: "The Lion King"
+    name_mapping: "The_Lion_King"
+    tmdb_movie:
+    - 8587
+    - 9732
+    - 11430
+  The_Lord_of_the_Rings:
+    name: "The Lord of the Rings"
+    name_mapping: "The_Lord_of_the_Rings"
+    tmdb_movie:
+    - 120
+    - 121
+    - 122
+    - 49051
+    - 57158
+    - 122917
+    - 839033
+  The_Matrix:
+    name: "The Matrix"
+    name_mapping: "The_Matrix"
+    tmdb_movie:
+    - 603
+    - 55931
+    - 604
+    - 605
+    - 624860
+  The_Mummy:
+    name: "The Mummy"
+    name_mapping: "The_Mummy"
+    tmdb_movie:
+    - 564
+    - 1734
+    - 9334
+    - 1735
+    - 282035
+  The_Muppets:
+    name: "The Muppets"
+    name_mapping: "The_Muppets"
+    tmdb_movie:
+    - 14900
+    - 11899
+    - 10437
+    - 698609
+    - 10208
+    - 13352
+    - 20910
+    - 64328
+    - 145220
+    - 826914
+  The_NeverEnding_Story:
+    name: "The NeverEnding Story"
+    name_mapping: "The_NeverEnding_Story"
+    tmdb_movie:
+    - 34584
+    - 34636
+    - 27793
+  The_Raid:
+    name: "The Raid"
+    name_mapping: "The_Raid"
+    tmdb_movie:
+    - 94329 # The Raid
+    - 180299 # The Raid 2
+  The_Ring:
+    name: "The Ring"
+    name_mapping: "The_Ring"
+    tmdb_movie:
+    - 565
+    - 10320
+    - 14564
+  The_Santa_Clause:
+    name: "The Santa Clause"
+    name_mapping: "The_Santa_Clause"
+    tmdb_movie:
+    - 11395
+    - 9021
+    - 13767
+  The_Shining:
+    name: "The Shining"
+    name_mapping: "The_Shining"
+    tmdb_movie:
+    - 694
+    - 501170
+  The_Space_Odyssey_Series:
+    name: "The Space Odyssey Series"
+    name_mapping: "The_Space_Odyssey_Series"
+    tmdb_movie:
+    - 62
+    - 4437
+  The_Thing:
+    name: "The Thing"
+    name_mapping: "The_Thing"
+    tmdb_movie:
+    - 1091
+    - 60935
+  Time_Travel:
+    name: "Time Travel"
+    name_mapping: "Time_Travel"
+    sort_title: "Time Travel"
+    tmdb_movie:
+    - 243938
+    - 2135
+    - 588228
+    - 23048
+    - 218
+    - 105
+    - 10122
+    - 168
+    - 165
+    - 196
+    - 280
+    - 104
+    - 180
+    - 14337
+    - 22494
+    - 45612
+    - 59967
+    - 137113
+    - 87101
+    - 587792
+    - 122906
+    - 137
+    - 1143128
+    - 9562
+  Tomb_Raider:
+    name: "Tomb Raider"
+    name_mapping: "Tomb_Raider"
+    tmdb_movie:
+    - 1995
+    - 1996
+    - 338970
+  Top_Gun:
+    name: "Top Gun"
+    name_mapping: "Top_Gun"
+    tmdb_movie:
+    - 744
+    - 361743
+  Toy_Story:
+    name: "Toy Story"
+    name_mapping: "Toy_Story"
+    tmdb_movie:
+    - 862
+    - 863
+    - 10193
+    - 301528
+    - 718789
+  Transformers:
+    name: "Transformers"
+    name_mapping: "Transformers"
+    tmdb_movie:
+    - 1857
+    - 1858
+    - 8373
+    - 38356
+    - 91314
+    - 335988
+    - 424783
+    - 667538
+    - 698687
+  Tron:
+    name: "Tron"
+    name_mapping: "Tron"
+    tmdb_movie:
+    - 97
+    - 20526
+  TwentyEight:
+    name: "28"
+    name_mapping: "28"
+    tmdb_movie:
+    - 170
+    - 1562
+  Twister:
+    name: "Twister"
+    name_mapping: "Twister"
+    tmdb_movie:
+    - 664
+    - 718821
+  US_Marshals:
+    name: "U.S. Marshals"
+    name_mapping: "US_Marshals"
+    tmdb_movie:
+    - 5503 # The Fugitive
+    - 11808 # U.S. Marshals
+  Underworld:
+    name: "Underworld"
+    name_mapping: "Underworld"
+    tmdb_movie:
+    - 277
+    - 834
+    - 12437
+    - 52520
+    - 346672
+  Vampires:
+    name: "Vampires"
+    name_mapping: "Vampires"
+    sort_title: "Vampires"
+    tmdb_movie:
+    - 27632
+    - 7091
+    - 10206
+    - 11655
+    - 36647
+    - 36586
+    - 8698
+    - 277
+    - 36648
+    - 834
+    - 9920
+    - 13310
+    - 12437
+    - 58151
+    - 52520
+    - 76492
+    - 246741
+    - 159824
+    - 346672
+    - 400155
+    - 585083
+  Venom:
+    name: "Venom"
+    name_mapping: "Venom"
+    tmdb_movie:
+    - 335983
+    - 580489
+    - 912649
+  Video_Game:
+    name: "Video Game"
+    name_mapping: "Video_Game"
+    sort_title: "Video Game"
+    tmdb_movie:
+    - 9607
+    - 12613
+    - 9312
+    - 9823
+    - 10350
+    - 1995
+    - 2114
+    - 1576
+    - 1996
+    - 1577
+    - 647
+    - 13274
+    - 8814
+    - 588
+    - 7737
+    - 15268
+    - 59300
+    - 35791
+    - 71679
+    - 61012
+    - 82690
+    - 390734
+    - 173897
+    - 338970
+    - 427641
+    - 404368
+    - 844390
+    - 447404
+    - 611424
+    - 460465
+    - 460458
+    - 502356
+  Warewolves:
+    name: "Warewolves"
+    name_mapping: "Warewolves"
+    sort_title: "Warewolves"
+    tmdb_movie:
+    - 11298
+    - 814
+    - 11824
+    - 277
+    - 834
+    - 12437
+    - 52520
+    - 246741
+    - 346672
+    - 970450
+  Waynes_World:
+    name: "Wayne's World"
+    name_mapping: "Waynes_World"
+    test: true
+    tmdb_movie:
+    - 8872
+    - 8873
+  World_War_II:
+    name: "World War II"
+    name_mapping: "World_War_II"
+    sort_title: "World War II"
+    tmdb_movie:
+    - 424
+    - 857
+    - 853
+    - 676
+    - 16869
+    - 205596
+    - 374720
+    - 872585
+  Wreck-It_Ralph:
+    name: "Wreck-It Ralph"
+    name_mapping: "Wreck-It_Ralph"
+    test: true
+    tmdb_movie:
+    - 82690
+    - 404368
+  Zombieland:
+    name: "Zombieland"
+    name_mapping: "Zombieland"
+    tmdb_movie:
+    - 19908
+    - 338967
+  Zombies:
+    name: "Zombies"
+    name_mapping: "Zombies"
+    sort_title: "Zombies"
+    tmdb_movie:
+    - 10331
+    - 923
+    - 764
+    - 8408
+    - 765
+    - 19185
+    - 766
+    - 10016
+    - 1576
+    - 170
+    - 924
+    - 747
+    - 1577
+    - 11683
+    - 1562
+    - 13025
+    - 7737
+    - 19908
+    - 29426
+    - 35791
+    - 71679
+    - 82654
+    - 109428
+    - 72190
+    - 396535
+    - 375366
+    - 173897
+    - 338967
+    - 503736
+    - 460458
+    - 713704
+    - 1118031
+  Zoolander:
+    name: "Zoolander"
+    name_mapping: "Zoolander"
+    tmdb_movie:
+    - 9398
+    - 329833

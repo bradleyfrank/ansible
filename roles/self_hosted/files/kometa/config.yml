@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Kometa-Team/Kometa/nightly/json-schema/config-schema.json
+
+libraries:
+  Movies:
+    collection_files:
+    - file: /config/collections.yml
+    operations:
+      delete_collections:
+        managed: false
+        configured: false
+        less: 2
+        ignore_empty_smart_collections: true
+
+settings:
+  asset_depth: 0
+  asset_directory:
+  - /data/assets
+  asset_folders: true
+  cache: true
+  cache_expiration: 60
+  create_asset_folders: false
+  custom_repo:
+  default_collection_order: release.asc
+  delete_below_minimum: true
+  delete_not_scheduled: false
+  dimensional_asset_rename: false
+  download_url_assets: false
+  ignore_ids:
+  ignore_imdb_ids:
+  item_refresh_delay: 0
+  minimum_items: 1
+  missing_only_released: false
+  only_filter_missing: false
+  overlay_artwork_filetype: webp_lossy
+  overlay_artwork_quality: 90
+  playlist_exclude_users:
+  playlist_report: false
+  playlist_sync_to_users:
+  prioritize_assets: false
+  run_again_delay: 2
+  run_order:
+  - operations
+  - metadata
+  - collections
+  - overlays
+  save_report: false
+  show_asset_not_needed: true
+  show_filtered: false
+  show_missing: true
+  show_missing_assets: true
+  show_missing_episode_assets: false
+  show_missing_season_assets: false
+  show_options: true
+  show_unconfigured: true
+  show_unfiltered: false
+  show_unmanaged: true
+  sync_mode: sync
+  tvdb_language: eng
+  verify_ssl: true
+
+plex:
+  clean_bundles: true
+  db_cache: 40
+  empty_trash: true
+  optimize: true
+  timeout: 60
+  token: FWfVzeWczaYRehKaccjy
+  url: https://plex.francopuccini.casa
+  verify_ssl: true
+
+tmdb:
+  apikey: 1d662d0f64b34c950d19934b98912e60
+  cache_expiration: 60
+  language: en
+  region: US
