@@ -1,8 +1,8 @@
 collections:
   AI_and_Robots:
-    name: "AI and Robots"
+    name: "♥ AI and Robots"
     name_mapping: "AI_and_Robots"
-    sort_title: "AI and Robots"
+    url_poster: "https://theposterdb.com/api/assets/25683"
     tmdb_movie:
     - 2362  # Westworld
     - 218  # The Terminator
@@ -26,1263 +26,1404 @@ collections:
   A_Quiet_Place:
     name: "A Quiet Place"
     name_mapping: "A_Quiet_Place"
+    url_poster: "https://theposterdb.com/api/assets/511153"
     tmdb_movie:
-    - 447332
-    - 520763
-    - 762441
+    - 447332  # A Quiet Place
+    - 520763  # A Quiet Place Part II
+    - 762441  # A Quiet Place: Day One
   Airplane:
     name: "Airplane!"
     name_mapping: "Airplane"
+    url_poster: "https://theposterdb.com/api/assets/36706"
     tmdb_movie:
-    - 2665
-    - 813
+    - 2665  # Airplane II: The Sequel
+    - 813  # Airplane!
   Alien:
     name: "Alien"
     name_mapping: "Alien"
+    url_poster: "https://theposterdb.com/api/assets/65949"
     tmdb_movie:
-    - 348
-    - 8078
-    - 8077
-    - 679
-    - 440
-    - 395
-    - 70981
-    - 126889
-    - 945961
+    - 348  # Alien
+    - 8078  # Alien Resurrection
+    - 8077  # Alien³
+    - 679  # Aliens
+    - 440  # Aliens vs Predator: Requiem
+    - 395  # AVP: Alien vs. Predator
+    - 70981  # Prometheus
+    - 126889  # Alien: Covenant
+    - 945961  # Alien: Romulus
   Alien_Invasion:
-    name: "Alien Invasion"
+    name: "♥ Alien Invasion"
     name_mapping: "Alien_Invasion"
-    sort_title: "Alien Invasion"
+    url_poster: "https://theposterdb.com/api/assets/71654"
     tmdb_movie:
-    - 8851
-    - 1091
-    - 9599
-    - 2756
-    - 9348
-    - 602
-    - 5491
-    - 2114
-    - 2675
-    - 74
-    - 17654
-    - 42684
-    - 59678
-    - 44833
-    - 68726
-    - 107985
-    - 137113
-    - 47933
-    - 329865
-    - 395992
-    - 300668
-    - 268896
-    - 429471
-    - 762441
+    - 8851  # The Blob
+    - 1091  # The Thing
+    - 9599  # The Blob
+    - 2756  # The Abyss
+    - 9348  # Species
+    - 602  # Independence Day
+    - 5491  # Battlefield Earth
+    - 2114  # Final Fantasy: The Spirits Within
+    - 2675  # Signs
+    - 74  # War of the Worlds
+    - 17654  # District 9
+    - 42684  # Skyline
+    - 59678  # Attack the Block
+    - 44833  # Battleship
+    - 68726  # Pacific Rim
+    - 107985  # The World's End
+    - 137113  # Edge of Tomorrow
+    - 47933  # Independence Day: Resurgence
+    - 329865  # Arrival
+    - 395992  # Life
+    - 300668  # Annihilation
+    - 268896  # Pacific Rim: Uprising
+    - 429471  # Captive State
+    - 762441  # A Quiet Place: Day One
   Anchorman:
     name: "Anchorman"
     name_mapping: "Anchorman"
+    url_poster: "https://theposterdb.com/api/assets/13973"
     tmdb_movie:
-    - 8699
-    - 109443
+    - 8699  # Anchorman: The Legend of Ron Burgundy
+    - 109443  # Anchorman 2: The Legend Continues
   Aquatic_Horror:
-    name: "Aquatic Horror"
+    name: "♥ Aquatic Horror"
     name_mapping: "Aquatic_Horror"
-    sort_title: "Aquatic Horror"
+    url_poster: "https://theposterdb.com/api/assets/50861"
     tmdb_movie:
-    - 578
-    - 579
-    - 17692
-    - 580
-    - 14372
-    - 2756
-    - 10153
-    - 9825
-    - 8914
-    - 1255
-    - 205321
-    - 443791
+    - 578  # Jaws
+    - 579  # Jaws 2
+    - 17692  # Jaws 3-D
+    - 580  # Jaws: The Revenge
+    - 14372  # Leviathan
+    - 2756  # The Abyss
+    - 10153  # Sphere
+    - 9825  # Lake Placid
+    - 8914  # Deep Blue Sea
+    - 1255  # The Host
+    - 205321  # Sharknado
+    - 443791  # Underwater
   Austin_Powers:
     name: "Austin Powers"
     name_mapping: "Austin_Powers"
+    url_poster: "https://theposterdb.com/api/assets/13969"
     tmdb_movie:
-    - 816
-    - 817
-    - 818
+    - 816  # Austin Powers: International Man of Mystery
+    - 817  # Austin Powers: The Spy Who Shagged Me
+    - 818  # Austin Powers in Goldmember
   Avatar:
     name: "Avatar"
     name_mapping: "Avatar"
+    url_poster: "https://theposterdb.com/api/assets/303189"
     tmdb_movie:
-    - 19995
-    - 76600
+    - 19995  # Avatar
+    - 76600  # Avatar: The Way of Water
   Back_to_the_Future:
     name: "Back to the Future"
     name_mapping: "Back_to_the_Future"
+    url_poster: "https://theposterdb.com/api/assets/87588"
     tmdb_movie:
-    - 105
-    - 165
-    - 196
+    - 105  # Back to the Future
+    - 165  # Back to the Future Part II
+    - 196  # Back to the Future Part III
   Barbenheimer:
     name: "Barbenheimer"
     name_mapping: "Barbenheimer"
+    url_poster: "https://theposterdb.com/api/assets/431126"
     tmdb_movie:
-    - 346698
-    - 872585
+    - 346698  # Barbie
+    - 872585  # Oppenheimer
   Batman:
-    name: "Batman"
+    name: "♥ Batman"
     name_mapping: "Batman"
+    url_poster: "https://theposterdb.com/api/assets/79435"
     tmdb_movie:
-    - 268
-    - 364
-    - 414
-    - 415
-    - 272
-    - 155
-    - 49026
-    - 475557
-    - 414906
-    - 889737
+    - 268  # Batman
+    - 364  # Batman Returns
+    - 414  # Batman Forever
+    - 415  # Batman & Robin
+    - 272  # Batman Begins
+    - 155  # The Dark Knight
+    - 49026  # The Dark Knight Rises
+    - 475557  # Joker
+    - 414906  # The Batman
+    - 889737  # Joker: Folie à Deux
   Beetlejuice:
     name: "Beetlejuice"
     name_mapping: "Beetlejuice"
+    url_poster: "https://theposterdb.com/api/assets/531878"
     tmdb_movie:
-    - 4011
-    - 917496
+    - 4011  # Beetlejuice
+    - 917496  # Beetlejuice Beetlejuice
   Before_Trilogy:
     name: "Before Trilogy"
     name_mapping: "Before_Trilogy"
+    url_poster: "https://theposterdb.com/api/assets/66326"
     tmdb_movie:
-    - 76
-    - 80
-    - 132344
+    - 76  # Before Sunrise
+    - 80  # Before Sunset
+    - 132344  # Before Midnight
   Bill_and_Ted:
     name: "Bill and Ted"
     name_mapping: "Bill_and_Ted"
+    url_poster: "https://theposterdb.com/api/assets/96794"
     tmdb_movie:
-    - 1649
-    - 501979
+    - 1649  # Bill & Ted's Bogus Journey
+    - 501979  # Bill & Ted Face the Music
   Bird_Box:
     name: "Bird Box"
     name_mapping: "Bird_Box"
+    url_poster: "https://theposterdb.com/api/assets/387693"
     tmdb_movie:
-    - 405774
-    - 805320
+    - 405774  # Bird Box
+    - 805320  # Bird Box Barcelona
   Blade:
     name: "Blade"
     name_mapping: "Blade"
+    url_poster: "https://theposterdb.com/api/assets/62368"
     tmdb_movie:
-    - 36647
-    - 36586
-    - 36648
+    - 36647  # Blade
+    - 36586  # Blade II
+    - 36648  # Blade: Trinity
   Blade_Runner:
     name: "Blade Runner"
     name_mapping: "Blade_Runner"
+    url_poster: "https://theposterdb.com/api/assets/6081"
     tmdb_movie:
-    - 78
-    - 475946
-    - 473072
-    - 475759
-    - 335984
-    - 57656
+    - 78  # Blade Runner
+    - 475946  # Blade Runner: Black Out 2022
+    - 473072  # 2036: Nexus Dawn
+    - 475759  # 2048: Nowhere to Run
+    - 335984  # Blade Runner 2049
+    - 57656  # Dangerous Days: Making Blade Runner
+  Blues_Brothers:
+    name: "Blues Brothers"
+    name_mapping: "Blues_Brothers"
+    url_poster: "https://theposterdb.com/api/assets/52403"
+    tmdb_collection:
+    - 112636
   Bourne:
     name: "Bourne"
     name_mapping: "Bourne"
+    url_poster: "https://theposterdb.com/api/assets/19519"
     tmdb_movie:
-    - 2501
-    - 2502
-    - 2503
-    - 49040
-    - 324668
+    - 2501  # The Bourne Identity
+    - 2502  # The Bourne Supremacy
+    - 2503  # The Bourne Ultimatum
+    - 49040  # The Bourne Legacy
+    - 324668  # Jason Bourne
   Cassette_Futurism:
-    name: "Cassette Futurism"
+    name: "♥ Cassette Futurism"
     name_mapping: "Cassette_Futurism"
-    sort_title: "Cassette Futurism"
+    url_poster: "https://theposterdb.com/api/assets/399562"
     tmdb_movie:
-    - 62
-    - 10514
-    - 1410
-    - 10540
-    - 1103
-    - 1857
-    - 14372
-    - 165
-    - 9886
-    - 281
-    - 9323
-    - 8413
-    - 17431
-    - 253312
-    - 335984
-    - 506072
+    - 62  # 2001: A Space Odyssey
+    - 10514  # The Andromeda Strain
+    - 1410  # Dark Star
+    - 10540  # Outland
+    - 1103  # Escape from New York
+    - 1857  # The Transformers: The Movie
+    - 14372  # Leviathan
+    - 165  # Back to the Future Part II
+    - 9886  # Johnny Mnemonic
+    - 281  # Strange Days
+    - 9323  # Ghost in the Shell
+    - 8413  # Event Horizon
+    - 17431  # Moon
+    - 253312  # Space Station 76
+    - 335984  # Blade Runner 2049
+    - 506072  # Prospect
   Christmas:
-    name: "Christmas"
+    name: "♥ Christmas"
     name_mapping: "Christmas"
-    sort_title: "Christmas"
+    url_poster: "https://theposterdb.com/api/assets/33073"
     tmdb_movie:
-    - 1585
-    - 11881
-    - 13368
-    - 74849
-    - 850
-    - 562
-    - 9647
-    - 24951
-    - 771
-    - 772
-    - 10437
-    - 9479
-    - 11395
-    - 10510
-    - 9279
-    - 9021
-    - 13352
-    - 10719
-    - 508
-    - 13767
-    - 1581
-    - 5375
-    - 81332
-    - 235662
-    - 360603
-    - 474982
-    - 454467
-    - 622855
-    - 732670
-    - 744952
-    - 1047431
-    - 1028553
-    - 1027324
-    - 1180841
-    - 1145635
-    - 1064137
-    - 1180706
+    - 1585  # It's a Wonderful Life
+    - 11881  # Miracle on 34th Street
+    - 13368  # White Christmas
+    - 74849  # The Star Wars Holiday Special
+    - 850  # A Christmas Story
+    - 562  # Die Hard
+    - 9647  # Scrooged
+    - 24951  # Prancer
+    - 771  # Home Alone
+    - 772  # Home Alone 2: Lost in New York
+    - 10437  # The Muppet Christmas Carol
+    - 9479  # The Nightmare Before Christmas
+    - 11395  # The Santa Clause
+    - 10510  # Miracle on 34th Street
+    - 9279  # Jingle All the Way
+    - 9021  # The Santa Clause 2
+    - 13352  # It's a Very Merry Muppet Christmas Movie
+    - 10719  # Elf
+    - 508  # Love Actually
+    - 13767  # The Santa Clause 3: The Escape Clause
+    - 1581  # The Holiday
+    - 5375  # Fred Claus
+    - 81332  # A Christmas Kiss
+    - 235662  # Snow Bride
+    - 360603  # Crown for Christmas
+    - 474982  # The Christmas Train
+    - 454467  # Noelle
+    - 622855  # Jingle Jangle: A Christmas Journey
+    - 732670  # LEGO Star Wars Holiday Special
+    - 744952  # The Christmas Setup
+    - 1047431  # Prancer: A Christmas Tale
+    - 1028553  # A Royal Corgi Christmas
+    - 1027324  # The Holiday Sitter
+    - 1180841  # Christmas Island
+    - 1145635  # A Merry Scottish Christmas
+    - 1064137  # A Biltmore Christmas
+    - 1180706  # Friends & Family Christmas
   Christopher_Nolan:
     name: "Christopher Nolan"
     name_mapping: "Christopher_Nolan"
+    url_poster: "https://theposterdb.com/api/assets/378205"
     tmdb_movie:
-    - 77
-    - 272
-    - 1124
-    - 155
-    - 27205
-    - 49026
-    - 157336
-    - 374720
-    - 577922
-    - 872585
+    - 77  # Memento
+    - 272  # Batman Begins
+    - 1124  # The Prestige
+    - 155  # The Dark Knight
+    - 27205  # Inception
+    - 49026  # The Dark Knight Rises
+    - 157336  # Interstellar
+    - 374720  # Dunkirk
+    - 577922  # Tenet
+    - 872585  # Oppenheimer
   Cinema_Italiano:
-    name: "Cinema Italiano"
+    name: "♥ Cinema Italiano"
     name_mapping: "Cinema_Italiano"
+    url_poster: "https://theposterdb.com/api/assets/97938"
     tmdb_movie:
-    - 307
-    - 2748
-    - 439
-    - 27632
-    - 41050
-    - 24188
-    - 422
-    - 1040
-    - 8416
-    - 11906
-    - 11216
-    - 637
-    - 56378
-    - 179144
+    - 307  # Rome, Open City
+    - 2748  # Journey to Italy
+    - 439  # La Dolce Vita
+    - 27632  # Black Sunday
+    - 41050  # La Notte
+    - 24188  # Il Sorpasso
+    - 422  # 8½
+    - 1040  # The Leopard
+    - 8416  # The Conformist
+    - 11906  # Suspiria
+    - 11216  # Cinema Paradiso
+    - 637  # Life Is Beautiful
+    - 56378  # My Name Is Tanino
+    - 179144  # The Great Beauty
   Cloverfield:
     name: "Cloverfield"
     name_mapping: "Cloverfield"
+    url_poster: "https://theposterdb.com/api/assets/13926"
     tmdb_movie:
-    - 7191
-    - 333371
-    - 384521
+    - 7191  # Cloverfield
+    - 333371  # 10 Cloverfield Lane
+    - 384521  # The Cloverfield Paradox
   Cornetto_Trilogy:
     name: "Cornetto Trilogy"
     name_mapping: "Cornetto_Trilogy"
+    url_poster: "https://theposterdb.com/api/assets/97618"
     tmdb_movie:
-    - 747
-    - 4638
-    - 107985
+    - 747  # Shaun of the Dead
+    - 4638  # Hot Fuzz
+    - 107985  # The World's End
   Creed:
     name: "Creed"
     name_mapping: "Creed"
+    url_poster: "https://theposterdb.com/api/assets/22294"
     tmdb_movie:
-    - 312221
-    - 480530
-    - 677179
+    - 312221  # Creed
+    - 480530  # Creed II
+    - 677179  # Creed III
   Crouching_Tiger_Hidden_Dragon:
     name: "Crouching Tiger, Hidden Dragon"
     name_mapping: "Crouching_Tiger_Hidden_Dragon"
+    url_poster: "https://theposterdb.com/api/assets/37896"
     tmdb_movie:
-    - 146
-    - 263341
+    - 146  # Crouching Tiger, Hidden Dragon
+    - 263341  # Crouching Tiger, Hidden Dragon: Sword of Destiny
   Cyberpunk:
-    name: "Cyberpunk"
+    name: "♥ Cyberpunk"
     name_mapping: "Cyberpunk"
-    sort_title: "Cyberpunk"
+    url_poster: "https://theposterdb.com/api/assets/459640"
     tmdb_movie:
-    - 9323
-    - 14092
-    - 12140
-    - 334376
-    - 196750
-    - 212168
-    - 240341
-    - 279254
-    - 1157408
-    - 97
-    - 20526
-    - 5548
-    - 5549
-    - 5550
-    - 603
-    - 604
-    - 605
-    - 624860
-    - 475946
-    - 473072
-    - 475759
-    - 335984
-    - 49049
-    - 149
-    - 401371
-    - 10428
-    - 1025463
-    - 775996
-    - 281
-    - 38248
-    - 9886
-    - 180
+    - 9323  # Ghost in the Shell
+    - 14092  # Ghost in the Shell 2.0
+    - 12140  # Ghost in the Shell 2: Innocence
+    - 334376  # Ghost in the Shell: The New Movie
+    - 196750  # Ghost in the Shell: Arise - Border 1: Ghost Pain
+    - 212168  # Ghost in the Shell: Arise - Border 2: Ghost Whispers
+    - 240341  # Ghost in the Shell: Arise - Border 3: Ghost Tears
+    - 279254  # Ghost in the Shell: Arise - Border 4: Ghost Stands Alone
+    - 1157408  # Ghost in the Shell: Arise - Border 5: Pyrophoric Cult
+    - 97  # Tron
+    - 20526  # TRON: Legacy
+    - 5548  # RoboCop
+    - 5549  # RoboCop 2
+    - 5550  # RoboCop 3
+    - 603  # The Matrix
+    - 604  # The Matrix Reloaded
+    - 605  # The Matrix Revolutions
+    - 624860  # The Matrix Resurrections
+    - 475946  # Blade Runner: Black Out 2022
+    - 473072  # 2036: Nexus Dawn
+    - 475759  # 2048: Nowhere to Run
+    - 335984  # Blade Runner 2049
+    - 49049  # Dredd
+    - 149  # Akira
+    - 401371  # Mute
+    - 10428  # Hackers
+    - 1025463  # Bionic
+    - 775996  # Outside the Wire
+    - 281  # Strange Days
+    - 38248  # Technotise: Edit and I
+    - 9886  # Johnny Mnemonic
+    - 180  # Minority Report
   Die_Hard:
     name: "Die Hard"
     name_mapping: "Die_Hard"
+    url_poster: "https://theposterdb.com/api/assets/262998"
     tmdb_movie:
-    - 562
-    - 1573
-    - 1572
-    - 1571
-    - 47964
+    - 562  # Die Hard
+    - 1573  # Die Hard 2
+    - 1572  # Die Hard: With a Vengeance
+    - 1571  # Live Free or Die Hard
+    - 47964  # A Good Day to Die Hard
   Disaster:
-    name: "Disaster"
+    name: "♥ Disaster"
     name_mapping: "Disaster"
-    sort_title: "Disaster"
+    url_poster: "https://theposterdb.com/api/assets/20216"
     tmdb_movie:
-    - 11228
-    - 9619
-    - 10357
-    - 8656
-    - 95
-    - 9341
-    - 435
-    - 14161
-    - 49830
-    - 254128
-    - 251979
-    - 1080713
-    - 524047
-    - 406759
+    - 11228  # Daylight
+    - 9619  # Dante's Peak
+    - 10357  # Volcano
+    - 8656  # Deep Impact
+    - 95  # Armageddon
+    - 9341  # The Core
+    - 435  # The Day After Tomorrow
+    - 14161  # 2012
+    - 254128  # San Andreas
+    - 251979  # The Perfect Wave
+    - 1080713  # Pandora
+    - 524047  # Greenland
+    - 406759  # Moonfall
   DragonHeart:
     name: "DragonHeart"
     name_mapping: "DragonHeart"
+    url_poster: "https://theposterdb.com/api/assets/59484"
     tmdb_movie:
-    - 8840
-    - 10473
-    - 300803
-    - 451644
-    - 666750
+    - 8840  # DragonHeart
+    - 10473  # DragonHeart: A New Beginning
+    - 300803  # Dragonheart 3: The Sorcerer's Curse
+    - 451644  # Dragonheart: Battle for the Heartfire
+    - 666750  # Dragonheart: Vengeance
   Dune:
     name: "Dune"
     name_mapping: "Dune"
+    url_poster: "https://theposterdb.com/api/assets/393189"
     tmdb_movie:
-    - 841
-    - 191720
-    - 438631
-    - 693134
+    - 841  # Dune
+    - 191720  # Jodorowsky's Dune
+    - 438631  # Dune
+    - 693134  # Dune: Part Two
   Dystopian:
-    name: "Dystopian"
+    name: "♥ Dystopian"
     name_mapping: "Dystopian"
-    sort_title: "Dystopian"
+    url_poster: "https://theposterdb.com/api/assets/393771"
     tmdb_movie:
-    - 1103
-    - 149
-    - 861
-    - 281
-    - 9323
-    - 63
-    - 782
-    - 2666
-    - 644
-    - 2114
-    - 752
-    - 9693
-    - 10681
-    - 17431
-    - 17654
-    - 20766
-    - 70160
-    - 49049
-    - 75612
-    - 110415
-    - 101299
-    - 157845
-    - 157336
-    - 131631
-    - 131634
-    - 263115
-    - 335984
-    - 405774
-    - 670292
-    - 956262
-    - 695721
-    - 929590
+    - 1103  # Escape from New York
+    - 149  # Akira
+    - 861  # Total Recall
+    - 281  # Strange Days
+    - 9323  # Ghost in the Shell
+    - 63  # Twelve Monkeys
+    - 782  # Gattaca
+    - 2666  # Dark City
+    - 644  # A.I. Artificial Intelligence
+    - 2114  # Final Fantasy: The Spirits Within
+    - 752  # V for Vendetta
+    - 9693  # Children of Men
+    - 10681  # WALL·E
+    - 17431  # Moon
+    - 17654  # District 9
+    - 20766  # The Road
+    - 70160  # The Hunger Games
+    - 49049  # Dredd
+    - 75612  # Oblivion
+    - 110415  # Snowpiercer
+    - 101299  # The Hunger Games: Catching Fire
+    - 157845  # The Rover
+    - 157336  # Interstellar
+    - 131631  # The Hunger Games: Mockingjay - Part 1
+    - 131634  # The Hunger Games: Mockingjay - Part 2
+    - 263115  # Logan
+    - 335984  # Blade Runner 2049
+    - 405774  # Bird Box
+    - 670292  # The Creator
+    - 956262  # The Kitchen
+    - 695721  # The Hunger Games: The Ballad of Songbirds & Snakes
+    - 929590  # Civil War
   Eastrail_177:
     name: "Eastrail 177"
     name_mapping: "Eastrail_177"
+    url_poster: "https://theposterdb.com/api/assets/10346"
     tmdb_movie:
-    - 9741
-    - 381288
-    - 450465
+    - 9741  # Unbreakable
+    - 381288  # Split
+    - 450465  # Glass
   Eddie_Izzard:
     name: "Eddie Izzard"
     name_mapping: "Eddie_Izzard"
+    url_poster: "https://theposterdb.com/api/assets/240041"
     tmdb_movie:
-    - 13589
-    - 13587
-    - 25629
-    - 238206
+    - 13589  # Eddie Izzard: Dress to Kill
+    - 13587  # Eddie Izzard: Circle
+    - 25629  # Eddie Izzard: Stripped
+    - 238206  # Eddie Izzard: Force Majeure Live
   Evil_Dead:
     name: "Evil Dead"
     name_mapping: "Evil_Dead"
+    url_poster: "https://theposterdb.com/api/assets/7075"
     tmdb_movie:
-    - 764
-    - 765
-    - 766
-    - 109428
-    - 713704
+    - 764  # The Evil Dead
+    - 765  # Evil Dead II
+    - 766  # Army of Darkness
+    - 109428  # Evil Dead
+    - 713704  # Evil Dead Rise
+  Ferngully:
+    name: "Ferngully"
+    name_mapping: "Ferngully"
+    url_poster: "https://image.tmdb.org/t/p/original/7FayIzSXqWGqqYOId58N26alRv1.jpg"
+    tmdb_collection:
+    - 19160
   Final_Destination:
     name: "Final Destination"
     name_mapping: "Final_Destination"
+    url_poster: "https://theposterdb.com/api/assets/165946"
     tmdb_movie:
-    - 9532
-    - 9358
-    - 9286
-    - 19912
-    - 55779
-    - 574475
+    - 9532  # Final Destination
+    - 9358  # Final Destination 2
+    - 9286  # Final Destination 3
+    - 19912  # The Final Destination
+    - 55779  # Final Destination 5
+    - 574475  # Final Destination Bloodlines
   Final_Fantasy:
     name: "Final Fantasy"
     name_mapping: "Final_Fantasy"
+    url_poster: "https://theposterdb.com/api/assets/7212"
     tmdb_movie:
-    - 2114
-    - 647
-    - 13274
-    - 59300
-    - 390734
-    - 844390
-    - 611424
+    - 2114  # Final Fantasy: The Spirits Within
+    - 647  # Final Fantasy VII: Advent Children
+    - 13274  # Final Fantasy VII: Last Order
+    - 59300  # Final Fantasy VII: On the Way to a Smile - Episode Denzel
+    - 390734  # Kingsglaive: Final Fantasy XV
+    - 844390  # Final Fantasy XV: Episode Ardyn - Prologue
+    - 611424  # Brave Father Online - Our Story of Final Fantasy XIV
   Finding_Nemo:
     name: "Finding Nemo"
     name_mapping: "Finding_Nemo"
+    url_poster: "https://theposterdb.com/api/assets/28690"
     tmdb_movie:
-    - 12
-    - 127380
+    - 12  # Finding Nemo
+    - 127380  # Finding Dory
+  Friday_the_13th:
+    name: "Friday the 13th"
+    name_mapping: "Friday_the_13th"
+    url_poster: "https://theposterdb.com/api/assets/169888"
+    tmdb_collection:
+    - 9735
+    tmdb_movie:
+    - 13207  # 2009 Remake
+  Fright_Night:
+    name: "Fright Night"
+    name_mapping: "Fright_Night"
+    url_poster: "https://theposterdb.com/api/assets/21153"
+    tmdb_collection:
+      - 230161  # Reboot
+      - 98168   # Original
+  Frozen:
+    name: "Frozen"
+    name_mapping: "Frozen"
+    url_poster: "https://theposterdb.com/api/assets/38967"
+    tmdb_collection:
+    - 386382
   Ghost_in_the_Shell:
     name: "Ghost in the Shell"
     name_mapping: "Ghost_in_the_Shell"
+    url_poster: "https://theposterdb.com/api/assets/175259"
     tmdb_movie:
-    - 9323
-    - 14092
-    - 12140
-    - 196750
-    - 212168
-    - 240341
-    - 279254
-    - 1157408
-    - 334376
-    - 315837
+    - 9323  # Ghost in the Shell
+    - 14092  # Ghost in the Shell 2.0
+    - 12140  # Ghost in the Shell 2: Innocence
+    - 196750  # Ghost in the Shell: Arise - Border 1: Ghost Pain
+    - 212168  # Ghost in the Shell: Arise - Border 2: Ghost Whispers
+    - 240341  # Ghost in the Shell: Arise - Border 3: Ghost Tears
+    - 279254  # Ghost in the Shell: Arise - Border 4: Ghost Stands Alone
+    - 1157408  # Ghost in the Shell: Arise - Border 5: Pyrophoric Cult
+    - 334376  # Ghost in the Shell: The New Movie
+    - 315837  # Ghost in the Shell
   Ghostbusters:
     name: "Ghostbusters"
     name_mapping: "Ghostbusters"
+    url_poster: "https://theposterdb.com/api/assets/203163"
     tmdb_movie:
-    - 620
-    - 2978
-    - 43074
-    - 425909
-    - 967847
+    - 620  # Ghostbusters
+    - 2978  # Ghostbusters II
+    - 43074  # Ghostbusters
+    - 425909  # Ghostbusters: Afterlife
+    - 967847  # Ghostbusters: Frozen Empire
   Gladiator:
     name: "Gladiator"
     name_mapping: "Gladiator"
+    url_poster: "https://theposterdb.com/api/assets/555305"
     tmdb_movie:
-    - 98
-    - 558449
+    - 98  # Gladiator
+    - 558449  # Gladiator II
   Godzilla:
     name: "Godzilla"
     name_mapping: "Godzilla"
+    url_poster: "https://theposterdb.com/api/assets/16674"
     tmdb_movie:
-    - 1680
-    - 39256
-    - 929
-    - 124905
-    - 373571
-    - 399566
-    - 823464
-    - 449574
-    - 492719
-    - 536115
-    - 315011
-    - 940721
+    - 1680  # King Kong vs. Godzilla
+    - 39256  # Godzilla 1985
+    - 929  # Godzilla
+    - 124905  # Godzilla
+    - 373571  # Godzilla: King of the Monsters
+    - 399566  # Godzilla vs. Kong
+    - 823464  # Godzilla x Kong: The New Empire
+    - 449574  # Godzilla: Planet of the Monsters
+    - 492719  # Godzilla: City on the Edge of Battle
+    - 536115  # Godzilla: The Planet Eater
+    - 315011  # Shin Godzilla
+    - 940721  # Godzilla Minus One
   Gremlins:
     name: "Gremlins"
     name_mapping: "Gremlins"
+    url_poster: "https://theposterdb.com/api/assets/530873"
     tmdb_movie:
-    - 927
-    - 928
+    - 927  # Gremlins
+    - 928  # Gremlins 2: The New Batch
   Guillermo_del_Toro:
     name: "Guillermo del Toro"
     name_mapping: "Guillermo_del_Toro"
+    url_poster: "https://theposterdb.com/api/assets/533792"
     tmdb_movie:
-    - 11655
-    - 4961
-    - 1433
-    - 36586
-    - 1487
-    - 1417
-    - 11253
-    - 68726
-    - 201085
-    - 399055
-    - 597208
-    - 555604
+    - 11655  # Cronos
+    - 4961  # Mimic
+    - 1433  # The Devil's Backbone
+    - 36586  # Blade II
+    - 1487  # Hellboy
+    - 1417  # Pan's Labyrinth
+    - 11253  # Hellboy II: The Golden Army
+    - 68726  # Pacific Rim
+    - 201085  # Crimson Peak
+    - 399055  # The Shape of Water
+    - 597208  # Nightmare Alley
+    - 555604  # Guillermo del Toro's Pinocchio
   Hannibal:
     name: "Hannibal"
     name_mapping: "Hannibal"
+    url_poster: "https://theposterdb.com/api/assets/159796"
     tmdb_movie:
-    - 274
-    - 9533
+    - 274  # The Silence of the Lambs
+    - 9533  # Red Dragon
   Harry_Potter:
     name: "Harry Potter"
     name_mapping: "Harry_Potter"
+    url_poster: "https://theposterdb.com/api/assets/545"
     tmdb_movie:
-    - 671
-    - 672
-    - 673
-    - 674
-    - 675
-    - 767
-    - 12444
-    - 12445
+    - 671  # Harry Potter and the Philosopher's Stone
+    - 672  # Harry Potter and the Chamber of Secrets
+    - 673  # Harry Potter and the Prisoner of Azkaban
+    - 674  # Harry Potter and the Goblet of Fire
+    - 675  # Harry Potter and the Order of the Phoenix
+    - 767  # Harry Potter and the Half-Blood Prince
+    - 12444  # Harry Potter and the Deathly Hallows: Part 1
+    - 12445  # Harry Potter and the Deathly Hallows: Part 2
   Hellboy:
     name: "Hellboy"
     name_mapping: "Hellboy"
+    url_poster: "https://theposterdb.com/api/assets/5160"
     tmdb_movie:
-    - 1487
-    - 16774
-    - 13204
-    - 11253
-    - 1487
-    - 1087822
+    - 1487  # Hellboy
+    - 16774  # Hellboy Animated: Sword of Storms
+    - 13204  # Hellboy Animated: Blood and Iron
+    - 11253  # Hellboy II: The Golden Army
+    - 1487  # Hellboy
+    - 1087822  # Hellboy: The Crooked Man
   Hocus_Pocus:
     name: "Hocus Pocus"
     name_mapping: "Hocus_Pocus"
+    url_poster: "https://theposterdb.com/api/assets/270758"
     tmdb_movie:
-    - 10439
-    - 642885
+    - 10439  # Hocus Pocus
+    - 642885  # Hocus Pocus 2
   Home_Alone:
     name: "Home Alone"
     name_mapping: "Home_Alone"
+    url_poster: "https://theposterdb.com/api/assets/23878"
     tmdb_movie:
-    - 771
-    - 772
+    - 771  # Home Alone
+    - 772  # Home Alone 2: Lost in New York
   Hot_Tub_Time_Machine:
     name: "Hot Tub Time Machine"
     name_mapping: "Hot_Tub_Time_Machine"
+    url_poster: "https://theposterdb.com/api/assets/26837"
     tmdb_movie:
-    - 23048
-    - 243938
+    - 23048  # Hot Tub Time Machine
+    - 243938  # Hot Tub Time Machine 2
   Hotel_Transylvania:
     name: "Hotel Transylvania"
     name_mapping: "Hotel_Transylvania"
+    url_poster: "https://theposterdb.com/api/assets/67931"
     tmdb_movie:
-    - 76492
-    - 159824
-    - 400155
-    - 585083
+    - 76492  # Hotel Transylvania
+    - 159824  # Hotel Transylvania 2
+    - 400155  # Hotel Transylvania 3: Summer Vacation
+    - 585083  # Hotel Transylvania: Transformania
   ID4:
     name: "ID4"
     name_mapping: "ID4"
+    url_poster: "https://theposterdb.com/api/assets/15117"
     tmdb_movie:
-    - 602
-    - 47933
+    - 602  # Independence Day
+    - 47933  # Independence Day: Resurgence
   Incredibles:
     name: "Incredibles"
     name_mapping: "Incredibles"
+    url_poster: "https://theposterdb.com/api/assets/399278"
     tmdb_movie:
-    - 9806
-    - 260513
+    - 9806  # The Incredibles
+    - 260513  # Incredibles 2
   Indiana_Jones:
     name: "Indiana Jones"
     name_mapping: "Indiana_Jones"
+    url_poster: "https://theposterdb.com/api/assets/178966"
     tmdb_movie:
-    - 85
-    - 87
-    - 89
-    - 217
-    - 335977
+    - 85  # Raiders of the Lost Ark
+    - 87  # Indiana Jones and the Temple of Doom
+    - 89  # Indiana Jones and the Last Crusade
+    - 217  # Indiana Jones and the Kingdom of the Crystal Skull
+    - 335977  # Indiana Jones and the Dial of Destiny
   Jack_Ryan:
     name: "Jack Ryan"
     name_mapping: "Jack_Ryan"
+    url_poster: "https://theposterdb.com/api/assets/465263"
     tmdb_movie:
-    - 1669
-    - 9869
-    - 9331
-    - 4614
-    - 137094
+    - 1669  # The Hunt for Red October
+    - 9869  # Patriot Games
+    - 9331  # Clear and Present Danger
+    - 4614  # The Sum of All Fears
+    - 137094  # Jack Ryan: Shadow Recruit
   Jaws:
     name: "Jaws"
     name_mapping: "Jaws"
+    url_poster: "https://theposterdb.com/api/assets/66353"
     tmdb_movie:
-    - 578
-    - 579
-    - 17692
-    - 580
+    - 578  # Jaws
+    - 579  # Jaws 2
+    - 17692  # Jaws 3-D
+    - 580  # Jaws: The Revenge
   Jay_and_Silent_Bob:
     name: "Jay and Silent Bob"
     name_mapping: "Jay_and_Silent_Bob"
+    url_poster: "https://theposterdb.com/api/assets/40191"
     tmdb_movie:
-    - 2292
-    - 2293
-    - 2255
-    - 1832
-    - 2294
-    - 2295
-    - 440762
-    - 635891
+    - 2292  # Clerks
+    - 2293  # Mallrats
+    - 2255  # Chasing Amy
+    - 1832  # Dogma
+    - 2294  # Jay and Silent Bob Strike Back
+    - 2295  # Clerks II
+    - 440762  # Jay and Silent Bob Reboot
+    - 635891  # Clerks III
   Jean-Pierre_Jeunet:
     name: "Jean-Pierre Jeunet"
     name_mapping: "Jean-Pierre_Jeunet"
+    url_poster: "https://theposterdb.com/api/assets/130849"
     tmdb_movie:
-    - 1023114
-    - 157841
-    - 27936
-    - 2841
-    - 194
-    - 8078
-    - 902
-    - 892
+    - 1023114  # Big Bug Disaster
+    - 157841  # The Young and Prodigious T.S. Spivet
+    - 27936  # Micmacs
+    - 2841  # A Very Long Engagement
+    - 194  # Amélie
+    - 8078  # Alien Resurrection
+    - 902  # The City of Lost Children
+    - 892  # Delicatessen
   John_Wick:
     name: "John Wick"
     name_mapping: "John_Wick"
-    tmdb_movie:
-    - 245891
-    - 324552
-    - 458156
-    - 603692
+    url_poster: "https://theposterdb.com/api/assets/15646"
+    tmdb_collection:
+    - 404609  # John Wick
+    - 1494663  # Ballerina
   Journalism:
-    name: "Journalism"
+    name: "♥ Journalism"
     name_mapping: "Journalism"
-    sort_title: "Journalism"
+    url_poster: "https://theposterdb.com/api/assets/506251"
     tmdb_movie:
-    - 891
-    - 11541
-    - 1949
-    - 11499
-    - 73358
-    - 242582
-    - 314365
-    - 446354
-    - 399248
-    - 837881
+    - 891  # All the President's Men
+    - 11541  # The Year of Living Dangerously
+    - 1949  # Zodiac
+    - 11499  # Frost/Nixon
+    - 73358  # Page Eight
+    - 242582  # Nightcrawler
+    - 314365  # Spotlight
+    - 446354  # The Post
+    - 399248  # Beirut
+    - 837881  # She Said
   Jumanji:
     name: "Jumanji"
     name_mapping: "Jumanji"
+    url_poster: "https://theposterdb.com/api/assets/8779"
     tmdb_movie:
-    - 8844
-    - 353486
-    - 512200
+    - 8844  # Jumanji
+    - 353486  # Jumanji: Welcome to the Jungle
+    - 512200  # Jumanji: The Next Level
   Jump_Street:
     name: "Jump Street"
     name_mapping: "Jump_Street"
+    url_poster: "https://theposterdb.com/api/assets/22172"
     tmdb_movie:
-    - 64688
-    - 187017
+    - 64688  # 21 Jump Street
+    - 187017  # 22 Jump Street
   Jurassic_Park:
     name: "Jurassic Park"
     name_mapping: "Jurassic_Park"
+    url_poster: "https://theposterdb.com/api/assets/248689"
     tmdb_movie:
-    - 329
-    - 330
-    - 331
-    - 135397
-    - 351286
-    - 630322
-    - 507086
+    - 329  # Jurassic Park
+    - 330  # The Lost World: Jurassic Park
+    - 331  # Jurassic Park III
+    - 135397  # Jurassic World
+    - 351286  # Jurassic World: Fallen Kingdom
+    - 630322  # Battle at Big Rock
+    - 507086  # Jurassic World Dominion
   Kaiju:
-    name: "Kaiju"
+    name: "♥ Kaiju"
     name_mapping: "Kaiju"
-    sort_title: "Kaiju"
+    url_poster: "https://theposterdb.com/api/assets/241301"
     tmdb_movie:
-    - 1680
-    - 10730
-    - 31947
-    - 39256
-    - 929
-    - 244
-    - 7191
-    - 43933
-    - 68726
-    - 145221
-    - 124905
-    - 339967
-    - 315011
-    - 449574
-    - 293167
-    - 492719
-    - 427641
-    - 536115
-    - 268896
-    - 373571
-    - 399566
-    - 940721
-    - 823464
-    - 1255
+    - 1680  # King Kong vs. Godzilla
+    - 10730  # King Kong
+    - 31947  # King Kong Lives
+    - 39256  # Godzilla 1985
+    - 929  # Godzilla
+    - 244  # King Kong
+    - 7191  # Cloverfield
+    - 43933  # Monsters
+    - 68726  # Pacific Rim
+    - 145221  # Monsters: Dark Continent
+    - 124905  # Godzilla
+    - 339967  # Colossal
+    - 315011  # Shin Godzilla
+    - 449574  # Godzilla: Planet of the Monsters
+    - 293167  # Kong: Skull Island
+    - 492719  # Godzilla: City on the Edge of Battle
+    - 427641  # Rampage
+    - 536115  # Godzilla: The Planet Eater
+    - 268896  # Pacific Rim: Uprising
+    - 373571  # Godzilla: King of the Monsters
+    - 399566  # Godzilla vs. Kong
+    - 940721  # Godzilla Minus One
+    - 823464  # Godzilla x Kong: The New Empire
+    - 1255  # The Host
   Kick-Ass:
     name: "Kick-Ass"
     name_mapping: "Kick-Ass"
+    url_poster: "https://theposterdb.com/api/assets/9885"
     tmdb_movie:
-    - 23483
-    - 59859
+    - 23483  # Kick-Ass
+    - 59859  # Kick-Ass 2
   Kill_Bill:
     name: "Kill Bill"
     name_mapping: "Kill_Bill"
+    url_poster: "https://theposterdb.com/api/assets/89043"
     tmdb_movie:
-    - 24
-    - 393
+    - 24  # Kill Bill: Vol. 1
+    - 393  # Kill Bill: Vol. 2
   King_Kong:
     name: "King Kong"
     name_mapping: "King_Kong"
+    url_poster: "https://theposterdb.com/api/assets/43364"
     tmdb_movie:
-    - 244
-    - 1680
-    - 10730
-    - 31947
-    - 244
-    - 293167
-    - 399566
-    - 823464
+    - 244  # King Kong
+    - 1680  # King Kong vs. Godzilla
+    - 10730  # King Kong
+    - 31947  # King Kong Lives
+    - 244  # King Kong
+    - 293167  # Kong: Skull Island
+    - 399566  # Godzilla vs. Kong
+    - 823464  # Godzilla x Kong: The New Empire
   Knives_Out:
     name: "Knives Out"
     name_mapping: "Knives_Out"
+    url_poster: "https://theposterdb.com/api/assets/292236"
     tmdb_movie:
-    - 546554
-    - 661374
+    - 546554  # Knives Out
+    - 661374  # Glass Onion: A Knives Out Mystery
   Machete:
     name: "Machete"
     name_mapping: "Machete"
+    url_poster: "https://theposterdb.com/api/assets/42911"
     tmdb_movie:
-    - 23631
-    - 106747
+    - 23631  # Machete
+    - 106747  # Machete Kills
   Mad_Max:
     name: "Mad Max"
     name_mapping: "Mad_Max"
+    url_poster: "https://theposterdb.com/api/assets/14944"
     tmdb_movie:
-    - 9659
-    - 8810
-    - 9355
-    - 76341
-    - 786892
+    - 9659  # Mad Max
+    - 8810  # Mad Max 2
+    - 9355  # Mad Max Beyond Thunderdome
+    - 76341  # Mad Max: Fury Road
+    - 786892  # Furiosa: A Mad Max Saga
   Men_in_Black:
     name: "Men in Black"
     name_mapping: "Men_in_Black"
+    url_poster: "https://theposterdb.com/api/assets/16550"
     tmdb_movie:
-    - 607
-    - 608
-    - 607
-    - 479455
+    - 607  # Men in Black
+    - 608  # Men in Black II
+    - 607  # Men in Black
+    - 479455  # Men in Black: International
   Millennium:
     name: "Millennium"
     name_mapping: "Millennium"
+    url_poster: "https://theposterdb.com/api/assets/87824"
     tmdb_movie:
-    - 15472
-    - 24253
-    - 33613
-    - 65754
-    - 446807
+    - 15472  # The Girl with the Dragon Tattoo
+    - 24253  # The Girl Who Played with Fire
+    - 33613  # The Girl Who Kicked the Hornet's Nest
+    - 65754  # The Girl with the Dragon Tattoo
+    - 446807  # The Girl in the Spider's Web
   Mission_Impossible:
     name: "Mission: Impossible"
     name_mapping: "Mission_Impossible"
+    url_poster: "https://theposterdb.com/api/assets/21024"
     tmdb_movie:
-    - 954
-    - 955
-    - 956
-    - 56292
-    - 177677
-    - 353081
-    - 575264
+    - 954  # Mission: Impossible
+    - 955  # Mission: Impossible II
+    - 956  # Mission: Impossible III
+    - 56292  # Mission: Impossible - Ghost Protocol
+    - 177677  # Mission: Impossible - Rogue Nation
+    - 353081  # Mission: Impossible - Fallout
+    - 575264  # Mission: Impossible - Dead Reckoning Part One
   Monsters:
     name: "Monsters"
     name_mapping: "Monsters"
+    url_poster: "https://theposterdb.com/api/assets/48500"
     tmdb_movie:
-    - 43933
-    - 145221
+    - 43933  # Monsters
+    - 145221  # Monsters: Dark Continent
   Monsters_Inc:
     name: "Monsters, Inc"
     name_mapping: "Monsters_Inc"
+    url_poster: "https://theposterdb.com/api/assets/399277"
     tmdb_movie:
-    - 585
-    - 62211
+    - 585  # Monsters, Inc.
+    - 62211  # Monsters University
   Monsterverse:
     name: "Monsterverse"
     name_mapping: "Monsterverse"
+    url_poster: "https://theposterdb.com/api/assets/116534"
     tmdb_movie:
-    - 124905
-    - 293167
-    - 373571
-    - 399566
-    - 823464
+    - 124905  # Godzilla
+    - 293167  # Kong: Skull Island
+    - 373571  # Godzilla: King of the Monsters
+    - 399566  # Godzilla vs. Kong
+    - 823464  # Godzilla x Kong: The New Empire
   Mortal_Kombat:
     name: "Mortal Kombat"
     name_mapping: "Mortal_Kombat"
+    url_poster: "https://theposterdb.com/api/assets/6106"
     tmdb_movie:
-    - 9312
-    - 9823
-    - 460465
+    - 9312  # Mortal Kombat
+    - 9823  # Mortal Kombat: Annihilation
+    - 460465  # Mortal Kombat
   Music:
-    name: "Music"
+    name: "♥ Music"
     name_mapping: "Music"
-    sort_title: "Music"
+    url_poster: "https://theposterdb.com/api/assets/573675"
     tmdb_movie:
-    - 13368
-    - 499
-    - 15121
-    - 74849
-    - 11176
-    - 16858
-    - 525
-    - 14900
-    - 11314
-    - 88
-    - 24348
-    - 1648
-    - 17990
-    - 1649
-    - 8872
-    - 15300
-    - 10437
-    - 8873
-    - 13595
-    - 13531
-    - 698609
-    - 18984
-    - 21925
-    - 65
-    - 883
-    - 20910
-    - 69
-    - 1407
-    - 5723
-    - 14353
-    - 64328
-    - 244786
-    - 319075
-    - 313369
-    - 339403
-    - 501979
-    - 622855
-    - 508442
-    - 508947
+    - 13368  # White Christmas
+    - 499  # Cléo from 5 to 7
+    - 15121  # The Sound of Music
+    - 74849  # The Star Wars Holiday Special
+    - 11176  # The Muppet Movie
+    - 16858  # All That Jazz
+    - 525  # The Blues Brothers
+    - 14900  # The Great Muppet Caper
+    - 11314  # Koyaanisqatsi
+    - 88  # Dirty Dancing
+    - 24348  # Powaqqatsi
+    - 1648  # Bill & Ted's Excellent Adventure
+    - 17990  # Impromptu
+    - 1649  # Bill & Ted's Bogus Journey
+    - 8872  # Wayne's World
+    - 15300  # Newsies
+    - 10437  # The Muppet Christmas Carol
+    - 8873  # Wayne's World 2
+    - 13595  # Airheads
+    - 13531  # Empire Records
+    - 698609  # Muppet Sing Alongs: Muppet Treasure Island
+    - 18984  # Scratch
+    - 21925  # Naqoyqatsi
+    - 65  # 8 Mile
+    - 883  # Coffee and Cigarettes
+    - 20910  # The Muppets' Wizard of Oz
+    - 69  # Walk the Line
+    - 1407  # La Vie en Rose
+    - 5723  # Once
+    - 14353  # Repo! The Genetic Opera
+    - 64328  # The Muppets
+    - 244786  # Whiplash
+    - 319075  # Cobain: Montage of Heck
+    - 313369  # La La Land
+    - 339403  # Baby Driver
+    - 501979  # Bill & Ted Face the Music
+    - 622855  # Jingle Jangle: A Christmas Journey
+    - 508442  # Soul
+    - 508947  # Turning Red
   National_Treasure:
     name: "National Treasure"
     name_mapping: "National_Treasure"
+    url_poster: "https://theposterdb.com/api/assets/12355"
     tmdb_movie:
-    - 2059
-    - 6637
+    - 2059  # National Treasure
+    - 6637  # National Treasure: Book of Secrets
+  Netflix:
+    name: "® Netflix"
+    name_mapping: "Netflix"
+    url_poster: "https://theposterdb.com/api/assets/171525"
+    tmdb_network: 178464
   Oceans:
     name: "Oceans"
     name_mapping: "Oceans"
+    url_poster: "https://theposterdb.com/api/assets/228"
     tmdb_movie:
-    - 161
-    - 163
-    - 298
-    - 402900
+    - 161  # Ocean's Eleven
+    - 163  # Ocean's Twelve
+    - 298  # Ocean's Thirteen
+    - 402900  # Ocean's Eight
   Pacific_Rim:
     name: "Pacific Rim"
     name_mapping: "Pacific_Rim"
+    url_poster: "https://theposterdb.com/api/assets/10219"
     tmdb_movie:
-    - 68726
-    - 268896
+    - 68726  # Pacific Rim
+    - 268896  # Pacific Rim: Uprising
   Pandemic:
-    name: "Pandemic"
+    name: "♥ Pandemic"
     name_mapping: "Pandemic"
-    sort_title: "Pandemic"
+    url_poster: "https://theposterdb.com/api/assets/29864"
     tmdb_movie:
-    - 6950
-    - 63
-    - 170
-    - 1562
-    - 49830
-    - 72190
-    - 396535
+    - 6950  # Outbreak
+    - 63  # Twelve Monkeys
+    - 170  # 28 Days Later
+    - 1562  # 28 Weeks Later
+    - 49830  # Bio Slime
+    - 72190  # World War Z
+    - 396535  # Train to Busan
   Pixar:
-    name: "Pixar"
+    name: "® Pixar"
     name_mapping: "Pixar"
     tmdb_company: 3-pixar
+    url_poster: "https://theposterdb.com/api/assets/18894"
   Planet_of_the_Apes:
     name: "Planet of the Apes"
     name_mapping: "Planet_of_the_Apes"
+    url_poster: "https://theposterdb.com/api/assets/97354"
     tmdb_movie:
-    - 61791
-    - 119450
-    - 281338
-    - 653346
+    - 61791  # Rise of the Planet of the Apes
+    - 119450  # Dawn of the Planet of the Apes
+    - 281338  # War for the Planet of the Apes
+    - 653346  # Kingdom of the Planet of the Apes
   Political_and_Military:
-    name: "Political and Military"
+    name: "♥ Political and Military"
     name_mapping: "Political_and_Military"
-    sort_title: "Political and Military"
+    url_poster: "https://theposterdb.com/api/assets/47614"
     tmdb_movie:
-    - 28
-    - 744
-    - 1669
-    - 9869
-    - 881
-    - 9331
-    - 9772
-    - 563
-    - 11831
-    - 857
-    - 676
-    - 855
-    - 4614
-    - 2501
-    - 2502
-    - 1985
-    - 231
-    - 612
-    - 752
-    - 2503
-    - 6538
-    - 12162
-    - 11499
-    - 16995
-    - 49517
-    - 49040
-    - 68734
-    - 72976
-    - 97630
-    - 76203
-    - 137094
-    - 296098
-    - 324668
-    - 524348
-    - 361743
-    - 929590
+    - 28  # Apocalypse Now
+    - 744  # Top Gun
+    - 1669  # The Hunt for Red October
+    - 9869  # Patriot Games
+    - 881  # A Few Good Men
+    - 9331  # Clear and Present Danger
+    - 9772  # Air Force One
+    - 563  # Starship Troopers
+    - 11831  # Amistad
+    - 857  # Saving Private Ryan
+    - 676  # Pearl Harbor
+    - 855  # Black Hawk Down
+    - 4614  # The Sum of All Fears
+    - 2501  # The Bourne Identity
+    - 2502  # The Bourne Supremacy
+    - 1985  # The Constant Gardener
+    - 231  # Syriana
+    - 612  # Munich
+    - 752  # V for Vendetta
+    - 2503  # The Bourne Ultimatum
+    - 6538  # Charlie Wilson's War
+    - 12162  # The Hurt Locker
+    - 11499  # Frost/Nixon
+    - 16995  # State of Play
+    - 49517  # Tinker Tailor Soldier Spy
+    - 49040  # The Bourne Legacy
+    - 68734  # Argo
+    - 72976  # Lincoln
+    - 97630  # Zero Dark Thirty
+    - 76203  # 12 Years a Slave
+    - 137094  # Jack Ryan: Shadow Recruit
+    - 296098  # Bridge of Spies
+    - 324668  # Jason Bourne
+    - 524348  # The Report
+    - 361743  # Top Gun: Maverick
+    - 929590  # Civil War
+  Popular:
+    name: "↑ Popular"
+    name_mapping: "Popular"
+    url_poster: "https://theposterdb.com/api/assets/441322"
+    tmdb_popular: 30
+    collection_order: custom
   Predator:
     name: "Predator"
     name_mapping: "Predator"
+    url_poster: "https://theposterdb.com/api/assets/256575"
     tmdb_movie:
-    - 106
-    - 169
-    - 34851
-    - 346910
-    - 395
-    - 440
-    - 766507
-    - 1376434 # predator-killer-of-killers
+    - 106  # Predator
+    - 169  # Predator 2
+    - 34851  # Predators
+    - 346910  # The Predator
+    - 395  # AVP: Alien vs. Predator
+    - 440  # Aliens vs Predator: Requiem
+    - 766507  # Prey
+    - 1376434  # Predator: Killer of Killers # predator-killer-of-killers
   Qatsi:
     name: "Qatsi"
     name_mapping: "Qatsi"
+    url_poster: "https://theposterdb.com/api/assets/471218"
     tmdb_movie:
-    - 11314
-    - 24348
-    - 21925
+    - 11314  # Koyaanisqatsi
+    - 24348  # Powaqqatsi
+    - 21925  # Naqoyqatsi
   Rebel_Moon:
     name: "Rebel Moon"
     name_mapping: "Rebel_Moon"
+    url_poster: "https://theposterdb.com/api/assets/484398"
     tmdb_movie:
-    - 848326
-    - 934632
+    - 848326  # Rebel Moon - Part One: A Child of Fire
+    - 934632  # Rebel Moon - Part Two: The Scargiver
   Resident_Evil:
     name: "Resident Evil"
     name_mapping: "Resident_Evil"
+    url_poster: "https://theposterdb.com/api/assets/11303"
     tmdb_movie:
-    - 1576
-    - 1577
-    - 7737
-    - 35791
-    - 71679
-    - 173897
-    - 460458
+    - 1576  # Resident Evil
+    - 1577  # Resident Evil: Apocalypse
+    - 7737  # Resident Evil: Extinction
+    - 35791  # Resident Evil: Afterlife
+    - 71679  # Resident Evil: Retribution
+    - 173897  # Resident Evil: The Final Chapter
+    - 460458  # Resident Evil: Welcome to Raccoon City
   Riddick:
     name: "Riddick"
     name_mapping: "Riddick"
+    url_poster: "https://theposterdb.com/api/assets/1011"
     tmdb_movie:
-    - 2787
-    - 2789
-    - 2791
-    - 87421
+    - 2787  # Pitch Black
+    - 2789  # The Chronicles of Riddick
+    - 2791  # The Chronicles of Riddick: Dark Fury
+    - 87421  # Riddick
   RoboCop:
     name: "RoboCop"
     name_mapping: "RoboCop"
+    url_poster: "https://theposterdb.com/api/assets/83206"
     tmdb_movie:
-    - 5548
-    - 5549
-    - 5550
-    - 5548
+    - 5548  # RoboCop
+    - 5549  # RoboCop 2
+    - 5550  # RoboCop 3
+    - 97020  # RoboCop (2014)
   Rocky:
     name: "Rocky"
     name_mapping: "Rocky"
+    url_poster: "https://theposterdb.com/api/assets/22287"
     tmdb_movie:
-    - 1366
-    - 1367
-    - 1371
-    - 1374
-    - 1375
-    - 1246
-    - 312221
-    - 480530
-    - 677179
+    - 1366  # Rocky
+    - 1367  # Rocky II
+    - 1371  # Rocky III
+    - 1374  # Rocky IV
+    - 1375  # Rocky V
+    - 1246  # Rocky Balboa
+    - 312221  # Creed
+    - 480530  # Creed II
+    - 677179  # Creed III
   Scary:
-    name: "Scary"
+    name: "♥ Scary"
     name_mapping: "Scary"
-    sort_title: "Scary"
+    url_poster: "https://theposterdb.com/api/assets/137139"
     tmdb_movie:
-    - 9552
-    - 11449
-    - 814
-    - 764
-    - 609
-    - 1091
-    - 377
-    - 765
-    - 766
-    - 4232
-    - 8413
-    - 4961
-    - 4233
-    - 11618
-    - 2667
-    - 4234
-    - 2655
-    - 1433
-    - 1933
-    - 9378
-    - 565
-    - 10320
-    - 9392
-    - 588
-    - 23827
-    - 13310
-    - 41446
-    - 60935
-    - 22970
-    - 109428
-    - 242224
-    - 270303
-    - 201085
-    - 333371
-    - 14564
-    - 300668
-    - 458723
-    - 501170
-    - 646385
-    - 762504
-    - 934433
-    - 713704
+    - 9552  # The Exorcist
+    - 11449  # The Amityville Horror
+    - 814  # An American Werewolf in London
+    - 764  # The Evil Dead
+    - 609  # Poltergeist
+    - 1091  # The Thing
+    - 377  # A Nightmare on Elm Street
+    - 765  # Evil Dead II
+    - 766  # Army of Darkness
+    - 4232  # Scream
+    - 8413  # Event Horizon
+    - 4961  # Mimic
+    - 4233  # Scream 2
+    - 11618  # The Haunting
+    - 2667  # The Blair Witch Project
+    - 4234  # Scream 3
+    - 2655  # What Lies Beneath
+    - 1433  # The Devil's Backbone
+    - 1933  # The Others
+    - 9378  # Thir13en Ghosts
+    - 565  # The Ring
+    - 10320  # The Ring Two
+    - 9392  # The Descent
+    - 588  # Silent Hill
+    - 23827  # Paranormal Activity
+    - 13310  # Let the Right One In
+    - 41446  # Scream 4
+    - 60935  # The Thing
+    - 22970  # The Cabin in the Woods
+    - 109428  # Evil Dead
+    - 242224  # The Babadook
+    - 270303  # It Follows
+    - 201085  # Crimson Peak
+    - 333371  # 10 Cloverfield Lane
+    - 14564  # Rings
+    - 300668  # Annihilation
+    - 458723  # Us
+    - 501170  # Doctor Sleep
+    - 646385  # Scream
+    - 762504  # Nope
+    - 934433  # Scream VI
+    - 713704  # Evil Dead Rise
+    - 10065   # the amityville horror (2005)
   Scream:
     name: "Scream"
     name_mapping: "Scream"
+    url_poster: "https://theposterdb.com/api/assets/804"
     tmdb_movie:
-    - 4232
-    - 4233
-    - 4234
-    - 41446
-    - 646385
-    - 934433
+    - 4232  # Scream
+    - 4233  # Scream 2
+    - 4234  # Scream 3
+    - 41446  # Scream 4
+    - 646385  # Scream
+    - 934433  # Scream VI
   Shakespeare:
-    name: "Shakespeare"
+    name: "♥ Shakespeare"
     name_mapping: "Shakespeare"
-    sort_title: "Shakespeare"
+    url_poster: "https://theposterdb.com/api/assets/246042"
     tmdb_movie:
-    - 18971
-    - 454
-    - 10549
-    - 101173
-    - 336671
+    - 18971  # Rosencrantz & Guildenstern Are Dead
+    - 454  # Romeo + Juliet
+    - 10549  # Hamlet
+    - 101173  # Coriolanus
+    - 336671  # Macbeth
   Short_Circuit:
     name: "Short Circuit"
     name_mapping: "Short_Circuit"
+    url_poster: "https://theposterdb.com/api/assets/142704"
     tmdb_movie:
-    - 2605
-    - 11966
+    - 2605  # Short Circuit
+    - 11966  # Short Circuit 2
   Silent_Hill:
     name: "Silent Hill"
     name_mapping: "Silent_Hill"
+    url_poster: "https://theposterdb.com/api/assets/11679"
     tmdb_movie:
-    - 588
-    - 61012
+    - 588  # Silent Hill
+    - 61012  # Silent Hill: Revelation 3D
   Sin_City:
     name: "Sin City"
     name_mapping: "Sin_City"
+    url_poster: "https://theposterdb.com/api/assets/5036"
     tmdb_movie:
-    - 187
-    - 189
+    - 187  # Sin City
+    - 189  # Sin City: A Dame to Kill For
+  Skyline:
+    name: "Skyline"
+    name_mapping: "Skyline"
+    url_poster: "https://theposterdb.com/api/assets/187624"
+    tmdb_collection:
+    - 484312
   Slasher:
-    name: "Slasher"
+    name: "♥ Slasher"
     name_mapping: "Slasher"
     sort_title: "Slasher"
+    url_poster: "https://theposterdb.com/api/assets/25117"
     tmdb_movie:
-    - 948
-    - 377
-    - 10285
-    - 4232
-    - 4233
-    - 4234
-    - 11470
-    - 6466
-    - 13207
-    - 41446
-    - 646385
-    - 934433
+    - 948  # Halloween
+    - 377  # A Nightmare on Elm Street
+    - 10285  # Jason Goes to Hell: The Final Friday
+    - 4232  # Scream
+    - 4233  # Scream 2
+    - 4234  # Scream 3
+    - 11470  # Jason X
+    - 6466  # Freddy vs. Jason
+    - 13207  # Friday the 13th
+    - 41446  # Scream 4
+    - 646385  # Scream
+    - 934433  # Scream VI
   Snake_Plissken_Chronicles:
     name: "Snake Plissken Chronicles"
     name_mapping: "Snake_Plissken_Chronicles"
+    url_poster: "https://theposterdb.com/api/assets/347749"
     tmdb_movie:
-    - 1103
-    - 10061
+    - 1103  # Escape from New York
+    - 10061  # Escape from L.A.
   Space_Horror:
-    name: "Space Horror"
+    name: "♥ Space Horror"
     name_mapping: "Space_Horror"
-    sort_title: "Space Horror"
+    url_poster: "https://theposterdb.com/api/assets/441341"
     tmdb_movie:
-    - 62
-    - 8077
-    - 8413
-    - 8078
-    - 2787
-    - 10016
-    - 11470
-    - 8814
-    - 1272
-    - 17431
-    - 34069
-    - 19898
-    - 34851
-    - 50357
-    - 70981
-    - 174772
-    - 49047
-    - 395992
-    - 126889
-    - 384521
-    - 945961
+    - 62  # 2001: A Space Odyssey
+    - 8077  # Alien³
+    - 8413  # Event Horizon
+    - 8078  # Alien Resurrection
+    - 2787  # Pitch Black
+    - 10016  # Ghosts of Mars
+    - 11470  # Jason X
+    - 8814  # Doom
+    - 1272  # Sunshine
+    - 17431  # Moon
+    - 34069  # Cargo
+    - 19898  # Pandorum
+    - 34851  # Predators
+    - 50357  # Apollo 18
+    - 70981  # Prometheus
+    - 174772  # Europa Report
+    - 49047  # Gravity
+    - 395992  # Life
+    - 126889  # Alien: Covenant
+    - 384521  # The Cloverfield Paradox
+    - 945961  # Alien: Romulus
   Space_Jam:
     name: "Space Jam"
     name_mapping: "Space_Jam"
+    url_poster: "https://theposterdb.com/api/assets/163484"
     tmdb_movie:
-    - 2300
-    - 379686
+    - 2300  # Space Jam
+    - 379686  # Space Jam: A New Legacy
   Space_Sci-Fi:
-    name: "Space Sci-Fi"
+    name: "♥ Space Sci-Fi"
     name_mapping: "Space_Sci-Fi"
-    sort_title: "Space Sci-Fi"
+    url_poster: "https://theposterdb.com/api/assets/234738"
     tmdb_movie:
-    - 62
-    - 1410
-    - 11
-    - 152
-    - 9570
-    - 1892
-    - 157
-    - 11884
-    - 168
-    - 957
-    - 172
-    - 174
-    - 2164
-    - 193
-    - 199
-    - 563
-    - 2157
-    - 200
-    - 10350
-    - 1893
-    - 926
-    - 2067
-    - 7450
-    - 8870
-    - 1894
-    - 201
-    - 7453
-    - 1895
-    - 16320
-    - 13001
-    - 12914
-    - 13475
-    - 54138
-    - 80274
-    - 284606
-    - 253312
-    - 286217
-    - 140607
-    - 188927
-    - 330459
-    - 181808
-    - 348350
-    - 419704
-    - 181812
-    - 848326
-    - 934632
+    - 62  # 2001: A Space Odyssey
+    - 1410  # Dark Star
+    - 11  # Star Wars
+    - 152  # Star Trek: The Motion Picture
+    - 9570  # The Black Hole
+    - 1892  # Return of the Jedi
+    - 157  # Star Trek III: The Search for Spock
+    - 11884  # The Last Starfighter
+    - 168  # Star Trek IV: The Voyage Home
+    - 957  # Spaceballs
+    - 172  # Star Trek V: The Final Frontier
+    - 174  # Star Trek VI: The Undiscovered Country
+    - 2164  # Stargate
+    - 193  # Star Trek: Generations
+    - 199  # Star Trek: First Contact
+    - 563  # Starship Troopers
+    - 2157  # Lost in Space
+    - 200  # Star Trek: Insurrection
+    - 10350  # Wing Commander
+    - 1893  # Star Wars: Episode I - The Phantom Menace
+    - 926  # Galaxy Quest
+    - 2067  # Mission to Mars
+    - 7450  # Titan A.E.
+    - 8870  # Red Planet
+    - 1894  # Star Wars: Episode II - Attack of the Clones
+    - 201  # Star Trek: Nemesis
+    - 7453  # The Hitchhiker's Guide to the Galaxy
+    - 1895  # Star Wars: Episode III - Revenge of the Sith
+    - 16320  # Serenity
+    - 13001  # Stargate: The Ark of Truth
+    - 12914  # Stargate: Continuum
+    - 13475  # Star Trek
+    - 54138  # Star Trek Into Darkness
+    - 80274  # Ender's Game
+    - 157336  # Interstellar
+    - 284606  # Prelude to Axanar
+    - 253312  # Space Station 76
+    - 286217  # The Martian
+    - 140607  # Star Wars: The Force Awakens
+    - 188927  # Star Trek Beyond
+    - 330459  # Rogue One: A Star Wars Story
+    - 181808  # Star Wars: The Last Jedi
+    - 348350  # Solo: A Star Wars Story
+    - 419704  # Ad Astra
+    - 181812  # Star Wars: The Rise of Skywalker
+    - 848326  # Rebel Moon - Part One: A Child of Fire
+    - 934632  # Rebel Moon - Part Two: The Scargiver
   Species:
     name: "Species"
     name_mapping: "Species"
+    url_poster: "https://theposterdb.com/api/assets/65396"
     tmdb_movie:
-    - 9348
-    - 10216
-    - 9711
-    - 15212
+    - 9348  # Species
+    - 10216  # Species II
+    - 9711  # Species III
+    - 15212  # Species: The Awakening
   Speed:
     name: "Speed"
     name_mapping: "Speed"
+    url_poster: "https://theposterdb.com/api/assets/78076"
     tmdb_movie:
-    - 1637
-    - 1639
+    - 1637  # Speed
+    - 1639  # Speed 2: Cruise Control
   Spider-Verse:
     name: "Spider-Verse"
     name_mapping: "Spider-Verse"
+    url_poster: "https://theposterdb.com/api/assets/385186"
     tmdb_movie:
-    - 324857
-    - 569094
+    - 324857  # Spider-Man: Into the Spider-Verse
+    - 569094  # Spider-Man: Across the Spider-Verse
   Star_Trek:
     name: "Star Trek"
     name_mapping: "Star_Trek"
+    url_poster: "https://theposterdb.com/api/assets/62523"
     tmdb_movie:
-    - 152
-    - 154
-    - 157
-    - 168
-    - 172
-    - 174
-    - 193
-    - 199
-    - 200
-    - 201
-    - 13475
-    - 54138
-    - 188927
-    - 284606
-    - 522055
-    - 926
-    - 1114894
-    - 958752
+    - 152  # Star Trek: The Motion Picture
+    - 154  # Star Trek II: The Wrath of Khan
+    - 157  # Star Trek III: The Search for Spock
+    - 168  # Star Trek IV: The Voyage Home
+    - 172  # Star Trek V: The Final Frontier
+    - 174  # Star Trek VI: The Undiscovered Country
+    - 193  # Star Trek: Generations
+    - 199  # Star Trek: First Contact
+    - 200  # Star Trek: Insurrection
+    - 201  # Star Trek: Nemesis
+    - 13475  # Star Trek
+    - 54138  # Star Trek Into Darkness
+    - 188927  # Star Trek Beyond
+    - 284606  # Prelude to Axanar
+    - 522055  # What We Left Behind: Looking Back at Star Trek: Deep Space Nine
+    - 926  # Galaxy Quest
+    - 1114894  # Star Trek: Section 31
+    - 958752  # To the Journey: Looking Back at Star Trek: Voyager
   Star_Wars:
     name: "Star Wars"
     name_mapping: "Star_Wars"
+    url_poster: "https://theposterdb.com/api/assets/46969"
     tmdb_movie:
-      - 11      # Star Wars: A New Hope
-      - 1891    # The Empire Strikes Back
-      - 1892    # Return of the Jedi
-      - 1893    # The Phantom Menace
-      - 1894    # Attack of the Clones
-      - 1895    # Revenge of the Sith
-      - 74849   # The Star Wars Holiday Special
-      - 12180   # Star Wars: The Clone Wars
+      - 11  # Star Wars: A New Hope
+      - 1891  # The Empire Strikes Back
+      - 1892  # Return of the Jedi
+      - 1893  # The Phantom Menace
+      - 1894  # Attack of the Clones
+      - 1895  # Revenge of the Sith
+      - 74849  # The Star Wars Holiday Special
+      - 12180  # Star Wars: The Clone Wars
       - 330459  # Rogue One: A Star Wars Story
       - 348350  # Solo: A Star Wars Story
       - 140607  # The Force Awakens
@@ -1295,507 +1436,575 @@ collections:
   Star_Wars_4K_Theatrical:
     name: "Star Wars (4K Theatrical)"
     name_mapping: "Star_Wars_4K_Theatrical"
+    url_poster: "https://theposterdb.com/api/assets/28312"
     tmdb_movie:
-      - 11      # Star Wars: A New Hope
-      - 1891    # The Empire Strikes Back
-      - 1892    # Return of the Jedi
+      - 11  # Star Wars: A New Hope
+      - 1891  # The Empire Strikes Back
+      - 1892  # Return of the Jedi
     filters:
       edition: "PROJECT 4K"
   Star_Wars_Despecialized:
     name: "Star Wars (Despecialized)"
     name_mapping: "Star_Wars_Despecialized"
+    url_poster: "https://theposterdb.com/api/assets/28780"
     tmdb_movie:
-      - 11      # Star Wars: A New Hope
-      - 1891    # The Empire Strikes Back
-      - 1892    # Return of the Jedi
+      - 11  # Star Wars: A New Hope
+      - 1891  # The Empire Strikes Back
+      - 1892  # Return of the Jedi
     filters:
       edition: "DESPECIALIZED"
   Stargate:
     name: "Stargate"
     name_mapping: "Stargate"
+    url_poster: "https://theposterdb.com/api/assets/186449"
     tmdb_movie:
-    - 2164
-    - 13001
-    - 12914
+    - 2164  # Stargate
+    - 13001  # Stargate: The Ark of Truth
+    - 12914  # Stargate: Continuum
   Street_Fighter:
     name: "Street Fighter"
     name_mapping: "Street_Fighter"
+    url_poster: "https://theposterdb.com/api/assets/439450"
     tmdb_movie:
-    - 12613
-    - 15268
+    - 12613  # Street Fighter II: The Animated Movie
+    - 15268  # Street Fighter: The Legend of Chun-Li
   Studio_Ghibli:
-    name: "Studio Ghibli"
+    name: "® Studio Ghibli"
     name_mapping: "Studio_Ghibli"
+    url_poster: "https://theposterdb.com/api/assets/476268"
     tmdb_movie:
-    - 4935
-    - 16859
-    - 8392
-    - 128
-    - 129
-    - 149871
+    - 4935  # Howl's Moving Castle
+    - 16859  # Kiki's Delivery Service
+    - 8392  # My Neighbor Totoro
+    - 128  # Princess Mononoke
+    - 129  # Spirited Away
+    - 149871  # The Tale of The Princess Kaguya
   Super_Troopers:
     name: "Super Troopers"
     name_mapping: "Super_Troopers"
+    url_poster: "https://theposterdb.com/api/assets/36802"
     tmdb_movie:
-    - 39939
-    - 50022
+    - 39939  # Super Troopers
+    - 50022  # Super Troopers 2
   Superman:
     name: "Superman"
     name_mapping: "Superman"
+    url_poster: "https://theposterdb.com/api/assets/251283"
     tmdb_movie:
-    - 1924
-    - 8536
-    - 9531
-    - 9651
-    - 11411
-    - 1452
+    - 1924  # Superman
+    - 8536  # Superman II
+    - 9531  # Superman III
+    - 9651  # Supergirl
+    - 11411  # Superman IV: The Quest for Peace
+    - 1452  # Superman Returns
   Swamp_Thing:
     name: "Swamp Thing"
     name_mapping: "Swamp_Thing"
+    url_poster: "https://theposterdb.com/api/assets/146881"
     tmdb_movie:
-    - 17918
-    - 19142
+    - 17918  # Swamp Thing
+    - 19142  # The Return of Swamp Thing
   Taken:
     name: "Taken"
     name_mapping: "Taken"
+    url_poster: "https://theposterdb.com/api/assets/112816"
     tmdb_movie:
-    - 8681
-    - 82675
-    - 260346
+    - 8681  # Taken
+    - 82675  # Taken 2
+    - 260346  # Taken 3
   Teenage_Mutant_Ninja_Turles:
     name: "Teenage Mutant Ninja Turles"
     name_mapping: "Teenage_Mutant_Ninja_Turles"
-    tmdb_movie:
-    - 1498
-    - 1497
-    - 1499
-    - 614930
+    url_poster: "https://theposterdb.com/api/assets/4621"
+    tmdb_collection:
+    - 1156855  # Animated
+    - 1582  # Originals
+    - 401562  # Reboots
   Terminator:
     name: "Terminator"
     name_mapping: "Terminator"
+    url_poster: "https://theposterdb.com/api/assets/13656"
     tmdb_movie:
-    - 218
-    - 280
-    - 296
-    - 534
-    - 87101
-    - 290859
+    - 218  # The Terminator
+    - 280  # Terminator 2: Judgment Day
+    - 296  # Terminator 3: Rise of the Machines
+    - 534  # Terminator Salvation
+    - 87101  # Terminator Genisys
+    - 290859  # Terminator: Dark Fate
   The_Addams_Family:
     name: "The Addams Family"
     name_mapping: "The_Addams_Family"
+    url_poster: "https://theposterdb.com/api/assets/529238"
     tmdb_movie:
-    - 2907
-    - 2758
-    - 11508
+    - 2907  # The Addams Family
+    - 2758  # Addams Family Values
+    - 11508  # Addams Family Reunion
   The_Corporation:
     name: "The Corporation"
     name_mapping: "The_Corporation"
+    url_poster: "https://image.tmdb.org/t/p/original/aN7LHIKHkq6x16a4pXlaiB7PHiP.jpg"
     tmdb_movie:
-    - 11420
-    - 728870
+    - 11420  # The Corporation
+    - 728870  # The New Corporation: The Unfortunately Necessary Sequel
   The_Dead:
     name: "The Dead"
     name_mapping: "The_Dead"
+    url_poster: "https://theposterdb.com/api/assets/106818"
     tmdb_movie:
-    - 10331
-    - 923
-    - 8408
-    - 19185
-    - 924
-    - 11683
-    - 13025
-    - 29426
-    - 503736
+    - 10331  # Night of the Living Dead
+    - 923  # Dawn of the Dead
+    - 8408  # Day of the Dead
+    - 19185  # Night of the Living Dead
+    - 924  # Dawn of the Dead
+    - 11683  # Land of the Dead
+    - 13025  # Diary of the Dead
+    - 29426  # Survival of the Dead
+    - 503736  # Army of the Dead
   The_Fast_and_the_Furious:
     name: "The Fast and the Furious"
     name_mapping: "The_Fast_and_the_Furious"
+    url_poster: "https://theposterdb.com/api/assets/110853"
     tmdb_movie:
-    - 9799
-    - 77959
-    - 584
-    - 9615
-    - 13804
-    - 253835
-    - 51497
-    - 82992
-    - 168259
-    - 337339
-    - 384018
-    - 385128
-    - 385687
+    - 9799  # The Fast and the Furious
+    - 77959  # The Turbo Charged Prelude for 2 Fast 2 Furious
+    - 584  # 2 Fast 2 Furious
+    - 9615  # The Fast and the Furious: Tokyo Drift
+    - 13804  # Fast & Furious
+    - 253835  # Los Bandoleros
+    - 51497  # Fast Five
+    - 82992  # Fast & Furious 6
+    - 168259  # Furious 7
+    - 337339  # The Fate of the Furious
+    - 384018  # Fast & Furious Presents: Hobbs & Shaw
+    - 385128  # F9
+    - 385687  # Fast X
   The_Godfather:
     name: "The Godfather"
     name_mapping: "The_Godfather"
+    url_poster: "https://theposterdb.com/api/assets/26382"
     tmdb_movie:
-    - 238
-    - 240
-    - 242
+    - 238  # The Godfather
+    - 240  # The Godfather Part II
+    - 242  # The Godfather Part III
   The_Hangover:
     name: "The Hangover"
     name_mapping: "The_Hangover"
+    url_poster: "https://theposterdb.com/api/assets/51805"
     tmdb_movie:
-    - 18785
-    - 45243
-    - 109439
+    - 18785  # The Hangover
+    - 45243  # The Hangover Part II
+    - 109439  # The Hangover Part III
   The_Hunger_Games:
     name: "The Hunger Games"
     name_mapping: "The_Hunger_Games"
+    url_poster: "https://theposterdb.com/api/assets/6977"
     tmdb_movie:
-    - 70160
-    - 101299
-    - 131631
-    - 131634
-    - 695721
+    - 70160  # The Hunger Games
+    - 101299  # The Hunger Games: Catching Fire
+    - 131631  # The Hunger Games: Mockingjay - Part 1
+    - 131634  # The Hunger Games: Mockingjay - Part 2
+    - 695721  # The Hunger Games: The Ballad of Songbirds & Snakes
   The_Lion_King:
     name: "The Lion King"
     name_mapping: "The_Lion_King"
+    url_poster: "https://theposterdb.com/api/assets/82630"
     tmdb_movie:
-    - 8587
-    - 9732
-    - 11430
+    - 8587  # The Lion King
+    - 9732  # The Lion King II: Simba's Pride
+    - 11430  # The Lion King 1½
   The_Lord_of_the_Rings:
     name: "The Lord of the Rings"
     name_mapping: "The_Lord_of_the_Rings"
+    url_poster: "https://theposterdb.com/api/assets/191453"
     tmdb_movie:
-    - 120
-    - 121
-    - 122
-    - 49051
-    - 57158
-    - 122917
-    - 839033
+    - 120  # The Lord of the Rings: The Fellowship of the Ring
+    - 121  # The Lord of the Rings: The Two Towers
+    - 122  # The Lord of the Rings: The Return of the King
+    - 49051  # The Hobbit: An Unexpected Journey
+    - 57158  # The Hobbit: The Desolation of Smaug
+    - 122917  # The Hobbit: The Battle of the Five Armies
+    - 839033  # The Lord of the Rings: The War of the Rohirrim
   The_Matrix:
     name: "The Matrix"
     name_mapping: "The_Matrix"
+    url_poster: "https://theposterdb.com/api/assets/147306"
     tmdb_movie:
-    - 603
-    - 55931
-    - 604
-    - 605
-    - 624860
+    - 603  # The Matrix
+    - 55931  # The Animatrix
+    - 604  # The Matrix Reloaded
+    - 605  # The Matrix Revolutions
+    - 624860  # The Matrix Resurrections
   The_Mummy:
     name: "The Mummy"
     name_mapping: "The_Mummy"
+    url_poster: "https://theposterdb.com/api/assets/69966"
     tmdb_movie:
-    - 564
-    - 1734
-    - 9334
-    - 1735
-    - 282035
+    - 564  # The Mummy
+    - 1734  # The Mummy Returns
+    - 9334  # The Scorpion King
+    - 1735  # The Mummy: Tomb of the Dragon Emperor
+    - 282035  # The Mummy
   The_Muppets:
     name: "The Muppets"
     name_mapping: "The_Muppets"
+    url_poster: "https://theposterdb.com/api/assets/13696"
     tmdb_movie:
-    - 14900
-    - 11899
-    - 10437
-    - 698609
-    - 10208
-    - 13352
-    - 20910
-    - 64328
-    - 145220
-    - 826914
+    - 14900  # The Great Muppet Caper
+    - 11899  # The Muppets Take Manhattan
+    - 10437  # The Muppet Christmas Carol
+    - 698609  # Muppet Sing Alongs: Muppet Treasure Island
+    - 10208  # Muppets from Space
+    - 13352  # It's a Very Merry Muppet Christmas Movie
+    - 20910  # The Muppets' Wizard of Oz
+    - 64328  # The Muppets
+    - 145220  # Muppets Most Wanted
+    - 826914  # Muppets Haunted Mansion
   The_NeverEnding_Story:
     name: "The NeverEnding Story"
     name_mapping: "The_NeverEnding_Story"
+    url_poster: "https://theposterdb.com/api/assets/19956"
     tmdb_movie:
-    - 34584
-    - 34636
-    - 27793
+    - 34584  # The NeverEnding Story
+    - 34636  # The NeverEnding Story II: The Next Chapter
+    - 27793  # The NeverEnding Story III
+  The_Old_Guard:
+    name: "The Old Guard"
+    name_mapping: "The_Old_Guard"
+    url_poster: "https://theposterdb.com/api/assets/75665"
+    tmdb_collection:
+    - 847029
   The_Raid:
     name: "The Raid"
     name_mapping: "The_Raid"
+    url_poster: "https://theposterdb.com/api/assets/254147"
     tmdb_movie:
-    - 94329 # The Raid
-    - 180299 # The Raid 2
+    - 94329  # The Raid # The Raid
+    - 180299  # The Raid 2 # The Raid 2
   The_Ring:
     name: "The Ring"
     name_mapping: "The_Ring"
+    url_poster: "https://theposterdb.com/api/assets/517850"
     tmdb_movie:
-    - 565
-    - 10320
-    - 14564
+    - 565  # The Ring
+    - 10320  # The Ring Two
+    - 14564  # Rings
   The_Santa_Clause:
     name: "The Santa Clause"
     name_mapping: "The_Santa_Clause"
+    url_poster: "https://theposterdb.com/api/assets/293193"
     tmdb_movie:
-    - 11395
-    - 9021
-    - 13767
+    - 11395  # The Santa Clause
+    - 9021  # The Santa Clause 2
+    - 13767  # The Santa Clause 3: The Escape Clause
   The_Shining:
     name: "The Shining"
     name_mapping: "The_Shining"
+    url_poster: "https://theposterdb.com/api/assets/81432"
     tmdb_movie:
-    - 694
-    - 501170
+    - 694  # The Shining
+    - 501170  # Doctor Sleep
   The_Space_Odyssey_Series:
     name: "The Space Odyssey Series"
     name_mapping: "The_Space_Odyssey_Series"
+    url_poster: "https://theposterdb.com/api/assets/21635"
     tmdb_movie:
-    - 62
-    - 4437
+    - 62  # 2001: A Space Odyssey
+    - 4437  # 2010
   The_Thing:
     name: "The Thing"
     name_mapping: "The_Thing"
+    url_poster: "https://theposterdb.com/api/assets/95450"
     tmdb_movie:
-    - 1091
-    - 60935
+    - 1091  # The Thing
+    - 60935  # The Thing
   Time_Travel:
-    name: "Time Travel"
+    name: "♥ Time Travel"
     name_mapping: "Time_Travel"
-    sort_title: "Time Travel"
+    url_poster: "https://theposterdb.com/api/assets/215413"
     tmdb_movie:
-    - 243938
-    - 2135
-    - 588228
-    - 23048
-    - 218
-    - 105
-    - 10122
-    - 168
-    - 165
-    - 196
-    - 280
-    - 104
-    - 180
-    - 14337
-    - 22494
-    - 45612
-    - 59967
-    - 137113
-    - 87101
-    - 587792
-    - 122906
-    - 137
-    - 1143128
-    - 9562
+    - 243938  # Hot Tub Time Machine 2
+    - 2135  # The Time Machine
+    - 588228  # The Tomorrow War
+    - 23048  # Hot Tub Time Machine
+    - 218  # The Terminator
+    - 105  # Back to the Future
+    - 10122  # Flight of the Navigator
+    - 168  # Star Trek IV: The Voyage Home
+    - 165  # Back to the Future Part II
+    - 196  # Back to the Future Part III
+    - 280  # Terminator 2: Judgment Day
+    - 104  # Run Lola Run
+    - 180  # Minority Report
+    - 14337  # Primer
+    - 22494  # Frequently Asked Questions About Time Travel
+    - 45612  # Source Code
+    - 59967  # Looper
+    - 137113  # Edge of Tomorrow
+    - 87101  # Terminator Genisys
+    - 587792  # Palm Springs
+    - 122906  # About Time
+    - 137  # Groundhog Day
+    - 1143128  # Omni Loop
+    - 9562  # Timeline
   Tomb_Raider:
     name: "Tomb Raider"
     name_mapping: "Tomb_Raider"
+    url_poster: "https://theposterdb.com/api/assets/116910"
     tmdb_movie:
-    - 1995
-    - 1996
-    - 338970
+    - 1995  # Lara Croft: Tomb Raider
+    - 1996  # Lara Croft: Tomb Raider - The Cradle of Life
+    - 338970  # Tomb Raider
   Top_Gun:
     name: "Top Gun"
     name_mapping: "Top_Gun"
+    url_poster: "https://theposterdb.com/api/assets/251518"
     tmdb_movie:
-    - 744
-    - 361743
+    - 744  # Top Gun
+    - 361743  # Top Gun: Maverick
   Toy_Story:
     name: "Toy Story"
     name_mapping: "Toy_Story"
+    url_poster: "https://theposterdb.com/api/assets/399279"
+    tmdb_collection:
+    - 10194  # Toy Story
     tmdb_movie:
-    - 862
-    - 863
-    - 10193
-    - 301528
-    - 718789
+    - 718789  # Lightyear
+  Train_to_Busan:
+    name: "Train to Busan"
+    name_mapping: "Train_to_Busan"
+    url_poster: "https://theposterdb.com/api/assets/181011"
+    tmdb_collection:
+    - 619537
+  Trainspotting:
+    name: "Trainspotting"
+    name_mapping: "Trainspotting"
+    url_poster: "https://theposterdb.com/api/assets/157702"
+    tmdb_collection:
+    - 424202
   Transformers:
     name: "Transformers"
     name_mapping: "Transformers"
+    url_poster: "https://theposterdb.com/api/assets/87454"
     tmdb_movie:
-    - 1857
-    - 1858
-    - 8373
-    - 38356
-    - 91314
-    - 335988
-    - 424783
-    - 667538
-    - 698687
+    - 1857  # The Transformers: The Movie
+    - 1858  # Transformers
+    - 8373  # Transformers: Revenge of the Fallen
+    - 38356  # Transformers: Dark of the Moon
+    - 91314  # Transformers: Age of Extinction
+    - 335988  # Transformers: The Last Knight
+    - 424783  # Bumblebee
+    - 667538  # Transformers: Rise of the Beasts
+    - 698687  # Transformers One
+  Trending:
+    name: "↑ Trending"
+    name_mapping: "Trending"
+    url_poster: "https://theposterdb.com/api/assets/441337"
+    tmdb_trending_weekly: 30
+    collection_order: custom
   Tron:
     name: "Tron"
     name_mapping: "Tron"
-    tmdb_movie:
-    - 97
-    - 20526
+    url_poster: "https://theposterdb.com/api/assets/6984"
+    tmdb_collection:
+    - 63043
   TwentyEight:
     name: "28"
     name_mapping: "28"
+    url_poster: "https://theposterdb.com/api/assets/4963"
     tmdb_movie:
-    - 170
-    - 1562
+    - 170  # 28 Days Later
+    - 1562  # 28 Weeks Later
   Twister:
     name: "Twister"
     name_mapping: "Twister"
+    url_poster: "https://theposterdb.com/api/assets/508439"
     tmdb_movie:
-    - 664
-    - 718821
+    - 664  # Twister
+    - 718821  # Twisters
   US_Marshals:
     name: "U.S. Marshals"
     name_mapping: "US_Marshals"
+    url_poster: "https://theposterdb.com/api/assets/125289"
     tmdb_movie:
-    - 5503 # The Fugitive
-    - 11808 # U.S. Marshals
+    - 5503  # The Fugitive # The Fugitive
+    - 11808  # U.S. Marshals # U.S. Marshals
   Underworld:
     name: "Underworld"
     name_mapping: "Underworld"
+    url_poster: "https://theposterdb.com/api/assets/571"
     tmdb_movie:
-    - 277
-    - 834
-    - 12437
-    - 52520
-    - 346672
+    - 277  # Underworld
+    - 834  # Underworld: Evolution
+    - 12437  # Underworld: Rise of the Lycans
+    - 52520  # Underworld: Awakening
+    - 346672  # Underworld: Blood Wars
   Vampires:
-    name: "Vampires"
+    name: "♥ Vampires"
     name_mapping: "Vampires"
-    sort_title: "Vampires"
+    url_poster: "https://theposterdb.com/api/assets/64599"
     tmdb_movie:
-    - 27632
-    - 7091
-    - 10206
-    - 11655
-    - 36647
-    - 36586
-    - 8698
-    - 277
-    - 36648
-    - 834
-    - 9920
-    - 13310
-    - 12437
-    - 58151
-    - 52520
-    - 76492
-    - 246741
-    - 159824
-    - 346672
-    - 400155
-    - 585083
+    - 27632  # Black Sunday
+    - 7091  # Vampire's Kiss
+    - 10206  # Buffy the Vampire Slayer
+    - 11655  # Cronos
+    - 36647  # Blade
+    - 36586  # Blade II
+    - 8698  # The League of Extraordinary Gentlemen
+    - 277  # Underworld
+    - 36648  # Blade: Trinity
+    - 834  # Underworld: Evolution
+    - 9920  # Ultraviolet
+    - 13310  # Let the Right One In
+    - 12437  # Underworld: Rise of the Lycans
+    - 58151  # Fright Night
+    - 52520  # Underworld: Awakening
+    - 76492  # Hotel Transylvania
+    - 246741  # What We Do in the Shadows
+    - 159824  # Hotel Transylvania 2
+    - 346672  # Underworld: Blood Wars
+    - 400155  # Hotel Transylvania 3: Summer Vacation
+    - 585083  # Hotel Transylvania: Transformania
   Venom:
     name: "Venom"
     name_mapping: "Venom"
+    url_poster: "https://theposterdb.com/api/assets/180169"
     tmdb_movie:
-    - 335983
-    - 580489
-    - 912649
+    - 335983  # Venom
+    - 580489  # Venom: Let There Be Carnage
+    - 912649  # Venom: The Last Dance
   Video_Game:
-    name: "Video Game"
+    name: "♥ Video Game"
     name_mapping: "Video_Game"
-    sort_title: "Video Game"
+    url_poster: "https://theposterdb.com/api/assets/272535"
     tmdb_movie:
-    - 9607
-    - 12613
-    - 9312
-    - 9823
-    - 10350
-    - 1995
-    - 2114
-    - 1576
-    - 1996
-    - 1577
-    - 647
-    - 13274
-    - 8814
-    - 588
-    - 7737
-    - 15268
-    - 59300
-    - 35791
-    - 71679
-    - 61012
-    - 82690
-    - 390734
-    - 173897
-    - 338970
-    - 427641
-    - 404368
-    - 844390
-    - 447404
-    - 611424
-    - 460465
-    - 460458
-    - 502356
+    - 9607  # Super Mario Bros.
+    - 12613  # Street Fighter II: The Animated Movie
+    - 9312  # Mortal Kombat
+    - 9823  # Mortal Kombat: Annihilation
+    - 10350  # Wing Commander
+    - 1995  # Lara Croft: Tomb Raider
+    - 2114  # Final Fantasy: The Spirits Within
+    - 1576  # Resident Evil
+    - 1996  # Lara Croft: Tomb Raider - The Cradle of Life
+    - 1577  # Resident Evil: Apocalypse
+    - 647  # Final Fantasy VII: Advent Children
+    - 13274  # Final Fantasy VII: Last Order
+    - 8814  # Doom
+    - 588  # Silent Hill
+    - 7737  # Resident Evil: Extinction
+    - 15268  # Street Fighter: The Legend of Chun-Li
+    - 59300  # Final Fantasy VII: On the Way to a Smile - Episode Denzel
+    - 35791  # Resident Evil: Afterlife
+    - 71679  # Resident Evil: Retribution
+    - 61012  # Silent Hill: Revelation 3D
+    - 82690  # Wreck-It Ralph
+    - 390734  # Kingsglaive: Final Fantasy XV
+    - 173897  # Resident Evil: The Final Chapter
+    - 338970  # Tomb Raider
+    - 427641  # Rampage
+    - 404368  # Ralph Breaks the Internet
+    - 844390  # Final Fantasy XV: Episode Ardyn - Prologue
+    - 447404  # Pokémon Detective Pikachu
+    - 611424  # Brave Father Online - Our Story of Final Fantasy XIV
+    - 460465  # Mortal Kombat
+    - 460458  # Resident Evil: Welcome to Raccoon City
+    - 502356  # The Super Mario Bros. Movie
   Warewolves:
-    name: "Warewolves"
+    name: "♥ Warewolves"
     name_mapping: "Warewolves"
-    sort_title: "Warewolves"
+    url_poster: "https://theposterdb.com/api/assets/99599"
     tmdb_movie:
-    - 11298
-    - 814
-    - 11824
-    - 277
-    - 834
-    - 12437
-    - 52520
-    - 246741
-    - 346672
-    - 970450
+    - 11298  # The Howling
+    - 814  # An American Werewolf in London
+    - 11824  # Teen Wolf
+    - 277  # Underworld
+    - 834  # Underworld: Evolution
+    - 12437  # Underworld: Rise of the Lycans
+    - 52520  # Underworld: Awakening
+    - 246741  # What We Do in the Shadows
+    - 346672  # Underworld: Blood Wars
+    - 970450  # Werewolves
   Waynes_World:
     name: "Wayne's World"
     name_mapping: "Waynes_World"
-    test: true
+    url_poster: "https://theposterdb.com/api/assets/68154"
     tmdb_movie:
-    - 8872
-    - 8873
+    - 8872  # Wayne's World
+    - 8873  # Wayne's World 2
   World_War_II:
-    name: "World War II"
+    name: "♥ World War II"
     name_mapping: "World_War_II"
-    sort_title: "World War II"
+    url_poster: "https://theposterdb.com/api/assets/63452"
     tmdb_movie:
-    - 424
-    - 857
-    - 853
-    - 676
-    - 16869
-    - 205596
-    - 374720
-    - 872585
+    - 424  # Schindler's List
+    - 857  # Saving Private Ryan
+    - 853  # Enemy at the Gates
+    - 676  # Pearl Harbor
+    - 16869  # Inglourious Basterds
+    - 205596  # The Imitation Game
+    - 374720  # Dunkirk
+    - 872585  # Oppenheimer
+  Worricker:
+    name: "Worricker"
+    name_mapping: "Worricker"
+    url_poster: "https://theposterdb.com/api/assets/83544"
+    tmdb_collection:
+    - 260601
   Wreck-It_Ralph:
     name: "Wreck-It Ralph"
     name_mapping: "Wreck-It_Ralph"
-    test: true
+    url_poster: "https://theposterdb.com/api/assets/31281"
     tmdb_movie:
-    - 82690
-    - 404368
+    - 82690  # Wreck-It Ralph
+    - 404368  # Ralph Breaks the Internet
   Zombieland:
     name: "Zombieland"
     name_mapping: "Zombieland"
+    url_poster: "https://theposterdb.com/api/assets/36532"
     tmdb_movie:
-    - 19908
-    - 338967
+    - 19908  # Zombieland
+    - 338967  # Zombieland: Double Tap
   Zombies:
-    name: "Zombies"
+    name: "♥ Zombies"
     name_mapping: "Zombies"
-    sort_title: "Zombies"
+    url_poster: "https://theposterdb.com/api/assets/60756"
     tmdb_movie:
-    - 10331
-    - 923
-    - 764
-    - 8408
-    - 765
-    - 19185
-    - 766
-    - 10016
-    - 1576
-    - 170
-    - 924
-    - 747
-    - 1577
-    - 11683
-    - 1562
-    - 13025
-    - 7737
-    - 19908
-    - 29426
-    - 35791
-    - 71679
-    - 82654
-    - 109428
-    - 72190
-    - 396535
-    - 375366
-    - 173897
-    - 338967
-    - 503736
-    - 460458
-    - 713704
-    - 1118031
+    - 10331  # Night of the Living Dead
+    - 923  # Dawn of the Dead
+    - 764  # The Evil Dead
+    - 8408  # Day of the Dead
+    - 765  # Evil Dead II
+    - 19185  # Night of the Living Dead
+    - 766  # Army of Darkness
+    - 10016  # Ghosts of Mars
+    - 1576  # Resident Evil
+    - 170  # 28 Days Later
+    - 924  # Dawn of the Dead
+    - 747  # Shaun of the Dead
+    - 1577  # Resident Evil: Apocalypse
+    - 11683  # Land of the Dead
+    - 1562  # 28 Weeks Later
+    - 13025  # Diary of the Dead
+    - 7737  # Resident Evil: Extinction
+    - 19908  # Zombieland
+    - 29426  # Survival of the Dead
+    - 35791  # Resident Evil: Afterlife
+    - 71679  # Resident Evil: Retribution
+    - 82654  # Warm Bodies
+    - 109428  # Evil Dead
+    - 72190  # World War Z
+    - 396535  # Train to Busan
+    - 375366  # The Girl with All the Gifts
+    - 173897  # Resident Evil: The Final Chapter
+    - 338967  # Zombieland: Double Tap
+    - 503736  # Army of the Dead
+    - 460458  # Resident Evil: Welcome to Raccoon City
+    - 713704  # Evil Dead Rise
+    - 1118031  # Apocalypse Z: The Beginning of the End
   Zoolander:
     name: "Zoolander"
     name_mapping: "Zoolander"
+    url_poster: "https://theposterdb.com/api/assets/228819"
     tmdb_movie:
-    - 9398
-    - 329833
+    - 9398  # Zoolander
+    - 329833  # Zoolander 2
