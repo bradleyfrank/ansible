@@ -336,7 +336,7 @@ collections:
     - 480530  # Creed II
     - 677179  # Creed III
   Criterion:
-    name: "Criterion"
+    name: "♥ Criterion"
     name_mapping: "Criterion"
     url_poster: "https://theposterdb.com/api/assets/603871"
     letterboxd_list_details: "https://letterboxd.com/sadhomersimpson/list/criterion/"
@@ -610,7 +610,7 @@ collections:
     - 927  # Gremlins
     - 928  # Gremlins 2: The New Batch
   Guillermo_del_Toro:
-    name: "Guillermo del Toro"
+    name: "♥ Guillermo del Toro"
     name_mapping: "Guillermo_del_Toro"
     url_poster: "https://theposterdb.com/api/assets/533792"
     tmdb_movie:
@@ -744,7 +744,7 @@ collections:
     - 440762  # Jay and Silent Bob Reboot
     - 635891  # Clerks III
   Jean-Pierre_Jeunet:
-    name: "Jean-Pierre Jeunet"
+    name: "♥ Jean-Pierre Jeunet"
     name_mapping: "Jean-Pierre_Jeunet"
     url_poster: "https://theposterdb.com/api/assets/130849"
     tmdb_movie:
@@ -1270,7 +1270,6 @@ collections:
   Slasher:
     name: "♥ Slasher"
     name_mapping: "Slasher"
-    sort_title: "Slasher"
     url_poster: "https://theposterdb.com/api/assets/25117"
     tmdb_movie:
     - 948  # Halloween
