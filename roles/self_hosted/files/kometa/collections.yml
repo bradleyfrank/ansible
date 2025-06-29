@@ -335,6 +335,12 @@ collections:
     - 312221  # Creed
     - 480530  # Creed II
     - 677179  # Creed III
+  Criterion:
+    name: "Criterion"
+    name_mapping: "Criterion"
+    url_poster: "https://theposterdb.com/api/assets/603871"
+    letterboxd_list_details: "https://letterboxd.com/sadhomersimpson/list/criterion/"
+    collection_order: custom
   Crouching_Tiger_Hidden_Dragon:
     name: "Crouching Tiger, Hidden Dragon"
     name_mapping: "Crouching_Tiger_Hidden_Dragon"
@@ -998,6 +1004,12 @@ collections:
     name_mapping: "Netflix"
     url_poster: "https://theposterdb.com/api/assets/171525"
     tmdb_network: 178464
+  Oscars:
+    name: "↑ Best Pictures"
+    name_mapping: "Oscar Best Pictures"
+    url_poster: "https://theposterdb.com/api/assets/514188"
+    letterboxd_list_details: "https://letterboxd.com/oscars/list/oscar-winning-films-best-picture/"
+    collection_order: custom
   Oceans:
     name: "Oceans"
     name_mapping: "Oceans"
