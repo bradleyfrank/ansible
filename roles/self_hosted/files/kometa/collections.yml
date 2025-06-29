@@ -341,6 +341,7 @@ collections:
     url_poster: "https://theposterdb.com/api/assets/603871"
     letterboxd_list: "https://letterboxd.com/sadhomersimpson/list/criterion/"
     collection_order: custom
+    schedule: monthly
   Crouching_Tiger_Hidden_Dragon:
     name: "Crouching Tiger, Hidden Dragon"
     name_mapping: "Crouching_Tiger_Hidden_Dragon"
@@ -1017,6 +1018,7 @@ collections:
     url_poster: "https://theposterdb.com/api/assets/514188"
     letterboxd_list: "https://letterboxd.com/oscars/list/oscar-winning-films-best-picture/"
     collection_order: custom
+    schedule: weekly
   Oceans:
     name: "Oceans"
     name_mapping: "Oceans"
