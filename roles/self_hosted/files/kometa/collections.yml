@@ -277,9 +277,9 @@ collections:
     - 1145635  # A Merry Scottish Christmas
     - 1064137  # A Biltmore Christmas
     - 1180706  # Friends & Family Christmas
-  Christopher_Nolan:
-    name: "Christopher Nolan"
-    name_mapping: "Christopher_Nolan"
+  Nolanverse:
+    name: "♥ Nolanverse"
+    name_mapping: "Nolanverse"
     url_poster: "https://theposterdb.com/api/assets/378205"
     tmdb_movie:
     - 77  # Memento
