@@ -336,10 +336,10 @@ collections:
     - 480530  # Creed II
     - 677179  # Creed III
   Criterion:
-    name: "♥ Criterion"
+    name: "↑ Criterion"
     name_mapping: "Criterion"
     url_poster: "https://theposterdb.com/api/assets/603871"
-    letterboxd_list_details: "https://letterboxd.com/sadhomersimpson/list/criterion/"
+    letterboxd_list: "https://letterboxd.com/sadhomersimpson/list/criterion/"
     collection_order: custom
   Crouching_Tiger_Hidden_Dragon:
     name: "Crouching Tiger, Hidden Dragon"
@@ -535,7 +535,7 @@ collections:
   Friday_the_13th:
     name: "Friday the 13th"
     name_mapping: "Friday_the_13th"
-    url_poster: "https://theposterdb.com/api/assets/169888"
+    url_poster: "https://theposterdb.com/api/assets/27400"
     tmdb_collection:
     - 9735
     tmdb_movie:
@@ -711,6 +711,13 @@ collections:
     - 89  # Indiana Jones and the Last Crusade
     - 217  # Indiana Jones and the Kingdom of the Crystal Skull
     - 335977  # Indiana Jones and the Dial of Destiny
+  International:
+    name: "International"
+    name_mapping: "International"
+    url_poster: "https://theposterdb.com/api/assets/37035"
+    letterboxd_list:
+    - "https://letterboxd.com/brsan/list/letterboxds-top-250-international-films/"
+    - "https://letterboxd.com/masuddevilliers/list/international/"
   Jack_Ryan:
     name: "Jack Ryan"
     name_mapping: "Jack_Ryan"
@@ -1008,7 +1015,7 @@ collections:
     name: "↑ Best Pictures"
     name_mapping: "Oscar Best Pictures"
     url_poster: "https://theposterdb.com/api/assets/514188"
-    letterboxd_list_details: "https://letterboxd.com/oscars/list/oscar-winning-films-best-picture/"
+    letterboxd_list: "https://letterboxd.com/oscars/list/oscar-winning-films-best-picture/"
     collection_order: custom
   Oceans:
     name: "Oceans"
