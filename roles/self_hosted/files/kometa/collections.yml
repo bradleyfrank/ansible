@@ -81,6 +81,12 @@ collections:
     - 268896  # Pacific Rim: Uprising
     - 429471  # Captive State
     - 762441  # A Quiet Place: Day One
+  An_American_Werewolf:
+    name: "An American Werewolf"
+    name_mapping: "An_American_Werewolf"
+    url_poster: "https://theposterdb.com/api/assets/18581"
+    tmdb_collection:
+    - 9380
   Anchorman:
     name: "Anchorman"
     name_mapping: "Anchorman"
@@ -1493,13 +1499,8 @@ collections:
     name: "® Studio Ghibli"
     name_mapping: "Studio_Ghibli"
     url_poster: "https://theposterdb.com/api/assets/476268"
-    tmdb_movie:
-    - 4935  # Howl's Moving Castle
-    - 16859  # Kiki's Delivery Service
-    - 8392  # My Neighbor Totoro
-    - 128  # Princess Mononoke
-    - 129  # Spirited Away
-    - 149871  # The Tale of The Princess Kaguya
+    tmdb_company:
+    - 10342
   Super_Troopers:
     name: "Super Troopers"
     name_mapping: "Super_Troopers"
@@ -1853,12 +1854,8 @@ collections:
     name: "Underworld"
     name_mapping: "Underworld"
     url_poster: "https://theposterdb.com/api/assets/571"
-    tmdb_movie:
-    - 277  # Underworld
-    - 834  # Underworld: Evolution
-    - 12437  # Underworld: Rise of the Lycans
-    - 52520  # Underworld: Awakening
-    - 346672  # Underworld: Blood Wars
+    tmdb_collection:
+    - 2326
   Vampires:
     name: "♥ Vampires"
     name_mapping: "Vampires"
@@ -1934,16 +1931,13 @@ collections:
     name: "♥ Warewolves"
     name_mapping: "Warewolves"
     url_poster: "https://theposterdb.com/api/assets/99599"
+    tmdb_collection:
+    - 9380  # American Warewolf
+    - 2326  # Underworld
+    - 174218  # Howling
+    - 43066  # Teen Wolf
     tmdb_movie:
-    - 11298  # The Howling
-    - 814  # An American Werewolf in London
-    - 11824  # Teen Wolf
-    - 277  # Underworld
-    - 834  # Underworld: Evolution
-    - 12437  # Underworld: Rise of the Lycans
-    - 52520  # Underworld: Awakening
     - 246741  # What We Do in the Shadows
-    - 346672  # Underworld: Blood Wars
     - 970450  # Werewolves
   Waynes_World:
     name: "Wayne's World"
