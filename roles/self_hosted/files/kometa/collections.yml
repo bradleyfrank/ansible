@@ -713,12 +713,13 @@ collections:
     - 217  # Indiana Jones and the Kingdom of the Crystal Skull
     - 335977  # Indiana Jones and the Dial of Destiny
   International:
-    name: "International"
+    name: "♥ International"
     name_mapping: "International"
     url_poster: "https://theposterdb.com/api/assets/37035"
     letterboxd_list:
     - "https://letterboxd.com/brsan/list/letterboxds-top-250-international-films/"
     - "https://letterboxd.com/masuddevilliers/list/international/"
+    schedule: weekly
   Jack_Ryan:
     name: "Jack Ryan"
     name_mapping: "Jack_Ryan"
