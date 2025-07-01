@@ -2,19 +2,16 @@
 
 set -o errexit
 
-#
-# Updates various package managers and components.
-# Author: Brad Frank
-# Date: Sept 2021; Jan 2024
-# Tested: zsh 5.9 (arm-apple-darwin23.0.0)
-#
+# @meta describe Runs updates on various programs and plugins.
+# @meta author Brad Frank
+# @meta require-tools jq,toilet
+# @meta version 2.1.0
+# @meta combine-shorts
 
 
 _hr() {
   printf '\n\n%s%s' "$(tput bold)" "$(tput setaf 6)"
-  printf '%*s\n' "$(tput cols)" "" | tr ' ' '='
-  printf '%s\n' "$1"
-  printf '%*s\n' "$(tput cols)" "" | tr ' ' '-'
+  printf '%s\n' "$(toilet -f smmono9 "$1")"
   printf '%s\n' "$(tput sgr0)"
 }
 
@@ -33,6 +30,7 @@ linux_update() {
   _hr "SYSTEM UPDATE"
 
   sudo systemctl stop packagekit
+  # shellcheck disable=SC1091
   source /etc/os-release
 
   case "$ID" in
@@ -40,6 +38,7 @@ linux_update() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade --assumeyes
+      # shellcheck disable=SC2024
       sudo dnf list --installed >> "$INSTALLED_PACKAGES"
       if ! sudo dnf needs-restarting -r; then RESTART_NEEDED=1; fi
       ;;
@@ -100,6 +99,7 @@ fi
 
 if [[ -f ~/.config/zsh/rc.d/benv.zsh ]]; then
   _hr "CLEANUP: VIRTUALENV"
+  # shellcheck disable=SC1090
   source ~/.config/zsh/rc.d/benv.zsh
   benv list
   benv cleanup
@@ -107,8 +107,12 @@ fi
 
 if pkg_installed multipass; then
   _hr "MULTIPASS PURGE"
-  multipass list
-  multipass purge
+  deleted_vms="$(multipass list --format json \
+    | jq -r '.list[] | select(.state == "Deleted") | .name')"
+  if (( "$(wc -l <<< "$deleted_vms)")" > 0 )); then
+    echo "$deleted_vms"
+    multipass purge
+  fi
 fi
 
 if pkg_installed bat; then
@@ -124,8 +128,8 @@ fi
 rm --recursive --force "$INSTALLED_PACKAGES"
 
 if [[ -n $RESTART_NEEDED ]]; then
-  _hr "NOTES"
-  toilet --font future --filter border --gay RESTART NEEDED
+  printf '\n\n%s%s' "$(tput bold)" "$(tput setaf 1)"
+  printf '%s\n' "$(toilet -f smmono9 "RESTART NEEDED")"
+  printf '%s\n' "$(tput sgr0)"
 fi
 
-printf '\n\n'
