@@ -80,6 +80,12 @@ collections:
     - 268896  # Pacific Rim: Uprising
     - 429471  # Captive State
     - 762441  # A Quiet Place: Day One
+  Amityville:
+    name: "Amityville"
+    name_mapping: "Amityville"
+    url_poster: "https://theposterdb.com/api/assets/7890"
+    tmdb_collection:
+    - 397842
   An_American_Werewolf:
     name: "An American Werewolf"
     name_mapping: "An_American_Werewolf"
@@ -190,6 +196,12 @@ collections:
     - 475759  # 2048: Nowhere to Run
     - 335984  # Blade Runner 2049
     - 57656  # Dangerous Days: Making Blade Runner
+  Blair_Witch:
+    name: "Blair Witch"
+    name_mapping: "Blair_Witch"
+    url_poster: "https://theposterdb.com/api/assets/102330"
+    tmdb_collection:
+    - 64750
   Blues_Brothers:
     name: "Blues Brothers"
     name_mapping: "Blues_Brothers"
@@ -386,6 +398,12 @@ collections:
     url_poster: "https://theposterdb.com/api/assets/262998"
     tmdb_collection:
     - 1570
+  Dirty_Dancing:
+    name: "Dirty Dancing"
+    name_mapping: "Dirty_Dancing"
+    url_poster: "https://theposterdb.com/api/assets/84582"
+    tmdb_collection:
+    - 86058
   Disaster:
     name: "♥ Disaster"
     name_mapping: "Disaster"
@@ -1063,7 +1081,7 @@ collections:
   RoboCop:
     name: "RoboCop"
     name_mapping: "RoboCop"
-    url_poster: "https://theposterdb.com/api/assets/83206"
+    url_poster: "https://theposterdb.com/api/assets/565374"
     tmdb_collection:
     - 5547
     - 1488607  # Prime Directives
@@ -1076,6 +1094,12 @@ collections:
     tmdb_collection:
     - 1575  # Rocky
     - 553717  # Creed
+  Rush_Hour:
+    name: "Rush Hour"
+    name_mapping: "Rush_Hour"
+    url_poster: "https://theposterdb.com/api/assets/82708"
+    tmdb_collection:
+    - 90863
   Scary:
     name: "♥ Scary"
     name_mapping: "Scary"
@@ -1146,6 +1170,12 @@ collections:
     url_poster: "https://theposterdb.com/api/assets/142704"
     tmdb_collection:
     - 86347
+  Sicario:
+    name: "Sicario"
+    name_mapping: "Sicario"
+    url_poster: "https://theposterdb.com/api/assets/139267"
+    tmdb_collection:
+    - 496796
   Silent_Hill:
     name: "Silent Hill"
     name_mapping: "Silent_Hill"
@@ -1158,6 +1188,12 @@ collections:
     url_poster: "https://theposterdb.com/api/assets/5036"
     tmdb_collection:
     - 135179
+  Singham:
+    name: "Singham"
+    name_mapping: "Singham"
+    url_poster: "https://image.tmdb.org/t/p/original/12U6IrbDP9WqI0KSYmyWo3eHNBz.jpg"
+    tmdb_collection:
+    - 286951
   Skyline:
     name: "Skyline"
     name_mapping: "Skyline"
@@ -1414,6 +1450,12 @@ collections:
     url_poster: "https://image.tmdb.org/t/p/original/aN7LHIKHkq6x16a4pXlaiB7PHiP.jpg"
     tmdb_collection:
     - 747566
+  The_Crow:
+    name: "The Crow"
+    name_mapping: "The_Crow"
+    url_poster: "https://theposterdb.com/api/assets/111879"
+    tmdb_collection:
+    - 9436
   The_Dead:
     name: "The Dead"
     name_mapping: "The_Dead"
@@ -1469,6 +1511,12 @@ collections:
     - 121938  # Hobbit
     tmdb_movie:
     - 839033  # The Lord of the Rings: The War of the Rohirrim
+  The_Man_From_Earth:
+    name: "The Man From Earth"
+    name_mapping: "The_Man_From_Earth"
+    url_poster: "https://theposterdb.com/api/assets/473989"
+    tmdb_collection:
+    - 464270
   The_Matrix:
     name: "The Matrix"
     name_mapping: "The_Matrix"
@@ -1501,6 +1549,12 @@ collections:
     - 13352  # It's a Very Merry Muppet Christmas Movie
     - 20910  # The Muppets' Wizard of Oz
     - 826914  # Muppets Haunted Mansion
+  The_Net:
+    name: "The Net"
+    name_mapping: "The_Net"
+    url_poster: "https://theposterdb.com/api/assets/98395"
+    tmdb_collection:
+    - 328073
   The_NeverEnding_Story:
     name: "The NeverEnding Story"
     name_mapping: "The_NeverEnding_Story"
@@ -1529,26 +1583,31 @@ collections:
     name: "The Santa Clause"
     name_mapping: "The_Santa_Clause"
     url_poster: "https://theposterdb.com/api/assets/293193"
-    tmdb_collection:
-    - 53159
+    tmdb_movie:
+    - 11395  # The Santa Clause
+    - 9021  # The Santa Clause 2
+    - 13767  # The Santa Clause 3: The Escape Clause
   The_Shining:
     name: "The Shining"
     name_mapping: "The_Shining"
     url_poster: "https://theposterdb.com/api/assets/81432"
-    tmdb_collection:
-    - 530064
+    tmdb_movie:
+    - 694  # The Shining
+    - 501170  # Doctor Sleep
   The_Space_Odyssey_Series:
     name: "The Space Odyssey Series"
     name_mapping: "The_Space_Odyssey_Series"
     url_poster: "https://theposterdb.com/api/assets/21635"
-    tmdb_collection:
-    - 4438
+    tmdb_movie:
+    - 62  # 2001: A Space Odyssey
+    - 4437  # 2010
   The_Thing:
     name: "The Thing"
     name_mapping: "The_Thing"
     url_poster: "https://theposterdb.com/api/assets/95450"
-    tmdb_collection:
-    - 479888
+    tmdb_movie:
+    - 1091  # The Thing
+    - 60935  # The Thing
   Time_Travel:
     name: "♥ Time Travel"
     name_mapping: "Time_Travel"
@@ -1582,16 +1641,17 @@ collections:
     name: "Tomb Raider"
     name_mapping: "Tomb_Raider"
     url_poster: "https://theposterdb.com/api/assets/116910"
-    tmdb_collection:
-    - 2467
     tmdb_movie:
-    - 338970  # Reboot
+    - 1995  # Lara Croft: Tomb Raider
+    - 1996  # Lara Croft: Tomb Raider - The Cradle of Life
+    - 338970  # Tomb Raider
   Top_Gun:
     name: "Top Gun"
     name_mapping: "Top_Gun"
     url_poster: "https://theposterdb.com/api/assets/251518"
-    tmdb_collection:
-    - 531330
+    tmdb_movie:
+    - 744  # Top Gun
+    - 361743  # Top Gun: Maverick
   Toy_Story:
     name: "Toy Story"
     name_mapping: "Toy_Story"
@@ -1616,10 +1676,13 @@ collections:
     name: "Transformers"
     name_mapping: "Transformers"
     url_poster: "https://theposterdb.com/api/assets/87454"
-    tmdb_collection:
-    - 8650
     tmdb_movie:
     - 1857  # The Transformers: The Movie
+    - 1858  # Transformers
+    - 8373  # Transformers: Revenge of the Fallen
+    - 38356  # Transformers: Dark of the Moon
+    - 91314  # Transformers: Age of Extinction
+    - 335988  # Transformers: The Last Knight
     - 424783  # Bumblebee
     - 667538  # Transformers: Rise of the Beasts
     - 698687  # Transformers One
@@ -1639,20 +1702,23 @@ collections:
     name: "28"
     name_mapping: "28"
     url_poster: "https://theposterdb.com/api/assets/4963"
-    tmdb_collection:
-    - 1565
+    tmdb_movie:
+    - 170  # 28 Days Later
+    - 1562  # 28 Weeks Later
   Twister:
     name: "Twister"
     name_mapping: "Twister"
     url_poster: "https://theposterdb.com/api/assets/508439"
-    tmdb_collection:
-    - 1062948
+    tmdb_movie:
+    - 664  # Twister
+    - 718821  # Twisters
   US_Marshals:
     name: "U.S. Marshals"
     name_mapping: "US_Marshals"
     url_poster: "https://theposterdb.com/api/assets/125289"
-    tmdb_collection:
-    - 721111
+    tmdb_movie:
+    - 5503  # The Fugitive # The Fugitive
+    - 11808  # U.S. Marshals # U.S. Marshals
   Underworld:
     name: "Underworld"
     name_mapping: "Underworld"
@@ -1689,8 +1755,10 @@ collections:
     name: "Venom"
     name_mapping: "Venom"
     url_poster: "https://theposterdb.com/api/assets/180169"
-    tmdb_collection:
-    - 558216
+    tmdb_movie:
+    - 335983  # Venom
+    - 580489  # Venom: Let There Be Carnage
+    - 912649  # Venom: The Last Dance
   Video_Game:
     name: "♥ Video Game"
     name_mapping: "Video_Game"
@@ -1744,8 +1812,9 @@ collections:
     name: "Wayne's World"
     name_mapping: "Waynes_World"
     url_poster: "https://theposterdb.com/api/assets/68154"
-    tmdb_collection:
-    - 8979
+    tmdb_movie:
+    - 8872  # Wayne's World
+    - 8873  # Wayne's World 2
   World_War_II:
     name: "♥ World War II"
     name_mapping: "World_War_II"
@@ -1769,14 +1838,16 @@ collections:
     name: "Wreck-It Ralph"
     name_mapping: "Wreck-It_Ralph"
     url_poster: "https://theposterdb.com/api/assets/31281"
-    tmdb_collection:
-    - 404825
+    tmdb_movie:
+    - 82690  # Wreck-It Ralph
+    - 404368  # Ralph Breaks the Internet
   Zombieland:
     name: "Zombieland"
     name_mapping: "Zombieland"
     url_poster: "https://theposterdb.com/api/assets/36532"
-    tmdb_collection:
-    - 537982
+    tmdb_movie:
+    - 19908  # Zombieland
+    - 338967  # Zombieland: Double Tap
   Zombies:
     name: "♥ Zombies"
     name_mapping: "Zombies"
@@ -1818,5 +1889,6 @@ collections:
     name: "Zoolander"
     name_mapping: "Zoolander"
     url_poster: "https://theposterdb.com/api/assets/228819"
-    tmdb_collection:
-    - 352789
+    tmdb_movie:
+    - 9398  # Zoolander
+    - 329833  # Zoolander 2
