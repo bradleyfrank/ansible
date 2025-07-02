@@ -1072,7 +1072,7 @@ collections:
   The_Old_Guard:
     name: "The Old Guard"
     name_mapping: "The_Old_Guard"
-    url_poster: "https://theposterdb.com/api/assets/75665"
+    url_poster: "https://theposterdb.com/api/assets/621398"
     tmdb_collection:
     - 847029
   The_Raid:
