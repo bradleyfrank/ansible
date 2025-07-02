@@ -187,21 +187,13 @@ collections:
     - 1145635  # A Merry Scottish Christmas
     - 1064137  # A Biltmore Christmas
     - 1180706  # Friends & Family Christmas
+    schedule: monthly(1)
   Nolanverse:
     name: "♥ Nolanverse"
     name_mapping: "Nolanverse"
     url_poster: "https://theposterdb.com/api/assets/378205"
-    tmdb_movie:
-    - 77  # Memento
-    - 272  # Batman Begins
-    - 1124  # The Prestige
-    - 155  # The Dark Knight
-    - 27205  # Inception
-    - 49026  # The Dark Knight Rises
-    - 157336  # Interstellar
-    - 374720  # Dunkirk
-    - 577922  # Tenet
-    - 872585  # Oppenheimer
+    tmdb_director:
+    - 525
   Cinema_Italiano:
     name: "♥ Cinema Italiano"
     name_mapping: "Cinema_Italiano"
@@ -212,8 +204,10 @@ collections:
     name: "Cloverfield"
     name_mapping: "Cloverfield"
     url_poster: "https://theposterdb.com/api/assets/13926"
-    tmdb_list:
-    - 87452
+    tmdb_movie:
+    - 7191  # Cloverfield
+    - 333371  # 10 cloverfield lane
+    - 384521  # the cloverfield paradox
     collection_order: custom
   Conan:
     name: "Conan"
@@ -233,10 +227,8 @@ collections:
     name: "Creed"
     name_mapping: "Creed"
     url_poster: "https://theposterdb.com/api/assets/22294"
-    tmdb_movie:
-    - 312221  # Creed
-    - 480530  # Creed II
-    - 677179  # Creed III
+    tmdb_collection:
+    - 553717
   Criterion:
     name: "↑ Criterion"
     name_mapping: "Criterion"
@@ -249,9 +241,8 @@ collections:
     name: "Crouching Tiger, Hidden Dragon"
     name_mapping: "Crouching_Tiger_Hidden_Dragon"
     url_poster: "https://theposterdb.com/api/assets/37896"
-    tmdb_movie:
-    - 146  # Crouching Tiger, Hidden Dragon
-    - 263341  # Crouching Tiger, Hidden Dragon: Sword of Destiny
+    tmdb_collection:
+    - 290973
   Cyberpunk:
     name: "♥ Cyberpunk"
     name_mapping: "Cyberpunk"
@@ -280,11 +271,11 @@ collections:
     name: "Dune"
     name_mapping: "Dune"
     url_poster: "https://theposterdb.com/api/assets/393189"
+    tmdb_collection:
+    - 726871
     tmdb_movie:
     - 841  # Dune
     - 191720  # Jodorowsky's Dune
-    - 438631  # Dune
-    - 693134  # Dune: Part Two
   Dystopian:
     name: "♥ Dystopian"
     name_mapping: "Dystopian"
@@ -405,27 +396,12 @@ collections:
     - 10828
     tmdb_writer:
     - 10828
-    tmdb_producer:
-    - 10828
   Hannibal:
     name: "Hannibal"
     name_mapping: "Hannibal"
     url_poster: "https://theposterdb.com/api/assets/159796"
     tmdb_collection:
     - 9743
-  Harry_Potter:
-    name: "Harry Potter"
-    name_mapping: "Harry_Potter"
-    url_poster: "https://theposterdb.com/api/assets/545"
-    tmdb_movie:
-    - 671  # Harry Potter and the Philosopher's Stone
-    - 672  # Harry Potter and the Chamber of Secrets
-    - 673  # Harry Potter and the Prisoner of Azkaban
-    - 674  # Harry Potter and the Goblet of Fire
-    - 675  # Harry Potter and the Order of the Phoenix
-    - 767  # Harry Potter and the Half-Blood Prince
-    - 12444  # Harry Potter and the Deathly Hallows: Part 1
-    - 12445  # Harry Potter and the Deathly Hallows: Part 2
   Hellboy:
     name: "Hellboy"
     name_mapping: "Hellboy"
@@ -558,31 +534,8 @@ collections:
     name: "♥ Kaiju"
     name_mapping: "Kaiju"
     url_poster: "https://theposterdb.com/api/assets/241301"
-    tmdb_movie:
-    - 1680  # King Kong vs. Godzilla
-    - 10730  # King Kong
-    - 31947  # King Kong Lives
-    - 39256  # Godzilla 1985
-    - 929  # Godzilla
-    - 244  # King Kong
-    - 7191  # Cloverfield
-    - 43933  # Monsters
-    - 68726  # Pacific Rim
-    - 145221  # Monsters: Dark Continent
-    - 124905  # Godzilla
-    - 339967  # Colossal
-    - 315011  # Shin Godzilla
-    - 449574  # Godzilla: Planet of the Monsters
-    - 293167  # Kong: Skull Island
-    - 492719  # Godzilla: City on the Edge of Battle
-    - 427641  # Rampage
-    - 536115  # Godzilla: The Planet Eater
-    - 268896  # Pacific Rim: Uprising
-    - 373571  # Godzilla: King of the Monsters
-    - 399566  # Godzilla vs. Kong
-    - 940721  # Godzilla Minus One
-    - 823464  # Godzilla x Kong: The New Empire
-    - 1255  # The Host
+    letterboxd_list:
+    - "https://letterboxd.com/raccoonarchives/list/kaiju/"
   Kick-Ass:
     name: "Kick-Ass"
     name_mapping: "Kick-Ass"
@@ -668,12 +621,8 @@ collections:
     name: "Monsterverse"
     name_mapping: "Monsterverse"
     url_poster: "https://theposterdb.com/api/assets/116534"
-    tmdb_movie:
-    - 124905  # Godzilla
-    - 293167  # Kong: Skull Island
-    - 373571  # Godzilla: King of the Monsters
-    - 399566  # Godzilla vs. Kong
-    - 823464  # Godzilla x Kong: The New Empire
+    tmdb_list:
+    - 8540655
   Mortal_Kombat:
     name: "Mortal Kombat"
     name_mapping: "Mortal_Kombat"
@@ -686,46 +635,13 @@ collections:
     name: "♥ Music"
     name_mapping: "Music"
     url_poster: "https://theposterdb.com/api/assets/573675"
-    tmdb_movie:
-    - 13368  # White Christmas
-    - 499  # Cléo from 5 to 7
-    - 15121  # The Sound of Music
-    - 74849  # The Star Wars Holiday Special
-    - 11176  # The Muppet Movie
-    - 16858  # All That Jazz
-    - 525  # The Blues Brothers
-    - 14900  # The Great Muppet Caper
-    - 11314  # Koyaanisqatsi
-    - 88  # Dirty Dancing
-    - 24348  # Powaqqatsi
-    - 1648  # Bill & Ted's Excellent Adventure
-    - 17990  # Impromptu
-    - 1649  # Bill & Ted's Bogus Journey
-    - 8872  # Wayne's World
-    - 15300  # Newsies
-    - 10437  # The Muppet Christmas Carol
-    - 8873  # Wayne's World 2
-    - 13595  # Airheads
-    - 13531  # Empire Records
-    - 698609  # Muppet Sing Alongs: Muppet Treasure Island
-    - 18984  # Scratch
-    - 21925  # Naqoyqatsi
-    - 65  # 8 Mile
-    - 883  # Coffee and Cigarettes
-    - 20910  # The Muppets' Wizard of Oz
-    - 69  # Walk the Line
-    - 1407  # La Vie en Rose
-    - 5723  # Once
-    - 14353  # Repo! The Genetic Opera
-    - 64328  # The Muppets
-    - 244786  # Whiplash
-    - 319075  # Cobain: Montage of Heck
-    - 313369  # La La Land
-    - 339403  # Baby Driver
-    - 501979  # Bill & Ted Face the Music
-    - 622855  # Jingle Jangle: A Christmas Journey
-    - 508442  # Soul
-    - 508947  # Turning Red
+    letterboxd_list:
+    - "https://letterboxd.com/ykg/list/music/"
+    - "https://letterboxd.com/lennonmccartney/list/music/"
+    - "https://letterboxd.com/fuchsiadyke/list/music/"
+    - "https://letterboxd.com/mittland/list/music/"
+    - "https://letterboxd.com/turloughs/list/music/"
+    schedule: monthly
   National_Treasure:
     name: "National Treasure"
     name_mapping: "National_Treasure"
@@ -763,14 +679,8 @@ collections:
     name: "♥ Pandemic"
     name_mapping: "Pandemic"
     url_poster: "https://theposterdb.com/api/assets/29864"
-    tmdb_movie:
-    - 6950  # Outbreak
-    - 63  # Twelve Monkeys
-    - 170  # 28 Days Later
-    - 1562  # 28 Weeks Later
-    - 49830  # Bio Slime
-    - 72190  # World War Z
-    - 396535  # Train to Busan
+    letterboxd_list:
+    - "https://letterboxd.com/rathmandu/list/pandemic/"
   Pixar:
     name: "® Pixar"
     name_mapping: "Pixar"
@@ -789,43 +699,8 @@ collections:
     name: "♥ Political and Military"
     name_mapping: "Political_and_Military"
     url_poster: "https://theposterdb.com/api/assets/47614"
-    tmdb_movie:
-    - 28  # Apocalypse Now
-    - 744  # Top Gun
-    - 1669  # The Hunt for Red October
-    - 9869  # Patriot Games
-    - 881  # A Few Good Men
-    - 9331  # Clear and Present Danger
-    - 9772  # Air Force One
-    - 563  # Starship Troopers
-    - 11831  # Amistad
-    - 857  # Saving Private Ryan
-    - 676  # Pearl Harbor
-    - 855  # Black Hawk Down
-    - 4614  # The Sum of All Fears
-    - 2501  # The Bourne Identity
-    - 2502  # The Bourne Supremacy
-    - 1985  # The Constant Gardener
-    - 231  # Syriana
-    - 612  # Munich
-    - 752  # V for Vendetta
-    - 2503  # The Bourne Ultimatum
-    - 6538  # Charlie Wilson's War
-    - 12162  # The Hurt Locker
-    - 11499  # Frost/Nixon
-    - 16995  # State of Play
-    - 49517  # Tinker Tailor Soldier Spy
-    - 49040  # The Bourne Legacy
-    - 68734  # Argo
-    - 72976  # Lincoln
-    - 97630  # Zero Dark Thirty
-    - 76203  # 12 Years a Slave
-    - 137094  # Jack Ryan: Shadow Recruit
-    - 296098  # Bridge of Spies
-    - 324668  # Jason Bourne
-    - 524348  # The Report
-    - 361743  # Top Gun: Maverick
-    - 929590  # Civil War
+    tmdb_list:
+    - 8540657
   Popular:
     name: "↑ Popular"
     name_mapping: "Popular"
@@ -840,7 +715,7 @@ collections:
     - 399  # Predator
     - 115762  # AvP
     tmdb_movie:
-    - 1376434  # Predator: Killer of Killers # predator-killer-of-killers
+    - 1376434  # Predator: Killer of Killers
   Qatsi:
     name: "Qatsi"
     name_mapping: "Qatsi"
@@ -888,50 +763,8 @@ collections:
     name: "♥ Scary"
     name_mapping: "Scary"
     url_poster: "https://theposterdb.com/api/assets/137139"
-    tmdb_movie:
-    - 9552  # The Exorcist
-    - 11449  # The Amityville Horror
-    - 814  # An American Werewolf in London
-    - 764  # The Evil Dead
-    - 609  # Poltergeist
-    - 1091  # The Thing
-    - 377  # A Nightmare on Elm Street
-    - 765  # Evil Dead II
-    - 766  # Army of Darkness
-    - 4232  # Scream
-    - 8413  # Event Horizon
-    - 4961  # Mimic
-    - 4233  # Scream 2
-    - 11618  # The Haunting
-    - 2667  # The Blair Witch Project
-    - 4234  # Scream 3
-    - 2655  # What Lies Beneath
-    - 1433  # The Devil's Backbone
-    - 1933  # The Others
-    - 9378  # Thir13en Ghosts
-    - 565  # The Ring
-    - 10320  # The Ring Two
-    - 9392  # The Descent
-    - 588  # Silent Hill
-    - 23827  # Paranormal Activity
-    - 13310  # Let the Right One In
-    - 41446  # Scream 4
-    - 60935  # The Thing
-    - 22970  # The Cabin in the Woods
-    - 109428  # Evil Dead
-    - 242224  # The Babadook
-    - 270303  # It Follows
-    - 201085  # Crimson Peak
-    - 333371  # 10 Cloverfield Lane
-    - 14564  # Rings
-    - 300668  # Annihilation
-    - 458723  # Us
-    - 501170  # Doctor Sleep
-    - 646385  # Scream
-    - 762504  # Nope
-    - 934433  # Scream VI
-    - 713704  # Evil Dead Rise
-    - 10065   # the amityville horror (2005)
+    tmdb_list:
+    - 8540631
   Scream:
     name: "Scream"
     name_mapping: "Scream"
@@ -942,12 +775,10 @@ collections:
     name: "♥ Shakespeare"
     name_mapping: "Shakespeare"
     url_poster: "https://theposterdb.com/api/assets/246042"
+    letterboxd_list:
+    - "https://letterboxd.com/jwdmeow/list/shakespeare/"
     tmdb_movie:
     - 18971  # Rosencrantz & Guildenstern Are Dead
-    - 454  # Romeo + Juliet
-    - 10549  # Hamlet
-    - 101173  # Coriolanus
-    - 336671  # Macbeth
   Short_Circuit:
     name: "Short Circuit"
     name_mapping: "Short_Circuit"
@@ -1000,54 +831,8 @@ collections:
     name: "♥ Space Sci-Fi"
     name_mapping: "Space_Sci-Fi"
     url_poster: "https://theposterdb.com/api/assets/234738"
-    tmdb_movie:
-    - 62  # 2001: A Space Odyssey
-    - 1410  # Dark Star
-    - 11  # Star Wars
-    - 152  # Star Trek: The Motion Picture
-    - 9570  # The Black Hole
-    - 1892  # Return of the Jedi
-    - 157  # Star Trek III: The Search for Spock
-    - 11884  # The Last Starfighter
-    - 168  # Star Trek IV: The Voyage Home
-    - 957  # Spaceballs
-    - 172  # Star Trek V: The Final Frontier
-    - 174  # Star Trek VI: The Undiscovered Country
-    - 2164  # Stargate
-    - 193  # Star Trek: Generations
-    - 199  # Star Trek: First Contact
-    - 563  # Starship Troopers
-    - 2157  # Lost in Space
-    - 200  # Star Trek: Insurrection
-    - 10350  # Wing Commander
-    - 1893  # Star Wars: Episode I - The Phantom Menace
-    - 926  # Galaxy Quest
-    - 2067  # Mission to Mars
-    - 7450  # Titan A.E.
-    - 8870  # Red Planet
-    - 1894  # Star Wars: Episode II - Attack of the Clones
-    - 201  # Star Trek: Nemesis
-    - 7453  # The Hitchhiker's Guide to the Galaxy
-    - 1895  # Star Wars: Episode III - Revenge of the Sith
-    - 16320  # Serenity
-    - 13001  # Stargate: The Ark of Truth
-    - 12914  # Stargate: Continuum
-    - 13475  # Star Trek
-    - 54138  # Star Trek Into Darkness
-    - 80274  # Ender's Game
-    - 157336  # Interstellar
-    - 284606  # Prelude to Axanar
-    - 253312  # Space Station 76
-    - 286217  # The Martian
-    - 140607  # Star Wars: The Force Awakens
-    - 188927  # Star Trek Beyond
-    - 330459  # Rogue One: A Star Wars Story
-    - 181808  # Star Wars: The Last Jedi
-    - 348350  # Solo: A Star Wars Story
-    - 419704  # Ad Astra
-    - 181812  # Star Wars: The Rise of Skywalker
-    - 848326  # Rebel Moon - Part One: A Child of Fire
-    - 934632  # Rebel Moon - Part Two: The Scargiver
+    tmdb_list:
+    - 8540624
   Species:
     name: "Species"
     name_mapping: "Species"
@@ -1306,24 +1091,20 @@ collections:
     name: "The Santa Clause"
     name_mapping: "The_Santa_Clause"
     url_poster: "https://theposterdb.com/api/assets/293193"
-    tmdb_movie:
-    - 11395  # The Santa Clause
-    - 9021  # The Santa Clause 2
-    - 13767  # The Santa Clause 3: The Escape Clause
+    tmdb_collection:
+    - 53159
   The_Shining:
     name: "The Shining"
     name_mapping: "The_Shining"
     url_poster: "https://theposterdb.com/api/assets/81432"
-    tmdb_movie:
-    - 694  # The Shining
-    - 501170  # Doctor Sleep
+    tmdb_collection:
+    - 530064
   The_Space_Odyssey_Series:
     name: "The Space Odyssey Series"
     name_mapping: "The_Space_Odyssey_Series"
     url_poster: "https://theposterdb.com/api/assets/21635"
-    tmdb_movie:
-    - 62  # 2001: A Space Odyssey
-    - 4437  # 2010
+    tmdb_collection:
+    - 4438
   The_Thing:
     name: "The Thing"
     name_mapping: "The_Thing"
@@ -1341,17 +1122,16 @@ collections:
     name: "Tomb Raider"
     name_mapping: "Tomb_Raider"
     url_poster: "https://theposterdb.com/api/assets/116910"
+    tmdb_collection:
+    - 2467
     tmdb_movie:
-    - 1995  # Lara Croft: Tomb Raider
-    - 1996  # Lara Croft: Tomb Raider - The Cradle of Life
-    - 338970  # Tomb Raider
+    - 338970  # Tomb Raider Reboot
   Top_Gun:
     name: "Top Gun"
     name_mapping: "Top_Gun"
     url_poster: "https://theposterdb.com/api/assets/251518"
-    tmdb_movie:
-    - 744  # Top Gun
-    - 361743  # Top Gun: Maverick
+    tmdb_collection:
+    - 531330
   Toy_Story:
     name: "Toy Story"
     name_mapping: "Toy_Story"
@@ -1376,13 +1156,10 @@ collections:
     name: "Transformers"
     name_mapping: "Transformers"
     url_poster: "https://theposterdb.com/api/assets/87454"
+    tmdb_collection:
+    - 8650
     tmdb_movie:
     - 1857  # The Transformers: The Movie
-    - 1858  # Transformers
-    - 8373  # Transformers: Revenge of the Fallen
-    - 38356  # Transformers: Dark of the Moon
-    - 91314  # Transformers: Age of Extinction
-    - 335988  # Transformers: The Last Knight
     - 424783  # Bumblebee
     - 667538  # Transformers: Rise of the Beasts
     - 698687  # Transformers One
@@ -1440,39 +1217,8 @@ collections:
     name: "♥ Video Game"
     name_mapping: "Video_Game"
     url_poster: "https://theposterdb.com/api/assets/272535"
-    tmdb_movie:
-    - 9607  # Super Mario Bros.
-    - 12613  # Street Fighter II: The Animated Movie
-    - 9312  # Mortal Kombat
-    - 9823  # Mortal Kombat: Annihilation
-    - 10350  # Wing Commander
-    - 1995  # Lara Croft: Tomb Raider
-    - 2114  # Final Fantasy: The Spirits Within
-    - 1576  # Resident Evil
-    - 1996  # Lara Croft: Tomb Raider - The Cradle of Life
-    - 1577  # Resident Evil: Apocalypse
-    - 647  # Final Fantasy VII: Advent Children
-    - 13274  # Final Fantasy VII: Last Order
-    - 8814  # Doom
-    - 588  # Silent Hill
-    - 7737  # Resident Evil: Extinction
-    - 15268  # Street Fighter: The Legend of Chun-Li
-    - 59300  # Final Fantasy VII: On the Way to a Smile - Episode Denzel
-    - 35791  # Resident Evil: Afterlife
-    - 71679  # Resident Evil: Retribution
-    - 61012  # Silent Hill: Revelation 3D
-    - 82690  # Wreck-It Ralph
-    - 390734  # Kingsglaive: Final Fantasy XV
-    - 173897  # Resident Evil: The Final Chapter
-    - 338970  # Tomb Raider
-    - 427641  # Rampage
-    - 404368  # Ralph Breaks the Internet
-    - 844390  # Final Fantasy XV: Episode Ardyn - Prologue
-    - 447404  # Pokémon Detective Pikachu
-    - 611424  # Brave Father Online - Our Story of Final Fantasy XIV
-    - 460465  # Mortal Kombat
-    - 460458  # Resident Evil: Welcome to Raccoon City
-    - 502356  # The Super Mario Bros. Movie
+    tmdb_list:
+    - 8540621
   Warewolves:
     name: "♥ Warewolves"
     name_mapping: "Warewolves"
@@ -1495,15 +1241,8 @@ collections:
     name: "♥ World War II"
     name_mapping: "World_War_II"
     url_poster: "https://theposterdb.com/api/assets/63452"
-    tmdb_movie:
-    - 424  # Schindler's List
-    - 857  # Saving Private Ryan
-    - 853  # Enemy at the Gates
-    - 676  # Pearl Harbor
-    - 16869  # Inglourious Basterds
-    - 205596  # The Imitation Game
-    - 374720  # Dunkirk
-    - 872585  # Oppenheimer
+    letterboxd_list:
+    - "https://letterboxd.com/seanfennessey/list/world-war-ii/"
   Worricker:
     name: "Worricker"
     name_mapping: "Worricker"
