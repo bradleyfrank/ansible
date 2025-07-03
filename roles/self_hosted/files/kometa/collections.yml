@@ -779,6 +779,12 @@ collections:
     - "https://letterboxd.com/jwdmeow/list/shakespeare/"
     tmdb_movie:
     - 18971  # Rosencrantz & Guildenstern Are Dead
+  Sherlock_Holmes:
+    name: "Sherlock Holmes"
+    name_mapping: "Sherlock_Holmes"
+    url_poster: "https://theposterdb.com/api/assets/83695"
+    tmdb_collection:
+    - 102322
   Short_Circuit:
     name: "Short Circuit"
     name_mapping: "Short_Circuit"
