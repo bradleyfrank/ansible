@@ -39,8 +39,8 @@ linux_update() {
     fedora)
       sudo dnf clean all
       sudo dnf makecache
-      sudo dnf upgrade --yes
-      sudo dnf list installed >> "$INSTALLED_PACKAGES"
+      sudo dnf upgrade --assumeyes
+      sudo dnf list --installed >> "$INSTALLED_PACKAGES"
       if ! sudo dnf needs-restarting -r; then RESTART_NEEDED=1; fi
       ;;
     debian|ubuntu|linuxmint)
