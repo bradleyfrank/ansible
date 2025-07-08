@@ -83,11 +83,14 @@ pkg_mgr_cli:
     - yq
 
 pkg_mgr_gui:
+  casks:
+    - font-jetbrains-mono-nerd-font
   common:
     - 1password
     - keepassxc
     - libreoffice
     - picard
+    - solaar
     - vlc
   gnome:
     - celluloid

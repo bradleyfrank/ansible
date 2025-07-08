@@ -99,6 +99,8 @@ pkg_mgr_cli:
     - yq
 
 pkg_mgr_gui:
+  casks:
+    - font-jetbrains-mono-nerd-font
   base:
     - 1password
     - foliate
@@ -108,6 +110,7 @@ pkg_mgr_gui:
     - metadata-cleaner
     - papers
     - picard
+    - solaar
     - wildcard  # regex testing
     - vlc
   flatpak:

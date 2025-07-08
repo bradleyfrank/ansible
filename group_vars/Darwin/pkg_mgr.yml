@@ -75,9 +75,11 @@ pkg_mgr_cli:
 
 pkg_mgr_gui:
   casks:
+    - bettermouse
     - expressions
     - fantastical
     - firefox
+    - font-jetbrains-mono-nerd-font
     - ghostty
     - iina
     - keepassxc

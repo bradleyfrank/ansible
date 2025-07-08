@@ -31,3 +31,5 @@ dotfiles_to_remove:
   - ".zsh_sessions"  # only used for macOS Terminal
   - ".zshrc"  # moved to `~/.config/`
   - ".zshrc.d"  # moved to `~/.config/`
+  - ".local/share/fonts"
+  - "Library/Fonts"
