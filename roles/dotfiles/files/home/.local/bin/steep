@@ -4,132 +4,234 @@ set -o errexit
 
 # @meta describe Runs updates on various programs and plugins.
 # @meta author Brad Frank
-# @meta require-tools jq,toilet
+# @meta require-tools jq,eza
 # @meta version 2.1.0
-# @meta combine-shorts
 
-
-_hr() {
-  printf '\n\n%s%s' "$(tput bold)" "$(tput setaf 6)"
-  printf '%s\n' "$(toilet -f smmono9 "$1")"
+print_title() {
+  printf '\n%s%s' "$(tput bold)" "$(tput setaf 6)"
+  print $'\uf054\uf054\uf054' "$1"
   printf '%s\n' "$(tput sgr0)"
 }
 
 pkg_installed() { grep --quiet "$1" "$INSTALLED_PACKAGES"; }
 
-
-macos_update() {
-  _hr "SYSTEM UPDATE"
-  sudo softwareupdate --list | grep --quiet 'Action: restart' && RESTART_NEEDED=1
-  sudo softwareupdate --install --all --agree-to-license
-  homebrew_update
-}
-
-
-linux_update() {
-  _hr "SYSTEM UPDATE"
-
-  sudo systemctl stop packagekit
-  # shellcheck disable=SC1091
-  source /etc/os-release
-
+list_packages() {
   case "$ID" in
     fedora)
-      sudo dnf clean all
-      sudo dnf makecache
-      sudo dnf upgrade --assumeyes
       # shellcheck disable=SC2024
       sudo dnf list --installed >> "$INSTALLED_PACKAGES"
-      if ! sudo dnf needs-restarting -r; then RESTART_NEEDED=1; fi
-      ;;
-    debian|ubuntu|linuxmint)
-      sudo apt-get clean
-      sudo apt-get update --yes
-      sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes
-      sudo dpkg --list | grep --extended-regexp "^ii" | awk '{print $2}' >> "$INSTALLED_PACKAGES"
-      if [[ -e /var/run/reboot-required ]]; then RESTART_NEEDED=1; fi
-      ;;
+    ;;
+    ubuntu|debian)
+      sudo dpkg --list \
+        | grep --extended-regexp "^ii" \
+        | awk '{print $2}' >> "$INSTALLED_PACKAGES"
+    ;;
   esac
 
-  if pkg_installed flatpak; then
-    _hr "FLATPAK UPDATE"
-    flatpak update
-  fi
-
-  if pkg_installed fwupd; then
-    _hr "FIRMWARE UPDATE"
-    sudo fwupdmgr refresh
-    sudo fwupdmgr update
-  fi
-
-  if [[ -n $HOMEBREW_PREFIX ]]; then
-    homebrew_update
+  if command -v brew &> /dev/null; then
+    brew list --cask -1 >> "$INSTALLED_PACKAGES"
+    brew list --formula -1 >> "$INSTALLED_PACKAGES"
   fi
 }
 
 
-homebrew_update() {
-  _hr "HOMEBREW UPDATE"
+# @cmd Update macOS system
+macos() {
+  print_title "SYSTEM UPDATE"
+  sudo softwareupdate --list | grep --quiet 'Action: restart' && RESTART_NEEDED=1
+  sudo softwareupdate --install --all --agree-to-license
+}
+
+
+# @cmd dnf updates
+# @alias dnf
+dnf-pkg() {
+  print_title "SYSTEM UPDATE"
+  sudo systemctl stop packagekit
+  sudo dnf clean all
+  sudo dnf makecache
+  sudo dnf upgrade --assumeyes
+  if ! sudo dnf needs-restarting -r; then RESTART_NEEDED=1; fi
+}
+
+
+# @cmd apt updates
+# @alias apt
+apt-pkg() {
+  print_title "SYSTEM UPDATE"
+  sudo systemctl stop packagekit
+  sudo apt-get clean
+  sudo apt-get update --yes
+  sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes
+  if [[ -e /var/run/reboot-required ]]; then RESTART_NEEDED=1; fi
+}
+
+
+# @cmd Run Flatpak updates
+# @alias flatpak
+flatpak-pkg() {
+  print_title "FLATPAK UPDATE"
+  flatpak update
+}
+
+
+# @cmd Run firmware updates
+# @alias fw
+firmware() {
+  print_title "FIRMWARE UPDATE"
+  sudo fwupdmgr refresh
+  sudo fwupdmgr update
+}
+
+
+# @cmd Run Homebrew updates
+# @alias brew
+homebrew() {
+  print_title "HOMEBREW UPDATE"
   brew update
   brew upgrade
   brew autoremove
   brew cleanup
-  brew list --cask -1 >> "$INSTALLED_PACKAGES"
-  brew list --formula -1 >> "$INSTALLED_PACKAGES"
 }
 
 
-INSTALLED_PACKAGES="$(mktemp)"
-
-case "$(uname -s)" in
-  Darwin) macos_update ;;
-   Linux) linux_update ;;
-esac
-
-if pkg_installed google-cloud-sdk; then
-  _hr "GCLOUD UPDATE"
+# @cmd Update cloud utilities
+# @alias gcloud
+cloud() {
+  print_title "CLOUD UPDATE"
   gcloud components update --quiet
-fi
+}
 
-if pkg_installed krew; then
-  _hr "KREW UPDATE"
+
+# @cmd Update Krew packages
+# @alias krew
+k8s-krew() {
+  print_title "KREW UPDATE"
   kubectl krew update
   kubectl krew upgrade
-fi
+}
 
-if [[ -f ~/.config/zsh/rc.d/benv.zsh ]]; then
-  _hr "CLEANUP: VIRTUALENV"
+
+# @cmd Cleanup Python virtualenv
+# @alias venv
+py-venv() {
+  local removed_venvs
+  print_title "VIRTUALENV CLEANUP"
   # shellcheck disable=SC1090
   source ~/.config/zsh/rc.d/benv.zsh
-  benv list
-  benv cleanup
-fi
+  removed_venvs="$(benv cleanup)"
+  if (( "$(wc -l <<< "$removed_venvs")" > 1 )); then
+    echo "$removed_venvs"
+  else
+    echo "All virtualenvs in use"
+  fi
+}
 
-if pkg_installed multipass; then
-  _hr "MULTIPASS PURGE"
+
+# @cmd Purge deleted Multipass VMs
+# @alias mp,multipass
+multipass-vm() {
+  print_title "MULTIPASS PURGE"
   deleted_vms="$(multipass list --format json \
     | jq -r '.list[] | select(.state == "Deleted") | .name')"
-  if (( "$(wc -l <<< "$deleted_vms)")" > 0 )); then
+  if (( "$(wc -l <<< "$deleted_vms)")" > 1 )); then
     echo "$deleted_vms"
     multipass purge
+  else
+    echo "No deleted Multipass instances to purge"
   fi
-fi
+}
 
-if pkg_installed bat; then
-  _hr "CACHE BAT THEMES"
-  bat cache --clear && bat cache --build
-fi
 
-if pkg_installed atuin; then
-  _hr "SYNC HISTORY"
+# @cmd Regenerate bat themes cache
+# @alias bat
+bat-cache() {
+  print_title "REGEN BAT THEMES CACHE"
+  bat cache --clear
+  bat cache --build
+}
+
+
+# @cmd Sync Atuin history
+# @alias atuin
+atuin-sync() {
+  print_title "SYNC HISTORY"
   atuin sync
-fi
+}
 
-rm --recursive --force "$INSTALLED_PACKAGES"
 
-if [[ -n $RESTART_NEEDED ]]; then
-  printf '\n\n%s%s' "$(tput bold)" "$(tput setaf 1)"
-  printf '%s\n' "$(toilet -f smmono9 "RESTART NEEDED")"
-  printf '%s\n' "$(tput sgr0)"
-fi
+# @cmd Backup Firefox profile
+# @alias firefox
+firefox-profile() {
+  local ff_profile_path ff_profile_dir ff_tar_file="${HOME}/Downloads/firefox.tar.gz" rc=1
 
+  case "$(uname -s)" in
+    Darwin)
+      ff_profile_path="${HOME}/Library/Application Support"
+      ff_profile_dir="Firefox"
+      ;;
+    Linux)
+      ff_profile_path="${HOME}/.mozilla"
+      ff_profile_dir="firefox"
+      ;;
+  esac
+
+  print_title "BACKUP FIREFOX PROFILE"
+
+  echo "Processing $(tput setaf 6)${ff_profile_path}/${ff_profile_dir}$(tput sgr0)"
+  while [[ "${rc}" -ne 0 ]]; do
+    tar -czf "$ff_tar_file" -C "$ff_profile_path" "$ff_profile_dir"
+    rc=$?
+  done
+
+  eza "$ff_tar_file" --time-style=relative --modified --long --no-permissions --no-user
+
+  if ssh -o ConnectTimeout=5 memory-alpha exit; then
+    curl \
+      --progress-bar \
+      --upload-file "$ff_tar_file" \
+      --user bfrank:"$(op item get bdsa72gpj3zz2gpqrlpcay6ysu --fields webdav --reveal)" \
+      https://nextcloud.francopuccini.casa/remote.php/dav/files/bfrank/Backups/ \
+    | cat
+  fi
+}
+
+
+# @cmd Run all modules
+# @meta default-subcommand
+main() {
+  INSTALLED_PACKAGES="$(mktemp)"
+
+  case "$(uname -s)" in
+    Linux)
+      # shellcheck disable=SC1091
+      source /etc/os-release
+      case "$ID" in (apt) apt-pkg ;; (dnf) dnf-pkg ;; esac
+      ;;
+  esac
+
+  list_packages
+
+  sudo -v
+
+  if pkg_installed flatpak; then flatpak; fi
+  if pkg_installed fwupd; then firmware; fi
+  if command -v brew &> /dev/null; then homebrew; fi
+  if pkg_installed krew; then krew_update; fi
+  if [[ -f ~/.config/zsh/rc.d/benv.zsh ]]; then py-venv; fi
+  if pkg_installed multipass; then multipass-vm; fi
+  if pkg_installed bat; then bat-cache; fi
+  if pkg_installed atuin; then atuin-sync; fi
+  if pkg_installed firefox; then firefox-profile; fi
+
+  if [[ -n $RESTART_NEEDED ]]; then
+    printf '\n\n%s%s' "$(tput bold)" "$(tput setaf 1)"
+    print $'\uf054\uf054\uf054' "RESTART NEEDED" $'\uf053\uf053\uf053'
+    printf '%s\n' "$(tput sgr0)"
+  fi
+
+  rm -rf "$INSTALLED_PACKAGES"
+}
+
+
+eval "$(argc --argc-eval "$0" "$@")"
