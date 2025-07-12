@@ -163,7 +163,9 @@ atuin-sync() {
 # @cmd Backup Firefox profile
 # @alias firefox
 firefox-profile() {
-  local ff_profile_path ff_profile_dir ff_tar_file="${HOME}/Downloads/firefox.tar.gz" rc=1
+  local ff_profile_path ff_profile_dir ff_tar_file="${HOME}/Downloads/firefox.tar.gz"
+
+  print_title "BACKUP FIREFOX PROFILE"
 
   case "$(uname -s)" in
     Darwin)
@@ -176,12 +178,14 @@ firefox-profile() {
       ;;
   esac
 
-  print_title "BACKUP FIREFOX PROFILE"
-
   echo "Processing $(tput setaf 6)${ff_profile_path}/${ff_profile_dir}$(tput sgr0)"
-  while [[ "${rc}" -ne 0 ]]; do
-    tar -czf "$ff_tar_file" -C "$ff_profile_path" "$ff_profile_dir"
-    rc=$?
+  while :; do
+    if tar -czf "$ff_tar_file" -C "$ff_profile_path" "$ff_profile_dir"
+    then
+      break 
+    else
+      echo "$(tput setaf 1)Retrying...$(tput sgr0)"
+    fi
   done
 
   eza "$ff_tar_file" --time-style=relative --modified --long --no-permissions --no-user
