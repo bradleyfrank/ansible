@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+
+# @meta describe Brad's Second Brain
+# @meta author Brad Frank
+# @meta require-tools pwgen,diceware
+# @meta version 1.0.0
+# @meta combine-shorts
+# @meta inherit-flag-options
+
+C_BOLD=$(tput bold)
+C_RED=$(tput setaf 1)
+C_GREEN=$(tput setaf 2)
+C_BLUE=$(tput setaf 4)
+C_RESET=$(tput sgr0)
+
+
+output_title() { printf "%s==> %s%s\n" "$C_BOLD" "$1" "$C_RESET"; }
+
+
+lib_genRandNum() {
+  local num_length; num_length="$1"
+  local rand_num; rand_num=0
+
+  while (( ${#rand_num} < $num_length )); do
+    rand_num="${rand_num}${RANDOM}"
+  done
+
+  printf "${rand_num:0:$num_length}"
+}
+
+
+# @cmd Functions dealing with date/time
+# @alias dt, date, time
+datetime() { :; }
+
+
+# @cmd Show date and time formats
+# @alias f
+datetime::formats() {
+  while read date_format description; do
+    desc="$(echo "$description" | sed -E 's/ \(e\.g\., [^)]+\)//g' | awk '{$1=$1; print}')"
+    printf "  %s%-2s%s %-24s %s\n" \
+      "$C_BOLD" \
+      "$date_format" \
+      "$C_RESET" \
+      "$(date +"$date_format")" \
+      "$desc"
+  done < <(date --help | grep -E '^  %[a-zA-Z]')
+}
+
+
+# @cmd Generate a timestamp
+# @alias stamp, ts
+datetime::timestamp() {
+  output_title "TIMESTAMP"
+  printf "    %s%s[%s]%s %s\n" "$C_BOLD" "$C_BLUE" "YYYYMMDD-hhmmss" \
+    "$C_RESET" "$(date +%F_%T | tr -d ":-" | tr "_" "-")";
+}
+
+
+# @cmd Generate various types of passwords 
+# @alias p
+passwords() {
+  local -a length; length=(8 16 24 32)
+  local -a segments; segments=(2 3 4 5)
+
+  _result() { printf "    %s%s[%2d]%s %s\n" "$C_BOLD" "$C_RED" "$1" "$C_RESET" "$2"; }
+  
+  output_title "ALPHA"
+  for len in "${length[@]}"; do
+    _result "$len" "$(pwgen -1 --capitalize --no-numerals "$len")"
+  done
+  printf "\n"
+
+  output_title "NUMERIC"
+  for len in "${length[@]}"; do
+    _result "$len" "$(lib_genRandNum "$len")"
+  done
+  printf "\n"
+
+  output_title "ALPHANUMERIC"
+  for len in "${length[@]}"; do
+    _result "$len" "$(pwgen -1 --capitalize --numerals "$len")"
+  done
+  printf "\n"
+
+  output_title "ALPHANUMERIC + SPECIAL"
+  for len in "${length[@]}"; do
+    _result "$len" "$(pwgen -1 --capitalize --numerals --symbols "$len")"
+  done
+  printf "\n"
+    
+  output_title "DICEWARE"
+  for len in "${segments[@]}"; do
+    _result "$len" "$(diceware --num "$len")"
+  done
+  printf "\n"
+
+  output_title "DICEWARE + NUMERIC"
+  for len in "${segments[@]}"; do
+    _result "$len" "$(diceware --num "$len")-$(lib_genRandNum "$len")"
+  done
+  printf "\n"
+}
+
+
+# @cmd Data conversion functions
+# @alias c
+convert() { :; }
+
+
+# @cmd Convert a csv file to json
+# @alias csv
+convert::csv2json() {
+  cat "$1" | python3 -c \
+    'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))'
+}
+
+
+# @cmd Text formatting functions
+# @alias f
+format() { :; }
+
+
+# @cmd Convert between 2 and 4 space tabs
+# @alias tabs, spaces
+# @option -s --spaces[=2|4]
+# @arg file! <FILE>
+format::retab() {
+  if [[ ! -f "$argc_file" ]]; then
+    return 1
+  fi
+
+  if [[ $argc_spaces -eq 4 ]]; then
+    unexpand --tabs 2 "${argc_file}" | expand --tabs 4
+  else
+    unexpand --tabs 4 "${argc_file}" | expand --tabs 2
+  fi
+}
+
+
+eval "$(argc --argc-eval "$0" "$@")"
