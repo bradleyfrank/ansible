@@ -198,6 +198,14 @@ pull() {
 }
 
 
+# @cmd Rebase commits
+rebase() {
+  origin="$(git remote show origin | awk '/HEAD branch/ {print $NF}')"
+  base="$(git log "$origin" --oneline --reverse --pretty=format:"%h" | head -n1)"
+  git absorb --base "$base" --and-rebase
+}
+
+
 # @cmd Stash changes and untracked files across all worktrees
 # @flag -x --exclude-untracked Exclude untracked file(s) from stash
 stash() {
