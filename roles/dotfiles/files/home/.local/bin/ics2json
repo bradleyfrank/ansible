@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import json
+import sys
+from ics import Calendar
+from pathlib import Path
+
+ics_file = sys.argv[1]
+json_file = ics_file.parent / f"{f.stem}.json"
+
+with open(ics_file, 'r', encoding='utf-8') as file:
+  calendar = Calendar(file.read())
+
+events_data = []
+for event in calendar.events:
+  event_dict = {
+    "name": event.name,
+    "begin": event.begin.isoformat() if event.begin else None,
+    "end": event.end.isoformat() if event.end else None,
+    "location": event.location,
+    "description": event.description,
+    "status": event.status,
+    "uid": event.uid
+  }
+  events_data.append(event_dict)
+
+with open(json_file, 'w', encoding='utf-8') as out_file:
+  json.dump(events_data, out_file, indent=2)
