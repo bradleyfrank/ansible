@@ -161,7 +161,7 @@ atuin-sync() {
 
 
 # @cmd Backup Firefox profile
-# @alias firefox
+# @alias firefox, ff
 firefox-profile() {
   local ff_profile_path ff_profile_dir ff_tar_file="${HOME}/Downloads/firefox.tar.gz"
 
@@ -177,6 +177,11 @@ firefox-profile() {
       ff_profile_dir="firefox"
       ;;
   esac
+
+  if [[ ! -d "${ff_profile_path}/${ff_profile_dir}" ]]; then
+    echo "$(tput setaf 3)No Firefox profile found$(tput sgr0)"
+    return 0
+  fi
 
   echo "Processing $(tput setaf 6)${ff_profile_path}/${ff_profile_dir}$(tput sgr0)"
   while :; do
@@ -221,7 +226,7 @@ main() {
   if pkg_installed flatpak; then flatpak; fi
   if pkg_installed fwupd; then firmware; fi
   if command -v brew &> /dev/null; then homebrew; fi
-  if pkg_installed krew; then krew_update; fi
+  if pkg_installed krew; then k8s-krew; fi
   if [[ -f ~/.config/zsh/rc.d/benv.zsh ]]; then py-venv; fi
   if pkg_installed multipass; then multipass-vm; fi
   if pkg_installed bat; then bat-cache; fi
