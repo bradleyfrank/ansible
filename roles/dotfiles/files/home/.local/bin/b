@@ -29,11 +29,14 @@ lib_genRandNum() {
 }
 
 
-# @cmd Functions dealing with git commands
+# @cmd Alias for `bit`
 # @alias g
-git() {
-  bit "$@"
-}
+git() { bit "$@"; }
+
+
+# @cmd Alias for `bmux`
+# @alias m
+tmux() { bmux "$@"; }
 
 
 # @cmd Functions dealing with note taking
