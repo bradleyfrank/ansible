@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# @meta describe Brad's Second Brain
+# @meta describe Utility functions 
 # @meta author Brad Frank
 # @meta require-tools pwgen,diceware
-# @meta version 1.0.0
+# @meta version 1.1.0
 # @meta combine-shorts
 # @meta inherit-flag-options
 
@@ -26,6 +26,51 @@ lib_genRandNum() {
   done
 
   printf "${rand_num:0:$num_length}"
+}
+
+
+# @cmd Functions dealing with git commands
+# @alias g
+git() {
+  bit "$@"
+}
+
+
+# @cmd Functions dealing with note taking
+# @alias n
+note() { :; }
+
+
+# @cmd Create a new note in Inbox
+# @arg name FILENAME
+note::new() {
+  local note
+
+  if [[ -n $argc_name ]]; then
+    note="00_Inbox/$(sed 's/[^[:alnum:]]/_/g' <<< "$argc_name").md"
+    title="$argc_name"
+  else
+    note="00_Inbox/$(date +%F-%H%M%S).md"
+    title="$(date +%a" "%b" "%d" "%Y)"
+  fi
+
+  if git remote get-url origin | grep --quiet "bradfrank/notebook"
+  then
+    cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .)
+    echo "# ${title}" > "$note"
+    nvim "$note"
+  fi
+}
+
+
+# @cmd Cleanup blank notes in Inbox
+# @alias clean
+note::cleanup() {
+  while read -r note; do
+    if (( $(grep -cv '^[[:space:]]*$' "$note") == 1 )); then
+      rm "$note"
+    fi
+  done < <(find . -type f | grep -E '/[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}\.md$')
 }
 
 
@@ -111,9 +156,19 @@ convert() { :; }
 
 # @cmd Convert a csv file to json
 # @alias csv
+# @arg file! <FILE>
 convert::csv2json() {
   cat "$1" | python3 -c \
     'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))'
+}
+
+
+# @cmd Convert an ics file to json
+# @alias ics
+# @arg file! <FILE>
+convert::ics2json() {
+  [[ ! -f "$argc_file" ]] && return 1
+  ics2json "$argc_file"
 }
 
 
@@ -127,10 +182,7 @@ format() { :; }
 # @option -s --spaces[=2|4]
 # @arg file! <FILE>
 format::retab() {
-  if [[ ! -f "$argc_file" ]]; then
-    return 1
-  fi
-
+  [[ ! -f "$argc_file" ]] && return 1
   if [[ $argc_spaces -eq 4 ]]; then
     unexpand --tabs 2 "${argc_file}" | expand --tabs 4
   else
