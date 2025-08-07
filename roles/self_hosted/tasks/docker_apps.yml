@@ -1,0 +1,14 @@
+---
+
+- name: "Write secrets env file"  
+  ansible.builtin.copy:
+    content: "{{
+      lookup('community.general.onepassword', app['secrets_uuid'], field='notesPlain')
+    }}"
+    dest: "/apps/{{ app['name'] }}/.env"
+    mode: "0400"
+
+- name: "Copy app files"
+  ansible.builtin.copy:
+    src: "apps/{{ app['name'] }}"
+    dest: "/apps/"

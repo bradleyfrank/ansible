@@ -36,6 +36,10 @@
       tags: [pkg_mgr]
 
     - ansible.builtin.import_role:
+        name: "self_hosted"
+      tags: [self_hosted]
+
+    - ansible.builtin.import_role:
         name: "ssh"
       tags: [ssh]
 

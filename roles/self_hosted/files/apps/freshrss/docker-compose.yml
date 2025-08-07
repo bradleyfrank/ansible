@@ -1,0 +1,58 @@
+---
+
+services:
+  freshrss-db:
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: freshrss-db
+    environment:
+      TZ: "America/New_York"
+      MARIADB_DATABASE: "freshrss"
+      MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
+      MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+      MARIADB_USER: "freshrss"
+    image: mariadb:10.11
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - freshrss
+    restart: unless-stopped
+    volumes:
+      - /apps/freshrss/db:/var/lib/mysql
+
+  freshrss:
+    container_name: freshrss-app
+    depends_on:
+      - freshrss-db
+    environment:
+      TZ: "America/New_York"
+      PUID: 1000
+      PGID: 1000
+    image: lscr.io/linuxserver/freshrss:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.freshrss.rule=Host(`freshrss.francopuccini.casa`)"
+      - "traefik.http.routers.freshrss.entrypoints=https"
+      - "traefik.http.routers.freshrss.tls=true"
+      - "traefik.http.routers.freshrss.tls.certresolver=http"
+      - "traefik.http.routers.freshrss.middlewares=freshrssM1,freshrssM2"
+      - "traefik.http.middlewares.freshrssM1.compress=true"
+      - "traefik.http.middlewares.freshrssM2.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.freshrssM2.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.freshrssM2.headers.frameDeny=true"
+      - "traefik.http.middlewares.freshrssM2.headers.referrerPolicy=no-referrer-when-downgrade"
+      - "traefik.http.middlewares.freshrssM2.headers.stsSeconds=31536000"
+    networks:
+      - traefik
+      - freshrss
+    ports:
+      - 80
+    restart: unless-stopped
+    volumes:
+      - /apps/freshrss/config:/config
+
+networks:
+  traefik:
+    external: true
+  freshrss:
+    name: freshrss

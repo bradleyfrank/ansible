@@ -1,0 +1,9 @@
+{
+  "name": "Solarized Light",
+  "entrypoint": "SolarizedLight",
+  "description": "Solarized Light color palette as a FreshRSS theme extension.",
+  "version": "1.0.0",
+  "author": "Brad Frank",
+  "type": "user",
+  "min_version": "1.24.0"
+}

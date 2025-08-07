@@ -1,0 +1,79 @@
+// --------------------------------------------------
+// Solarized core palette
+// --------------------------------------------------
+$base03: #002b36;
+$base02: #073642;
+$base01: #586e75;
+$base00: #657b83;
+$base0:  #839496;
+$base1:  #93a1a1;
+$base2:  #eee8d5;
+$base3:  #fdf6e3;
+$yellow: #b58900;
+$orange: #cb4b16;
+$red:    #dc322f;
+$magenta:#d33682;
+$violet: #6c71c4;
+$blue:   #268bd2;
+$cyan:   #2aa198;
+$green:  #859900;
+
+// --------------------------------------------------
+// Theme variables (mapped from your previous scheme)
+// --------------------------------------------------
+$main-first: $blue;
+$main-first-alt: $cyan;
+$main-first-light: $base2;
+$main-first-lighter: $base3;
+$main-first-dark: $base02;
+$main-first-darker: $base03;
+
+$main-font-color: $base01;
+$light-font-color: $base1;
+$white: $base3;
+
+$grey-darker: $base02;
+$grey-dark: $base01;
+$grey-medium-dark: $base00;
+$grey-medium: $base0;
+$grey-medium-light: $base1;
+$grey-light: $base2;
+$grey-lighter: $base3;
+
+$unread-font-color: $base02;
+$unread-bg: $base2;
+$unread-bg-light: $base3;
+
+$alert-bg: $red;
+$alert-light: lighten($red, 45%);
+$alert-text: darken($red, 25%);
+
+$warning-bg: $yellow;
+$warning-light: lighten($yellow, 45%);
+$warning-text: darken($yellow, 35%);
+
+$success-bg: $green;
+$success-light: lighten($green, 50%);
+$success-text: darken($green, 40%);
+
+$fav-bg: $orange;
+$fav-light: lighten($orange, 50%);
+
+$sid-font-color: $base01;
+$sid-bg: $base3;
+$sid-bg-alt: $base2;
+$sid-bg-dark: darken($base2, 6%);
+$sid-sep: darken($base2, 10%);
+$sid-active: $main-first;
+$sid-active-font: $base3;
+$sid-pills: rgba(101, 123, 131, 0.15);
+
+// --------------------------------------------------
+// Example override rules – extend as needed
+// --------------------------------------------------
+body {
+  color: $main-font-color;
+  background-color: $sid-bg;
+}
+
+/* Add more selectors here to fully recolor FreshRSS */

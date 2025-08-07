@@ -1,0 +1,6 @@
+---
+
+self_hosted_apps:
+  - name: "freshrss"
+    secrets_uuid: "bb3zt7tlkl52sk632vyxzojgea"
+    state: running

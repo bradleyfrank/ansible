@@ -2,6 +2,7 @@
 
 libraries:
   Movies:
+    schedule: daily
     collection_files:
     - file: /config/collections.yml
     operations:
@@ -18,13 +19,13 @@ settings:
   asset_folders: true
   cache: true
   cache_expiration: 60
-  create_asset_folders: false
+  create_asset_folders: true
   custom_repo:
   default_collection_order: release.asc
   delete_below_minimum: true
   delete_not_scheduled: false
   dimensional_asset_rename: false
-  download_url_assets: false
+  download_url_assets: true
   ignore_ids:
   ignore_imdb_ids:
   item_refresh_delay: 0
@@ -64,12 +65,12 @@ plex:
   empty_trash: true
   optimize: true
   timeout: 60
-  token: FWfVzeWczaYRehKaccjy
+  token: {{ self_hosted_plex_token }}
   url: https://plex.francopuccini.casa
   verify_ssl: true
 
 tmdb:
-  apikey: 1d662d0f64b34c950d19934b98912e60
+  apikey: {{ self_hosted_tmdb_key }}
   cache_expiration: 60
   language: en
   region: US

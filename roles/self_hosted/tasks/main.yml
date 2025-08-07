@@ -1,0 +1,9 @@
+---
+
+- name: "Copy Docker app compose files"
+  ansible.builtin.include_tasks:
+    file: "docker_apps.yml"
+  loop: "{{ self_hosted_apps }}"
+  loop_control:
+    label: "{{ app['name'] }}"
+    loop_var: app

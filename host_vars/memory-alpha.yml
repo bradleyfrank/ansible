@@ -9,6 +9,7 @@ global_host_roles:
   - dotfiles
   - git
   - pkg_mgr
+  - self_hosted
   - ssh
   - system
   - tmux
