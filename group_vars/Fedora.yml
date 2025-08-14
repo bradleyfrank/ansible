@@ -95,7 +95,6 @@ pkg_mgr_cli:
     - eza  # https://github.com/eza-community/eza/issues/1456
     - fclones
     - lazygit
-    - starship
     - yq
 
 pkg_mgr_gui:

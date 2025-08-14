@@ -1,6 +1,5 @@
 eval "$(batman --export-env)"
 eval "$(atuin init zsh)"
-eval "$(starship init zsh)"
 {% if (ansible_facts['system'] == "Darwin") and not global_use_1password_ssh_agent %}
 eval "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_keychain_keys | join(' ') }})"
 {% elif (ansible_facts['system'] == "Linux") and not global_use_1password_ssh_agent %}
