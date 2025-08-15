@@ -39,8 +39,13 @@ git() { bit "$@"; }
 tmux() { bmux "$@"; }
 
 
+###############################################################################
+##                           NOTES                                           ##
+###############################################################################
+
+
 # @cmd Functions dealing with note taking
-# @alias n
+# @alias n, notes
 note() { :; }
 
 
@@ -66,6 +71,19 @@ note::new() {
 }
 
 
+# @cmd Convert web article to Markdown note
+# @arg url! URL
+# @option -d --dir Directory to save output file
+note::scrape() {
+  local title temp; temp="$(mktemp)"
+  reader "$1" --image-mode none -o > "$temp"
+  title="$(grep -E '^\s{0,3}#\s+.*$' "$temp" | head -n1 | cut -d' ' -f2-)"
+  title="${title//[^A-Za-z0-9]/_}.md"
+  if [[ -z $argc_dir ]]; then argc_dir="."; fi
+  mv "$temp" "${argc_dir}/${title}"
+}
+
+
 # @cmd Cleanup blank notes in Inbox
 # @alias clean
 note::cleanup() {
@@ -75,6 +93,11 @@ note::cleanup() {
     fi
   done < <(find . -type f | grep -E '/[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{6}\.md$')
 }
+
+
+###############################################################################
+##                           DATETIME                                        ##
+###############################################################################
 
 
 # @cmd Functions dealing with date/time
@@ -104,6 +127,11 @@ datetime::timestamp() {
   printf "    %s%s[%s]%s %s\n" "$C_BOLD" "$C_BLUE" "YYYYMMDD-hhmmss" \
     "$C_RESET" "$(date +%F_%T | tr -d ":-" | tr "_" "-")";
 }
+
+
+###############################################################################
+##                           PASSWORDS                                       ##
+###############################################################################
 
 
 # @cmd Generate various types of passwords 
@@ -152,6 +180,11 @@ passwords() {
 }
 
 
+###############################################################################
+##                           DATA CONVERSION                                 ##
+###############################################################################
+
+
 # @cmd Data conversion functions
 # @alias c
 convert() { :; }
@@ -173,6 +206,11 @@ convert::ics2json() {
   [[ ! -f "$argc_file" ]] && return 1
   ics2json "$argc_file"
 }
+
+
+###############################################################################
+##                           TEXT FORMATTING                                 ##
+###############################################################################
 
 
 # @cmd Text formatting functions
