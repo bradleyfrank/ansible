@@ -50,16 +50,18 @@ precmd() {
 
   vcs_info
 
-  if [[ -n $SSH_CONNECTION && -z $TMUX ]]; then
-    prompt_segments[host]="${fg_base03}@${reset}${fg_magenta}%m${reset}"
+  if [[ -z $TMUX ]]; then
+    prompt_segments[host]="${segment_left}${fg_magenta}%m${segment_right} "
   fi
 
   if [[ -n $VIRTUAL_ENV ]]; then
-    prompt_segments[venv]="(${fg_cyan}$(python --version | grep -Po '\d+\.\d+')${reset}) "
+    prompt_segments[venv]+="${segment_left}"
+    prompt_segments[venv]+="${fg_cyan}$(python --version | grep -Po '\d+\.\d+')"
+    prompt_segments[venv]+="${segment_right} "
   fi
 
   if [[ -z $vcs_info_msg_0_ ]]; then
-    prompt_segments[cwd]="${fg_blue}%1~${reset}"
+    prompt_segments[cwd]="${segment_left}${fg_blue}%1~${segment_right}"
   else
     while IFS='=' read -r key value; do
         git_info[$key]=$value
