@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This repository is archived, pending deletion. Please see https://codeberg.org/bradfrank/dotfiles for further updates.
+
 # Brad's Bootstrapping & dotfiles Manager
 
 ## Overview
